@@ -1,0 +1,56 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:sugg="urn:import:com.gwt.wizard.client.suggest.ui">
+
+	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
+	<ui:style>
+	
+		.addressContainerStyle{
+			width: 250px;
+		}
+		.addressFieldStyle{
+			width: 250px;
+		}
+		.addressContainerStyle{
+			max-height: 440px;
+		}
+		.newAddressBtnStyle{
+			margin-left: 10px;
+		}
+		.calculateRouteBtnStyle{
+			margin-left: 10px;
+		}
+		.mapContainer{
+			margin-left: 10px;
+		}
+	</ui:style>
+
+
+	<g:HTMLPanel ui:field="mainPanel">
+		<g:HorizontalPanel ui:field="container">
+		<g:VerticalPanel styleName="{style.addressContainerStyle}">
+			<g:ScrollPanel height="440px">
+				<g:VerticalPanel ui:field="addressContainer">
+					<g:HorizontalPanel styleName="{style.addressFieldStyle}">
+						<g:Label styleName="destinationlabel">Destination</g:Label>
+						<sugg:GoogleMapsSuggestBox  ui:field="destinationBox"/>
+					</g:HorizontalPanel>
+					<g:HorizontalPanel styleName="{style.addressFieldStyle}">
+						<g:Label styleName="destinationlabel">Pickup 1</g:Label>
+						<sugg:GoogleMapsSuggestBox  ui:field="firstPickupBox"/>
+					</g:HorizontalPanel>
+				</g:VerticalPanel>
+				</g:ScrollPanel>
+				<g:HorizontalPanel ui:field="btnMenu">
+					<g:Button ui:field="newAddress" styleName="{style.newAddressBtnStyle} btn btn-primary"> New Address </g:Button>
+					<g:Button ui:field="calculateRoute"  styleName="{style.calculateRouteBtnStyle} btn btn-primary"> Calculate Route </g:Button>
+				</g:HorizontalPanel>
+			</g:VerticalPanel>
+			<g:HTMLPanel ui:field="mapContainer" styleName="{style.mapContainer}">
+			
+			</g:HTMLPanel>
+		</g:HorizontalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

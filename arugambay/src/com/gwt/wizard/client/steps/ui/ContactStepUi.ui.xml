@@ -1,0 +1,111 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+
+	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
+
+	<ui:style>
+
+	</ui:style>
+
+	<g:HTMLPanel ui:field="mainPanel">
+		<g:Grid>
+			<!-- Date -->
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Date of arrival</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<d:DateBox ui:field="dateBox" />
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="errMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+			
+						<!-- Flight no. -->
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Flight no.</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:TextBox ui:field="flightNo" />
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="flightErrorMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+			<!-- Landing time -->
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Approx. landing time</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:TextBox ui:field="flightLandingTime"/>
+				</g:customCell>
+			</g:row>
+			
+			<!-- No. passengers -->
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Number of passengers</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:ListBox ui:field="pax"/>
+				</g:customCell>
+			</g:row>
+						
+			<!-- No. surfboards -->
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Number of surfboards</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:ListBox ui:field="surfboards"/>
+				</g:customCell>
+			</g:row>
+			
+			<!-- First name -->			
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>First name</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:TextBox ui:field="firstName" />
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="firstNameErrorMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+			
+			<!-- Surname -->			
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Last name</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:TextBox ui:field="lastName" />
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="lastNameErrorMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+						
+			<!-- email -->			
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Email</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:TextBox ui:field="email" />
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="emailErrorMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+			
+		</g:Grid>
+
+	</g:HTMLPanel>
+
+</ui:UiBinder> 

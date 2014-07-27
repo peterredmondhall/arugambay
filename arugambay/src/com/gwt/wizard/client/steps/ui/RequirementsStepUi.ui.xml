@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+
+	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
+
+	<ui:style>
+
+	</ui:style>
+
+	<g:HTMLPanel ui:field="mainPanel">
+		<g:Grid>
+			<!-- Total no. passengers -->
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="optionalFooCellStyle">
+					<g:Label>Andere Anforderungen</g:Label>
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:TextArea ui:field="requirementsBox" />
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+	</g:HTMLPanel>
+</ui:UiBinder> 

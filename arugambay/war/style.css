@@ -1,0 +1,215 @@
+/** Add css rules here for your application. */
+body {
+	margin: 0px;
+	padding: 0px;
+	color: #000000;
+	font-family: Arial Unicode MS, Arial, sans-serif;
+  	font-size: small;
+  	background: none repeat scroll 0 0 #F5F5F5
+}
+
+.header {
+	margin-top: 10px;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    font-size: 13px;
+}
+
+.header div {
+    display: table-cell;
+    text-align: center;
+}
+
+.header-active {
+	color: #000;
+	font-weight: bold;
+}
+
+.header-disable {
+	color: #BFBFBF !important;
+	font-weight: normal !important;
+}
+
+.progress-wrapper {
+	width: 100%;
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    height: 10px;
+}
+
+.progress-bar {
+	background: -moz-linear-gradient(center top , #20D4FF, #009CD0) repeat-x scroll left top rgba(0, 0, 0, 0);
+    height: 100%;
+    transition: width 0.5s ease-out 0s;
+}
+
+.main {
+	height: 100%;
+	width: 100%;
+	border: 1px solid #BFBFBF;
+	background-color: #FFFFFF;
+	margin-top: 5px;
+}
+
+.main-content {
+	margin: 15px 10px 10px 15px;
+}
+.wizard {
+	margin: 0 auto;
+}
+
+.footer {
+	float: right;
+	margin-top: 10px;
+}
+
+.footer input {
+	margin-left : 10px;
+}
+
+.gwt-Button {
+  margin: 0;
+  padding: 3px 5px;
+  text-decoration: none;
+  font-size: small;
+  cursor: pointer;
+  cursor: hand;
+  background: url("images/hborder.png") repeat-x 0px -27px;
+  border: 1px outset #000;
+}
+.gwt-Button:active {
+  border: 1px inset #000;
+}
+.gwt-Button:hover {
+  border: 1px outset #24d3ff;
+}
+.gwt-Button[disabled] {
+  cursor: default;
+  color: #777;
+}
+.gwt-Button[disabled]:hover {
+  border: 1px outset #000;
+}
+
+.gwt-DateBox {
+  padding: 1px 1px;
+  border: 1px solid #ccc;
+  border-top: 1px solid #999;
+  font-size: 100%;
+}
+.gwt-DateBox input {
+  width: 8em;
+}
+.dateBoxFormatError {
+  background: #ffcccc;
+}
+.dateBoxPopup {
+}
+
+.gwt-DatePicker {
+  border: 1px solid #ccc;
+  border-top:1px solid #999;
+  cursor: default;
+}
+.gwt-DatePicker td,
+.datePickerMonthSelector td:focus {
+  outline: none;
+}
+.datePickerDays {
+  width: 100%;
+  background: white;
+}
+.datePickerDay,
+.datePickerWeekdayLabel,
+.datePickerWeekendLabel {
+  font-size: 85%;
+  text-align: center;
+  padding: 4px;
+  outline: none;
+  font-weight:bold;
+  color:#333;
+  border-right: 1px solid #EDEDED;
+  border-bottom: 1px solid #EDEDED;
+}
+.datePickerWeekdayLabel,
+.datePickerWeekendLabel {
+  background: #fff;
+  padding: 0px 4px 2px;
+  cursor: default;
+  color:#666;
+  font-size:70%;
+  font-weight:normal;
+}
+.datePickerDay {
+  padding: 4px 7px;
+  cursor: hand;
+  cursor: pointer;
+}
+.datePickerDayIsWeekend {
+  background: #f7f7f7;
+}
+.datePickerDayIsFiller {
+  color: #999;
+  font-weight:normal;
+}
+.datePickerDayIsValue {
+  background: #d7dfe8;
+}
+.datePickerDayIsDisabled {
+  color: #AAAAAA;
+  font-style: italic;
+}
+.datePickerDayIsHighlighted {
+  background: #F0E68C;
+}
+.datePickerDayIsValueAndHighlighted {
+  background: #d7dfe8;
+}
+.datePickerDayIsToday {
+  padding: 3px;
+  color: #fff;
+  background: url(images/hborder.png) repeat-x 0px -2607px;
+}
+
+.datePickerMonthSelector {
+  width: 100%;
+  padding: 1px 0 5px 0;
+  background: #fff;
+}
+td.datePickerMonth {
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 100%;
+  font-weight: bold;
+  color: #333;
+}
+.datePickerPreviousButton,
+.datePickerNextButton {
+  font-size: 120%;
+  line-height: 1em;
+  color: #3a6aad;
+  cursor: hand;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0px 4px;
+  outline: none;
+}
+	.labelDiv{
+		display: inline;
+		float: left;
+		width: 60px;
+	}
+	.widgetDiv{
+		display: inline;
+		float: left;
+		width: 250px;
+	}
+	.errMsgDiv{
+		display: inline;
+		float: left;
+	}
+	.errMsg{
+		color: red;
+	}

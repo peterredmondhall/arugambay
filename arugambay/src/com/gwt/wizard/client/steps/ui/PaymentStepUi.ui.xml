@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+
+	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
+
+	<ui:style>
+
+	</ui:style>
+
+	<g:HTMLPanel ui:field="mainPanel">
+	    <g:Label >Vielen Dank f&#252;r Ihre Bestellung. Eine Best&#228;tigung wurde an folgende Adresse geschickt</g:Label>
+		<g:Label ui:field="labelConfirmationEmail" />
+			</g:HTMLPanel>
+
+</ui:UiBinder> 
