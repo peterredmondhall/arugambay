@@ -135,6 +135,8 @@ public class Wizard extends Composite
         currentstep.getContent().setVisible(true);
         ((Showable) currentstep.getContent()).show(true);
         updateHeader(current);
+
+        paypal.setVisible(true);
     }
 
     @UiHandler("cancel")
