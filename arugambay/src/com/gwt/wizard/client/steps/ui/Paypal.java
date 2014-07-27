@@ -27,10 +27,7 @@ public class Paypal extends Composite
     {
 
         initWidget(uiBinder.createAndBindUi(this));
-        System.out.println("host" + Window.Location.getHost());
-        System.out.println("path" + Window.Location.getPath());
-        System.out.println("path" + Window.Location.getPort());
-        System.out.println("path" + Window.Location.getParameterMap());
+
         String params = "";
         Map<String, List<String>> map = Window.Location.getParameterMap();
         for (String key : map.keySet())
@@ -99,6 +96,19 @@ public class Paypal extends Composite
     @Override
     public void setVisible(boolean visible)
     {
+//        Element formFormElement = paypalPanel.getElementById("paypalForm");
+//        FormPanel formPanel = FormPanel.wrap(formFormElement);
+//        formImage.addClickHandler(new ClickHandler()
+//        {
+//
+//            @Override
+//            public void onClick(ClickEvent event)
+//            {
+//                System.out.println("clicked");
+//
+//            }
+//        });
+
         // buttonPanel.setVisible(visible);
     }
 

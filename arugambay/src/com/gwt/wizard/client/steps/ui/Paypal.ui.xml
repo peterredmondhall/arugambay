@@ -3,8 +3,8 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
 
         <g:HTMLPanel ui:field="paypalPanel">
-    	<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> 
-            		<input type="hidden" name="business" value="hall-facilitator@hall-services.de"/>
+    	<form id="paypalForm" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"> 
+        <input type="hidden" name="business" value="hall-facilitator@hall-services.de"/>
 		<input type="hidden" name="cmd" value="_xclick"/>
 		<input type="hidden" name="item_name" value="Taxi Arugam Bay"/>
 		<input type="hidden" name="amount" value="1"/>
@@ -14,7 +14,7 @@
 		<input id="hiddenCancelReturn" type="hidden" name="cancel_return" value="http://localhost:8080/paypalsample/return.html"/> 
 		<input type="image" name="submit" border="0"
 		src="https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif" alt="PayPal - The safer, easier way to pay online"/>
-		<img alt="" border="0" width="1" height="1" src="https://www.paypal.com/en_US/i/scr/pixel.gif" /> 
+		<img id="paypalImage"  alt="" border="0" width="1" height="1" src="https://www.paypal.com/en_US/i/scr/pixel.gif" /> 
 		</form>
-        </g:HTMLPanel>
+		</g:HTMLPanel>
 </ui:UiBinder> 
