@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -20,7 +21,8 @@ public class ContactStepUi extends Composite implements Showable
         FIRST_NAME,
         LAST_NAME,
         FLIGHTNO,
-        EMAIL
+        EMAIL,
+        EMAIL2
     };
 
     private static ContactStepUiUiBinder uiBinder = GWT.create(ContactStepUiUiBinder.class);
@@ -39,10 +41,13 @@ public class ContactStepUi extends Composite implements Showable
     ListBox pax, surfboards;
 
     @UiField
-    Label flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg;
+    Label flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg;
 
     @UiField
-    TextBox flightLandingTime, flightNo, firstName, lastName, email;
+    TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
+
+    @UiField
+    TextArea requirementsBox;
 
     public ContactStepUi()
     {
@@ -75,6 +80,11 @@ public class ContactStepUi extends Composite implements Showable
         return email.getValue();
     }
 
+    public String getEmail2()
+    {
+        return email2.getValue();
+    }
+
     public String getLandingTime()
     {
         return flightLandingTime.getText();
@@ -95,6 +105,11 @@ public class ContactStepUi extends Composite implements Showable
         return flightNo.getValue();
     }
 
+    public String getRequirements()
+    {
+        return requirementsBox.getText();
+    }
+
     public void setErrorMsg(String msg, ErrorMsg errorMsg)
     {
         switch (errorMsg)
@@ -107,6 +122,9 @@ public class ContactStepUi extends Composite implements Showable
                 break;
             case EMAIL:
                 emailErrorMsg.setText(msg);
+                break;
+            case EMAIL2:
+                email2ErrorMsg.setText(msg);
                 break;
             case FLIGHTNO:
                 flightErrorMsg.setText(msg);

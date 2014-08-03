@@ -9,8 +9,9 @@
 	</ui:style>
 
 	<g:HTMLPanel ui:field="mainPanel">
-	    <g:Label >Vielen Dank f&#252;r Ihre Bestellung. Eine Best&#228;tigung wurde an folgende Adresse geschickt</g:Label>
+	    <g:Label ui:field="label1"/>
 		<g:Label ui:field="labelConfirmationEmail" />
-			</g:HTMLPanel>
+		<g:Label ui:field="label2"/>
+	</g:HTMLPanel>
 
 </ui:UiBinder> 

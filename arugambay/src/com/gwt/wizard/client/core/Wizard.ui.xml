@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
-	xmlns:my="urn:import:com.gwt.wizard.client.steps.ui" >
+	 >
 	<ui:style>
 		.important {
 			font-weight: bold;
@@ -19,8 +19,7 @@
 		<div class="footer">
 			<g:Button ui:field="prev" text="Previous" styleName="btn btn-primary" />
 			<g:Button ui:field="next" text="Next" styleName="btn btn-primary" />
-			<my:Paypal ui:field="paypal"/>
-		<g:Button ui:field="cancel" text="Cancel" styleName="btn btn-primary" />
+			<g:Button ui:field="cancel" text="Cancel" styleName="btn btn-primary" />
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

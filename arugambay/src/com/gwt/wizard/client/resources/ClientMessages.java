@@ -43,4 +43,6 @@ public interface ClientMessages extends Messages
 
     public String mustBeValidEmailErrorMsg();
 
+    public String mustBeEqualEmail();
+
 }

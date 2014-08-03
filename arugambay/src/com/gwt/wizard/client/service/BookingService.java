@@ -13,20 +13,16 @@ import com.gwt.wizard.shared.model.PlaceInfo;
 @RemoteServiceRelativePath("service")
 public interface BookingService extends RemoteService
 {
-    Boolean saveWizardData(BookingInfo model) throws IllegalArgumentException;
-
-    List<String> getPlaceList();
+    Boolean save(BookingInfo model) throws IllegalArgumentException;
 
     Boolean getUser() throws IllegalArgumentException;
-
-    Boolean savePlace(PlaceInfo place) throws IllegalArgumentException;
 
     Boolean deletePlace(Long id) throws IllegalArgumentException;
 
     Boolean editPlace(Long id, PlaceInfo placeInfo) throws IllegalArgumentException;
 
-    List<PlaceInfo> getPlaces() throws IllegalArgumentException;
-
     List<BookingInfo> getBookings() throws IllegalArgumentException;
+
+    BookingInfo getBooking(String ref) throws IllegalArgumentException;
 
 }

@@ -46,70 +46,12 @@ public class Paypal extends Composite
         paypalPanel.getElementById("hiddenReturn").setAttribute("value", returnPath);
         paypalPanel.getElementById("hiddenCancelReturn").setAttribute("value", returnPath);
 
-//        paypalPanel.setAction("https://www.sandbox.paypal.com/cgi-bin/webscr");
-//        paypalPanel.setMethod(FormPanel.METHOD_POST);
-//        paypalPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
-//        // Create a panel to hold all of the form widgets.
-//        VerticalPanel panel = new VerticalPanel();
-//        paypalPanel.setWidget(panel);
-//
-//        Image image = new Image();
-//        image.addClickHandler(new ClickHandler()
-//        {
-//            @Override
-//            public void onClick(ClickEvent event)
-//            {
-//                System.out.println("on click");
-//                try
-//                {
-//                    paypalPanel.submit();
-//                }
-//                catch (Exception ex)
-//                {
-//                    System.out.println("problem");
-//                }
-//            }
-//        });
-//        image.setUrl("https://www.paypal.com/en_US/i/btn/btn_buynow_LG.gif");
-//        panel.add(image);
-//        for (String[] h : hiddenList)
-//        {
-//            Hidden hidden = new Hidden(h[0], h[1]);
-//            hidden.setName(h[0]);
-//            hidden.setDefaultValue(h[1]);
-//            panel.add(hidden);
-//        }
-//        paypalForm.addSubmitCompleteHandler(new SubmitCompleteHandler()
-//        {
-//
-//            @Override
-//            public void onSubmitComplete(SubmitCompleteEvent event)
-//            {
-//                System.out.println("complete");
-//                // TODO Auto-generated method stub
-//
-//            }
-//        });
-//
     }
 
     @Override
     public void setVisible(boolean visible)
     {
-//        Element formFormElement = paypalPanel.getElementById("paypalForm");
-//        FormPanel formPanel = FormPanel.wrap(formFormElement);
-//        formImage.addClickHandler(new ClickHandler()
-//        {
-//
-//            @Override
-//            public void onClick(ClickEvent event)
-//            {
-//                System.out.println("clicked");
-//
-//            }
-//        });
-
-        // buttonPanel.setVisible(visible);
+        paypalPanel.setVisible(visible);
     }
 
 }

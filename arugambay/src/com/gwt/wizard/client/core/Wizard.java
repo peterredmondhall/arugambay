@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.ICallback;
-import com.gwt.wizard.client.steps.ui.Paypal;
 
 public class Wizard extends Composite
 {
@@ -26,7 +26,7 @@ public class Wizard extends Composite
     {
     }
 
-    private ICallback finishCb;
+    private ICallback saveBookingCb;
 
     private final Map<WizardStep, Integer> map = new HashMap<WizardStep, Integer>();
     private final Map<HTML, Integer> headers = new HashMap<HTML, Integer>();
@@ -47,8 +47,6 @@ public class Wizard extends Composite
     Button next;
     @UiField
     Button cancel;
-    @UiField
-    Paypal paypal;
 
     public Wizard()
     {
@@ -112,22 +110,13 @@ public class Wizard extends Composite
         int current = map.get(currentstep);
         currentstep.getContent().setVisible(false);
 
-        if (current == (map.size() - 1))
-        {	// finished
-            if (finishCb != null)
-                finishCb.execute();
-
-            current += 1;
-
-            // clear all
-//            clearAll();
-//            current = 1;
-
-        }
-        else
+        if (current == 1)
         {
-            current += 1;
+            if (saveBookingCb != null)
+                saveBookingCb.execute();
+
         }
+        current += 1;
 
         currentstep = getStep(current);
 
@@ -136,7 +125,6 @@ public class Wizard extends Composite
         ((Showable) currentstep.getContent()).show(true);
         updateHeader(current);
 
-        paypal.setVisible(true);
     }
 
     @UiHandler("cancel")
@@ -170,20 +158,17 @@ public class Wizard extends Composite
     private void updateButtons()
     {
         int current = map.get(currentstep);
+
         prev.setEnabled(current != 1);
-        if (current == (map.size() - 1))
+
+        switch (current)
         {
-            next.setText("Bestellen");
-        }
-        else if (current == map.size())
-        {
-            next.setVisible(false);
-            prev.setVisible(false);
-            cancel.setText("Neue Bestellung");
-        }
-        else
-        {
-            next.setText("Next");
+            case GwtWizard.TRANSPORT:
+                break;
+            case GwtWizard.CONTACT:
+                break;
+            case GwtWizard.PAYMENT:
+                break;
         }
     }
 
@@ -241,8 +226,8 @@ public class Wizard extends Composite
         return this;
     }
 
-    public void addFinishCallback(ICallback cb)
+    public void addSaveBookingCallback(ICallback cb)
     {
-        this.finishCb = cb;
+        this.saveBookingCb = cb;
     }
 }

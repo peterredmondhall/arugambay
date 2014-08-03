@@ -3,21 +3,14 @@ package com.gwt.wizard.client.dashboard.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -30,8 +23,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.gwt.wizard.client.service.BookingService;
@@ -79,120 +70,7 @@ public class PlacesManagementVeiw extends Composite
         mainPanel.clear();
         placesManagementTable = new CellTable<PlaceInfo>(13, tableRes);
         // fetching existing places from server
-        fetchPlaces();
-        Timer timer = new Timer()
-        {
-            @Override
-            public void run()
-            {
-                // Setting up placesManagementPanel
-                setPlacesManagementPanel();
-                // Setting up CellTable
-                setPlacesManagementCellTable();
-            }
-        };
         // Execute the timer to expire 1/2 second in the future
-        timer.schedule(500);
-    }
-
-    private void fetchPlaces()
-    {
-        service.getPlaces(new AsyncCallback<List<PlaceInfo>>()
-        {
-            @Override
-            public void onSuccess(List<PlaceInfo> result)
-            {
-                if (result != null && result.size() > 0)
-                {
-                    for (PlaceInfo place : result)
-                    {
-                        PLACES.add(place);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable caught)
-            {
-                Window.alert("Failed to fetch places from server!");
-            }
-        });
-    }
-
-    private void setPlacesManagementCellTable()
-    {
-        placesManagementTable.setSelectionModel(selectionModel,
-                DefaultSelectionEventManager.<PlaceInfo>createCheckboxManager());
-        // Checkbox
-        Column<PlaceInfo, Boolean> checkColumn = new Column<PlaceInfo, Boolean>(
-                new CheckboxCell(true, false))
-        {
-            @Override
-            public Boolean getValue(PlaceInfo object)
-            {
-                return selectionModel.isSelected(object);
-            }
-        };
-
-        // Create place column.
-        TextColumn<PlaceInfo> cityColumn = new TextColumn<PlaceInfo>()
-        {
-            @Override
-            public String getValue(PlaceInfo place)
-            {
-                return place.getCity();
-            }
-        };
-        // Create place column.
-        TextColumn<PlaceInfo> pickupColumn = new TextColumn<PlaceInfo>()
-        {
-            @Override
-            public String getValue(PlaceInfo place)
-            {
-                return place.getPickup();
-            }
-        };
-        // Create place column.
-        TextColumn<PlaceInfo> placeColumn = new TextColumn<PlaceInfo>()
-        {
-            @Override
-            public String getValue(PlaceInfo place)
-            {
-                return place.getPlace();
-            }
-        };
-
-        // Add the columns.
-        placesManagementTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        placesManagementTable.setColumnWidth(checkColumn, 30, Unit.PX);
-        placesManagementTable.addColumn(cityColumn, "City");
-        placesManagementTable.addColumn(pickupColumn, "Pickup");
-        placesManagementTable.addColumn(placeColumn, "Place");
-
-        // Create a data provider.
-        ListDataProvider<PlaceInfo> dataProvider = new ListDataProvider<PlaceInfo>();
-
-        // Connect the table to the data provider.
-        dataProvider.addDataDisplay(placesManagementTable);
-        // Add the data to the data provider, which automatically pushes it to the widget.
-        List<PlaceInfo> list = dataProvider.getList();
-        for (PlaceInfo place : PLACES)
-        {
-            list.add(place);
-        }
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(placesManagementTable);
-
-        placesManagementTable.setWidth("100%");
-        VerticalPanel panel = new VerticalPanel();
-        panel.getElement().getStyle().setWidth(100, Unit.PCT);
-        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        panel.add(placesManagementTable);
-        panel.add(pager);
-        mainPanel.add(panel);
     }
 
     private void setPlacesManagementPanel()
@@ -229,84 +107,6 @@ public class PlacesManagementVeiw extends Composite
                 mainPanel.getElement().getStyle().setPadding(5, Unit.PX);
                 mainPanel.getElement().getStyle().setWidth(265, Unit.PX);
 
-                Button creatNewPlaceBtn = new Button("Create");
-                creatNewPlaceBtn.setStyleName("btn btn-primary");
-                creatNewPlaceBtn.addClickHandler(new ClickHandler()
-                {
-
-                    @Override
-                    public void onClick(ClickEvent event)
-                    {
-                        String city = (newCityTxtBox.getText() == null || newPlaceTxtBox.getText().length() == 0) ? "" : newCityTxtBox.getText();
-                        String pickup = (newPickupTxtBox.getText() == null || newPickupTxtBox.getText().length() == 0) ? "" : newPickupTxtBox.getText();
-                        String place = (newPlaceTxtBox.getText() == null || newPlaceTxtBox.getText().length() == 0) ? "" : newPlaceTxtBox.getText();
-
-                        if (city.length() == 0 || pickup.length() == 0 || place.length() == 0)
-                        {
-                            errLbl.setText("Please fill up all fields");
-                        }
-                        else
-                        {
-                            PlaceInfo placeInfo = new PlaceInfo();
-                            placeInfo.setCity(city);
-                            placeInfo.setPickup(pickup);
-                            placeInfo.setPlace(place);
-
-                            service.savePlace(placeInfo, new AsyncCallback<Boolean>()
-                            {
-
-                                @Override
-                                public void onFailure(Throwable caught)
-                                {
-                                    Window.alert("Failed to save place!");
-                                }
-
-                                @Override
-                                public void onSuccess(Boolean result)
-                                {
-                                    if (result)
-                                    {
-                                        newCityTxtBox.setText("");
-                                        newPickupTxtBox.setText("");
-                                        newPlaceTxtBox.setText("");
-
-                                        errLbl.setStyleName("successLbl");
-                                        errLbl.setText("Place created Successfully");
-                                        initializeWidget();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-                // Setting up Popup Panel
-                creatNewPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
-                hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-                hp.setSpacing(10);
-                hp.add(newCityLbl);
-                hp.add(newCityTxtBox);
-                mainPanel.add(hp);
-
-                hp = new HorizontalPanel();
-                hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-                hp.setSpacing(10);
-                hp.add(newPickupLbl);
-                hp.add(newPickupTxtBox);
-                mainPanel.add(hp);
-
-                hp = new HorizontalPanel();
-                hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-                hp.setSpacing(10);
-                hp.add(newPlaceLbl);
-                hp.add(newPlaceTxtBox);
-                mainPanel.add(hp);
-
-                mainPanel.add(creatNewPlaceBtn);
-                mainPanel.add(errLbl);
-                newPlacePopUpPanel.add(mainPanel);
-                newPlacePopUpPanel.addStyleName("addNewPlacePopup");
-                newPlacePopUpPanel.setPopupPosition(event.getClientX(), event.getClientY());
-                newPlacePopUpPanel.show();
             }
         });
         addPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);

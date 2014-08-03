@@ -104,7 +104,28 @@
 				</g:customCell>
 			</g:row>
 			
-		</g:Grid>
+			<!-- email repeat -->			
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Email (repeat)</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:TextBox ui:field="email2" />
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="email2ErrorMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Other requirements:</g:Label>
+				</g:customCell>
+				<g:customCell styleName="widgetDiv">
+					<g:TextArea ui:field="requirementsBox" />
+				</g:customCell>
+			</g:row>
+						
+					</g:Grid>
 
 	</g:HTMLPanel>
 

@@ -2,15 +2,16 @@ package com.gwt.wizard.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.resources.ClientMessages;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
+import com.gwt.wizard.client.steps.ConfirmationStep;
 import com.gwt.wizard.client.steps.ContactStep;
 import com.gwt.wizard.client.steps.PaymentStep;
-import com.gwt.wizard.client.steps.RequirementsStep;
 import com.gwt.wizard.client.steps.SummaryStep;
 import com.gwt.wizard.client.steps.TransportStep;
 import com.gwt.wizard.shared.model.BookingInfo;
@@ -26,11 +27,17 @@ public class GwtWizard implements EntryPoint
 
     private TransportStep routeStep;
     private ContactStep organizerStep;
-    private RequirementsStep requirementsStep;
     private SummaryStep summaryStep;
-    private PaymentStep confirmationStep;
+    private PaymentStep paymentStep;
+    private ConfirmationStep confirmationStep;
 
     BookingInfo bookingInfo = new BookingInfo();
+
+    public static final int TRANSPORT = 0;
+    public static final int CONTACT = 1;
+    public static final int SUMMARY = 2;
+    public static final int PAYMENT = 3;
+    public static final int CONFIRMATION = 4;
 
     /**
      * This is the entry point method.
@@ -40,26 +47,62 @@ public class GwtWizard implements EntryPoint
     {
         routeStep = new TransportStep(bookingInfo);
         organizerStep = new ContactStep(bookingInfo);
-        requirementsStep = new RequirementsStep(bookingInfo);
         summaryStep = new SummaryStep(bookingInfo);
-        confirmationStep = new PaymentStep(bookingInfo);
+        paymentStep = new PaymentStep(bookingInfo);
+
+        String ref = Window.Location.getParameter("tx");
+        if (ref != null)
+        {
+
+            service.getBooking(ref, new AsyncCallback<BookingInfo>()
+            {
+
+                @Override
+                public void onFailure(Throwable caught)
+                {
+                    Window.alert("Failed to connect to server");
+                }
+
+                @Override
+                public void onSuccess(BookingInfo bi)
+                {
+                    bookingInfo = bi;
+                    bookingInfo = new BookingInfo();
+                    setupWizard(bookingInfo);
+                }
+            });
+        }
+        else
+        {
+            setupWizard(null);
+        }
+
+    }
+
+    private void setupWizard(BookingInfo bf)
+    {
 
         Wizard wizard = new Wizard();
-        wizard.add(routeStep);
-        wizard.add(organizerStep);
-        wizard.add(requirementsStep);
-        wizard.add(summaryStep);
-        wizard.add(confirmationStep);
+        if (bf == null)
+        {
+            wizard.add(routeStep);
+            wizard.add(organizerStep);
+            wizard.add(summaryStep);
+        }
+        else
+        {
+            wizard.add(paymentStep);
+        }
 
         wizard.setHeight("500px");
         wizard.setWidth("800px");
 
-        wizard.addFinishCallback(new ICallback()
+        wizard.addSaveBookingCallback(new ICallback()
         {
             @Override
             public void execute()
             {
-                service.saveWizardData(bookingInfo, new AsyncCallback<Boolean>()
+                service.save(bookingInfo, new AsyncCallback<Boolean>()
                 {
                     @Override
                     public void onSuccess(Boolean result)

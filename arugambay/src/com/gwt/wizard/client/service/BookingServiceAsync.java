@@ -11,12 +11,7 @@ import com.gwt.wizard.shared.model.PlaceInfo;
  */
 public interface BookingServiceAsync
 {
-    void saveWizardData(BookingInfo bookingInfo, AsyncCallback<Boolean> callback)
-            throws IllegalArgumentException;
-
-    void getPlaceList(AsyncCallback<List<String>> callback);
-
-    void savePlace(PlaceInfo place, AsyncCallback<Boolean> callback)
+    void save(BookingInfo bookingInfo, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
     void deletePlace(Long id, AsyncCallback<Boolean> callback)
@@ -25,9 +20,9 @@ public interface BookingServiceAsync
     void editPlace(Long id, PlaceInfo placeInfo, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
-    void getPlaces(AsyncCallback<List<PlaceInfo>> callback);
-
     void getBookings(AsyncCallback<List<BookingInfo>> callback);
+
+    void getBooking(String ref, AsyncCallback<BookingInfo> callback);
 
     void getUser(AsyncCallback<Boolean> callback);
 

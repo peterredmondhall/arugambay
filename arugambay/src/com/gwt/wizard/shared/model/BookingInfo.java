@@ -2,6 +2,8 @@ package com.gwt.wizard.shared.model;
 
 import java.io.Serializable;
 
+import com.gwt.wizard.shared.OrderStatus;
+
 public class BookingInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -10,8 +12,33 @@ public class BookingInfo implements Serializable
 
     private String name;
     private String email;
+    private String ref;
+    private OrderStatus status;
+
+    public OrderStatus getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status)
+    {
+        this.status = status;
+    }
+
+    public String getRef()
+    {
+        return ref;
+    }
+
+    public void setRef(String ref)
+    {
+        this.ref = ref;
+    }
+
     private String flightNo;
     private String landingTime;
+    private int pax = 0;
+    private int surfboards = 0;
 
     public String getLandingTime()
     {
@@ -22,9 +49,6 @@ public class BookingInfo implements Serializable
     {
         this.landingTime = landingTime;
     }
-
-    private int pax = 0;
-    private int surfboards = 0;
 
     public String getFlightNo()
     {

@@ -27,6 +27,9 @@ public class SummaryStepUi extends Composite implements Showable
     @UiField
     Label labelEmail, labelName, labelSurfboards, labelPax, labelFlightNo, labelLandingTime, labelDate;
 
+    @UiField
+    Paypal paypal;
+
     public SummaryStepUi(BookingInfo bookingInfo)
     {
         initWidget(uiBinder.createAndBindUi(this));

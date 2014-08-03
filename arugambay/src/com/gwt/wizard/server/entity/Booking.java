@@ -1,7 +1,6 @@
 package com.gwt.wizard.server.entity;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,11 +8,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
+import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 @Entity
 public class Booking implements Serializable
 {
+
+    public Booking()
+    {
+        status = OrderStatus.BOOKED;
+        ref = "TODO";
+    }
+
+    public String getRef()
+    {
+        return ref;
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -21,68 +33,46 @@ public class Booking implements Serializable
     private Key key;
 
     private String date;
-    private boolean withReturn;
-    private String forwardPickupPlace;
-    private String reference;
-    private String forwardPickupTime;
-    private String returnPickupPlace;
-    private String returnPickupTime;
-
     private String name;
     private String email;
-    private int pax = 0;
-    private int surfboards = 0;
+    private String flightNo;
+    private String landingTime;
+    private int pax;
+    private int surfboards;
+    private OrderStatus status;
+    private String requirements;
+    private String tx;
+    private final String ref;
+    private String client;
 
-    private String requirements = "";
-
-    public boolean isWithReturn()
+    public void setStatus(OrderStatus status)
     {
-        return withReturn;
+        this.status = status;
     }
 
-    public void setWithReturn(boolean withReturn)
+    public String getTx()
     {
-        this.withReturn = withReturn;
+        return tx;
     }
 
-    public String getForwardPickupPlace()
+    public String getClient()
     {
-        return forwardPickupPlace;
+        return client;
     }
 
-    public void setForwardPickupPlace(String forwardPickupPlace)
+    public void setClient(String client)
     {
-        this.forwardPickupPlace = forwardPickupPlace;
+        this.client = client;
     }
 
-    public String getForwardPickupTime()
+    public void setTx(String tx)
     {
-        return forwardPickupTime;
+        this.tx = tx;
     }
 
-    public void setForwardPickupTime(String forwardPickupTime)
+    public OrderStatus getStatus()
     {
-        this.forwardPickupTime = forwardPickupTime;
-    }
-
-    public String getReturnPickupPlace()
-    {
-        return returnPickupPlace;
-    }
-
-    public void setReturnPickupPlace(String returnPickupPlace)
-    {
-        this.returnPickupPlace = returnPickupPlace;
-    }
-
-    public String getReturnPickupTime()
-    {
-        return returnPickupTime;
-    }
-
-    public void setReturnPickupTime(String returnPickupTime)
-    {
-        this.returnPickupTime = returnPickupTime;
+        return status;
     }
 
     public String getName()
@@ -125,11 +115,6 @@ public class Booking implements Serializable
         this.requirements = requirements;
     }
 
-    public String getReference()
-    {
-        return reference;
-    }
-
     public String getDate()
     {
         return date;
@@ -150,18 +135,54 @@ public class Booking implements Serializable
         this.surfboards = surfboards;
     }
 
-    public void setReference(String reference)
-    {
-        this.reference = reference;
-    }
-
-    public static Booking getBooking(BookingInfo bookingInfo, Map<String, Place> listPlaces)
+    public static Booking getBooking(BookingInfo bookingInfo, String client)
     {
         Booking booking = new Booking();
         booking.setDate(bookingInfo.getDate());
         booking.setEmail(bookingInfo.getEmail());
+        booking.setFlightNo(bookingInfo.getFlightNo());
+        booking.setLandingTime(bookingInfo.getLandingTime());
+        booking.setPax(bookingInfo.getPax());
+        booking.setSurfboards(bookingInfo.getSurfboards());
+        booking.setRequirements(bookingInfo.getRequirements());
+        booking.setClient(client);
 
         return booking;
+    }
+
+    public BookingInfo getBookingInfo()
+    {
+        BookingInfo bookingInfo = new BookingInfo();
+        bookingInfo.setDate(getDate());
+        bookingInfo.setEmail(getEmail());
+        bookingInfo.setFlightNo(getFlightNo());
+        bookingInfo.setLandingTime(getLandingTime());
+        bookingInfo.setPax(getPax());
+        bookingInfo.setSurfboards(getSurfboards());
+        bookingInfo.setRequirements(getRequirements());
+        bookingInfo.setRef(getRef());
+        bookingInfo.setStatus(getStatus());
+        return bookingInfo;
+    }
+
+    public String getFlightNo()
+    {
+        return flightNo;
+    }
+
+    public void setFlightNo(String flightNo)
+    {
+        this.flightNo = flightNo;
+    }
+
+    public String getLandingTime()
+    {
+        return landingTime;
+    }
+
+    public void setLandingTime(String landingTime)
+    {
+        this.landingTime = landingTime;
     }
 
 }

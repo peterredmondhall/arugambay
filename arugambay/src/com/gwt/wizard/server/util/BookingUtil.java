@@ -6,12 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.google.appengine.labs.repackaged.com.google.common.base.Pair;
-import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.shared.model.BookingInfo;
-import com.gwt.wizard.shared.model.PlaceInfo;
 
 public class BookingUtil
 {
@@ -75,8 +72,8 @@ public class BookingUtil
         for (Pair<String, String> pair : toPairList(bookingInfo))
         {
             insertion += "<tr>\n";
-            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.first);
-            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.second);
+//            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.first);
+//            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.second);
             insertion += "</tr>\n";
         }
 
@@ -104,12 +101,6 @@ public class BookingUtil
         }
         return stringBuilder.toString();
 
-    }
-
-    public static BookingInfo getBookingInfo(Booking booking, Map<Long, PlaceInfo> places)
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

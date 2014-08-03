@@ -69,6 +69,18 @@ public class ContactStep implements WizardStep
             ui.setErrorMsg(MESSAGES.mustBeValidEmailErrorMsg(), ErrorMsg.EMAIL);
             return false;
         }
+        ui.setErrorMsg("", ErrorMsg.EMAIL2);
+        if (ui.getEmail2() == null || !isEmailValid(ui.getEmail2()))
+        {
+            ui.setErrorMsg(MESSAGES.mustBeValidEmailErrorMsg(), ErrorMsg.EMAIL2);
+            return false;
+        }
+        ui.setErrorMsg("", ErrorMsg.EMAIL2);
+        if (!ui.getEmail2().equals(ui.getEmail()))
+        {
+            ui.setErrorMsg(MESSAGES.mustBeEqualEmail(), ErrorMsg.EMAIL2);
+            return false;
+        }
         ui.setErrorMsg("", ErrorMsg.FLIGHTNO);
         if (ui.getLastName() == null || ui.getLastName().trim().length() == 0)
         {
