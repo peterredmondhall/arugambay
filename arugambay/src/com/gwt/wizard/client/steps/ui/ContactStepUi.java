@@ -1,9 +1,13 @@
 package com.gwt.wizard.client.steps.ui;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -12,12 +16,14 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.gwt.wizard.client.core.Showable;
 
 public class ContactStepUi extends Composite implements Showable
 {
     public enum ErrorMsg
     {
+        DATE,
         FIRST_NAME,
         LAST_NAME,
         FLIGHTNO,
@@ -41,7 +47,7 @@ public class ContactStepUi extends Composite implements Showable
     ListBox pax, surfboards;
 
     @UiField
-    Label flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg;
+    Label dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg;
 
     @UiField
     TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
@@ -58,11 +64,12 @@ public class ContactStepUi extends Composite implements Showable
             pax.addItem("" + i);
             surfboards.addItem("" + i);
         }
+        dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy")));
     }
 
-    public DateBox getDateBox()
+    public Date getDate()
     {
-        return dateBox;
+        return dateBox.getValue();
     }
 
     public String getFirstName()
@@ -107,13 +114,21 @@ public class ContactStepUi extends Composite implements Showable
 
     public String getRequirements()
     {
-        return requirementsBox.getText();
+        String requirements = requirementsBox.getText();
+        if (requirements == null)
+        {
+            requirements = "none";
+        }
+        return requirements;
     }
 
     public void setErrorMsg(String msg, ErrorMsg errorMsg)
     {
         switch (errorMsg)
         {
+            case DATE:
+                dateErrorMsg.setText(msg);
+                break;
             case FIRST_NAME:
                 firstNameErrorMsg.setText(msg);
                 break;
@@ -133,10 +148,14 @@ public class ContactStepUi extends Composite implements Showable
     }
 
     @Override
-    public void show(boolean visible)
+    public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
+
+        next.setVisible(true);
+        prev.setEnabled(true);
+
     }
 
     @Override

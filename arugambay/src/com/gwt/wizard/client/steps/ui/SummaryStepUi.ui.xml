@@ -10,7 +10,7 @@
 	</ui:style>
 
 	<g:HTMLPanel ui:field="mainPanel">
-		<g:Label>Hier ist eine Zusammenfassung Ihrer Bestellung:</g:Label>
+		<g:Label>Here is a summary of your order.</g:Label>
 		<g:Grid>
 			<!-- Datum -->
 			<g:row styleName="optionalHeaderStyle">
@@ -24,21 +24,21 @@
 			<!-- Hinfahrt von -->
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Time of landing</g:Label>
-				</g:customCell>
-				<g:customCell>
-					<g:Label ui:field="labelLandingTime" />
-				</g:customCell>
-			</g:row>
-			<!-- Abholung am von -->
-			<g:row styleName="optionalHeaderStyle">
-				<g:customCell styleName="labelDiv">
 					<g:Label>Flight no.</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:Label ui:field="labelFlightNo" />
 				</g:customCell>
 			</g:row>
+			<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Time of landing</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label ui:field="labelLandingTime" />
+				</g:customCell>
+			</g:row>
+						<!-- Abholung am von -->
 			<!-- Rückfahr von -->
 			<g:row  styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
@@ -76,7 +76,23 @@
 			</g:row>
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Paypal</g:Label>
+					<g:Label>Other requirements:</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label ui:field="labelRequirements" />
+				</g:customCell>
+			</g:row>
+						<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Price</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label ui:field="labelPrice" />
+				</g:customCell>
+			</g:row>
+						<g:row styleName="optionalHeaderStyle">
+				<g:customCell styleName="labelDiv">
+					<g:Label>Pay now with Paypal</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<my:Paypal ui:field="paypal"/>

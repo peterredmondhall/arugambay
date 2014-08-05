@@ -95,7 +95,11 @@ a:VISITED {
 }
 
 .gwt-ListBox {
-	width: 170px;
+	width: 160px;
+}
+
+.gwt-TextArea {
+	width: 155px;
 }
 
 
@@ -132,7 +136,7 @@ a:VISITED {
 	border: 1px solid #ccc;
 	border-top: 1px solid #999;
 	font-size: 100%;
-	width: 160px;	
+	width: 150px;	
 }
 
 .dateBoxFormatError {

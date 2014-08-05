@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.ICallback;
 
 public class Wizard extends Composite
@@ -92,7 +91,6 @@ public class Wizard extends Composite
 
         current -= 1;
         currentstep = getStep(current);
-        updateButtons();
 
         currentstep.getContent().setVisible(true);
         updateHeader(current);
@@ -110,19 +108,20 @@ public class Wizard extends Composite
         int current = map.get(currentstep);
         currentstep.getContent().setVisible(false);
 
-        if (current == 1)
+        if (current == 2)
         {
             if (saveBookingCb != null)
+            {
                 saveBookingCb.execute();
+            }
 
         }
         current += 1;
 
         currentstep = getStep(current);
 
-        updateButtons();
         currentstep.getContent().setVisible(true);
-        ((Showable) currentstep.getContent()).show(true);
+        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
         updateHeader(current);
 
     }
@@ -133,13 +132,9 @@ public class Wizard extends Composite
         // just move to step 1
         currentstep.getContent().setVisible(false);
         currentstep = getStep(1);	// get first step
-        updateButtons();
 
         currentstep.getContent().setVisible(true);
         updateHeader(1);
-        prev.setVisible(true);
-        next.setVisible(true);
-        cancel.setText("Cancel");
     }
 
     private WizardStep getStep(int stepNo)
@@ -153,23 +148,6 @@ public class Wizard extends Composite
         }
 
         return null;
-    }
-
-    private void updateButtons()
-    {
-        int current = map.get(currentstep);
-
-        prev.setEnabled(current != 1);
-
-        switch (current)
-        {
-            case GwtWizard.TRANSPORT:
-                break;
-            case GwtWizard.CONTACT:
-                break;
-            case GwtWizard.PAYMENT:
-                break;
-        }
     }
 
     private void updateHeader(int current)
@@ -214,7 +192,6 @@ public class Wizard extends Composite
             if (map.get(step) == 1)
             {
                 currentstep = step;
-                updateButtons();
                 currentstep.getContent().setVisible(true);
 
                 updateHeader(1);

@@ -51,6 +51,18 @@ public class ContactStep implements WizardStep
     public Boolean onNext()
     {
 
+        ui.setErrorMsg("", ErrorMsg.DATE);
+        if (ui.getDate() == null)
+        {
+            ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.DATE);
+            return false;
+        }
+        ui.setErrorMsg("", ErrorMsg.FLIGHTNO);
+        if (ui.getFlightNo() == null)
+        {
+            ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.FLIGHTNO);
+            return false;
+        }
         ui.setErrorMsg("", ErrorMsg.FIRST_NAME);
         if (ui.getFirstName() == null || ui.getFirstName().trim().length() == 0)
         {
@@ -88,7 +100,7 @@ public class ContactStep implements WizardStep
             return false;
         }
 
-        bookingInfo.setDate(sdf.format(ui.getDateBox().getValue()));
+        bookingInfo.setDate(sdf.format(ui.getDate()));
         bookingInfo.setLandingTime(ui.getLandingTime());
         bookingInfo.setName(ui.getFirstName() + "  " + ui.getLastName());
         bookingInfo.setEmail(ui.getEmail());
@@ -96,6 +108,7 @@ public class ContactStep implements WizardStep
         bookingInfo.setFlightNo(ui.getFlightNo());
         bookingInfo.setPax(Integer.parseInt(ui.getPax()));
         bookingInfo.setSurfboards(Integer.parseInt(ui.getSurfboards()));
+        bookingInfo.setRequirements(ui.getRequirements());
 
         return true;
     }

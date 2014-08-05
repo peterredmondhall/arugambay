@@ -1,6 +1,7 @@
 package com.gwt.wizard.server;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -31,7 +32,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public Boolean save(BookingInfo bookingInfo) throws IllegalArgumentException
     {
-        logger.info(bookingInfo.getDate());
+        logger.info(bookingInfo.toString());
         EntityManager em = getEntityManager();
         try
         {
@@ -161,7 +162,8 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             String query = "select t from Booking t where client='" + getClient() + "'";
             @SuppressWarnings("unchecked")
             List<Booking> resultList = em.createQuery(query).getResultList();
-            if (resultList.size() == 1)
+            Collections.sort(resultList);
+            if (resultList.size() > 0)
             {
                 Booking booking = resultList.get(0);
                 booking.setStatus(hasPaid);

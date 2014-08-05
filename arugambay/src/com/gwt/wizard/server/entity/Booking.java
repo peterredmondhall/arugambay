@@ -1,6 +1,7 @@
 package com.gwt.wizard.server.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,13 +13,14 @@ import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 @Entity
-public class Booking implements Serializable
+public class Booking implements Serializable, Comparable<Booking>
 {
 
     public Booking()
     {
         status = OrderStatus.BOOKED;
         ref = "TODO";
+        instanziated = new Date();
     }
 
     public String getRef()
@@ -44,6 +46,17 @@ public class Booking implements Serializable
     private String tx;
     private final String ref;
     private String client;
+    private Date instanziated;
+
+    public Date getInstanziated()
+    {
+        return instanziated;
+    }
+
+    public void setInstanziated(Date instanziated)
+    {
+        this.instanziated = instanziated;
+    }
 
     public void setStatus(OrderStatus status)
     {
@@ -140,6 +153,7 @@ public class Booking implements Serializable
         Booking booking = new Booking();
         booking.setDate(bookingInfo.getDate());
         booking.setEmail(bookingInfo.getEmail());
+        booking.setName(bookingInfo.getName());
         booking.setFlightNo(bookingInfo.getFlightNo());
         booking.setLandingTime(bookingInfo.getLandingTime());
         booking.setPax(bookingInfo.getPax());
@@ -155,6 +169,7 @@ public class Booking implements Serializable
         BookingInfo bookingInfo = new BookingInfo();
         bookingInfo.setDate(getDate());
         bookingInfo.setEmail(getEmail());
+        bookingInfo.setName(getName());
         bookingInfo.setFlightNo(getFlightNo());
         bookingInfo.setLandingTime(getLandingTime());
         bookingInfo.setPax(getPax());
@@ -183,6 +198,15 @@ public class Booking implements Serializable
     public void setLandingTime(String landingTime)
     {
         this.landingTime = landingTime;
+    }
+
+    @Override
+    public int compareTo(Booking other)
+    {
+        // compareTo should return < 0 if this is supposed to be
+        // less than other, > 0 if this is supposed to be greater than
+        // other and 0 if they are supposed to be equal
+        return this.instanziated.after(instanziated) ? -1 : 1;
     }
 
 }

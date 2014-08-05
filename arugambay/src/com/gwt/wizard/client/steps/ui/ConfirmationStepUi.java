@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -32,7 +33,7 @@ public class ConfirmationStepUi extends Composite implements Showable
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         this.bookingInfo = bookingInfo;
-        if (bookingInfo.getRef() != null)
+        if (bookingInfo != null)
         {
             label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
             labelConfirmationEmail.setText(bookingInfo.getEmail());
@@ -45,10 +46,12 @@ public class ConfirmationStepUi extends Composite implements Showable
     }
 
     @Override
-    public void show(boolean visible)
+    public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
+        next.setVisible(true);
+        prev.setEnabled(true);
     }
 
     @Override

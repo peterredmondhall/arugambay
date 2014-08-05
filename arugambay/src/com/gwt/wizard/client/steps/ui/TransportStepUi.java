@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -197,10 +198,10 @@ public class TransportStepUi extends Composite implements Showable
     }
 
     @Override
-    public void show(boolean visible)
+    public void show(boolean visible, Button prev, Button next, Button cancel)
     {
-        // TODO Auto-generated method stub
-
+        next.setVisible(true);
+        prev.setEnabled(false);
     }
 
 }

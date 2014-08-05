@@ -4,29 +4,26 @@
 
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
 
-	<ui:style>
-
-	</ui:style>
 
 	<g:HTMLPanel ui:field="mainPanel">
 		<g:Grid>
 			<!-- Date -->
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Date of arrival</g:Label>
+					<g:Label>Date of arrival *</g:Label>
 				</g:customCell>
 				<g:customCell styleName="widgetDiv">
 					<d:DateBox ui:field="dateBox" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="errMsg"></g:Label>
+					<g:Label styleName="errMsg" ui:field="dateErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
 			
 						<!-- Flight no. -->
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Flight no.</g:Label>
+					<g:Label>Flight no. *</g:Label>
 				</g:customCell>
 				<g:customCell styleName="widgetDiv">
 					<g:TextBox ui:field="flightNo" />
@@ -38,7 +35,7 @@
 			<!-- Landing time -->
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Approx. landing time</g:Label>
+					<g:Label>Approx. landing time *</g:Label>
 				</g:customCell>
 				<g:customCell styleName="widgetDiv">
 					<g:TextBox ui:field="flightLandingTime"/>
@@ -81,7 +78,7 @@
 			<!-- Surname -->			
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Last name</g:Label>
+					<g:Label>Last name *</g:Label>
 				</g:customCell>
 				<g:customCell styleName="widgetDiv">
 					<g:TextBox ui:field="lastName" />
@@ -94,7 +91,7 @@
 			<!-- email -->			
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Email</g:Label>
+					<g:Label>Email *</g:Label>
 				</g:customCell>
 				<g:customCell styleName="widgetDiv">
 					<g:TextBox ui:field="email" />
@@ -107,7 +104,7 @@
 			<!-- email repeat -->			
 			<g:row styleName="optionalHeaderStyle">
 				<g:customCell styleName="labelDiv">
-					<g:Label>Email (repeat)</g:Label>
+					<g:Label>Email (repeat) *</g:Label>
 				</g:customCell>
 				<g:customCell styleName="widgetDiv">
 					<g:TextBox ui:field="email2" />

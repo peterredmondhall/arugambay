@@ -196,20 +196,12 @@ td.datePickerMonth {
   padding: 0px 4px;
   outline: none;
 }
-	.labelDiv{
-		display: inline;
-		float: left;
-		width: 60px;
-	}
-	.widgetDiv{
-		display: inline;
-		float: left;
-		width: 250px;
-	}
-	.errMsgDiv{
-		display: inline;
-		float: left;
-	}
-	.errMsg{
-		color: red;
-	}
+
+
+/* 	.errMsgDiv{ */
+/* 		display: inline; */
+/* 		float: left; */
+/* 	} */
+/* 	.errMsg{ */
+/* 		color: red; */
+/* 	} */

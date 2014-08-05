@@ -13,10 +13,14 @@ import com.gwt.wizard.shared.model.BookingInfo;
 public class BookingUtil
 {
 
-    private static final String FORWARD_PICKUP = "Hinfahrt von:";
-    private static final String FORWARD_TIME = "Hinfahrt um:";
-    private static final String RETURN_PICKUP = "Rückfahrt von:";
-    private static final String RETURN_TIME = "Rückfahrt um:";
+    private static final String DATE = "Date:";
+    private static final String FLIGHTNO = "Flight No:";
+    private static final String LANDING_TIME = "Landing Time:";
+    private static final String NAME = "Name:";
+    private static final String EMAIL = "Email:";
+    private static final String NUM_PAX = "Passengers:";
+    private static final String NUM_SURFBOARDS = "Surfboards:";
+    private static final String REQS = "Other requirements:";
 
     public static String toEmailText(BookingInfo bookingInfo)
     {
@@ -29,20 +33,14 @@ public class BookingUtil
     public static List<Pair<String, String>> toPairList(BookingInfo bookingInfo)
     {
         List<Pair<String, String>> list = new ArrayList<Pair<String, String>>();
-        list.add(new Pair("Veranstaltung am:", bookingInfo.getDate()));
-//        list.add(new Pair(FORWARD_PICKUP, bookingInfo.getForwardPickupPlace()));
-//        list.add(new Pair(FORWARD_TIME, bookingInfo.getForwardPickupTime()));
-//        list.add(new Pair(RETURN_PICKUP, bookingInfo.getReturnPickupPlace()));
-//        list.add(new Pair(RETURN_TIME, bookingInfo.getReturnPickupTime()));
-//        list.add(new Pair("Anzahl Passagiere:", Integer.toString(bookingInfo.getPax())));
-//        list.add(new Pair("Passagiere mit Rollatoren:", Integer.toString(bookingInfo.getPaxRollatoren())));
-//        list.add(new Pair("Passagiere mit klappbaren Rollstuhl:", Integer.toString(bookingInfo.getPaxFoldableWheelchair())));
-//        list.add(new Pair("Passagiere Rollstuhltransport:", Integer.toString(bookingInfo.getPaxRollstuhl())));
-//        list.add(new Pair("Begleiter - Name:", bookingInfo.getCompanionName()));
-//        list.add(new Pair("Begleiter - Email:", bookingInfo.getCompanionEmail()));
-//        list.add(new Pair("Organisator - Name:", bookingInfo.getOrganizerName()));
-//        list.add(new Pair("Organisator - Email:", bookingInfo.getOrganizerEmail()));
-        // list.add(new Pair("Andere Details:", bookingInfo.getRequirements()));
+        list.add(new Pair(DATE, bookingInfo.getDate()));
+        list.add(new Pair(FLIGHTNO, bookingInfo.getFlightNo()));
+        list.add(new Pair(LANDING_TIME, bookingInfo.getLandingTime()));
+        list.add(new Pair(NAME, bookingInfo.getName()));
+        list.add(new Pair(EMAIL, bookingInfo.getEmail()));
+        list.add(new Pair(NUM_SURFBOARDS, Integer.toString(bookingInfo.getSurfboards())));
+        list.add(new Pair(NUM_PAX, Integer.toString(bookingInfo.getPax())));
+        list.add(new Pair(REQS, bookingInfo.getRequirements()));
 
         return list;
     }
@@ -71,9 +69,10 @@ public class BookingUtil
         String insertion = "";
         for (Pair<String, String> pair : toPairList(bookingInfo))
         {
+            System.out.println(pair.first + ":" + pair.second);
             insertion += "<tr>\n";
-//            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.first);
-//            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.second);
+            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.first);
+            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.second);
             insertion += "</tr>\n";
         }
 
