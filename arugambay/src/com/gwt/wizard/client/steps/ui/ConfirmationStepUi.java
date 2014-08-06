@@ -26,13 +26,10 @@ public class ConfirmationStepUi extends Composite implements Showable
     @UiField
     Label labelConfirmationEmail, label1, label2;
 
-    private final BookingInfo bookingInfo;
-
     public ConfirmationStepUi(BookingInfo bookingInfo)
     {
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
-        this.bookingInfo = bookingInfo;
         if (bookingInfo != null)
         {
             label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
@@ -50,8 +47,10 @@ public class ConfirmationStepUi extends Composite implements Showable
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
-        next.setVisible(true);
-        prev.setEnabled(true);
+        next.setVisible(false);
+        prev.setVisible(false);
+        cancel.setEnabled(true);
+        cancel.setText("New Order");
     }
 
     @Override

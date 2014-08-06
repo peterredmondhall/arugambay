@@ -69,7 +69,6 @@ public class BookingUtil
         String insertion = "";
         for (Pair<String, String> pair : toPairList(bookingInfo))
         {
-            System.out.println(pair.first + ":" + pair.second);
             insertion += "<tr>\n";
             insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.first);
             insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.second);

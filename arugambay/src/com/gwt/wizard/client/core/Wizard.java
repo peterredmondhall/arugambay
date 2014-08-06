@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.ICallback;
+import com.gwt.wizard.client.steps.ConfirmationStep;
+import com.gwt.wizard.client.steps.TransportStep;
 
 public class Wizard extends Composite
 {
@@ -93,6 +95,7 @@ public class Wizard extends Composite
         currentstep = getStep(current);
 
         currentstep.getContent().setVisible(true);
+        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
         updateHeader(current);
     }
 
@@ -189,7 +192,7 @@ public class Wizard extends Composite
     {
         for (WizardStep step : map.keySet())
         {
-            if (map.get(step) == 1)
+            if (step instanceof TransportStep)
             {
                 currentstep = step;
                 currentstep.getContent().setVisible(true);
@@ -197,6 +200,20 @@ public class Wizard extends Composite
                 updateHeader(1);
 
                 mainPanel.setVisible(true);
+                ((TransportStep) step).init(prev, next, cancel);
+
+                break;
+            }
+            if (step instanceof ConfirmationStep)
+            {
+                currentstep = step;
+                currentstep.getContent().setVisible(true);
+
+                updateHeader(1);
+
+                mainPanel.setVisible(true);
+                ((ConfirmationStep) step).init(prev, next, cancel);
+
                 break;
             }
         }

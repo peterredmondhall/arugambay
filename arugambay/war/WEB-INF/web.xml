@@ -18,10 +18,6 @@
     <servlet-name>BookingServiceServlet</servlet-name>
     <url-pattern>/gwt_dashboard/service</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>BookingServiceServlet</servlet-name>
-    <url-pattern>/gwt_partyroute/service</url-pattern>
-  </servlet-mapping> 
 
   <servlet>
     <servlet-name>LoginServlet</servlet-name>

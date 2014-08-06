@@ -84,6 +84,7 @@ public class GwtWizard implements EntryPoint
             wizard.add(transportStep);
             wizard.add(organizerStep);
             wizard.add(summaryStep);
+
         }
         else
         {

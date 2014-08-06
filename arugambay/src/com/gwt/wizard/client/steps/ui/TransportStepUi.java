@@ -36,52 +36,8 @@ public class TransportStepUi extends Composite implements Showable
 
     @UiField
     HTMLPanel mainPanel;
-//    @UiField
-//    DateBox dateBox;
-//    @UiField
-//    ListBox forwardPickupBox;
-//    @UiField
-//    ListBox forwardTimeBox;
-//    @UiField
-//    ListBox returnTimeBox;
-//    @UiField
-//    ListBox returnPickupBox;
-//
-//    @UiField
-//    RadioButton rb2, rb1;
-//
-//    @UiField
-//    Label errMsg, labelReturnPickup, labelReturnTime;
-//
-//    boolean withReturn = true;
-//
-//    @UiField
-//    ListBox totalPassengersBox,
-//            passengersWithRollatorBox,
-//            passengersWithFoldableWheelchairBox,
-//            passengersWithheelchairTransportBox;
 
     Map<PassengerDetail, ListBox> listBoxMap = new HashMap<PassengerDetail, ListBox>();
-
-//    public ListBox getForwardPickupBox()
-//    {
-//        return forwardPickupBox;
-//    }
-//
-//    public ListBox getForwardTimeBox()
-//    {
-//        return forwardTimeBox;
-//    }
-//
-//    public ListBox getReturnTimeBox()
-//    {
-//        return returnTimeBox;
-//    }
-//
-//    public ListBox getReturnPickupBox()
-//    {
-//        return returnPickupBox;
-//    }
 
     public TransportStepUi()
     {
@@ -89,100 +45,16 @@ public class TransportStepUi extends Composite implements Showable
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-//        dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy")));
-//        initTimeBox(forwardTimeBox);
-//        initTimeBox(returnTimeBox);
-//
-//        bookingService.getPlaceList(new AsyncCallback<List<String>>()
-//        {
-//
-//            @Override
-//            public void onSuccess(List<String> result)
-//            {
-//                if (result != null && result.size() > 0)
-//                {
-//                    for (String place : result)
-//                    {
-//                        forwardPickupBox.addItem(place);
-//                        returnPickupBox.addItem(place);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable caught)
-//            {
-//                Window.alert("Failed to fetch places from server!");
-//            }
-//        });
-//
-//        listBoxMap.put(PassengerDetail.TOT_PASS, totalPassengersBox);
-//        listBoxMap.put(PassengerDetail.PASS_WITH_ROLLATOR, passengersWithRollatorBox);
-//        listBoxMap.put(PassengerDetail.PASS_WITH_FOLDABLE, passengersWithFoldableWheelchairBox);
-//        listBoxMap.put(PassengerDetail.PASS_REQ_WHEELCHAIR, passengersWithheelchairTransportBox);
-//
-//        for (PassengerDetail pdDetail : PassengerDetail.values())
-//        {
-//            initPaxBox(listBoxMap.get(pdDetail));
-//            listBoxMap.get(pdDetail).setWidth(WIDTH);
-//        }
-//        forwardPickupBox.setWidth(WIDTH);
-//        returnPickupBox.setWidth(WIDTH);
-//        forwardTimeBox.setWidth(WIDTH);
-//        returnTimeBox.setWidth(WIDTH);
-//        dateBox.setWidth("110px");
-//        ClickHandler handler = new ClickHandler()
-//        {
-//
-//            @Override
-//            public void onClick(ClickEvent event)
-//            {
-//                withReturn = !withReturn;
-//                update();
-//            }
-//        };
-//        rb1.addClickHandler(handler);
-//        rb2.addClickHandler(handler);
-//        update();
-//    }
-//
-//    private void update()
-//    {
-//        rb1.setValue(withReturn);
-//        rb2.setValue(!withReturn);
-//        labelReturnPickup.setVisible(withReturn);
-//        labelReturnTime.setVisible(withReturn);
-//        returnPickupBox.setVisible(withReturn);
-//        returnTimeBox.setVisible(withReturn);
-//
-//    }
-
-//    public boolean getReturn()
-//    {
-//        return withReturn;
-//    }
-//
-//    public DateBox getDateBox()
-//    {
-//        return dateBox;
-//    }
-
     public Integer getPassengerDetail(PassengerDetail passengerDetail)
     {
         String selection = listBoxMap.get(passengerDetail).getItemText(listBoxMap.get(passengerDetail).getSelectedIndex());
         return Integer.parseInt(selection);
     }
 
-//    public Label getErrMsg()
-//    {
-//        return errMsg;
-//    }
-
     @Override
     public void setVisible(boolean visible)
     {
         mainPanel.setVisible(visible);
-        // mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
     }
 
     @Override
@@ -202,6 +74,8 @@ public class TransportStepUi extends Composite implements Showable
     {
         next.setVisible(true);
         prev.setEnabled(false);
+        cancel.setText("Cancel");
+
     }
 
 }
