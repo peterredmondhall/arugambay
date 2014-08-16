@@ -52,4 +52,10 @@ public class ConfirmationStep implements WizardStep
     {
         ui.show(true, prev, next, cancel);
     }
+
+    public void setBookingInfo(BookingInfo bookingInfo)
+    {
+        ui.setBookingInfo(bookingInfo);
+
+    }
 }

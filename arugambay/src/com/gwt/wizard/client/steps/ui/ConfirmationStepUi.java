@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.core.Showable;
+import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ConfirmationStepUi extends Composite implements Showable
@@ -30,16 +31,6 @@ public class ConfirmationStepUi extends Composite implements Showable
     {
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
-        if (bookingInfo != null)
-        {
-            label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
-            labelConfirmationEmail.setText(bookingInfo.getEmail());
-            label2.setText("Please print it out and present it to the driver on arrival.");
-        }
-        else
-        {
-            label1.setText("An error has occured processing you order. Please contact arugamsurf@gmail.com");
-        }
     }
 
     @Override
@@ -49,7 +40,8 @@ public class ConfirmationStepUi extends Composite implements Showable
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
         next.setVisible(false);
         prev.setVisible(false);
-        cancel.setEnabled(true);
+        cancel.setVisible(false);
+
         cancel.setText("New Order");
     }
 
@@ -63,5 +55,28 @@ public class ConfirmationStepUi extends Composite implements Showable
     public void setWidth(String width)
     {
         super.setWidth(width);
+    }
+
+    public void setBookingInfo(BookingInfo bookingInfo)
+    {
+        if (bookingInfo != null)
+        {
+            if (OrderStatus.PAID.equals(bookingInfo.getStatus()))
+            {
+                label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
+                label2.setText("Please print it out and present it to the driver on arrival.");
+            }
+            else
+            {
+                label1.setText("The payment was not successful and no order has been created");
+                label2.setText("Please contact arugamsurf@gmail.com if you think this is a problem.");
+            }
+        }
+        else
+        {
+            label1.setText("An error has occured processing you order. Please contact arugamsurf@gmail.com");
+        }
+
+        labelConfirmationEmail.setText(bookingInfo.getEmail());
     }
 }

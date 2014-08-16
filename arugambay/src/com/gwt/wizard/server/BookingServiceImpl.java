@@ -1,7 +1,6 @@
 package com.gwt.wizard.server;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,13 +9,16 @@ import javax.persistence.EntityManager;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.server.entity.Booking;
+import com.gwt.wizard.server.entity.Config;
 import com.gwt.wizard.server.entity.Place;
+import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.entity.User;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.PlaceInfo;
+import com.gwt.wizard.shared.model.ProfilInfo;
 
 /**
  * The server-side implementation of the RPC service.
@@ -153,16 +155,16 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public BookingInfo getBooking(String tx) throws IllegalArgumentException
     {
-        OrderStatus hasPaid = new PaymentChecker(tx).hasClientPaid();
+        Profil profil = getProfil();
+        OrderStatus hasPaid = new PaymentChecker(tx, profil).hasClientPaid();
 
         EntityManager em = getEntityManager();
         BookingInfo bookingInfo = null;
         try
         {
-            String query = "select t from Booking t where client='" + getClient() + "'";
+            String query = "select t from Booking t where client='" + getClient() + "' order by instanziated desc";
             @SuppressWarnings("unchecked")
             List<Booking> resultList = em.createQuery(query).getResultList();
-            Collections.sort(resultList);
             if (resultList.size() > 0)
             {
                 Booking booking = resultList.get(0);
@@ -178,6 +180,65 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             em.close();
         }
         return bookingInfo;
+    }
+
+    @Override
+    public ProfilInfo getPaypalProfil() throws IllegalArgumentException
+    {
+        ProfilInfo profilInfo = getProfil().getInfo();
+        logger.info(profilInfo.toString());
+        return profilInfo;
+
+    }
+
+    private Profil getProfil()
+    {
+        EntityManager em = getEntityManager();
+        Profil profil = null;
+        try
+        {
+            Config config = null;
+            List<Config> configList = em.createQuery("select t from Config t").getResultList();
+            if (configList.size() == 0)
+            {
+                em.getTransaction().begin();
+                ;
+                config = new Config();
+                config.setProfil("test");
+                em.persist(config);
+                em.getTransaction().commit();
+            }
+            else
+            {
+                config = configList.get(0);
+            }
+            logger.info("Using config profil:" + config.getProfil());
+
+            List<Profil> profilList = em.createQuery("select t from Profil t where name ='" + config.getProfil() + "'").getResultList();
+            if (profilList.size() == 0)
+            {
+                em.getTransaction().begin();
+                ;
+                profil = new Profil();
+                profil.setPaypalAccount(PaymentChecker.TEST_ACCT);
+                profil.setPaypalAT(PaymentChecker.TEST_AT);
+                profil.setPaypalURL(PaymentChecker.TEST_PAYPAL_URL);
+                profil.setTest(true);
+                profil.setName("test");
+                em.persist(profil);
+                em.getTransaction().commit();
+
+            }
+            else
+            {
+                profil = profilList.get(0);
+            }
+        }
+        finally
+        {
+            em.close();
+        }
+        return profil;
     }
 
     private String getClient()

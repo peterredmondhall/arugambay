@@ -31,6 +31,8 @@ public class Mailer
         html = BookingUtil.toEmailHtml(bookingInfo, new File("template/confirmation.html"));
         String email = bookingInfo.getEmail();
         send(emailMsg, email, html);
+        send(emailMsg, "hall@hall-services.de", html);
+        send(emailMsg, "arugamsurf@gmail.com", html);
     }
 
     private static void send(String msgBody, String toEmail, String htmlBody)
@@ -43,12 +45,10 @@ public class Mailer
         try
         {
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("peterredmondhall@gmail.com", "silvermobilityservices.com Admin"));
+            msg.setFrom(new InternetAddress("peterredmondhall@gmail.com", "taxisurf"));
             msg.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress(toEmail, "Silver Mobility"));
-            msg.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress("hall@silvermobilityservices.com", "Transport Order"));
-            msg.setSubject("Silver Mobility");
+                    new InternetAddress(toEmail, "Arugam Taxi"));
+            msg.setSubject("Arugam Taxi");
             msg.setText(msgBody);
 
             // html

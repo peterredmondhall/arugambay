@@ -58,9 +58,15 @@ public class ContactStep implements WizardStep
             return false;
         }
         ui.setErrorMsg("", ErrorMsg.FLIGHTNO);
-        if (ui.getFlightNo() == null)
+        if (ui.getFlightNo() == null || ui.getFlightNo().trim().length() == 0)
         {
             ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.FLIGHTNO);
+            return false;
+        }
+        ui.setErrorMsg("", ErrorMsg.ARRIVAL);
+        if (ui.getLandingTime() == null || ui.getLandingTime().trim().length() == 0)
+        {
+            ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.ARRIVAL);
             return false;
         }
         ui.setErrorMsg("", ErrorMsg.FIRST_NAME);

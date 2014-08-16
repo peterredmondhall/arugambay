@@ -89,6 +89,8 @@ public class GwtWizard implements EntryPoint
         else
         {
             wizard.add(confirmationStep);
+            confirmationStep.setBookingInfo(bf);
+
         }
 
         wizard.setHeight("500px");

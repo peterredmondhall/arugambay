@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.PlaceInfo;
+import com.gwt.wizard.shared.model.ProfilInfo;
 
 /**
  * The async counterpart of <code>GreetingService</code>.
@@ -25,5 +26,7 @@ public interface BookingServiceAsync
     void getBooking(String ref, AsyncCallback<BookingInfo> callback);
 
     void getUser(AsyncCallback<Boolean> callback);
+
+    void getPaypalProfil(AsyncCallback<ProfilInfo> callback);
 
 }

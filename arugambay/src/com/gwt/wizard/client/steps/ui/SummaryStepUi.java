@@ -36,6 +36,7 @@ public class SummaryStepUi extends Composite implements Showable
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         this.bookingInfo = bookingInfo;
+        paypal.setUrl();
     }
 
     @Override

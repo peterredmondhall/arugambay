@@ -40,7 +40,10 @@
 				<g:customCell styleName="widgetDiv">
 					<g:TextBox ui:field="flightLandingTime"/>
 				</g:customCell>
-			</g:row>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="arrivalErrorMsg"></g:Label>
+				</g:customCell>
+							</g:row>
 			
 			<!-- No. passengers -->
 			<g:row styleName="optionalHeaderStyle">

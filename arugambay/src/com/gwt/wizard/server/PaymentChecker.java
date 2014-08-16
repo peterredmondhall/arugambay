@@ -12,23 +12,27 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.OrderStatus;
 
 public class PaymentChecker
 {
 
-    private static final String PAYPAL_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+    public static final String TEST_PAYPAL_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr";
     private static final String CMD = "_notify-synch";
-    private static final String AT = "qI0Plnqj0cSJuH7TKx6FwoU0ZIwispQWQi08zekoCZaJhcbe5YMWwX-1ibS";
+    public static final String TEST_AT = "qI0Plnqj0cSJuH7TKx6FwoU0ZIwispQWQi08zekoCZaJhcbe5YMWwX-1ibS";
+    public static final String TEST_ACCT = "hall-facilitator@hall-services.de";
 
     private final Map<String, String> map;
+    private final Profil profil;
 
-    public PaymentChecker(String tx)
+    public PaymentChecker(String tx, Profil profil)
     {
+        this.profil = profil;
         map = new HashMap<String, String>();
         map.put("cmd", CMD);
         map.put("tx", tx); // "6LH559390U430214T"
-        map.put("at", AT);
+        map.put("at", profil.getPaypalAT());
     }
 
     public OrderStatus hasClientPaid()
@@ -40,7 +44,7 @@ public class PaymentChecker
         try
         {
             // create the HttpURLConnection
-            url = new URL(PAYPAL_URL);
+            url = new URL(profil.getPaypalURL());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
             connection.setDoOutput(true);

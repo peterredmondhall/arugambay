@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.PlaceInfo;
+import com.gwt.wizard.shared.model.ProfilInfo;
 
 /**
  * The client-side stub for the RPC service.
@@ -24,5 +25,7 @@ public interface BookingService extends RemoteService
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
     BookingInfo getBooking(String ref) throws IllegalArgumentException;
+
+    ProfilInfo getPaypalProfil() throws IllegalArgumentException;
 
 }

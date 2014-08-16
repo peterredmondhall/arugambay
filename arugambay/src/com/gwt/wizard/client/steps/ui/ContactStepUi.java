@@ -28,7 +28,8 @@ public class ContactStepUi extends Composite implements Showable
         LAST_NAME,
         FLIGHTNO,
         EMAIL,
-        EMAIL2
+        EMAIL2,
+        ARRIVAL
     };
 
     private static ContactStepUiUiBinder uiBinder = GWT.create(ContactStepUiUiBinder.class);
@@ -47,7 +48,7 @@ public class ContactStepUi extends Composite implements Showable
     ListBox pax, surfboards;
 
     @UiField
-    Label dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg;
+    Label dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg, arrivalErrorMsg;
 
     @UiField
     TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
@@ -143,6 +144,9 @@ public class ContactStepUi extends Composite implements Showable
                 break;
             case FLIGHTNO:
                 flightErrorMsg.setText(msg);
+                break;
+            case ARRIVAL:
+                arrivalErrorMsg.setText(msg);
                 break;
         }
     }
