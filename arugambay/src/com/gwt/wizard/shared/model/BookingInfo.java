@@ -1,19 +1,55 @@
 package com.gwt.wizard.shared.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.gwt.wizard.shared.OrderStatus;
+import com.gwt.wizard.shared.OrderType;
 
 public class BookingInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private String date;
+    private Date date;
 
     private String name;
     private String email;
     private String ref;
+    private String parentRef;
+    private Boolean shareWanted;
+
+    public Boolean getShareWanted()
+    {
+        return shareWanted;
+    }
+
+    public void setShareWanted(Boolean shareWanted)
+    {
+        this.shareWanted = shareWanted;
+    }
+
+    public String getParentRef()
+    {
+        return parentRef;
+    }
+
+    public void setParentRef(String parentRef)
+    {
+        this.parentRef = parentRef;
+    }
+
     private OrderStatus status;
+    private OrderType orderType;
+
+    public OrderType getOrderType()
+    {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType)
+    {
+        this.orderType = orderType;
+    }
 
     public OrderStatus getStatus()
     {
@@ -77,12 +113,12 @@ public class BookingInfo implements Serializable
         this.requirements = requirements;
     }
 
-    public String getDate()
+    public Date getDate()
     {
         return date;
     }
 
-    public void setDate(String date)
+    public void setDate(Date date)
     {
         this.date = date;
     }
@@ -122,4 +158,13 @@ public class BookingInfo implements Serializable
         this.pax = pax;
     }
 
+    public String getOrderNo()
+    {
+        return ref.substring(3, 7);
+    }
+
+    public String getPaidAmt()
+    {
+        return "USD160";
+    }
 }

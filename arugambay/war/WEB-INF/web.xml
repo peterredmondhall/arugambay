@@ -39,6 +39,16 @@
     <url-pattern>/gwt_wizard/uploadPlace</url-pattern>
   </servlet-mapping>
   
+    <servlet>
+    <servlet-name>PDFRendererServlet</servlet-name>
+    <servlet-class>com.gwt.wizard.servlet.PDFRendererServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>PDFRendererServlet</servlet-name>
+    <url-pattern>/orderform</url-pattern>
+  </servlet-mapping>
+  
  
   <!-- Default page to serve -->
   <welcome-file-list>

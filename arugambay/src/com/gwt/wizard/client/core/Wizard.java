@@ -1,5 +1,7 @@
 package com.gwt.wizard.client.core;
 
+import static com.gwt.wizard.client.GwtWizard.CONTACT;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,9 +16,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.ICallback;
 import com.gwt.wizard.client.steps.ConfirmationStep;
+import com.gwt.wizard.client.steps.ShareConfirmationStep;
+import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.TransportStep;
+import com.gwt.wizard.shared.model.BookingInfo;
 
 public class Wizard extends Composite
 {
@@ -28,10 +34,14 @@ public class Wizard extends Composite
     }
 
     private ICallback saveBookingCb;
+    private ICallback getBookingListCb;
+    private ICallback sendShareRequestCb;
+    // private ICallback sendShareAcceptedCb;
 
     private final Map<WizardStep, Integer> map = new HashMap<WizardStep, Integer>();
     private final Map<HTML, Integer> headers = new HashMap<HTML, Integer>();
-    private WizardStep currentstep = null;
+    private WizardStep currentstep;
+    private WizardStep initstep;
 
     @UiField
     HTMLPanel mainPanel;
@@ -90,6 +100,7 @@ public class Wizard extends Composite
     {
         int current = map.get(currentstep);
         currentstep.getContent().setVisible(false);
+        currentstep.onBack();
 
         current -= 1;
         currentstep = getStep(current);
@@ -111,7 +122,7 @@ public class Wizard extends Composite
         int current = map.get(currentstep);
         currentstep.getContent().setVisible(false);
 
-        if (current == 2)
+        if (current == CONTACT)
         {
             if (saveBookingCb != null)
             {
@@ -119,10 +130,41 @@ public class Wizard extends Composite
             }
 
         }
+        if (current == GwtWizard.TRANSPORT)
+        {
+            if (getBookingListCb != null)
+            {
+                getBookingListCb.execute();
+            }
+
+        }
+        if (current == GwtWizard.SUMMARY)
+        {
+            if (sendShareRequestCb != null)
+            {
+                sendShareRequestCb.execute();
+            }
+        }
+        currentstep.onNext();
+
         current += 1;
 
         currentstep = getStep(current);
 
+        currentstep.getContent().setVisible(true);
+        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
+        updateHeader(current);
+
+    }
+
+    public void onNextShare()
+    {
+        int current = map.get(currentstep);
+        currentstep.getContent().setVisible(false);
+
+        ((ShareStep) currentstep).onNextShare();
+        current += 1;
+        currentstep = getStep(current);
         currentstep.getContent().setVisible(true);
         ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
         updateHeader(current);
@@ -216,12 +258,80 @@ public class Wizard extends Composite
 
                 break;
             }
+            if (step instanceof ShareConfirmationStep)
+            {
+                currentstep = step;
+                currentstep.getContent().setVisible(true);
+
+                updateHeader(1);
+
+                mainPanel.setVisible(true);
+                // sendShareAcceptedCb.execute();
+
+                break;
+            }
         }
         return this;
+    }
+
+    public void init()
+    {
+        currentstep = initstep;
+        currentstep.getContent().setVisible(true);
+
+        updateHeader(1);
+
+        mainPanel.setVisible(true);
+        if (initstep instanceof TransportStep)
+        {
+            ((TransportStep) initstep).init(prev, next, cancel);
+        }
+        if (initstep instanceof ConfirmationStep)
+        {
+            ((ConfirmationStep) initstep).init(prev, next, cancel);
+        }
+//        if (initstep instanceof ShareConfirmationStep)
+//        {
+//            sendShareAcceptedCb.execute();
+//        }
+
+    }
+
+    public void setInitialStep(WizardStep initstep)
+    {
+        this.initstep = initstep;
+
     }
 
     public void addSaveBookingCallback(ICallback cb)
     {
         this.saveBookingCb = cb;
     }
+
+    public void addGetBookingListCallback(ICallback cb)
+    {
+        this.getBookingListCb = cb;
+    }
+
+    public void addSendShareRequestCallback(ICallback cb)
+    {
+        this.sendShareRequestCb = cb;
+    }
+
+//    public void addSendShareAcceptedCallback(ICallback cb)
+//    {
+//        this.sendShareAcceptedCb = cb;
+//    }
+
+    public void shareBooking(BookingInfo ref)
+    {
+
+    }
+
+    public void activateShareConfirmationStep(ShareConfirmationStep step)
+    {
+        step.init(prev, next, cancel);
+
+    }
+
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -33,6 +34,7 @@ import com.gwt.wizard.shared.model.BookingInfo;
 public class BookingManagementVeiw extends Composite
 {
     private final BookingServiceAsync service = GWT.create(BookingService.class);
+    private static DateTimeFormat sdf = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     private static BookingManagementVeiwUiBinder uiBinder = GWT.create(BookingManagementVeiwUiBinder.class);
 
@@ -115,7 +117,7 @@ public class BookingManagementVeiw extends Composite
             @Override
             public String getValue(BookingInfo booking)
             {
-                return booking.getDate();
+                return sdf.format(booking.getDate());
             }
         };
 

@@ -8,6 +8,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -18,6 +19,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.gwt.wizard.client.core.Showable;
+import com.gwt.wizard.shared.OrderType;
+import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ContactStepUi extends Composite implements Showable
 {
@@ -48,17 +51,27 @@ public class ContactStepUi extends Composite implements Showable
     ListBox pax, surfboards;
 
     @UiField
-    Label dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg, arrivalErrorMsg;
+    Label dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg, arrivalErrorMsg, labelWanttoShare;
+
+    @UiField
+    Label labelSharing, labelBooking;
 
     @UiField
     TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
 
     @UiField
+    CheckBox checkboxWanttoShare;
+
+    @UiField
     TextArea requirementsBox;
 
-    public ContactStepUi()
+    BookingInfo bookingInfo;
+
+    public ContactStepUi(BookingInfo bookingInfo)
     {
         initWidget(uiBinder.createAndBindUi(this));
+        this.bookingInfo = bookingInfo;
+
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         for (int i = 1; i < 20; i++)
         {
@@ -66,6 +79,7 @@ public class ContactStepUi extends Composite implements Showable
             surfboards.addItem("" + i);
         }
         dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy")));
+        checkboxWanttoShare.setValue(true);
     }
 
     public Date getDate()
@@ -111,6 +125,11 @@ public class ContactStepUi extends Composite implements Showable
     public String getFlightNo()
     {
         return flightNo.getValue();
+    }
+
+    public boolean getWantToShare()
+    {
+        return checkboxWanttoShare.getValue();
     }
 
     public String getRequirements()
@@ -160,6 +179,18 @@ public class ContactStepUi extends Composite implements Showable
         next.setVisible(true);
         prev.setEnabled(true);
 
+        boolean sharing = bookingInfo.getOrderType() == OrderType.SHARE;
+
+        checkboxWanttoShare.setVisible(!sharing);
+        labelWanttoShare.setVisible(!sharing);
+
+        labelBooking.setVisible(!sharing);
+        labelSharing.setVisible(sharing);
+        dateBox.setEnabled(!sharing);
+        if (sharing)
+        {
+            dateBox.setValue(bookingInfo.getDate());
+        }
     }
 
     @Override
@@ -173,4 +204,5 @@ public class ContactStepUi extends Composite implements Showable
     {
         super.setWidth(width);
     }
+
 }

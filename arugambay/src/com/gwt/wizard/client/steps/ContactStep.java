@@ -2,7 +2,6 @@ package com.gwt.wizard.client.steps;
 
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Composite;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.ContactStepUi;
@@ -11,21 +10,20 @@ import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ContactStep implements WizardStep
 {
-    private static DateTimeFormat sdf = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     private final ContactStepUi ui;
     private final BookingInfo bookingInfo;
 
     public ContactStep(BookingInfo bookingInfo)
     {
-        ui = new ContactStepUi();
+        ui = new ContactStepUi(bookingInfo);
         this.bookingInfo = bookingInfo;
     }
 
     @Override
     public String getCaption()
     {
-        return MESSAGES.secondPage();
+        return "Contact";
     }
 
     @Override
@@ -106,7 +104,7 @@ public class ContactStep implements WizardStep
             return false;
         }
 
-        bookingInfo.setDate(sdf.format(ui.getDate()));
+        bookingInfo.setDate(ui.getDate());
         bookingInfo.setLandingTime(ui.getLandingTime());
         bookingInfo.setName(ui.getFirstName() + "  " + ui.getLastName());
         bookingInfo.setEmail(ui.getEmail());
@@ -114,6 +112,7 @@ public class ContactStep implements WizardStep
         bookingInfo.setFlightNo(ui.getFlightNo());
         bookingInfo.setPax(Integer.parseInt(ui.getPax()));
         bookingInfo.setSurfboards(Integer.parseInt(ui.getSurfboards()));
+        bookingInfo.setShareWanted(ui.getWantToShare());
         bookingInfo.setRequirements(ui.getRequirements());
 
         return true;

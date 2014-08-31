@@ -5,13 +5,14 @@ import com.google.gwt.user.client.ui.Composite;
 public interface WizardStep
 {
 
-    public String getCaption();
+    String getCaption();
 
-    public Composite getContent();
+    Composite getContent();
 
-    public Boolean onNext();
+    Boolean onNext();
 
-    public Boolean onBack();
+    Boolean onBack();
 
-    public void clear();
+    void clear();
+
 }

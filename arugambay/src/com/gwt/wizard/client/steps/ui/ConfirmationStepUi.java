@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.core.Showable;
 import com.gwt.wizard.shared.OrderStatus;
+import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ConfirmationStepUi extends Composite implements Showable
@@ -59,17 +60,27 @@ public class ConfirmationStepUi extends Composite implements Showable
 
     public void setBookingInfo(BookingInfo bookingInfo)
     {
+
         if (bookingInfo != null)
         {
-            if (OrderStatus.PAID.equals(bookingInfo.getStatus()))
+            if (OrderType.SHARE.equals(bookingInfo.getOrderType()))
             {
-                label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
-                label2.setText("Please print it out and present it to the driver on arrival.");
+                label1.setText("Thank you for your share request");
+                label2.setText("A message has been sent to the person who booked the taxi.");
+
             }
             else
             {
-                label1.setText("The payment was not successful and no order has been created");
-                label2.setText("Please contact arugamsurf@gmail.com if you think this is a problem.");
+                if (OrderStatus.PAID.equals(bookingInfo.getStatus()))
+                {
+                    label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
+                    label2.setText("Please print it out and present it to the driver on arrival.");
+                }
+                else
+                {
+                    label1.setText("The payment was not successful and no order has been created");
+                    label2.setText("Please contact arugamsurf@gmail.com if you think this is a problem.");
+                }
             }
         }
         else

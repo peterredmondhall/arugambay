@@ -6,4 +6,5 @@ gaeHrdEnabled=true
 gaeLaunchAppInBrowser=true
 googleCloudSqlEnabled=false
 localDevMySqlEnabled=true
-ormEnhancementInclusions=src/|test/|com.gwt.wizard.server.entity.*
+ormEnhancementInclusions=com.gwt.wizard.server.entity.*|src/com/gwt/wizard/server/
+validationExclusions=test/com/gwt/wizard/server/util/PdfUtilTest.java

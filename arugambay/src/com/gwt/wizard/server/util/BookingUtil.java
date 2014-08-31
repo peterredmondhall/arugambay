@@ -7,12 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import com.google.appengine.labs.repackaged.com.google.common.base.Pair;
+import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class BookingUtil
 {
-
+    // FIXME
     private static final String DATE = "Date:";
     private static final String FLIGHTNO = "Flight No:";
     private static final String LANDING_TIME = "Landing Time:";
@@ -21,6 +26,7 @@ public class BookingUtil
     private static final String NUM_PAX = "Passengers:";
     private static final String NUM_SURFBOARDS = "Surfboards:";
     private static final String REQS = "Other requirements:";
+    private static DateTimeFormatter sdf = DateTimeFormat.forPattern("dd.MM.yyyy");
 
     public static String toEmailText(BookingInfo bookingInfo)
     {
@@ -33,7 +39,7 @@ public class BookingUtil
     public static List<Pair<String, String>> toPairList(BookingInfo bookingInfo)
     {
         List<Pair<String, String>> list = new ArrayList<Pair<String, String>>();
-        list.add(new Pair(DATE, bookingInfo.getDate()));
+        list.add(new Pair(DATE, sdf.print(new DateTime(bookingInfo.getDate()))));
         list.add(new Pair(FLIGHTNO, bookingInfo.getFlightNo()));
         list.add(new Pair(LANDING_TIME, bookingInfo.getLandingTime()));
         list.add(new Pair(NAME, bookingInfo.getName()));
@@ -54,17 +60,24 @@ public class BookingUtil
         }
 
         String msg = sb.toString();
-        System.out.println(msg);
         return msg;
     }
 
-    public static String toEmailHtml(BookingInfo bookingInfo, File file)
+    public static String toConfirmationRequestHtml(BookingInfo bookingInfo, File file, Profil profil)
     {
-        String html = readFile(file);
-        return toEmailHtml(bookingInfo, html);
+        String html = getTemplate(file);
+        html = toConfirmationEmailHtml(bookingInfo, html);
+        html = html.replace("AGREE_SHARE_LINK", profil.getTaxisurfUrl() + "?share=" + bookingInfo.getRef());
+        return html;
     }
 
-    public static String toEmailHtml(BookingInfo bookingInfo, String html)
+    public static String toConfirmationEmailHtml(BookingInfo bookingInfo, File file)
+    {
+        String html = getTemplate(file);
+        return toConfirmationEmailHtml(bookingInfo, html);
+    }
+
+    public static String toConfirmationEmailHtml(BookingInfo bookingInfo, String html)
     {
         String insertion = "";
         for (Pair<String, String> pair : toPairList(bookingInfo))
@@ -78,7 +91,7 @@ public class BookingUtil
         return html.replace("<!-- INSERTION -->", insertion);
     }
 
-    public static String readFile(File file)
+    public static String getTemplate(File file)
     {
 
         String line = null;

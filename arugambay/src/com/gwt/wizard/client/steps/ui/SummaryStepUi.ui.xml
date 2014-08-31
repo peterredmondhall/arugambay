@@ -13,7 +13,7 @@
 		<g:Label>Here is a summary of your order.</g:Label>
 		<g:Grid>
 			<!-- Datum -->
-			<g:row styleName="optionalHeaderStyle">
+			<g:row >
 				<g:customCell styleName="labelDiv">
 					<g:Label>Date of arrival</g:Label>
 				</g:customCell>
@@ -22,7 +22,7 @@
 				</g:customCell>
 			</g:row>
 			<!-- Hinfahrt von -->
-			<g:row styleName="optionalHeaderStyle">
+			<g:row >
 				<g:customCell styleName="labelDiv">
 					<g:Label>Flight no.</g:Label>
 				</g:customCell>
@@ -30,7 +30,7 @@
 					<g:Label ui:field="labelFlightNo" />
 				</g:customCell>
 			</g:row>
-			<g:row styleName="optionalHeaderStyle">
+			<g:row >
 				<g:customCell styleName="labelDiv">
 					<g:Label>Time of landing</g:Label>
 				</g:customCell>
@@ -40,7 +40,7 @@
 			</g:row>
 						<!-- Abholung am von -->
 			<!-- Rückfahr von -->
-			<g:row  styleName="optionalHeaderStyle">
+			<g:row  >
 				<g:customCell styleName="labelDiv">
 					<g:Label ui:field="labelRPP">No. of passengers</g:Label>
 				</g:customCell>
@@ -49,7 +49,7 @@
 				</g:customCell>
 			</g:row>
 			<!-- Abholung am von -->
-			<g:row  styleName="optionalHeaderStyle">
+			<g:row  >
 				<g:customCell styleName="labelDiv">
 					<g:Label ui:field="labelRPT">No. of surfboards</g:Label>
 				</g:customCell>
@@ -58,7 +58,7 @@
 				</g:customCell>
 			</g:row>
 			<!-- Total no. passengers -->
-			<g:row styleName="optionalHeaderStyle">
+			<g:row >
 				<g:customCell styleName="labelDiv">
 					<g:Label>Name</g:Label>
 				</g:customCell>
@@ -66,7 +66,15 @@
 					<g:Label ui:field="labelName" />
 				</g:customCell>
 			</g:row>
-			<g:row styleName="optionalHeaderStyle">
+			<g:row >
+				<g:customCell styleName="labelDiv">
+					<g:Label>Interested in sharing</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label ui:field="labelInterestedSharing" />
+				</g:customCell>
+			</g:row>
+						<g:row >
 				<g:customCell styleName="labelDiv">
 					<g:Label>Email</g:Label>
 				</g:customCell>
@@ -74,32 +82,31 @@
 					<g:Label ui:field="labelEmail" />
 				</g:customCell>
 			</g:row>
-			<g:row styleName="optionalHeaderStyle">
+			<g:row >
 				<g:customCell styleName="labelDiv">
 					<g:Label>Other requirements:</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:Label ui:field="labelRequirements" />
 				</g:customCell>
-			</g:row>
-						<g:row styleName="optionalHeaderStyle">
+			</g:row >
+			<g:row>
 				<g:customCell styleName="labelDiv">
-					<g:Label>Price</g:Label>
+					<g:Label ui:field="pay1">Price</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:Label ui:field="labelPrice" />
 				</g:customCell>
-			</g:row>
-						<g:row styleName="optionalHeaderStyle">
+			</g:row >
+				<g:row>
 				<g:customCell styleName="labelDiv">
-					<g:Label>Pay now with Paypal</g:Label>
+					<g:Label ui:field="pay2">Pay now with Paypal</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<my:Paypal ui:field="paypal"/>
 				</g:customCell>
 			</g:row>
-									
-
+													
 		</g:Grid>
 
 	</g:HTMLPanel>

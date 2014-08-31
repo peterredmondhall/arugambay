@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.OrderStatus;
+import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 @Entity
@@ -19,7 +20,7 @@ public class Booking implements Serializable, Comparable<Booking>
     public Booking()
     {
         status = OrderStatus.BOOKED;
-        ref = "TODO";
+        orderType = OrderType.BOOKING;
         instanziated = new Date();
     }
 
@@ -28,13 +29,18 @@ public class Booking implements Serializable, Comparable<Booking>
         return ref;
     }
 
+    public void setRef(String ref)
+    {
+        this.ref = ref;
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
 
-    private String date;
+    private Date date;
     private String name;
     private String email;
     private String flightNo;
@@ -44,9 +50,43 @@ public class Booking implements Serializable, Comparable<Booking>
     private OrderStatus status;
     private String requirements;
     private String tx;
-    private final String ref;
+    private String ref;
     private String client;
+    private Boolean shareWanted;
+
+    public Boolean getShareWanted()
+    {
+        return shareWanted;
+    }
+
+    public void setShareWanted(Boolean shareWanted)
+    {
+        this.shareWanted = shareWanted;
+    }
+
+    public String getParentRef()
+    {
+        return parentRef;
+    }
+
+    public void setParentRef(String parentRef)
+    {
+        this.parentRef = parentRef;
+    }
+
     private Date instanziated;
+    private OrderType orderType;
+    private String parentRef;
+
+    public OrderType getOrderType()
+    {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType)
+    {
+        this.orderType = orderType;
+    }
 
     public Date getInstanziated()
     {
@@ -128,12 +168,12 @@ public class Booking implements Serializable, Comparable<Booking>
         this.requirements = requirements;
     }
 
-    public String getDate()
+    public Date getDate()
     {
         return date;
     }
 
-    public void setDate(String date)
+    public void setDate(Date date)
     {
         this.date = date;
     }
@@ -160,6 +200,9 @@ public class Booking implements Serializable, Comparable<Booking>
         booking.setSurfboards(bookingInfo.getSurfboards());
         booking.setRequirements(bookingInfo.getRequirements());
         booking.setClient(client);
+        booking.setShareWanted(bookingInfo.getShareWanted());
+        booking.setParentRef(bookingInfo.getParentRef());
+        booking.setOrderType(bookingInfo.getOrderType() != null ? bookingInfo.getOrderType() : OrderType.BOOKING);
 
         return booking;
     }
@@ -176,7 +219,10 @@ public class Booking implements Serializable, Comparable<Booking>
         bookingInfo.setSurfboards(getSurfboards());
         bookingInfo.setRequirements(getRequirements());
         bookingInfo.setRef(getRef());
+        bookingInfo.setParentRef(getParentRef());
         bookingInfo.setStatus(getStatus());
+        bookingInfo.setOrderType(getOrderType());
+        bookingInfo.setShareWanted(getShareWanted());
         return bookingInfo;
     }
 
@@ -208,5 +254,4 @@ public class Booking implements Serializable, Comparable<Booking>
         // other and 0 if they are supposed to be equal
         return this.instanziated.after(instanziated) ? -1 : 1;
     }
-
 }

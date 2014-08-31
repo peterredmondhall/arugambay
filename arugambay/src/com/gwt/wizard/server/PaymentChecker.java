@@ -64,7 +64,6 @@ public class PaymentChecker
                 }
                 content += key + "=" + URLEncoder.encode(map.get(key), "UTF-8");
             }
-            System.out.println(content);
             out.writeBytes(content);
 
             connection.setReadTimeout(60 * 1000);

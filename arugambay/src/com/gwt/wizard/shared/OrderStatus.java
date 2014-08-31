@@ -4,5 +4,6 @@ public enum OrderStatus
 {
     BOOKED,
     PAID,
-    FAILED
+    FAILED,
+    SHARE_ACCEPTED
 }
