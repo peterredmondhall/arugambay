@@ -1,0 +1,58 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+
+	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
+	<ui:style>
+		.title { font-weight:bold; color: #62ba37; margin-bottom:
+		10px; font-size:
+		30px;}
+		.desc { font-weight:bold; margin-bottom: 10px;
+		font-size: 15px;}
+		.image { margin-right: 10px;}
+	</ui:style>
+
+	<g:HTMLPanel ui:field="mainPanel">
+	<g:VerticalPanel ui:field="sharePanel">
+		<g:Label>
+			We believe sharing can work well on this
+			route. Follow the steps below to find somebody to share. That person
+			has already paid in
+			full for the transport so work out the financial
+			details directly once
+			you have made contact.
+		</g:Label>
+		<g:ScrollPanel ui:field="scrollPanel">
+
+		</g:ScrollPanel>
+		<g:Label>
+			Here are some paid-for trips who would accept a share. Have a look to see
+			if there is anything suitable and click on the entry. The person who
+			has paid for the trip will be notified with your contact details and
+			will contact you directly.
+		</g:Label>
+		<g:Label>
+			Cant' find anything suitable?
+		</g:Label>
+		<g:Label >
+			No problem. Click "Next" below and create and pay for your own
+			booking and, if you choose,
+			your booking will appear here so that others can join you.
+		</g:Label>
+
+	</g:VerticalPanel>
+
+	<g:VerticalPanel ui:field="noSharePanel">
+		<g:Label>
+			At the moment there
+			are no sharing opportunities.
+		</g:Label>
+		<g:Label >
+			No problem. Click "Next" below and create and pay for your own
+			booking and, if you choose,
+			your booking will appear here so that others can join you.
+		</g:Label>
+
+	</g:VerticalPanel>
+</g:HTMLPanel>
+</ui:UiBinder> 
