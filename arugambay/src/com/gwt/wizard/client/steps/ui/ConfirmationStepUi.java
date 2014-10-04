@@ -28,7 +28,7 @@ public class ConfirmationStepUi extends Composite implements Showable
     @UiField
     Label labelConfirmationEmail, label1, label2;
 
-    public ConfirmationStepUi(BookingInfo bookingInfo)
+    public ConfirmationStepUi()
     {
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);

@@ -18,15 +18,15 @@ import com.google.common.collect.Lists;
 import com.gwt.wizard.client.util.BookingIdentifierGenerator;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Config;
-import com.gwt.wizard.server.entity.Place;
 import com.gwt.wizard.server.entity.Profil;
+import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.entity.Stat;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
-import com.gwt.wizard.shared.model.PlaceInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
 /**
@@ -69,14 +69,14 @@ public class BookingServiceManager
         return EMF.get().createEntityManager();
     }
 
-    public Boolean deletePlace(Long id) throws IllegalArgumentException
+    public Boolean deleteRoute(Long id) throws IllegalArgumentException
     {
         try
         {
             EntityManager em = getEntityManager();
             try
             {
-                Place place = em.find(Place.class, id);
+                Route place = em.find(Route.class, id);
                 em.remove(place);
             }
             finally
@@ -92,18 +92,19 @@ public class BookingServiceManager
         return false;
     }
 
-    public Boolean editPlace(Long id, PlaceInfo placeInfo) throws IllegalArgumentException
+    public Boolean editRoute(Long id, RouteInfo routeInfo) throws IllegalArgumentException
     {
         try
         {
             EntityManager em = getEntityManager();
             try
             {
-                Place place = em.find(Place.class, id);
-                place.setCity(placeInfo.getCity());
-                place.setPickup(placeInfo.getPickup());
-                place.setPlace(placeInfo.getPlace());
-                em.persist(place);
+                Route route = em.find(Route.class, id);
+                route.setStart(routeInfo.getStart());
+                route.setEnd(routeInfo.getEnd());
+                route.setPrice(routeInfo.getPrice());
+                route.setPickupType(routeInfo.getPickupType());
+                em.persist(route);
             }
             finally
             {
@@ -169,6 +170,31 @@ public class BookingServiceManager
         return bookingInfo;
     }
 
+    public BookingInfo setPayed(Profil profil, BookingInfo bi, OrderStatus orderStatus) throws IllegalArgumentException
+    {
+
+        EntityManager em = getEntityManager();
+        BookingInfo bookingInfo = null;
+        try
+        {
+            String query = "select t from Booking t where ref='" + bi.getRef() + "'";
+            Booking booking = (Booking) em.createQuery(query).getResultList().get(0);
+
+            booking.setStatus(orderStatus);
+            em.getTransaction().begin();
+            em.persist(booking);
+            em.getTransaction().commit();
+
+            em.detach(booking);
+            bookingInfo = booking.getBookingInfo();
+        }
+        finally
+        {
+            em.close();
+        }
+        return bookingInfo;
+    }
+
     public ProfilInfo getPaypalProfil() throws IllegalArgumentException
     {
         ProfilInfo profilInfo = getProfil().getInfo();
@@ -207,9 +233,9 @@ public class BookingServiceManager
                 em.getTransaction().begin();
                 ;
                 profil = new Profil();
-                profil.setPaypalAccount(PaymentChecker.TEST_ACCT);
-                profil.setPaypalAT(PaymentChecker.TEST_AT);
-                profil.setPaypalURL(PaymentChecker.TEST_PAYPAL_URL);
+                profil.setPaypalAccount(PaypalPaymentChecker.TEST_ACCT);
+                profil.setPaypalAT(PaypalPaymentChecker.TEST_AT);
+                profil.setPaypalURL(PaypalPaymentChecker.TEST_PAYPAL_URL);
                 profil.setTest(true);
                 profil.setName("test");
                 profil.setPrice("0.01");

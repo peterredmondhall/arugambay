@@ -59,7 +59,7 @@ public class DashboardVeiw extends Composite
             public void onClick(ClickEvent event)
             {
                 displayContainer.clear();
-                displayContainer.add(new PlacesManagementVeiw());
+                displayContainer.add(new RouteManagementVeiw());
             }
         });
         displayContainer.add(new BookingManagementVeiw());

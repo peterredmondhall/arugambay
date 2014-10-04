@@ -23,6 +23,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.core.Showable;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
@@ -46,17 +47,15 @@ public class ShareStepUi extends Composite implements Showable
     @UiField
     ScrollPanel scrollPanel;
 
-    private final BookingInfo bookingInfo;
     private CellTable<BookingInfo> cellTable;
     private List<BookingInfo> bookingList;
 
     private Map<String, BookingInfo> shareMap;
     private GwtWizard gwtWizard;
 
-    public ShareStepUi(BookingInfo bookingInfo)
+    public ShareStepUi()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        this.bookingInfo = bookingInfo;
         sharePanel.setVisible(false);
         noSharePanel.setVisible(false);
     }
@@ -132,13 +131,13 @@ public class ShareStepUi extends Composite implements Showable
                 {
                     BookingInfo bookingToShare = shareMap.get(selected.getRef());
 
-                    bookingInfo.setDate(bookingToShare.getDate());
-                    bookingInfo.setFlightNo(bookingToShare.getFlightNo());
-                    bookingInfo.setLandingTime(bookingToShare.getLandingTime());
-                    bookingInfo.setOrderType(OrderType.SHARE);
-                    bookingInfo.setParentRef(bookingToShare.getRef());
+                    Wizard.bookingInfo.setDate(bookingToShare.getDate());
+                    Wizard.bookingInfo.setFlightNo(bookingToShare.getFlightNo());
+                    Wizard.bookingInfo.setLandingTime(bookingToShare.getLandingTime());
+                    Wizard.bookingInfo.setOrderType(OrderType.SHARE);
+                    Wizard.bookingInfo.setParentRef(bookingToShare.getRef());
                     gwtWizard.shareBooking(bookingToShare);
-                    bookingInfo.setOrderType(OrderType.SHARE);
+                    Wizard.bookingInfo.setOrderType(OrderType.SHARE);
 
                     scrollPanel.remove(cellTable);
 

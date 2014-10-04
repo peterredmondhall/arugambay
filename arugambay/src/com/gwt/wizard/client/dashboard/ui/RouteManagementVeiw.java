@@ -27,22 +27,22 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
-import com.gwt.wizard.shared.model.PlaceInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 
-public class PlacesManagementVeiw extends Composite
+public class RouteManagementVeiw extends Composite
 {
     private final BookingServiceAsync service = GWT.create(BookingService.class);
 
     private static PlacesManagementVeiwUiBinder uiBinder = GWT.create(PlacesManagementVeiwUiBinder.class);
 
-    interface PlacesManagementVeiwUiBinder extends UiBinder<Widget, PlacesManagementVeiw>
+    interface PlacesManagementVeiwUiBinder extends UiBinder<Widget, RouteManagementVeiw>
     {
     }
 
     private final CellTable.Resources tableRes = GWT.create(TableRes.class);
-    private List<PlaceInfo> PLACES = new ArrayList<>();
+    private List<RouteInfo> routes;
 
-    CellTable<PlaceInfo> placesManagementTable;
+    CellTable<RouteInfo> placesManagementTable;
 
     @UiField
     HTMLPanel mainPanel;
@@ -53,11 +53,11 @@ public class PlacesManagementVeiw extends Composite
     private Button addPlaceBtn;
     private Button editPlaceBtn;
     private Button deletePlaceBtn;
-    private final SelectionModel<PlaceInfo> selectionModel = new MultiSelectionModel<PlaceInfo>(null);
+    private final SelectionModel<RouteInfo> selectionModel = new MultiSelectionModel<RouteInfo>(null);
 
     // The list of data to display.
 
-    public PlacesManagementVeiw()
+    public RouteManagementVeiw()
     {
         initWidget(uiBinder.createAndBindUi(this));
         initializeWidget();
@@ -65,10 +65,10 @@ public class PlacesManagementVeiw extends Composite
 
     private void initializeWidget()
     {
-        PLACES = new ArrayList<>();
+        routes = new ArrayList<>();
         btnContainer.clear();
         mainPanel.clear();
-        placesManagementTable = new CellTable<PlaceInfo>(13, tableRes);
+        placesManagementTable = new CellTable<RouteInfo>(13, tableRes);
         // fetching existing places from server
         // Execute the timer to expire 1/2 second in the future
     }
@@ -97,8 +97,8 @@ public class PlacesManagementVeiw extends Composite
                 HorizontalPanel hp = new HorizontalPanel();
                 final Label errLbl = new Label();
                 errLbl.setStyleName("errLbl");
-                final Label newCityLbl = new Label("Enter City");
-                final Label newPickupLbl = new Label("Enter Pickup");
+                final Label newStartLbl = new Label("Enter Start");
+                final Label newEndLbl = new Label("Enter End");
                 final Label newPlaceLbl = new Label("Enter Place");
                 final TextBox newCityTxtBox = new TextBox();
                 final TextBox newPickupTxtBox = new TextBox();
@@ -125,11 +125,11 @@ public class PlacesManagementVeiw extends Composite
             @Override
             public void onClick(ClickEvent event)
             {
-                for (PlaceInfo p : PLACES)
+                for (RouteInfo p : routes)
                 {
                     if (selectionModel.isSelected(p))
                     {
-                        service.deletePlace(p.getId(), new AsyncCallback<Boolean>()
+                        service.deleteRoute(p.getId(), new AsyncCallback<Boolean>()
                         {
 
                             @Override
@@ -169,21 +169,18 @@ public class PlacesManagementVeiw extends Composite
             public void onClick(ClickEvent event)
             {
                 int count = 0;
-                for (PlaceInfo p : PLACES)
+                for (RouteInfo p : routes)
                 {
                     if (selectionModel.isSelected(p))
                         count++;
                 }
                 if (count == 1)
                 {
-                    for (PlaceInfo p : PLACES)
+                    for (RouteInfo p : routes)
                     {
                         if (selectionModel.isSelected(p))
                         {
                             final Long placeId = p.getId();
-                            final String cityName = p.getCity();
-                            final String pickupName = p.getPickup();
-                            final String placeName = p.getPlace();
 
                             final PopupPanel editPlacePopUpPanel = new PopupPanel(true);
                             final VerticalPanel vPanel = new VerticalPanel();
@@ -194,13 +191,12 @@ public class PlacesManagementVeiw extends Composite
                             final Label editCityLbl = new Label("Enter City");
                             final Label editPickupLbl = new Label("Enter Pickup");
                             final Label editPlaceLbl = new Label("Enter Place");
-                            final TextBox editCityTxtBox = new TextBox();
-                            final TextBox editPickupTxtBox = new TextBox();
+                            final TextBox editStartTxtBox = new TextBox();
+                            final TextBox editEndTxtBox = new TextBox();
                             final TextBox editPlaceTxtBox = new TextBox();
 
-                            editCityTxtBox.setText(cityName);
-                            editPickupTxtBox.setText(pickupName);
-                            editPlaceTxtBox.setText(placeName);
+                            editStartTxtBox.setText(p.getStart());
+                            editEndTxtBox.setText(p.getEnd());
 
                             vPanel.getElement().getStyle().setPadding(5, Unit.PX);
                             vPanel.getElement().getStyle().setWidth(265, Unit.PX);
@@ -213,20 +209,19 @@ public class PlacesManagementVeiw extends Composite
                                 @Override
                                 public void onClick(ClickEvent event)
                                 {
-                                    if ((editCityTxtBox.getText() == null || editCityTxtBox.getText().length() == 0)
-                                            || (editPickupTxtBox.getText() == null || editPickupTxtBox.getText().length() == 0)
+                                    if ((editStartTxtBox.getText() == null || editStartTxtBox.getText().length() == 0)
+                                            || (editEndTxtBox.getText() == null || editEndTxtBox.getText().length() == 0)
                                             || (editPlaceTxtBox.getText() == null || editPlaceTxtBox.getText().length() == 0))
                                     {
                                         errLbl.setText("Please fill up all fields");
                                     }
                                     else
                                     {
-                                        PlaceInfo placeInfo = new PlaceInfo();
-                                        placeInfo.setCity(editCityTxtBox.getText());
-                                        placeInfo.setPickup(editPickupTxtBox.getText());
-                                        placeInfo.setPlace(editPlaceTxtBox.getText());
+                                        RouteInfo routeInfo = new RouteInfo();
+                                        routeInfo.setStart(editStartTxtBox.getText());
+                                        routeInfo.setEnd(editEndTxtBox.getText());
 
-                                        service.editPlace(placeId, placeInfo, new AsyncCallback<Boolean>()
+                                        service.editRoute(placeId, routeInfo, new AsyncCallback<Boolean>()
                                         {
 
                                             @Override
@@ -254,14 +249,14 @@ public class PlacesManagementVeiw extends Composite
                             hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
                             hp.setSpacing(10);
                             hp.add(editCityLbl);
-                            hp.add(editCityTxtBox);
+                            hp.add(editStartTxtBox);
                             vPanel.add(hp);
 
                             hp = new HorizontalPanel();
                             hp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
                             hp.setSpacing(10);
                             hp.add(editPickupLbl);
-                            hp.add(editPickupTxtBox);
+                            hp.add(editEndTxtBox);
                             vPanel.add(hp);
 
                             hp = new HorizontalPanel();

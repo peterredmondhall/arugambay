@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.gwt.wizard.client.GwtWizard;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.ShareStepUi;
 import com.gwt.wizard.shared.OrderType;
@@ -13,12 +14,10 @@ public class ShareStep implements WizardStep
 {
 
     private final ShareStepUi ui;
-    private final BookingInfo bookingInfo;
 
-    public ShareStep(BookingInfo bookingInfo)
+    public ShareStep()
     {
-        this.bookingInfo = bookingInfo;
-        ui = new ShareStepUi(bookingInfo);
+        ui = new ShareStepUi();
     }
 
     public void setBookingList(List<BookingInfo> list, GwtWizard gwtWizard)
@@ -41,7 +40,7 @@ public class ShareStep implements WizardStep
     @Override
     public Boolean onNext()
     {
-        bookingInfo.setOrderType(OrderType.BOOKING);
+        Wizard.bookingInfo.setOrderType(OrderType.BOOKING);
         ui.removeTable();
         return true;
     }
@@ -61,7 +60,7 @@ public class ShareStep implements WizardStep
 
     public void onNextShare()
     {
-        bookingInfo.setOrderType(OrderType.SHARE);
+        Wizard.bookingInfo.setOrderType(OrderType.SHARE);
         ui.removeTable();
     }
 }

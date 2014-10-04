@@ -2,19 +2,27 @@ package com.gwt.wizard.client.steps;
 
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
+import com.gwt.wizard.client.service.BookingService;
+import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.client.steps.ui.SummaryStepUi;
+import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class SummaryStep implements WizardStep
 {
+    private final BookingServiceAsync service = GWT.create(BookingService.class);
 
     private final SummaryStepUi ui;
 
-    public SummaryStep(BookingInfo bookingInfo)
+    public SummaryStep()
     {
-        ui = new SummaryStepUi(bookingInfo);
+        ui = new SummaryStepUi();
     }
 
     @Override
@@ -32,6 +40,25 @@ public class SummaryStep implements WizardStep
     @Override
     public Boolean onNext()
     {
+        if (Wizard.bookingInfo.getOrderType() == OrderType.SHARE)
+        {
+            service.sendShareRequest(Wizard.bookingInfo, new AsyncCallback<BookingInfo>()
+            {
+
+                @Override
+                public void onFailure(Throwable caught)
+                {
+                    Window.alert("Failed to connect to server");
+                }
+
+                @Override
+                public void onSuccess(BookingInfo bi)
+                {
+                    Wizard.bookingInfo = bi;
+                }
+            });
+        }
+
         return true;
     }
 

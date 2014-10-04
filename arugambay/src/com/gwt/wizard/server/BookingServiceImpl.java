@@ -10,8 +10,8 @@ import com.gwt.wizard.server.entity.User;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
-import com.gwt.wizard.shared.model.PlaceInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
 /**
@@ -26,6 +26,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public final String PLACES_DATA_ENTITY = "places-data";
 
     private final BookingServiceManager bookingServiceManager = new BookingServiceManager();
+    private final StripePayment stripePayment = new StripePayment();
 
     @Override
     public BookingInfo save(BookingInfo bookingInfo) throws IllegalArgumentException
@@ -34,15 +35,15 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public Boolean deletePlace(Long id) throws IllegalArgumentException
+    public Boolean deleteRoute(Long id) throws IllegalArgumentException
     {
-        return bookingServiceManager.deletePlace(id);
+        return bookingServiceManager.deleteRoute(id);
     }
 
     @Override
-    public Boolean editPlace(Long id, PlaceInfo placeInfo) throws IllegalArgumentException
+    public Boolean editRoute(Long id, RouteInfo placeInfo) throws IllegalArgumentException
     {
-        return bookingServiceManager.editPlace(id, placeInfo);
+        return bookingServiceManager.editRoute(id, placeInfo);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public BookingInfo getBookingForTransaction(String tx) throws IllegalArgumentException
     {
         Profil profil = bookingServiceManager.getProfil();
-        OrderStatus hasPaid = new PaymentChecker(tx, profil).hasClientPaid();
+        OrderStatus hasPaid = new PaypalPaymentChecker(tx, profil).hasClientPaid();
 
         BookingInfo bookingInfo = bookingServiceManager.getBookingForTransactionWithClient(profil, getClient(), hasPaid);
         if (bookingInfo != null)
@@ -129,6 +130,17 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         Profil profil = bookingServiceManager.getProfil();
         BookingInfo parentBooking = bookingServiceManager.getBookingsForRef(bookingInfo.getParentRef());
         Mailer.sendShareRequest(parentBooking, bookingInfo, profil);
+        return bookingInfo;
+    }
+
+    @Override
+    public BookingInfo payWithStripe(String token, BookingInfo bookingInfo)
+    {
+        Profil profil = bookingServiceManager.getProfil();
+        if (stripePayment.charge(token, bookingInfo, profil))
+        {
+            bookingInfo = bookingServiceManager.setPayed(profil, bookingInfo, OrderStatus.PAID);
+        }
         return bookingInfo;
     }
 

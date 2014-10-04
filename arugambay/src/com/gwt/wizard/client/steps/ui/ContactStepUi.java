@@ -19,8 +19,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.gwt.wizard.client.core.Showable;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
-import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ContactStepUi extends Composite implements Showable
 {
@@ -65,12 +65,9 @@ public class ContactStepUi extends Composite implements Showable
     @UiField
     TextArea requirementsBox;
 
-    BookingInfo bookingInfo;
-
-    public ContactStepUi(BookingInfo bookingInfo)
+    public ContactStepUi()
     {
         initWidget(uiBinder.createAndBindUi(this));
-        this.bookingInfo = bookingInfo;
 
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         for (int i = 1; i < 20; i++)
@@ -179,7 +176,7 @@ public class ContactStepUi extends Composite implements Showable
         next.setVisible(true);
         prev.setEnabled(true);
 
-        boolean sharing = bookingInfo.getOrderType() == OrderType.SHARE;
+        boolean sharing = Wizard.bookingInfo.getOrderType() == OrderType.SHARE;
 
         checkboxWanttoShare.setVisible(!sharing);
         labelWanttoShare.setVisible(!sharing);
@@ -189,7 +186,7 @@ public class ContactStepUi extends Composite implements Showable
         dateBox.setEnabled(!sharing);
         if (sharing)
         {
-            dateBox.setValue(bookingInfo.getDate());
+            dateBox.setValue(Wizard.bookingInfo.getDate());
         }
     }
 

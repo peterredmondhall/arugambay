@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwt.wizard.shared.model.BookingInfo;
-import com.gwt.wizard.shared.model.PlaceInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
 /**
@@ -20,10 +20,10 @@ public interface BookingServiceAsync
 
     // void sendShareAccepted(List<BookingInfo> bookingInfo, AsyncCallback<BookingInfo> callback);
 
-    void deletePlace(Long id, AsyncCallback<Boolean> callback)
+    void deleteRoute(Long id, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
-    void editPlace(Long id, PlaceInfo placeInfo, AsyncCallback<Boolean> callback)
+    void editRoute(Long id, RouteInfo placeInfo, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
     void getBookings(AsyncCallback<List<BookingInfo>> callback);
@@ -37,6 +37,8 @@ public interface BookingServiceAsync
     void getUser(AsyncCallback<Boolean> callback);
 
     void getPaypalProfil(AsyncCallback<ProfilInfo> callback);
+
+    void payWithStripe(String token, BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback);
 
     void sendStat(StatInfo statInfo, AsyncCallback<Void> asyncCallback);
 

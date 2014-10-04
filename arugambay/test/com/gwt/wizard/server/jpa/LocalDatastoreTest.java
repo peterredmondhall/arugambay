@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.gwt.wizard.server.BookingServiceManager;
-import com.gwt.wizard.server.PaymentChecker;
+import com.gwt.wizard.server.PaypalPaymentChecker;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
@@ -213,14 +213,30 @@ public class LocalDatastoreTest
     }
 
     @Test
+    public void should_change_booking_to_paid()
+    {
+        create_a_booking();
+        Profil profil = new Profil();
+        List<BookingInfo> bookings = bs.getBookings();
+        assertEquals(1, bookings.size());
+        BookingInfo bi = bs.setPayed(profil, bookings.get(0), OrderStatus.PAID);
+        assertEquals(OrderStatus.PAID, bi.getStatus());
+
+        bookings = bs.getBookings();
+        assertEquals(1, bookings.size());
+        assertEquals(OrderStatus.PAID, bookings.get(0).getStatus());
+
+    }
+
+    @Test
     @Ignore
     // find a working tx
     public void should_check_transaction()
     {
         Profil profil = new Profil();
-        profil.setPaypalAT(PaymentChecker.TEST_AT);
-        profil.setPaypalURL(PaymentChecker.TEST_PAYPAL_URL);
-        OrderStatus hasPaid = new PaymentChecker("6LH559390U430214T", profil).hasClientPaid();
+        profil.setPaypalAT(PaypalPaymentChecker.TEST_AT);
+        profil.setPaypalURL(PaypalPaymentChecker.TEST_PAYPAL_URL);
+        OrderStatus hasPaid = new PaypalPaymentChecker("6LH559390U430214T", profil).hasClientPaid();
         assertEquals(OrderStatus.PAID, hasPaid);
     }
 

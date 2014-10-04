@@ -3,21 +3,19 @@ package com.gwt.wizard.client.steps;
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.ContactStepUi;
 import com.gwt.wizard.client.steps.ui.ContactStepUi.ErrorMsg;
-import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ContactStep implements WizardStep
 {
 
     private final ContactStepUi ui;
-    private final BookingInfo bookingInfo;
 
-    public ContactStep(BookingInfo bookingInfo)
+    public ContactStep()
     {
-        ui = new ContactStepUi(bookingInfo);
-        this.bookingInfo = bookingInfo;
+        ui = new ContactStepUi();
     }
 
     @Override
@@ -104,16 +102,16 @@ public class ContactStep implements WizardStep
             return false;
         }
 
-        bookingInfo.setDate(ui.getDate());
-        bookingInfo.setLandingTime(ui.getLandingTime());
-        bookingInfo.setName(ui.getFirstName() + "  " + ui.getLastName());
-        bookingInfo.setEmail(ui.getEmail());
+        Wizard.bookingInfo.setDate(ui.getDate());
+        Wizard.bookingInfo.setLandingTime(ui.getLandingTime());
+        Wizard.bookingInfo.setName(ui.getFirstName() + "  " + ui.getLastName());
+        Wizard.bookingInfo.setEmail(ui.getEmail());
 
-        bookingInfo.setFlightNo(ui.getFlightNo());
-        bookingInfo.setPax(Integer.parseInt(ui.getPax()));
-        bookingInfo.setSurfboards(Integer.parseInt(ui.getSurfboards()));
-        bookingInfo.setShareWanted(ui.getWantToShare());
-        bookingInfo.setRequirements(ui.getRequirements());
+        Wizard.bookingInfo.setFlightNo(ui.getFlightNo());
+        Wizard.bookingInfo.setPax(Integer.parseInt(ui.getPax()));
+        Wizard.bookingInfo.setSurfboards(Integer.parseInt(ui.getSurfboards()));
+        Wizard.bookingInfo.setShareWanted(ui.getWantToShare());
+        Wizard.bookingInfo.setRequirements(ui.getRequirements());
 
         return true;
     }

@@ -15,6 +15,7 @@ import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.client.steps.ConfirmationStep;
 import com.gwt.wizard.client.steps.ContactStep;
+import com.gwt.wizard.client.steps.CreditCardStep;
 import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.SummaryStep;
@@ -34,6 +35,7 @@ public class GwtWizard implements EntryPoint
     private TransportStep transportStep;
     private ShareStep shareStep;
     private ContactStep contactStep;
+    private CreditCardStep creditCardStep;
     private SummaryStep summaryStep;
     private ConfirmationStep confirmationStep;
     private ShareConfirmationStep shareConfirmationStep;
@@ -44,7 +46,8 @@ public class GwtWizard implements EntryPoint
     public static final int SHARE = 2;
     public static final int CONTACT = 3;
     public static final int SUMMARY = 4;
-    public static final int CONFIRMATION = 5;
+    public static final int CREDITCARD = 5;
+    public static final int CONFIRMATION = 6;
 
     private Wizard wizard;
 
@@ -57,11 +60,13 @@ public class GwtWizard implements EntryPoint
     public void onModuleLoad()
     {
         Window.setTitle("Arugam Bay Taxi");
-        transportStep = new TransportStep(bookingInfo);
-        shareStep = new ShareStep(bookingInfo);
-        contactStep = new ContactStep(bookingInfo);
-        summaryStep = new SummaryStep(bookingInfo);
-        confirmationStep = new ConfirmationStep(bookingInfo);
+        wizard = new Wizard();
+        transportStep = new TransportStep();
+        shareStep = new ShareStep();
+        contactStep = new ContactStep();
+        creditCardStep = new CreditCardStep(wizard);
+        summaryStep = new SummaryStep();
+        confirmationStep = new ConfirmationStep();
         shareConfirmationStep = new ShareConfirmationStep();
 
         collectStats();
@@ -78,7 +83,8 @@ public class GwtWizard implements EntryPoint
         }
         else
         {
-            List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, confirmationStep);
+            List<WizardStep> l = ImmutableList.of(transportStep, creditCardStep, confirmationStep);
+            // List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, creditCardStep, confirmationStep);
             completeSetup(transportStep, l);
         }
 
@@ -165,7 +171,7 @@ public class GwtWizard implements EntryPoint
 
     private void completeSetup(WizardStep initstep, List<WizardStep> steps)
     {
-        wizard = new Wizard();
+
         wizard.setInitialStep(initstep);
         for (WizardStep step : steps)
         {
@@ -216,52 +222,6 @@ public class GwtWizard implements EntryPoint
                 });
             }
         });
-
-        wizard.addSendShareRequestCallback(new ICallback()
-        {
-            @Override
-            public void execute()
-            {
-                service.sendShareRequest(bookingInfo, new AsyncCallback<BookingInfo>()
-                {
-
-                    @Override
-                    public void onFailure(Throwable caught)
-                    {
-                        Window.alert("Failed to connect to server");
-                    }
-
-                    @Override
-                    public void onSuccess(BookingInfo bi)
-                    {
-                        confirmationStep.setBookingInfo(bi);
-                    }
-                });
-            }
-        });
-
-//        wizard.addSendShareAcceptedCallback(new ICallback()
-//        {
-//            @Override
-//            public void execute()
-//            {
-//                service.sendShareAccepted(sharers, new AsyncCallback<BookingInfo>()
-//                {
-//
-//                    @Override
-//                    public void onFailure(Throwable caught)
-//                    {
-//                        Window.alert("Failed to connect to server");
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(BookingInfo success)
-//                    {
-//                        wizard.activateShareConfirmationStep(shareConfirmationStep);
-//                    }
-//                });
-//            }
-//        });
 
         wizard.init();
         RootPanel.get().add(wizard);

@@ -5,8 +5,8 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.gwt.wizard.shared.model.BookingInfo;
-import com.gwt.wizard.shared.model.PlaceInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
 /**
@@ -23,9 +23,9 @@ public interface BookingService extends RemoteService
 
     Boolean getUser() throws IllegalArgumentException;
 
-    Boolean deletePlace(Long id) throws IllegalArgumentException;
+    Boolean deleteRoute(Long id) throws IllegalArgumentException;
 
-    Boolean editPlace(Long id, PlaceInfo placeInfo) throws IllegalArgumentException;
+    Boolean editRoute(Long id, RouteInfo placeInfo) throws IllegalArgumentException;
 
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
@@ -36,6 +36,8 @@ public interface BookingService extends RemoteService
     List<BookingInfo> getBookingsForShare(String ref) throws IllegalArgumentException;
 
     ProfilInfo getPaypalProfil() throws IllegalArgumentException;
+
+    BookingInfo payWithStripe(String token, BookingInfo bookingInfo);
 
     void sendStat(StatInfo statInfo);
 

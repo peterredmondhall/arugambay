@@ -56,5 +56,8 @@
 	<classpathentry kind="lib" path="E:/eclipse/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.9/appengine-java-sdk-1.9.9/lib/impl/appengine-api.jar"/>
 	<classpathentry kind="lib" path="E:/eclipse/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.9/appengine-java-sdk-1.9.9/lib/impl/appengine-api-labs.jar"/>
 	<classpathentry kind="lib" path="E:/eclipse/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.9/appengine-java-sdk-1.9.9/lib/impl/appengine-api-stubs.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/stripe-java-latest.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-stripe-0.2.1-20140512.155055-1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-2.1.2.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -13,9 +13,9 @@ public class ConfirmationStep implements WizardStep
 
     private final ConfirmationStepUi ui;
 
-    public ConfirmationStep(BookingInfo bookingInfo)
+    public ConfirmationStep()
     {
-        ui = new ConfirmationStepUi(bookingInfo);
+        ui = new ConfirmationStepUi();
     }
 
     @Override

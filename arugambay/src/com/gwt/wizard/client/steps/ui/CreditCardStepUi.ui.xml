@@ -1,0 +1,47 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+
+	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
+
+
+	<g:HTMLPanel ui:field="mainPanel">	   	    
+		<g:Grid>
+			<g:row>
+				<g:customCell styleName="labelDiv">
+					<g:Label>Name</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox ui:field="ccName"/>
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="nameErrorMsg"></g:Label>
+				</g:customCell>
+							</g:row>
+			<g:row>
+				<g:customCell styleName="labelDiv">
+					<g:Label>cvc</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox ui:field="ccCvc"/>
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="cvcErrorMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell styleName="labelDiv">
+					<g:Label>Expiry</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:HorizontalPanel>
+					    <g:ListBox ui:field="ccExpiryMonth" />
+					    <g:ListBox ui:field="ccExpiryYear" />
+					</g:HorizontalPanel>
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+		
+	</g:HTMLPanel>
+
+</ui:UiBinder> 

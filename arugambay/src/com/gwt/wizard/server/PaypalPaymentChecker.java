@@ -15,7 +15,7 @@ import java.util.Set;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.OrderStatus;
 
-public class PaymentChecker
+public class PaypalPaymentChecker
 {
 
     public static final String TEST_PAYPAL_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr";
@@ -26,7 +26,7 @@ public class PaymentChecker
     private final Map<String, String> map;
     private final Profil profil;
 
-    public PaymentChecker(String tx, Profil profil)
+    public PaypalPaymentChecker(String tx, Profil profil)
     {
         this.profil = profil;
         map = new HashMap<String, String>();

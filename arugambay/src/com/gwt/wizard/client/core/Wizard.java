@@ -33,9 +33,11 @@ public class Wizard extends Composite
     {
     }
 
+    public static BookingInfo bookingInfo = new BookingInfo();
+
     private ICallback saveBookingCb;
     private ICallback getBookingListCb;
-    private ICallback sendShareRequestCb;
+    // private ICallback sendShareRequestCb;
     // private ICallback sendShareAcceptedCb;
 
     private final Map<WizardStep, Integer> map = new HashMap<WizardStep, Integer>();
@@ -137,13 +139,6 @@ public class Wizard extends Composite
                 getBookingListCb.execute();
             }
 
-        }
-        if (current == GwtWizard.SUMMARY)
-        {
-            if (sendShareRequestCb != null)
-            {
-                sendShareRequestCb.execute();
-            }
         }
         currentstep.onNext();
 
@@ -313,10 +308,10 @@ public class Wizard extends Composite
         this.getBookingListCb = cb;
     }
 
-    public void addSendShareRequestCallback(ICallback cb)
-    {
-        this.sendShareRequestCb = cb;
-    }
+//    public void addSendShareRequestCallback(ICallback cb)
+//    {
+//        this.sendShareRequestCb = cb;
+//    }
 
 //    public void addSendShareAcceptedCallback(ICallback cb)
 //    {
