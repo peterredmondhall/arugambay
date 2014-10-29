@@ -5,25 +5,27 @@
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
 
 
-	<g:HTMLPanel ui:field="mainPanel">	   	    
-		<g:Grid>
+	<g:HTMLPanel ui:field="mainPanel">
+	    <g:Label ui:field="paymentExplination1"/>
+	    <g:Label ui:field="paymentExplination2"/>
+	    		<g:Grid>
 			<g:row>
 				<g:customCell styleName="labelDiv">
 					<g:Label>Name</g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox ui:field="ccName"/>
+					<g:TextBox ui:field="ccName" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="nameErrorMsg"></g:Label>
 				</g:customCell>
-							</g:row>
+			</g:row>
 			<g:row>
 				<g:customCell styleName="labelDiv">
 					<g:Label>cvc</g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox ui:field="ccCvc"/>
+					<g:TextBox ui:field="ccCvc" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="cvcErrorMsg"></g:Label>
@@ -35,13 +37,28 @@
 				</g:customCell>
 				<g:customCell>
 					<g:HorizontalPanel>
-					    <g:ListBox ui:field="ccExpiryMonth" />
-					    <g:ListBox ui:field="ccExpiryYear" />
+						<g:ListBox styleName="expiry" ui:field="ccExpiryMonth" />
+						<g:ListBox styleName="expiry" ui:field="ccExpiryYear" />
 					</g:HorizontalPanel>
 				</g:customCell>
 			</g:row>
+			<g:row>
+				<g:customCell styleName="labelDiv">
+					<g:Label></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Button ui:field="payWithCC" text="Pay now" styleName="btn btn-primary" />
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell styleName="labelDiv">
+					<g:Label></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:FlowPanel ui:field="progressBarPanel"></g:FlowPanel>
+				</g:customCell>
+			</g:row>
 		</g:Grid>
-		
 	</g:HTMLPanel>
 
 </ui:UiBinder> 

@@ -1,15 +1,22 @@
 package com.gwt.wizard.client.steps;
 
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
+import static com.gwt.wizard.client.GwtWizard.SERVICE;
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
+import java.util.logging.Logger;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.ContactStepUi;
 import com.gwt.wizard.client.steps.ui.ContactStepUi.ErrorMsg;
+import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ContactStep implements WizardStep
 {
+    private static final Logger logger = Logger.getLogger(ContactStep.class.getName());
 
     private final ContactStepUi ui;
 
@@ -102,16 +109,31 @@ public class ContactStep implements WizardStep
             return false;
         }
 
-        Wizard.bookingInfo.setDate(ui.getDate());
-        Wizard.bookingInfo.setLandingTime(ui.getLandingTime());
-        Wizard.bookingInfo.setName(ui.getFirstName() + "  " + ui.getLastName());
-        Wizard.bookingInfo.setEmail(ui.getEmail());
+        BOOKINGINFO.setDate(ui.getDate());
+        BOOKINGINFO.setLandingTime(ui.getLandingTime());
+        BOOKINGINFO.setName(ui.getFirstName() + "  " + ui.getLastName());
+        BOOKINGINFO.setEmail(ui.getEmail());
 
-        Wizard.bookingInfo.setFlightNo(ui.getFlightNo());
-        Wizard.bookingInfo.setPax(Integer.parseInt(ui.getPax()));
-        Wizard.bookingInfo.setSurfboards(Integer.parseInt(ui.getSurfboards()));
-        Wizard.bookingInfo.setShareWanted(ui.getWantToShare());
-        Wizard.bookingInfo.setRequirements(ui.getRequirements());
+        BOOKINGINFO.setFlightNo(ui.getFlightNo());
+        BOOKINGINFO.setPax(Integer.parseInt(ui.getPax()));
+        BOOKINGINFO.setSurfboards(Integer.parseInt(ui.getSurfboards()));
+        BOOKINGINFO.setShareWanted(ui.getWantToShare());
+        BOOKINGINFO.setRequirements(ui.getRequirements());
+
+        SERVICE.addBooking(BOOKINGINFO, new AsyncCallback<BookingInfo>()
+        {
+            @Override
+            public void onSuccess(BookingInfo result)
+            {
+                BOOKINGINFO.setId(result.getId());
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                logger.severe("couldnt add booking");
+            }
+        });
 
         return true;
     }
@@ -127,4 +149,11 @@ public class ContactStep implements WizardStep
     {
 
     }
+
+    @Override
+    public void show(boolean visible, Button prev, Button next, Button cancel)
+    {
+        ui.show(visible, prev, next, cancel);
+    }
+
 }

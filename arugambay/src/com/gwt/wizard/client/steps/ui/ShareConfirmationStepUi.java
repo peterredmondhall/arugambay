@@ -11,11 +11,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwt.wizard.client.core.Showable;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
-public class ShareConfirmationStepUi extends Composite implements Showable
+public class ShareConfirmationStepUi extends Composite
 {
 
     private static ShareConfirmationStepUiUiBinder uiBinder = GWT.create(ShareConfirmationStepUiUiBinder.class);
@@ -38,7 +37,6 @@ public class ShareConfirmationStepUi extends Composite implements Showable
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
     }
 
-    @Override
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         mainPanel.setVisible(visible);

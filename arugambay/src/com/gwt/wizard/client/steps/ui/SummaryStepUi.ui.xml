@@ -98,14 +98,14 @@
 					<g:Label ui:field="labelPrice" />
 				</g:customCell>
 			</g:row >
-			<g:row >
-				<g:customCell styleName="labelDiv">
-					<g:Label ui:field="pay2">Pay now with Paypal</g:Label>
-				</g:customCell>
-				<g:customCell>
-					<my:Paypal ui:field="paypal"/>
-				</g:customCell>
-			</g:row>
+<!-- 			<g:row > -->
+<!-- 				<g:customCell styleName="labelDiv"> -->
+<!-- 					<g:Label ui:field="pay2">Pay now with Paypal</g:Label> -->
+<!-- 				</g:customCell> -->
+<!-- 				<g:customCell> -->
+<!-- 					<my:Paypal ui:field="paypal"/> -->
+<!-- 				</g:customCell> -->
+<!-- 			</g:row> -->
 		</g:Grid>
 
 	</g:HTMLPanel>

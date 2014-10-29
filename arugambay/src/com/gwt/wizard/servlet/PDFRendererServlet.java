@@ -23,13 +23,13 @@ public class PDFRendererServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        String bookingRef = req.getParameter("order");
-        if (bookingRef != null && bookingRef.length() > 0)
+        String bookingId = req.getParameter("order");
+        if (bookingId != null && bookingId.length() > 0)
         {
             byte[] bytes = null;
             try
             {
-                BookingInfo bookingInfo = bookingService.getBookingsForRef(bookingRef);
+                BookingInfo bookingInfo = bookingService.getBooking(Long.parseLong(bookingId));
                 if (bookingInfo != null)
                 {
                     bytes = PdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
@@ -45,7 +45,7 @@ public class PDFRendererServlet extends HttpServlet
                 }
                 else
                 {
-                    resp.getWriter().write("Booking with id: " + bookingRef + " not fetched!");
+                    resp.getWriter().write("Booking with id: " + bookingId + " not fetched!");
                 }
 
             }

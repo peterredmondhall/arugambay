@@ -21,7 +21,7 @@ public class BookingUtilTest
         bookingInfo.setName("name");
         bookingInfo.setEmail("email");
         bookingInfo.setRequirements("requirements");
-        bookingInfo.setRef("ref");
+        bookingInfo.setId(1234L);
         String html = BookingUtil.toConfirmationEmailHtml(bookingInfo, new File("war/template/confirmation.html"));
         System.out.println(html);
     }

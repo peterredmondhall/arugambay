@@ -1,6 +1,7 @@
 package com.gwt.wizard.client.steps;
 
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import com.arcbees.stripe.client.CreditCard;
 import com.arcbees.stripe.client.CreditCardResponseHandler;
@@ -10,6 +11,7 @@ import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
@@ -17,7 +19,6 @@ import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.client.steps.ui.CreditCardStepUi;
 import com.gwt.wizard.client.steps.ui.CreditCardStepUi.ErrorMsg;
-import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class CreditCardStep implements WizardStep
@@ -30,14 +31,14 @@ public class CreditCardStep implements WizardStep
 
     public CreditCardStep(Wizard wizard)
     {
-        ui = new CreditCardStepUi();
+        ui = new CreditCardStepUi(this);
         this.wizard = wizard;
     }
 
     @Override
     public String getCaption()
     {
-        return "Contact";
+        return "Payment";
     }
 
     @Override
@@ -46,8 +47,7 @@ public class CreditCardStep implements WizardStep
         return ui;
     }
 
-    @Override
-    public Boolean onNext()
+    public Boolean pay()
     {
 
         ui.setErrorMsg("", ErrorMsg.NAME);
@@ -62,14 +62,9 @@ public class CreditCardStep implements WizardStep
             ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.CVC);
             return false;
         }
-
-        if (Wizard.bookingInfo.getStatus() != OrderStatus.PAID)
-        {
-            injectStripeJs();
-            return false;
-        }
-
-        return true;
+        ui.showProgress();
+        payWithStripe();
+        return false;
     }
 
     private void injectStripeJs()
@@ -89,17 +84,14 @@ public class CreditCardStep implements WizardStep
                 public void onSuccess(Void result)
                 {
                     stripeInjected = true;
-                    onStripeInjected();
+                    injectStripeJs();
                 }
             });
         }
-        else
-        {
-            onStripeInjected();
-        }
+        ui.showPayButton();
     }
 
-    void onStripeInjected()
+    void payWithStripe()
     {
         // test for silver mobility
         StripeFactory.get().setPublishableKey("pk_test_rcKuNpP9OpTri7twmZ77UOI5");
@@ -127,18 +119,19 @@ public class CreditCardStep implements WizardStep
             @Override
             public void onCreditCardReceived(int status, CreditCardResponse creditCardResponse)
             {
-                service.payWithStripe(creditCardResponse.getId(), Wizard.bookingInfo, new AsyncCallback<BookingInfo>()
+                service.payWithStripe(creditCardResponse.getId(), BOOKINGINFO, new AsyncCallback<BookingInfo>()
                 {
 
                     @Override
                     public void onFailure(Throwable caught)
                     {
-                        Window.alert("Failed to connect to server");
+                        Window.alert("Failed to pay with stripe");
                     }
 
                     @Override
                     public void onSuccess(BookingInfo bi)
                     {
+                        BOOKINGINFO.setStatus(bi.getStatus());
                         wizard.onNextClick(null);
                     }
                 });
@@ -158,4 +151,18 @@ public class CreditCardStep implements WizardStep
     {
 
     }
+
+    @Override
+    public void show(boolean visible, Button prev, Button next, Button cancel)
+    {
+        ui.show(visible, prev, next, cancel);
+        injectStripeJs();
+    }
+
+    @Override
+    public Boolean onNext()
+    {
+        return true;
+    }
+
 }

@@ -15,18 +15,15 @@ import org.joda.time.format.DateTimeFormatter;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.gwt.wizard.client.util.BookingIdentifierGenerator;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Config;
 import com.gwt.wizard.server.entity.Profil;
-import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.entity.Stat;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
-import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
 /**
@@ -48,9 +45,11 @@ public class BookingServiceManager
         try
         {
             Booking booking = Booking.getBooking(bookingInfo, client);
-            booking.setRef("Ref" + BookingIdentifierGenerator.nextBookingId());
-
+            em.getTransaction().begin();
             em.persist(booking);
+            em.getTransaction().commit();
+            em.detach(booking);
+
             result = booking.getBookingInfo();
         }
         catch (Exception e)
@@ -67,56 +66,6 @@ public class BookingServiceManager
     private static EntityManager getEntityManager()
     {
         return EMF.get().createEntityManager();
-    }
-
-    public Boolean deleteRoute(Long id) throws IllegalArgumentException
-    {
-        try
-        {
-            EntityManager em = getEntityManager();
-            try
-            {
-                Route place = em.find(Route.class, id);
-                em.remove(place);
-            }
-            finally
-            {
-                em.close();
-            }
-            return true;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public Boolean editRoute(Long id, RouteInfo routeInfo) throws IllegalArgumentException
-    {
-        try
-        {
-            EntityManager em = getEntityManager();
-            try
-            {
-                Route route = em.find(Route.class, id);
-                route.setStart(routeInfo.getStart());
-                route.setEnd(routeInfo.getEnd());
-                route.setPrice(routeInfo.getPrice());
-                route.setPickupType(routeInfo.getPickupType());
-                em.persist(route);
-            }
-            finally
-            {
-                em.close();
-            }
-            return true;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public List<BookingInfo> getBookings() throws IllegalArgumentException
@@ -177,8 +126,7 @@ public class BookingServiceManager
         BookingInfo bookingInfo = null;
         try
         {
-            String query = "select t from Booking t where ref='" + bi.getRef() + "'";
-            Booking booking = (Booking) em.createQuery(query).getResultList().get(0);
+            Booking booking = em.find(Booking.class, bi.getId());
 
             booking.setStatus(orderStatus);
             em.getTransaction().begin();
@@ -257,7 +205,7 @@ public class BookingServiceManager
         return profil;
     }
 
-    public List<BookingInfo> getBookingsForTour(String ref) throws IllegalArgumentException
+    public List<BookingInfo> getBookingsForTour(Long id) throws IllegalArgumentException
     {
 
         Predicate<BookingInfo> acceptEven = new Predicate<BookingInfo>()
@@ -277,26 +225,12 @@ public class BookingServiceManager
         return current;
     }
 
-    public BookingInfo getBookingsForRef(final String ref) throws IllegalArgumentException
+    public List<BookingInfo> getBookingsForShare(Long sharerId) throws IllegalArgumentException
     {
+        EntityManager em = getEntityManager();
 
-        Predicate<BookingInfo> acceptEven = new Predicate<BookingInfo>()
-        {
-            @Override
-            public boolean apply(BookingInfo bookingInfo)
-            {
-                return ref.equals(bookingInfo.getRef());
-            }
-        };
-        List<BookingInfo> current = Lists.newArrayList(Collections2.filter(getBookings(), acceptEven));
-
-        return current.get(0);
-    }
-
-    public List<BookingInfo> getBookingsForShare(String sharesRef) throws IllegalArgumentException
-    {
-        BookingInfo sharer = getBookingsForRef(sharesRef);
-        BookingInfo parent = getBookingsForRef(sharer.getParentRef());
+        BookingInfo sharer = em.find(Booking.class, sharerId).getBookingInfo();
+        BookingInfo parent = em.find(Booking.class, sharer.getParentId()).getBookingInfo();
         return Lists.newArrayList(parent, sharer);
     }
 
@@ -305,7 +239,7 @@ public class BookingServiceManager
         EntityManager em = getEntityManager();
         try
         {
-            String query = "select t from Booking t where ref='" + bookingInfo.getRef() + "' order by instanziated desc";
+            String query = "select t from Booking t where id='" + bookingInfo.getId() + "' order by instanziated desc";
             Booking booking = (Booking) em.createQuery(query).getSingleResult();
 
             booking.setStatus(OrderStatus.SHARE_ACCEPTED);
@@ -341,4 +275,10 @@ public class BookingServiceManager
             em.close();
         }
     }
+
+    public BookingInfo getBooking(Long id)
+    {
+        return getEntityManager().find(Booking.class, id).getBookingInfo();
+    }
+
 }

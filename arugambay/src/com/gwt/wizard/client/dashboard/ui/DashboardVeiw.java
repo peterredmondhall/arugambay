@@ -29,7 +29,8 @@ public class DashboardVeiw extends Composite
     Anchor bookingManagement;
 
     @UiField
-    Anchor placesManagement;
+    Anchor routeManagement;
+
     private final HTMLPanel displayContainer = new HTMLPanel("");
 
     public DashboardVeiw()
@@ -52,7 +53,7 @@ public class DashboardVeiw extends Composite
             }
         });
 
-        placesManagement.addClickHandler(new ClickHandler()
+        routeManagement.addClickHandler(new ClickHandler()
         {
 
             @Override

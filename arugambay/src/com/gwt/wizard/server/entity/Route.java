@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.PickupType;
@@ -25,7 +24,8 @@ public class Route implements Serializable
     private String end;
     private PickupType pickupType;
     private float price;
-    private Blob image;
+
+    private Long image;
 
     public Key getKey()
     {
@@ -40,6 +40,16 @@ public class Route implements Serializable
     public void setStart(String start)
     {
         this.start = start;
+    }
+
+    public Long getImage()
+    {
+        return image;
+    }
+
+    public void setImage(Long image)
+    {
+        this.image = image;
     }
 
     public String getEnd()
@@ -72,15 +82,15 @@ public class Route implements Serializable
         this.price = price;
     }
 
-    public Blob getImage()
-    {
-        return image;
-    }
-
-    public void setImage(Blob image)
-    {
-        this.image = image;
-    }
+//    public Blob getImage()
+//    {
+//        return image;
+//    }
+//
+//    public void setImage(Blob image)
+//    {
+//        this.image = image;
+//    }
 
     public void setKey(Key key)
     {
@@ -94,18 +104,19 @@ public class Route implements Serializable
         place.setEnd(routeInfo.getEnd());
         place.setPrice(routeInfo.getPrice());
         place.setPickupType(routeInfo.getPickupType());
-        place.setImage(new Blob(routeInfo.getImage()));
+        place.setImage(routeInfo.getImage());
         return place;
     }
 
     public RouteInfo getInfo()
     {
         RouteInfo routeInfo = new RouteInfo();
+        routeInfo.setId(key.getId());
         routeInfo.setStart(start);
         routeInfo.setEnd(end);
         routeInfo.setPrice(price);
         routeInfo.setPickupType(pickupType);
-        routeInfo.setImage(image.getBytes());
+        routeInfo.setImage(image);
         return routeInfo;
     }
 

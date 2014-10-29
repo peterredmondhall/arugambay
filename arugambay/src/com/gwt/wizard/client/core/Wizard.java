@@ -1,10 +1,10 @@
 package com.gwt.wizard.client.core;
 
-import static com.gwt.wizard.client.GwtWizard.CONTACT;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,11 +16,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwt.wizard.client.GwtWizard;
-import com.gwt.wizard.client.ICallback;
 import com.gwt.wizard.client.steps.ConfirmationStep;
 import com.gwt.wizard.client.steps.ShareConfirmationStep;
-import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.TransportStep;
 import com.gwt.wizard.shared.model.BookingInfo;
 
@@ -33,16 +30,11 @@ public class Wizard extends Composite
     {
     }
 
-    public static BookingInfo bookingInfo = new BookingInfo();
+    public static BookingInfo BOOKINGINFO = new BookingInfo();
 
-    private ICallback saveBookingCb;
-    private ICallback getBookingListCb;
-    // private ICallback sendShareRequestCb;
-    // private ICallback sendShareAcceptedCb;
-
-    private final Map<WizardStep, Integer> map = new HashMap<WizardStep, Integer>();
+    private final List<WizardStep> stepList;
     private final Map<HTML, Integer> headers = new HashMap<HTML, Integer>();
-    private WizardStep currentstep;
+    private int currentstep;
     private WizardStep initstep;
 
     @UiField
@@ -63,13 +55,13 @@ public class Wizard extends Composite
 
     public Wizard()
     {
-        map.clear();
+        stepList = Lists.newArrayList();
         initWidget(uiBinder.createAndBindUi(this));
         steps.clear();
         header.clear();
         mainPanel.setVisible(false);
         next.ensureDebugId("button_next");
-
+        currentstep = 0;
     }
 
     public void add(WizardStep step)
@@ -81,8 +73,7 @@ public class Wizard extends Composite
         step.getContent().setVisible(false);
         steps.add(step.getContent());
 
-        if (!map.containsKey(step))
-            map.put(step, map.size() + 1);
+        stepList.add(step);
     }
 
     @Override
@@ -100,69 +91,48 @@ public class Wizard extends Composite
     @UiHandler("prev")
     public void onPrevClick(ClickEvent event)
     {
-        int current = map.get(currentstep);
-        currentstep.getContent().setVisible(false);
-        currentstep.onBack();
+        stepList.get(currentstep).getContent().setVisible(false);
+        stepList.get(currentstep).onBack();
 
-        current -= 1;
-        currentstep = getStep(current);
+        currentstep--;
 
-        currentstep.getContent().setVisible(true);
-        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
-        updateHeader(current);
+        stepList.get(currentstep).getContent().setVisible(true);
+        stepList.get(currentstep).show(true, prev, next, cancel);
+        updateHeader(currentstep);
     }
 
     @UiHandler("next")
     public void onNextClick(ClickEvent event)
     {
         // validation, don't move forward if there are any error on current step
-        if (!currentstep.onNext())
+        if (!stepList.get(currentstep).onNext())
         {
             return;
         }
 
-        int current = map.get(currentstep);
-        currentstep.getContent().setVisible(false);
+        stepList.get(currentstep).getContent().setVisible(false);
 
-        if (current == CONTACT)
-        {
-            if (saveBookingCb != null)
-            {
-                saveBookingCb.execute();
-            }
+        currentstep++;
 
-        }
-        if (current == GwtWizard.TRANSPORT)
-        {
-            if (getBookingListCb != null)
-            {
-                getBookingListCb.execute();
-            }
-
-        }
-        currentstep.onNext();
-
-        current += 1;
-
-        currentstep = getStep(current);
-
-        currentstep.getContent().setVisible(true);
-        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
-        updateHeader(current);
+        stepList.get(currentstep).getContent().setVisible(true);
+        stepList.get(currentstep).show(true, prev, next, cancel);
+        updateHeader(currentstep + 1);
 
     }
 
     public void onNextShare()
     {
-        int current = map.get(currentstep);
-        currentstep.getContent().setVisible(false);
-
-        ((ShareStep) currentstep).onNextShare();
-        current += 1;
-        currentstep = getStep(current);
-        currentstep.getContent().setVisible(true);
-        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
-        updateHeader(current);
+        throw new RuntimeException();
+        // FIXMe
+//        int current = map.get(currentstep);
+//        currentstep.getContent().setVisible(false);
+//
+//        ((ShareStep) currentstep).onNextShare();
+//        current += 1;
+//        currentstep = getStep(current);
+//        currentstep.getContent().setVisible(true);
+//        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
+//        updateHeader(current);
 
     }
 
@@ -170,24 +140,11 @@ public class Wizard extends Composite
     public void onCancelClick(ClickEvent event)
     {
         // just move to step 1
-        currentstep.getContent().setVisible(false);
-        currentstep = getStep(1);	// get first step
+        stepList.get(currentstep).getContent().setVisible(false);
+        currentstep = 0;	// get first step
 
-        currentstep.getContent().setVisible(true);
+        stepList.get(currentstep).getContent().setVisible(true);
         updateHeader(1);
-    }
-
-    private WizardStep getStep(int stepNo)
-    {
-        for (WizardStep step : map.keySet())
-        {
-            if (map.get(step).intValue() == stepNo)
-            {
-                return step;
-            }
-        }
-
-        return null;
     }
 
     private void updateHeader(int current)
@@ -209,70 +166,61 @@ public class Wizard extends Composite
 
         // show progress bar
         current = current * 100;
-        double per = current / map.size();
+        double per = current / stepList.size();
         progressBar.setWidth(Math.round(per) + "%");
     }
 
-    private void clearAll()
-    {
-        for (WizardStep step : map.keySet())
-        {
-            step.clear();
-        }
-    }
-
-    /**
-     * must called to show wizard
-     */
-    @Override
-    public Composite getWidget()
-    {
-        for (WizardStep step : map.keySet())
-        {
-            if (step instanceof TransportStep)
-            {
-                currentstep = step;
-                currentstep.getContent().setVisible(true);
-
-                updateHeader(1);
-
-                mainPanel.setVisible(true);
-                ((TransportStep) step).init(prev, next, cancel);
-
-                break;
-            }
-            if (step instanceof ConfirmationStep)
-            {
-                currentstep = step;
-                currentstep.getContent().setVisible(true);
-
-                updateHeader(1);
-
-                mainPanel.setVisible(true);
-                ((ConfirmationStep) step).init(prev, next, cancel);
-
-                break;
-            }
-            if (step instanceof ShareConfirmationStep)
-            {
-                currentstep = step;
-                currentstep.getContent().setVisible(true);
-
-                updateHeader(1);
-
-                mainPanel.setVisible(true);
-                // sendShareAcceptedCb.execute();
-
-                break;
-            }
-        }
-        return this;
-    }
+//    /**
+//     * must called to show wizard
+//     */
+//    @Override
+//    public Composite getWidget()
+//    {
+//        for (WizardStep step : map.keySet())
+//        {
+//            if (step instanceof TransportStep)
+//            {
+//                currentstep = step;
+//                currentstep.getContent().setVisible(true);
+//
+//                updateHeader(1);
+//
+//                mainPanel.setVisible(true);
+//                ((TransportStep) step).init(prev, next, cancel);
+//
+//                break;
+//            }
+//            if (step instanceof ConfirmationStep)
+//            {
+//                currentstep = step;
+//                currentstep.getContent().setVisible(true);
+//
+//                updateHeader(1);
+//
+//                mainPanel.setVisible(true);
+//                ((ConfirmationStep) step).init(prev, next, cancel);
+//
+//                break;
+//            }
+//            if (step instanceof ShareConfirmationStep)
+//            {
+//                currentstep = step;
+//                currentstep.getContent().setVisible(true);
+//
+//                updateHeader(1);
+//
+//                mainPanel.setVisible(true);
+//                // sendShareAcceptedCb.execute();
+//
+//                break;
+//            }
+//        }
+//        return this;
+//    }
 
     public void init()
     {
-        currentstep = initstep;
-        currentstep.getContent().setVisible(true);
+        stepList.get(currentstep).getContent().setVisible(true);
 
         updateHeader(1);
 
@@ -285,11 +233,6 @@ public class Wizard extends Composite
         {
             ((ConfirmationStep) initstep).init(prev, next, cancel);
         }
-//        if (initstep instanceof ShareConfirmationStep)
-//        {
-//            sendShareAcceptedCb.execute();
-//        }
-
     }
 
     public void setInitialStep(WizardStep initstep)
@@ -297,26 +240,6 @@ public class Wizard extends Composite
         this.initstep = initstep;
 
     }
-
-    public void addSaveBookingCallback(ICallback cb)
-    {
-        this.saveBookingCb = cb;
-    }
-
-    public void addGetBookingListCallback(ICallback cb)
-    {
-        this.getBookingListCb = cb;
-    }
-
-//    public void addSendShareRequestCallback(ICallback cb)
-//    {
-//        this.sendShareRequestCb = cb;
-//    }
-
-//    public void addSendShareAcceptedCallback(ICallback cb)
-//    {
-//        this.sendShareAcceptedCb = cb;
-//    }
 
     public void shareBooking(BookingInfo ref)
     {
@@ -326,7 +249,5 @@ public class Wizard extends Composite
     public void activateShareConfirmationStep(ShareConfirmationStep step)
     {
         step.init(prev, next, cancel);
-
     }
-
 }

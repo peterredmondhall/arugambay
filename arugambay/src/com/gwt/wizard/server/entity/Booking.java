@@ -24,16 +24,6 @@ public class Booking implements Serializable, Comparable<Booking>
         instanziated = new Date();
     }
 
-    public String getRef()
-    {
-        return ref;
-    }
-
-    public void setRef(String ref)
-    {
-        this.ref = ref;
-    }
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -53,6 +43,9 @@ public class Booking implements Serializable, Comparable<Booking>
     private String ref;
     private String client;
     private Boolean shareWanted;
+    private Date instanziated;
+    private OrderType orderType;
+    private Long parentId;
 
     public Boolean getShareWanted()
     {
@@ -64,19 +57,15 @@ public class Booking implements Serializable, Comparable<Booking>
         this.shareWanted = shareWanted;
     }
 
-    public String getParentRef()
+    public Long getParentId()
     {
-        return parentRef;
+        return parentId;
     }
 
-    public void setParentRef(String parentRef)
+    public void setParentId(Long parentId)
     {
-        this.parentRef = parentRef;
+        this.parentId = parentId;
     }
-
-    private Date instanziated;
-    private OrderType orderType;
-    private String parentRef;
 
     public OrderType getOrderType()
     {
@@ -201,7 +190,7 @@ public class Booking implements Serializable, Comparable<Booking>
         booking.setRequirements(bookingInfo.getRequirements());
         booking.setClient(client);
         booking.setShareWanted(bookingInfo.getShareWanted());
-        booking.setParentRef(bookingInfo.getParentRef());
+        booking.setParentId(bookingInfo.getParentId());
         booking.setOrderType(bookingInfo.getOrderType() != null ? bookingInfo.getOrderType() : OrderType.BOOKING);
 
         return booking;
@@ -210,6 +199,7 @@ public class Booking implements Serializable, Comparable<Booking>
     public BookingInfo getBookingInfo()
     {
         BookingInfo bookingInfo = new BookingInfo();
+        bookingInfo.setId(key.getId());
         bookingInfo.setDate(getDate());
         bookingInfo.setEmail(getEmail());
         bookingInfo.setName(getName());
@@ -218,8 +208,7 @@ public class Booking implements Serializable, Comparable<Booking>
         bookingInfo.setPax(getPax());
         bookingInfo.setSurfboards(getSurfboards());
         bookingInfo.setRequirements(getRequirements());
-        bookingInfo.setRef(getRef());
-        bookingInfo.setParentRef(getParentRef());
+        bookingInfo.setParentId(getParentId());
         bookingInfo.setStatus(getStatus());
         bookingInfo.setOrderType(getOrderType());
         bookingInfo.setShareWanted(getShareWanted());
@@ -244,6 +233,29 @@ public class Booking implements Serializable, Comparable<Booking>
     public void setLandingTime(String landingTime)
     {
         this.landingTime = landingTime;
+    }
+
+    // deprecated
+    public String getRef()
+    {
+        return ref;
+    }
+
+    public void setRef(String ref)
+    {
+        this.ref = ref;
+    }
+
+    private String parentRef;
+
+    public String getParentRef()
+    {
+        return parentRef;
+    }
+
+    public void setParentRef(String parentRef)
+    {
+        this.parentRef = parentRef;
     }
 
     @Override

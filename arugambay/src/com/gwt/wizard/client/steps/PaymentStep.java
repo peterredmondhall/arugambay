@@ -2,6 +2,7 @@ package com.gwt.wizard.client.steps;
 
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.ConfirmationStepUi;
@@ -44,6 +45,12 @@ public class PaymentStep implements WizardStep
     public void clear()
     {
 
+    }
+
+    @Override
+    public void show(boolean visible, Button prev, Button next, Button cancel)
+    {
+        ui.show(visible, prev, next, cancel);
     }
 
 }

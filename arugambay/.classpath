@@ -4,7 +4,6 @@
 	<classpathentry kind="src" output="test-classes" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-1.3.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/selenium/apache-mime4j-0.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/selenium/bsh-1.3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/selenium/cglib-nodep-2.1_3.jar"/>
@@ -59,5 +58,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stripe-java-latest.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-stripe-0.2.1-20140512.155055-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-2.1.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.3.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

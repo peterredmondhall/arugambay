@@ -1,5 +1,7 @@
 package com.gwt.wizard.client.steps.ui;
 
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -10,11 +12,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwt.wizard.client.core.Showable;
-import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
 
-public class SummaryStepUi extends Composite implements Showable
+public class SummaryStepUi extends Composite
 {
     private static SummaryStepUiUiBinder uiBinder = GWT.create(SummaryStepUiUiBinder.class);
     private static DateTimeFormat sdf = DateTimeFormat.getFormat("dd.MM.yyyy");
@@ -29,45 +29,44 @@ public class SummaryStepUi extends Composite implements Showable
     @UiField
     Label labelEmail, labelName, labelSurfboards, labelPax, labelFlightNo, labelLandingTime, labelDate, labelPrice, labelRequirements, labelInterestedSharing;
 
-    @UiField
-    Paypal paypal;
+//    @UiField
+//    Paypal paypal;
 
     @UiField
-    Label pay1, pay2;
+    Label pay1;
 
     public SummaryStepUi()
     {
         initWidget(uiBinder.createAndBindUi(this));
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
-        paypal.setUrl();
+        // paypal.setUrl();
         // stripe1.setVisible(true);
     }
 
-    @Override
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
 
-        labelDate.setText(sdf.format(Wizard.bookingInfo.getDate()));
-        labelFlightNo.setText(Wizard.bookingInfo.getFlightNo());
-        labelLandingTime.setText(Wizard.bookingInfo.getLandingTime());
+        labelDate.setText(sdf.format(BOOKINGINFO.getDate()));
+        labelFlightNo.setText(BOOKINGINFO.getFlightNo());
+        labelLandingTime.setText(BOOKINGINFO.getLandingTime());
 
-        labelPax.setText(Integer.toString(Wizard.bookingInfo.getPax()));
-        labelSurfboards.setText(Integer.toString(Wizard.bookingInfo.getSurfboards()));
-        labelEmail.setText(Wizard.bookingInfo.getEmail());
-        labelName.setText(Wizard.bookingInfo.getName());
-        labelRequirements.setText(Wizard.bookingInfo.getRequirements());
+        labelPax.setText(Integer.toString(BOOKINGINFO.getPax()));
+        labelSurfboards.setText(Integer.toString(BOOKINGINFO.getSurfboards()));
+        labelEmail.setText(BOOKINGINFO.getEmail());
+        labelName.setText(BOOKINGINFO.getName());
+        labelRequirements.setText(BOOKINGINFO.getRequirements());
         labelPrice.setText("US $160");
-        labelInterestedSharing.setText(Wizard.bookingInfo.getShareWanted() ? "yes please" : "no, thanks");
+        labelInterestedSharing.setText(BOOKINGINFO.getShareWanted() ? "yes please" : "no, thanks");
         prev.setEnabled(true);
 
-        boolean shared = Wizard.bookingInfo.getOrderType() == OrderType.SHARE;
+        boolean shared = BOOKINGINFO.getOrderType() == OrderType.SHARE;
 
         pay1.setVisible(!shared);
-        pay2.setVisible(!shared);
+        // pay2.setVisible(!shared);
         labelPrice.setVisible(!shared);
-        paypal.setVisible(!shared);
+        // paypal.setVisible(!shared);
         next.setVisible(true);
     }
 

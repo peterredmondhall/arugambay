@@ -18,7 +18,17 @@ public class RouteInfo implements Serializable
     private String end;
     private PickupType pickupType;
     private float price;
-    private byte[] image;
+    private Long image;
+
+    public Long getImage()
+    {
+        return image;
+    }
+
+    public void setImage(Long image)
+    {
+        this.image = image;
+    }
 
     public Long getId()
     {
@@ -68,16 +78,6 @@ public class RouteInfo implements Serializable
     public void setPrice(float price)
     {
         this.price = price;
-    }
-
-    public byte[] getImage()
-    {
-        return image;
-    }
-
-    public void setImage(byte[] image)
-    {
-        this.image = image;
     }
 
 }

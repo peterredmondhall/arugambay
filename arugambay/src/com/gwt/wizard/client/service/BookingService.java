@@ -15,7 +15,7 @@ import com.gwt.wizard.shared.model.StatInfo;
 @RemoteServiceRelativePath("service")
 public interface BookingService extends RemoteService
 {
-    BookingInfo save(BookingInfo model) throws IllegalArgumentException;
+    BookingInfo addBooking(BookingInfo model) throws IllegalArgumentException;
 
     BookingInfo sendShareRequest(BookingInfo bookingInfo);
 
@@ -23,17 +23,19 @@ public interface BookingService extends RemoteService
 
     Boolean getUser() throws IllegalArgumentException;
 
-    Boolean deleteRoute(Long id) throws IllegalArgumentException;
+    List<RouteInfo> getRoutes() throws IllegalArgumentException;
 
-    Boolean editRoute(Long id, RouteInfo placeInfo) throws IllegalArgumentException;
+    Boolean deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException;
+
+    Boolean editRoute(RouteInfo placeInfo) throws IllegalArgumentException;
 
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
-    List<BookingInfo> getBookingsForTour(String ref) throws IllegalArgumentException;
+    List<BookingInfo> getBookingsForTour(Long id) throws IllegalArgumentException;
 
     BookingInfo getBookingForTransaction(String ref) throws IllegalArgumentException;
 
-    List<BookingInfo> getBookingsForShare(String ref) throws IllegalArgumentException;
+    List<BookingInfo> getBookingsForShare(Long id) throws IllegalArgumentException;
 
     ProfilInfo getPaypalProfil() throws IllegalArgumentException;
 

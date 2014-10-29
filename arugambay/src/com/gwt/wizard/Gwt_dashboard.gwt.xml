@@ -16,7 +16,9 @@
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
-
+  <inherits name="com.google.common.collect.Collect"/>
+  <!-- Load dinamically predefined styles in the library when the application starts -->
+  
   <!-- Other module inherits                                      -->
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.gwt.wizard.client.GwtDashboard'/>

@@ -1,5 +1,7 @@
 package com.gwt.wizard.client;
 
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -29,7 +31,7 @@ import com.gwt.wizard.shared.model.StatInfo;
 public class GwtWizard implements EntryPoint
 {
 
-    private final BookingServiceAsync service = GWT.create(BookingService.class);
+    public static final BookingServiceAsync SERVICE = GWT.create(BookingService.class);
     public static ClientMessages MESSAGES = GWT.create(ClientMessages.class);
 
     private TransportStep transportStep;
@@ -39,8 +41,6 @@ public class GwtWizard implements EntryPoint
     private SummaryStep summaryStep;
     private ConfirmationStep confirmationStep;
     private ShareConfirmationStep shareConfirmationStep;
-
-    BookingInfo bookingInfo = new BookingInfo();
 
     public static final int TRANSPORT = 1;
     public static final int SHARE = 2;
@@ -72,19 +72,19 @@ public class GwtWizard implements EntryPoint
         collectStats();
 
         String transaction = Window.Location.getParameter("tx");
-        String shareRef = Window.Location.getParameter("share");
+        String shareId = Window.Location.getParameter("share");
         if (transaction != null)
         {
             handleTransaction(transaction);
         }
-        else if (shareRef != null)
+        else if (shareId != null)
         {
-            handleShareAccepted(shareRef);
+            handleShareAccepted(Long.parseLong(shareId));
         }
         else
         {
-            List<WizardStep> l = ImmutableList.of(transportStep, creditCardStep, confirmationStep);
-            // List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, creditCardStep, confirmationStep);
+            // List<WizardStep> l = ImmutableList.of(transportStep, creditCardStep, confirmationStep);
+            List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, creditCardStep, confirmationStep);
             completeSetup(transportStep, l);
         }
 
@@ -96,7 +96,7 @@ public class GwtWizard implements EntryPoint
         String country = Window.Location.getParameter("X-AppEngine-Country");
         statInfo.setCountry(country);
 
-        service.sendStat(statInfo, new AsyncCallback<Void>()
+        SERVICE.sendStat(statInfo, new AsyncCallback<Void>()
         {
 
             @Override
@@ -125,7 +125,7 @@ public class GwtWizard implements EntryPoint
 
     private void handleTransaction(String transaction)
     {
-        service.getBookingForTransaction(transaction, new AsyncCallback<BookingInfo>()
+        SERVICE.getBookingForTransaction(transaction, new AsyncCallback<BookingInfo>()
         {
 
             @Override
@@ -137,8 +137,8 @@ public class GwtWizard implements EntryPoint
             @Override
             public void onSuccess(BookingInfo bi)
             {
-                bookingInfo = bi;
-                confirmationStep.setBookingInfo(bookingInfo);
+                BOOKINGINFO = bi;
+                confirmationStep.setBookingInfo(Wizard.BOOKINGINFO);
                 completeSetup(confirmationStep, ImmutableList.of((WizardStep) confirmationStep));
 
             }
@@ -146,9 +146,9 @@ public class GwtWizard implements EntryPoint
 
     }
 
-    private void handleShareAccepted(String shareRef)
+    private void handleShareAccepted(Long shareId)
     {
-        service.getBookingsForShare(shareRef, new AsyncCallback<List<BookingInfo>>()
+        SERVICE.getBookingsForShare(shareId, new AsyncCallback<List<BookingInfo>>()
         {
 
             @Override
@@ -161,7 +161,7 @@ public class GwtWizard implements EntryPoint
             public void onSuccess(List<BookingInfo> sharedBookingList)
             {
                 // sharers = sharedBookingList;
-                bookingInfo = sharedBookingList.get(0);
+                BOOKINGINFO = sharedBookingList.get(0);
                 shareConfirmationStep.setBookingInfo(sharedBookingList);
                 completeSetup(shareConfirmationStep, ImmutableList.of((WizardStep) shareConfirmationStep));
             }
@@ -181,54 +181,13 @@ public class GwtWizard implements EntryPoint
         wizard.setHeight("500px");
         wizard.setWidth("800px");
 
-        wizard.addSaveBookingCallback(new ICallback()
-        {
-            @Override
-            public void execute()
-            {
-                service.save(bookingInfo, new AsyncCallback<BookingInfo>()
-                {
-                    @Override
-                    public void onSuccess(BookingInfo result)
-                    {
-                        bookingInfo.setRef(result.getRef());
-                    }
-
-                    @Override
-                    public void onFailure(Throwable caught)
-                    {
-                    }
-                });
-            }
-        });
-
-        wizard.addGetBookingListCallback(new ICallback()
-        {
-            @Override
-            public void execute()
-            {
-                service.getBookingsForTour(bookingInfo.getRef(), new AsyncCallback<List<BookingInfo>>()
-                {
-                    @Override
-                    public void onSuccess(List<BookingInfo> list)
-                    {
-                        shareStep.setBookingList(list, thisGwtWizard);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable caught)
-                    {
-                    }
-                });
-            }
-        });
-
         wizard.init();
         RootPanel.get().add(wizard);
     }
 
     public void shareBooking(BookingInfo bookingToShare)
     {
+        // FIXME
         wizard.onNextShare();
 
     }

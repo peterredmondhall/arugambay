@@ -18,7 +18,7 @@ public class PdfUtilTest
     {
         Path file = Paths.get("xx.pdf");
         BookingInfo bookingInfo = new BookingInfo();
-        bookingInfo.setRef("Ref1234");
+        bookingInfo.setId(1234L);
         bookingInfo.setDate(new Date());
         bookingInfo.setName("Steven Moore");
         bookingInfo.setFlightNo("FL200");

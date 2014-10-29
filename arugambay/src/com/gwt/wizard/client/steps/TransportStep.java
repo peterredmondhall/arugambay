@@ -37,6 +37,7 @@ public class TransportStep implements WizardStep
     @Override
     public Boolean onNext()
     {
+
         return true;
     }
 
@@ -51,4 +52,11 @@ public class TransportStep implements WizardStep
     {
 
     }
+
+    @Override
+    public void show(boolean visible, Button prev, Button next, Button cancel)
+    {
+        ui.show(visible, prev, next, cancel);
+    }
+
 }

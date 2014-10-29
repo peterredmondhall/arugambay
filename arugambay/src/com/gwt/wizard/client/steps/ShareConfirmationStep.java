@@ -58,4 +58,11 @@ public class ShareConfirmationStep implements WizardStep
         ui.setBookingInfo(bookingInfo);
 
     }
+
+    @Override
+    public void show(boolean visible, Button prev, Button next, Button cancel)
+    {
+        ui.show(visible, prev, next, cancel);
+    }
+
 }

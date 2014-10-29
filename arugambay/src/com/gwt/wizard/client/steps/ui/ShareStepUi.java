@@ -1,5 +1,7 @@
 package com.gwt.wizard.client.steps.ui;
 
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,18 +23,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.gwt.wizard.client.GwtWizard;
-import com.gwt.wizard.client.core.Showable;
-import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
-public class ShareStepUi extends Composite implements Showable
+public class ShareStepUi extends Composite
 {
 
     private static ShareStepUiUiBinder uiBinder = GWT.create(ShareStepUiUiBinder.class);
-
-    // private static DateTimeFormat sdf = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     interface ShareStepUiUiBinder extends UiBinder<Widget, ShareStepUi>
     {
@@ -50,8 +47,7 @@ public class ShareStepUi extends Composite implements Showable
     private CellTable<BookingInfo> cellTable;
     private List<BookingInfo> bookingList;
 
-    private Map<String, BookingInfo> shareMap;
-    private GwtWizard gwtWizard;
+    private Map<Long, BookingInfo> shareMap;
 
     public ShareStepUi()
     {
@@ -60,10 +56,9 @@ public class ShareStepUi extends Composite implements Showable
         noSharePanel.setVisible(false);
     }
 
-    public void setBookingList(List<BookingInfo> bookingList, GwtWizard gwtWizard)
+    public void setBookingList(List<BookingInfo> list)
     {
-        this.bookingList = bookingList;
-        this.gwtWizard = gwtWizard;
+        this.bookingList = list;
         boolean noShare = bookingList.size() == 0;
 
         showShareNoShare();
@@ -74,7 +69,7 @@ public class ShareStepUi extends Composite implements Showable
             shareMap = new HashMap<>();
             for (BookingInfo bookingInfo : bookingList)
             {
-                shareMap.put(bookingInfo.getRef(), bookingInfo);
+                shareMap.put(bookingInfo.getId(), bookingInfo);
             }
             fillTable();
             scrollPanel.add(cellTable);
@@ -129,15 +124,17 @@ public class ShareStepUi extends Composite implements Showable
                 BookingInfo selected = selectionModel.getSelectedObject();
                 if (selected != null)
                 {
-                    BookingInfo bookingToShare = shareMap.get(selected.getRef());
+                    BookingInfo bookingToShare = shareMap.get(selected.getId());
 
-                    Wizard.bookingInfo.setDate(bookingToShare.getDate());
-                    Wizard.bookingInfo.setFlightNo(bookingToShare.getFlightNo());
-                    Wizard.bookingInfo.setLandingTime(bookingToShare.getLandingTime());
-                    Wizard.bookingInfo.setOrderType(OrderType.SHARE);
-                    Wizard.bookingInfo.setParentRef(bookingToShare.getRef());
-                    gwtWizard.shareBooking(bookingToShare);
-                    Wizard.bookingInfo.setOrderType(OrderType.SHARE);
+                    BOOKINGINFO.setDate(bookingToShare.getDate());
+                    BOOKINGINFO.setFlightNo(bookingToShare.getFlightNo());
+                    BOOKINGINFO.setLandingTime(bookingToShare.getLandingTime());
+                    BOOKINGINFO.setOrderType(OrderType.SHARE);
+                    BOOKINGINFO.setParentId(bookingToShare.getId());
+                    if (true)
+                        throw new RuntimeException();
+                    // gwtWizard.shareBooking(bookingToShare);
+                    BOOKINGINFO.setOrderType(OrderType.SHARE);
 
                     scrollPanel.remove(cellTable);
 
@@ -154,7 +151,6 @@ public class ShareStepUi extends Composite implements Showable
 
     }
 
-    @Override
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         showShareNoShare();

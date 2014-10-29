@@ -67,7 +67,7 @@ public class BookingUtil
     {
         String html = getTemplate(file);
         html = toConfirmationEmailHtml(bookingInfo, html);
-        html = html.replace("AGREE_SHARE_LINK", profil.getTaxisurfUrl() + "?share=" + bookingInfo.getRef());
+        html = html.replace("AGREE_SHARE_LINK", profil.getTaxisurfUrl() + "?share=" + bookingInfo.getId());
         return html;
     }
 

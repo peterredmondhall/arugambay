@@ -1,5 +1,7 @@
 package com.gwt.wizard.client.steps.ui;
 
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
@@ -18,11 +20,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
-import com.gwt.wizard.client.core.Showable;
-import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
 
-public class ContactStepUi extends Composite implements Showable
+public class ContactStepUi extends Composite
 {
     public enum ErrorMsg
     {
@@ -41,6 +41,7 @@ public class ContactStepUi extends Composite implements Showable
     {
     }
 
+    boolean test = true;
     @UiField
     HTMLPanel mainPanel;
 
@@ -77,6 +78,18 @@ public class ContactStepUi extends Composite implements Showable
         }
         dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy")));
         checkboxWanttoShare.setValue(true);
+
+        if (test)
+        {
+            dateBox.setValue(new Date());
+            flightLandingTime.setValue("12:00");
+            flightNo.setText("MH111");
+            firstName.setText("Peter");
+            lastName.setText("Hall");
+            email.setText("info@taxigang.com");
+            email2.setText("info@taxigang.com");
+
+        }
     }
 
     public Date getDate()
@@ -167,7 +180,6 @@ public class ContactStepUi extends Composite implements Showable
         }
     }
 
-    @Override
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         mainPanel.setVisible(visible);
@@ -176,7 +188,7 @@ public class ContactStepUi extends Composite implements Showable
         next.setVisible(true);
         prev.setEnabled(true);
 
-        boolean sharing = Wizard.bookingInfo.getOrderType() == OrderType.SHARE;
+        boolean sharing = BOOKINGINFO.getOrderType() == OrderType.SHARE;
 
         checkboxWanttoShare.setVisible(!sharing);
         labelWanttoShare.setVisible(!sharing);
@@ -186,7 +198,7 @@ public class ContactStepUi extends Composite implements Showable
         dateBox.setEnabled(!sharing);
         if (sharing)
         {
-            dateBox.setValue(Wizard.bookingInfo.getDate());
+            dateBox.setValue(BOOKINGINFO.getDate());
         }
     }
 

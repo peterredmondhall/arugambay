@@ -1,12 +1,13 @@
 package com.gwt.wizard.client.steps;
 
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
@@ -40,9 +41,9 @@ public class SummaryStep implements WizardStep
     @Override
     public Boolean onNext()
     {
-        if (Wizard.bookingInfo.getOrderType() == OrderType.SHARE)
+        if (BOOKINGINFO.getOrderType() == OrderType.SHARE)
         {
-            service.sendShareRequest(Wizard.bookingInfo, new AsyncCallback<BookingInfo>()
+            service.sendShareRequest(BOOKINGINFO, new AsyncCallback<BookingInfo>()
             {
 
                 @Override
@@ -54,7 +55,7 @@ public class SummaryStep implements WizardStep
                 @Override
                 public void onSuccess(BookingInfo bi)
                 {
-                    Wizard.bookingInfo = bi;
+                    BOOKINGINFO = bi;
                 }
             });
         }
@@ -73,4 +74,11 @@ public class SummaryStep implements WizardStep
     {
 
     }
+
+    @Override
+    public void show(boolean visible, Button prev, Button next, Button cancel)
+    {
+        ui.show(visible, prev, next, cancel);
+    }
+
 }

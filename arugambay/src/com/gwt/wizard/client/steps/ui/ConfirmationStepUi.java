@@ -1,5 +1,7 @@
 package com.gwt.wizard.client.steps.ui;
 
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,12 +11,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwt.wizard.client.core.Showable;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
-public class ConfirmationStepUi extends Composite implements Showable
+public class ConfirmationStepUi extends Composite
 {
 
     private static ConfirmationStepUiUiBinder uiBinder = GWT.create(ConfirmationStepUiUiBinder.class);
@@ -34,16 +35,15 @@ public class ConfirmationStepUi extends Composite implements Showable
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
     }
 
-    @Override
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
         next.setVisible(false);
         prev.setVisible(false);
-        cancel.setVisible(false);
-
+        cancel.setVisible(true);
         cancel.setText("New Order");
+        setBookingInfo(BOOKINGINFO);
     }
 
     @Override

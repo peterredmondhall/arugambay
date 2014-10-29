@@ -7,9 +7,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwt.wizard.client.core.Showable;
 
-public class TransportStepUi extends Composite implements Showable
+public class TransportStepUi extends Composite
 {
     public static final String WIDTH = "120px";
 
@@ -46,7 +45,6 @@ public class TransportStepUi extends Composite implements Showable
         super.setWidth(width);
     }
 
-    @Override
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         next.setVisible(true);

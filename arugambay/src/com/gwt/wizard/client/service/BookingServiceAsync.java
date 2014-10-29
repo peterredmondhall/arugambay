@@ -13,26 +13,28 @@ import com.gwt.wizard.shared.model.StatInfo;
  */
 public interface BookingServiceAsync
 {
-    void save(BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback)
+    void addBooking(BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback)
             throws IllegalArgumentException;
 
     void sendShareRequest(BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback);
 
     // void sendShareAccepted(List<BookingInfo> bookingInfo, AsyncCallback<BookingInfo> callback);
 
-    void deleteRoute(Long id, AsyncCallback<Boolean> callback)
+    void getRoutes(AsyncCallback<List<RouteInfo>> callback);
+
+    void deleteRoute(RouteInfo placeInfo, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
-    void editRoute(Long id, RouteInfo placeInfo, AsyncCallback<Boolean> callback)
+    void editRoute(RouteInfo placeInfo, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
     void getBookings(AsyncCallback<List<BookingInfo>> callback);
 
-    void getBookingsForTour(String ref, AsyncCallback<List<BookingInfo>> callback);
+    void getBookingsForTour(Long id, AsyncCallback<List<BookingInfo>> callback);
 
     void getBookingForTransaction(String ref, AsyncCallback<BookingInfo> callback);
 
-    void getBookingsForShare(String ref, AsyncCallback<List<BookingInfo>> callback);
+    void getBookingsForShare(Long id, AsyncCallback<List<BookingInfo>> callback);
 
     void getUser(AsyncCallback<Boolean> callback);
 

@@ -22,28 +22,35 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         BookingService
 {
     private static final Logger logger = Logger.getLogger(BookingServiceImpl.class.getName());
-    public final String WIZARD_DATA_ENTITY = "wizard-data";
-    public final String PLACES_DATA_ENTITY = "places-data";
+//    public final String WIZARD_DATA_ENTITY = "wizard-data";
+//    public final String PLACES_DATA_ENTITY = "places-data";
 
     private final BookingServiceManager bookingServiceManager = new BookingServiceManager();
+    private final RouteServiceManager routeServiceManager = new RouteServiceManager();
     private final StripePayment stripePayment = new StripePayment();
 
     @Override
-    public BookingInfo save(BookingInfo bookingInfo) throws IllegalArgumentException
+    public BookingInfo addBooking(BookingInfo bookingInfo) throws IllegalArgumentException
     {
         return bookingServiceManager.saveWithClient(bookingInfo, getClient());
     }
 
     @Override
-    public Boolean deleteRoute(Long id) throws IllegalArgumentException
+    public Boolean deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException
     {
-        return bookingServiceManager.deleteRoute(id);
+        return routeServiceManager.deleteRoute(placeInfo);
     }
 
     @Override
-    public Boolean editRoute(Long id, RouteInfo placeInfo) throws IllegalArgumentException
+    public Boolean editRoute(RouteInfo placeInfo) throws IllegalArgumentException
     {
-        return bookingServiceManager.editRoute(id, placeInfo);
+        return routeServiceManager.editRoute(placeInfo);
+    }
+
+    @Override
+    public List<RouteInfo> getRoutes() throws IllegalArgumentException
+    {
+        return routeServiceManager.getRoutes();
     }
 
     @Override
@@ -104,13 +111,13 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public List<BookingInfo> getBookingsForTour(String ref) throws IllegalArgumentException
+    public List<BookingInfo> getBookingsForTour(Long id) throws IllegalArgumentException
     {
-        return bookingServiceManager.getBookingsForTour(ref);
+        return bookingServiceManager.getBookingsForTour(id);
     }
 
     @Override
-    public List<BookingInfo> getBookingsForShare(String ref) throws IllegalArgumentException
+    public List<BookingInfo> getBookingsForShare(Long ref) throws IllegalArgumentException
     {
         // TODO Auto-generated method stub
         List<BookingInfo> list = bookingServiceManager.getBookingsForShare(ref);
@@ -128,7 +135,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public BookingInfo sendShareRequest(BookingInfo bookingInfo)
     {
         Profil profil = bookingServiceManager.getProfil();
-        BookingInfo parentBooking = bookingServiceManager.getBookingsForRef(bookingInfo.getParentRef());
+        BookingInfo parentBooking = bookingServiceManager.getBooking(bookingInfo.getParentId());
         Mailer.sendShareRequest(parentBooking, bookingInfo, profil);
         return bookingInfo;
     }
@@ -149,4 +156,5 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     {
         bookingServiceManager.sendStat(statInfo);
     }
+
 }

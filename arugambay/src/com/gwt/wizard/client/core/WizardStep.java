@@ -1,5 +1,6 @@
 package com.gwt.wizard.client.core;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 
 public interface WizardStep
@@ -14,5 +15,7 @@ public interface WizardStep
     Boolean onBack();
 
     void clear();
+
+    void show(boolean visible, Button prev, Button next, Button cancel);
 
 }

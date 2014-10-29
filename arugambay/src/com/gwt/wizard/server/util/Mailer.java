@@ -47,7 +47,7 @@ public class Mailer
         String emailMsg = BookingUtil.toEmailText(bookingInfo);
         String html = "error";
         html = BookingUtil.toConfirmationEmailHtml(bookingInfo, new File("template/confirmation.html"));
-        html = html.replace("INSERT_ORDERFORM", profil.getTaxisurfUrl() + "/orderform?order=" + bookingInfo.getRef());
+        html = html.replace("INSERT_ORDERFORM", profil.getTaxisurfUrl() + "/orderform?order=" + bookingInfo.getId());
         // byte[] pdfData = PdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
         byte[] pdfData = PdfUtil.get();
         String email = bookingInfo.getEmail();

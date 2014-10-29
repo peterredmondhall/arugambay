@@ -15,7 +15,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -57,17 +56,6 @@ public class BookingManagementVeiw extends Composite
     {
         initWidget(uiBinder.createAndBindUi(this));
         fetchBookings();
-        Timer timer = new Timer()
-        {
-            @Override
-            public void run()
-            {
-                // Setting up bookingManagementPanel
-                setBookingCellTable();
-            }
-        };
-        // Execute the timer to expire 1/2 seconds in the future
-        timer.schedule(500);
 
     }
 
@@ -86,6 +74,7 @@ public class BookingManagementVeiw extends Composite
                         BOOKINGS.add(booking);
                     }
                 }
+                setCellTable();
             }
 
             @Override
@@ -96,7 +85,7 @@ public class BookingManagementVeiw extends Composite
         });
     }
 
-    private void setBookingCellTable()
+    private void setCellTable()
     {
         bookingManagementTable.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<BookingInfo>createCheckboxManager());

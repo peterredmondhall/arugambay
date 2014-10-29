@@ -1,7 +1,8 @@
-package com.gwt.wizard.server.jpa;
+package com.gwt.wizard.server;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -14,14 +15,12 @@ import org.junit.Test;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.gwt.wizard.server.BookingServiceManager;
-import com.gwt.wizard.server.PaypalPaymentChecker;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
-public class LocalDatastoreTest
+public class BookingServiceManagerTest
 {
 
     private final LocalServiceTestHelper helper =
@@ -115,10 +114,10 @@ public class LocalDatastoreTest
 
     private void create_a_shared_booking()
     {
-        List<BookingInfo> list = bs.getBookingsForTour("ref");
+        List<BookingInfo> list = bs.getBookings();
         BookingInfo parentBookingInfo = list.get(0);
         BookingInfo bi = new BookingInfo();
-        bi.setParentRef(parentBookingInfo.getRef());
+        bi.setParentId(parentBookingInfo.getId());
         bi.setDate(parentBookingInfo.getDate());
         bi.setFlightNo(parentBookingInfo.getFlightNo());
         bi.setLandingTime(parentBookingInfo.getLandingTime());
@@ -137,10 +136,10 @@ public class LocalDatastoreTest
         {
             if (bookingInfo.getOrderType().equals(OrderType.SHARE))
             {
-                list = bs.getBookingsForShare(bookingInfo.getRef());
+                list = bs.getBookingsForShare(bookingInfo.getId());
                 assertEquals(2, list.size());
-                assertEquals(parentBookingInfo.getRef(), list.get(0).getRef());
-                assertEquals(bookingInfo.getRef(), list.get(1).getRef());
+                assertEquals(parentBookingInfo.getId(), list.get(0).getId());
+                assertEquals(bookingInfo.getId(), list.get(1).getId());
                 tested = true;
                 break;
             }
@@ -156,7 +155,7 @@ public class LocalDatastoreTest
         BookingInfo bi = getStandardBookingInfo();
         bi.setDate(new DateTime().plusYears(20).toDate());
         bs.saveWithClient(bi, "client");
-        List<BookingInfo> list = bs.getBookingsForTour("ref");
+        List<BookingInfo> list = bs.getBookingsForTour(1234L);
         // bookin is not paid for
         assertEquals(0, list.size());
 
@@ -164,7 +163,7 @@ public class LocalDatastoreTest
         bi.setDate(new DateTime().plusYears(20).toDate());
         bi.setOrderType(OrderType.SHARE);
         bs.saveWithClient(bi, "client");
-        list = bs.getBookingsForTour("ref");
+        list = bs.getBookingsForTour(1234L);
         // bookin is not BOOKING
         assertEquals(0, list.size());
 
@@ -172,7 +171,7 @@ public class LocalDatastoreTest
         bi = bs.getBookingForTransactionWithClient(bs.getProfil(), "client", OrderStatus.PAID);
         List<BookingInfo> bookings = bs.getBookings();
         assertEquals(OrderStatus.PAID, bookings.get(0).getStatus());
-        list = bs.getBookingsForTour("ref");
+        list = bs.getBookingsForTour(1234L);
         // booking is in the past
         assertEquals(1, list.size());
 
@@ -204,10 +203,10 @@ public class LocalDatastoreTest
     {
         create_a_booking();
         confirm_payment();
-        List<BookingInfo> list = bs.getBookingsForTour("ref");
+        List<BookingInfo> list = bs.getBookingsForTour(1234L);
         assertEquals(1, list.size());
         Date date = list.get(0).getDate();
-        assertEquals(false, date instanceof org.datanucleus.store.types.sco.simple.Date);
+        assertEquals(true, date instanceof Serializable);
         System.out.println(date);
 
     }

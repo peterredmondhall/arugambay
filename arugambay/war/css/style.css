@@ -256,6 +256,16 @@ td.datePickerMonth {
 	width: 300px;
 }
 
+.expiry {
+	display: inline;
+	float: left;
+	font-size: 14px;
+	margin-top: 2px;
+	text-align: right;
+	margin-right: 15px;
+	width: 82x;
+}
+
 .rbPanel {
 	display: inline;
 	font-size: 14px;

@@ -10,13 +10,29 @@ public class BookingInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
+    public BookingInfo()
+    {
+        System.out.println("");
+    }
+
     private Date date;
 
     private String name;
     private String email;
-    private String ref;
-    private String parentRef;
+    private Long id;
+
+    private Long parentId;
     private Boolean shareWanted;
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 
     public Boolean getShareWanted()
     {
@@ -28,14 +44,14 @@ public class BookingInfo implements Serializable
         this.shareWanted = shareWanted;
     }
 
-    public String getParentRef()
+    public Long getParentId()
     {
-        return parentRef;
+        return parentId;
     }
 
-    public void setParentRef(String parentRef)
+    public void setParentId(Long parentId)
     {
-        this.parentRef = parentRef;
+        this.parentId = parentId;
     }
 
     private OrderStatus status;
@@ -59,16 +75,6 @@ public class BookingInfo implements Serializable
     public void setStatus(OrderStatus status)
     {
         this.status = status;
-    }
-
-    public String getRef()
-    {
-        return ref;
-    }
-
-    public void setRef(String ref)
-    {
-        this.ref = ref;
     }
 
     private String flightNo;
@@ -160,7 +166,8 @@ public class BookingInfo implements Serializable
 
     public String getOrderNo()
     {
-        return ref.substring(3, 7);
+        int len = id.toString().length();
+        return id.toString().substring(len - 5, len - 1);
     }
 
     public String getPaidAmt()
