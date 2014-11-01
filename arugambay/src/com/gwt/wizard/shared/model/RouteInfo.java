@@ -12,10 +12,28 @@ public class RouteInfo implements Serializable
         AIRPORT
     }
 
+    public enum SaveMode
+    {
+        UPDATE,
+        ADD
+    };
+
     private Long id;
 
     private String start;
     private String end;
+    private String description;
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
     private PickupType pickupType;
     private float price;
     private Long image;
@@ -78,6 +96,11 @@ public class RouteInfo implements Serializable
     public void setPrice(float price)
     {
         this.price = price;
+    }
+
+    public String getKey()
+    {
+        return getStart() + " to " + getEnd();
     }
 
 }

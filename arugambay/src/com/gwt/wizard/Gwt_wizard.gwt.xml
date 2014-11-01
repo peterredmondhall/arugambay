@@ -20,6 +20,7 @@
   <inherits name="com.arcbees.stripe.GwtStripe"/>                        
   <inherits name="com.google.maps.gwt.GoogleMaps" />
   <inherits name="com.google.common.collect.Collect"/>
+  
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.gwt.wizard.client.GwtWizard'/>
 

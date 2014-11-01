@@ -42,9 +42,9 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public Boolean editRoute(RouteInfo placeInfo) throws IllegalArgumentException
+    public Boolean saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
     {
-        return routeServiceManager.editRoute(placeInfo);
+        return routeServiceManager.saveRoute(placeInfo, mode);
     }
 
     @Override

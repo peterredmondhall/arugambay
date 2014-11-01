@@ -31,7 +31,6 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -45,6 +44,7 @@ import com.google.gwt.view.client.SelectionModel;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 
 public class RouteManagementVeiw extends Composite
 {
@@ -125,33 +125,33 @@ public class RouteManagementVeiw extends Composite
     private void setRouteManagementPanel()
     {
         setDeleteRouteBtn();
-        setEditRouteBtn();
-        setAddPlaceBtn();
+        setUpdateRouteBtn();
+        setAddRouteBtn();
     }
 
-    private void setAddPlaceBtn()
+    private void setAddRouteBtn()
     {
         addPlaceBtn = new Button();
         addPlaceBtn.setStyleName("btn btn-primary");
         addPlaceBtn.setText("Add");
-        addPlaceBtn.addClickHandler(new ClickHandler()
-        {
-
-            @Override
-            public void onClick(ClickEvent event)
-            {
-                // Components
-                // final PopupPanel newPlacePopUpPanel = new PopupPanel(true);
-                final VerticalPanel mainPanel = new VerticalPanel();
-                HorizontalPanel hp = new HorizontalPanel();
-                final Label errLbl = new Label();
-                errLbl.setStyleName("errLbl");
-
-                mainPanel.getElement().getStyle().setPadding(5, Unit.PX);
-                mainPanel.getElement().getStyle().setWidth(265, Unit.PX);
-
-            }
-        });
+        addPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.ADD));
+//        {
+//
+//            @Override
+//            public void onClick(ClickEvent event)
+//            {
+//                // Components
+//                // final PopupPanel newPlacePopUpPanel = new PopupPanel(true);
+//                final VerticalPanel mainPanel = new VerticalPanel();
+//                HorizontalPanel hp = new HorizontalPanel();
+//                final Label errLbl = new Label();
+//                errLbl.setStyleName("errLbl");
+//
+//                mainPanel.getElement().getStyle().setPadding(5, Unit.PX);
+//                mainPanel.getElement().getStyle().setWidth(265, Unit.PX);
+//
+//            }
+//        });
         addPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         addPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
         btnContainer.add(addPlaceBtn);
@@ -200,138 +200,13 @@ public class RouteManagementVeiw extends Composite
         btnContainer.add(deletePlaceBtn);
     }
 
-    private void setEditRouteBtn()
+    private void setUpdateRouteBtn()
     {
         editPlaceBtn = new Button();
         editPlaceBtn.setStyleName("btn btn-primary");
         editPlaceBtn.setText("Edit");
-        editPlaceBtn.addClickHandler(new ClickHandler()
-        {
+        editPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.UPDATE));
 
-            @Override
-            public void onClick(ClickEvent event)
-            {
-                int count = 0;
-                for (RouteInfo p : ROUTES)
-                {
-                    if (selectionModel.isSelected(p))
-                        count++;
-                }
-                if (count == 1)
-                {
-                    for (RouteInfo p : ROUTES)
-                    {
-                        if (selectionModel.isSelected(p))
-                        {
-                            final Long routeId = p.getId();
-
-                            final PopupPanel editPlacePopUpPanel = new PopupPanel(true);
-                            final VerticalPanel vPanel = new VerticalPanel();
-                            Grid grid = new Grid(5, 2);
-                            vPanel.add(grid);
-                            final Label errLbl = new Label();
-                            errLbl.setStyleName("errLbl");
-                            final TextBox editStartTxtBox = new TextBox();
-                            final TextBox editEndTxtBox = new TextBox();
-                            final TextBox editPriceTxtBox = new TextBox();
-                            final ListBox editPickupTypeBox = new ListBox();
-
-                            editStartTxtBox.setText(p.getStart());
-                            editEndTxtBox.setText(p.getEnd());
-                            editPriceTxtBox.setText(java.lang.Float.toString(p.getPrice()));
-                            int i = 0;
-                            for (RouteInfo.PickupType t : RouteInfo.PickupType.values())
-                            {
-                                editPickupTypeBox.addItem(t.name());
-                                if (t.equals(p.getPickupType()))
-                                {
-                                    editPickupTypeBox.setSelectedIndex(i);
-                                }
-                                i++;
-                            }
-
-                            Button saveBtn = new Button("Save");
-                            saveBtn.setStyleName("btn btn-primary");
-                            saveBtn.addClickHandler(new ClickHandler()
-                            {
-
-                                @Override
-                                public void onClick(ClickEvent event)
-                                {
-                                    RouteInfo routeInfo = new RouteInfo();
-                                    try
-                                    {
-                                        String price = editPriceTxtBox.getText();
-                                        Long priceL = Long.parseLong(price);
-                                        routeInfo.setPrice(priceL);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        errLbl.setText("Enter a price");
-                                    }
-                                    if (
-                                    Strings.isNullOrEmpty(editStartTxtBox.getText()) ||
-                                            Strings.isNullOrEmpty(editEndTxtBox.getText()) ||
-                                            Strings.isNullOrEmpty(editPriceTxtBox.getText())
-                                    )
-                                    {
-                                        errLbl.setText("Please fill up all fields");
-                                    }
-                                    else
-                                    {
-                                        routeInfo.setId(routeId);
-                                        routeInfo.setStart(editStartTxtBox.getText());
-                                        routeInfo.setEnd(editEndTxtBox.getText());
-                                        routeInfo.setPickupType(listPickupType[editPickupTypeBox.getSelectedIndex()]);
-                                        if (imageId != null)
-                                        {
-                                            routeInfo.setImage(imageId);
-                                        }
-
-                                        service.editRoute(routeInfo, new AsyncCallback<Boolean>()
-                                        {
-
-                                            @Override
-                                            public void onFailure(Throwable caught)
-                                            {
-                                                Window.alert("Failed to save place!");
-                                            }
-
-                                            @Override
-                                            public void onSuccess(Boolean result)
-                                            {
-                                                if (result)
-                                                {
-                                                    initializeWidget();
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                            // Setting up Popup Panel
-                            int row = 0;
-                            addPopupPanel("Start", editStartTxtBox, grid, row++);
-                            addPopupPanel("Destination", editEndTxtBox, grid, row++);
-                            addPopupPanel("Price", editPriceTxtBox, grid, row++);
-                            addPopupPanel("Pickuptype", editPickupTypeBox, grid, row++);
-
-                            addPopupPanel("Image", getUploader(saveBtn), grid, row++);
-
-                            editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
-                            vPanel.add(saveBtn);
-                            vPanel.add(errLbl);
-                            editPlacePopUpPanel.add(vPanel);
-                            editPlacePopUpPanel.addStyleName("addNewPlacePopup");
-                            editPlacePopUpPanel.setPopupPosition(event.getClientX(), event.getClientY());
-                            editPlacePopUpPanel.show();
-                        }
-                    }
-                }
-                else
-                    Window.alert("Select one row to edit");
-            }
-        });
         editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         editPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
         btnContainer.add(editPlaceBtn);
@@ -387,6 +262,32 @@ public class RouteManagementVeiw extends Composite
             }
         };
 
+        TextColumn<RouteInfo> priceColumn = new TextColumn<RouteInfo>()
+        {
+            @Override
+            public String getValue(RouteInfo route)
+            {
+                return java.lang.Float.toString(route.getPrice());
+            }
+        };
+
+        TextColumn<RouteInfo> descriptionColumn = new TextColumn<RouteInfo>()
+        {
+            @Override
+            public String getValue(RouteInfo route)
+            {
+                if (route.getDescription() == null)
+                {
+                    return "";
+                }
+                if (route.getDescription().length() > 20)
+                {
+                    return route.getDescription().substring(0, 20) + "...";
+                }
+                return route.getDescription();
+            }
+        };
+
         TextColumn<RouteInfo> pickuptypeColumn = new TextColumn<RouteInfo>()
         {
             @Override
@@ -407,6 +308,8 @@ public class RouteManagementVeiw extends Composite
         routeManagementTable.addColumn(imageColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
         routeManagementTable.addColumn(startColumn, "Start");
         routeManagementTable.addColumn(endColumn, "End");
+        routeManagementTable.addColumn(priceColumn, "Price");
+        routeManagementTable.addColumn(descriptionColumn, "Description");
         routeManagementTable.addColumn(pickuptypeColumn, "Pickuptype");
 
         // Create a data provider.
@@ -485,4 +388,140 @@ public class RouteManagementVeiw extends Composite
         return form;
 
     }
+
+    class RouteAddEditClickHandler implements ClickHandler
+    {
+        RouteInfo.SaveMode mode;
+
+        public RouteAddEditClickHandler(RouteInfo.SaveMode mode)
+        {
+            this.mode = mode;
+        }
+
+        @Override
+        public void onClick(ClickEvent event)
+        {
+            int count = 0;
+            for (RouteInfo p : ROUTES)
+            {
+                if (selectionModel.isSelected(p))
+                    count++;
+            }
+            if (count == 1)
+            {
+                for (RouteInfo p : ROUTES)
+                {
+                    if (selectionModel.isSelected(p))
+                    {
+                        final Long routeId = p.getId();
+
+                        final PopupPanel editPlacePopUpPanel = new PopupPanel(true);
+                        final VerticalPanel vPanel = new VerticalPanel();
+                        Grid grid = new Grid(5, 2);
+                        vPanel.add(grid);
+                        final Label errLbl = new Label();
+                        errLbl.setStyleName("errLbl");
+                        final TextBox editStartTxtBox = new TextBox();
+                        final TextBox editEndTxtBox = new TextBox();
+                        final TextBox editPriceTxtBox = new TextBox();
+                        final ListBox editPickupTypeBox = new ListBox();
+
+                        editStartTxtBox.setText(p.getStart());
+                        editEndTxtBox.setText(p.getEnd());
+                        editPriceTxtBox.setText(java.lang.Float.toString(p.getPrice()));
+                        int i = 0;
+                        for (RouteInfo.PickupType t : RouteInfo.PickupType.values())
+                        {
+                            editPickupTypeBox.addItem(t.name());
+                            if (t.equals(p.getPickupType()))
+                            {
+                                editPickupTypeBox.setSelectedIndex(i);
+                            }
+                            i++;
+                        }
+
+                        Button saveBtn = new Button("Save");
+                        saveBtn.setStyleName("btn btn-primary");
+                        saveBtn.addClickHandler(new ClickHandler()
+                        {
+
+                            @Override
+                            public void onClick(ClickEvent event)
+                            {
+                                RouteInfo routeInfo = new RouteInfo();
+                                try
+                                {
+                                    String price = editPriceTxtBox.getText();
+                                    Long priceL = Long.parseLong(price);
+                                    routeInfo.setPrice(priceL);
+                                }
+                                catch (Exception ex)
+                                {
+                                    errLbl.setText("Enter a price");
+                                }
+                                if (
+                                Strings.isNullOrEmpty(editStartTxtBox.getText()) ||
+                                        Strings.isNullOrEmpty(editEndTxtBox.getText()) ||
+                                        Strings.isNullOrEmpty(editPriceTxtBox.getText())
+                                )
+                                {
+                                    errLbl.setText("Please fill up all fields");
+                                }
+                                else
+                                {
+                                    routeInfo.setId(routeId);
+                                    routeInfo.setStart(editStartTxtBox.getText());
+                                    routeInfo.setEnd(editEndTxtBox.getText());
+                                    routeInfo.setPickupType(listPickupType[editPickupTypeBox.getSelectedIndex()]);
+                                    if (imageId != null)
+                                    {
+                                        routeInfo.setImage(imageId);
+                                    }
+
+                                    service.saveRoute(routeInfo, mode, new AsyncCallback<Boolean>()
+                                    {
+
+                                        @Override
+                                        public void onFailure(Throwable caught)
+                                        {
+                                            Window.alert("Failed to save place!");
+                                        }
+
+                                        @Override
+                                        public void onSuccess(Boolean result)
+                                        {
+                                            if (result)
+                                            {
+                                                initializeWidget();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        // Setting up Popup Panel
+                        int row = 0;
+                        addPopupPanel("Start", editStartTxtBox, grid, row++);
+                        addPopupPanel("Destination", editEndTxtBox, grid, row++);
+                        addPopupPanel("Price", editPriceTxtBox, grid, row++);
+                        addPopupPanel("Pickuptype", editPickupTypeBox, grid, row++);
+
+                        addPopupPanel("Image", getUploader(saveBtn), grid, row++);
+
+                        editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
+                        vPanel.add(saveBtn);
+                        vPanel.add(errLbl);
+                        editPlacePopUpPanel.add(vPanel);
+                        editPlacePopUpPanel.addStyleName("addNewPlacePopup");
+                        editPlacePopUpPanel.setPopupPosition(event.getClientX(), event.getClientY());
+                        editPlacePopUpPanel.show();
+                    }
+                }
+            }
+            else
+                Window.alert("Select one row to edit");
+        }
+
+    }
+
 }

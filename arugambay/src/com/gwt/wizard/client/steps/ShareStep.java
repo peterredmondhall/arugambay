@@ -39,7 +39,14 @@ public class ShareStep implements WizardStep
 
     public void setBookingList(List<BookingInfo> list)
     {
-        ui.setBookingList(list);
+        if (list.size() == 0)
+        {
+            onNext();
+        }
+        else
+        {
+            ui.setBookingList(list);
+        }
     }
 
     @Override

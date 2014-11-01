@@ -22,6 +22,18 @@ public class Route implements Serializable
 
     private String start;
     private String end;
+    private String description;
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
     private PickupType pickupType;
     private float price;
 
@@ -102,6 +114,7 @@ public class Route implements Serializable
         Route place = new Route();
         place.setStart(routeInfo.getStart());
         place.setEnd(routeInfo.getEnd());
+        place.setDescription(routeInfo.getDescription());
         place.setPrice(routeInfo.getPrice());
         place.setPickupType(routeInfo.getPickupType());
         place.setImage(routeInfo.getImage());
@@ -114,6 +127,7 @@ public class Route implements Serializable
         routeInfo.setId(key.getId());
         routeInfo.setStart(start);
         routeInfo.setEnd(end);
+        routeInfo.setDescription(description);
         routeInfo.setPrice(price);
         routeInfo.setPickupType(pickupType);
         routeInfo.setImage(image);

@@ -51,7 +51,7 @@ public class RouteServiceManagerTest
     }
 
     @Test
-    public void should_edit_route()
+    public void should_update_route()
     {
 
         List<RouteInfo> routes = rs.getRoutes();
@@ -61,7 +61,7 @@ public class RouteServiceManagerTest
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setPrice(160.00f);
-        assertEquals(true, rs.editRoute(routeInfo));
+        assertEquals(true, rs.saveRoute(routeInfo, RouteInfo.SaveMode.UPDATE));
         routes = rs.getRoutes();
         assertEquals(1, routes.size());
         routeInfo = routes.get(0);
@@ -70,6 +70,25 @@ public class RouteServiceManagerTest
         assertEquals(PickupType.HOTEL, routeInfo.getPickupType());
         assertEquals(Float.toString(160.00f), Float.toString(routeInfo.getPrice()));
 
+    }
+
+    @Test
+    public void should_add_route()
+    {
+
+        RouteInfo routeInfo = new RouteInfo();
+        routeInfo.setPickupType(PickupType.HOTEL);
+        routeInfo.setStart("start");
+        routeInfo.setEnd("end");
+        routeInfo.setPrice(160.00f);
+        assertEquals(true, rs.saveRoute(routeInfo, RouteInfo.SaveMode.ADD));
+        List<RouteInfo> routes = rs.getRoutes();
+        assertEquals(1, routes.size());
+        routeInfo = routes.get(0);
+        assertEquals("start", routeInfo.getStart());
+        assertEquals("end", routeInfo.getEnd());
+        assertEquals(PickupType.HOTEL, routeInfo.getPickupType());
+        assertEquals(Float.toString(160.00f), Float.toString(routeInfo.getPrice()));
     }
 
 }

@@ -26,7 +26,6 @@ public class ImageManager
         EntityManager em = getEntityManager();
         try
         {
-            System.out.println(image[0] + "," + image[1] + "," + image[2] + ",");
             ArugamImage arugamImage = new ArugamImage();
             arugamImage.setImage(new Blob(image));
             em.getTransaction().begin();

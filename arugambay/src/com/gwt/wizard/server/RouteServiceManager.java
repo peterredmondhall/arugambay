@@ -50,14 +50,24 @@ public class RouteServiceManager
         return false;
     }
 
-    public Boolean editRoute(RouteInfo routeInfo) throws IllegalArgumentException
+    public Boolean saveRoute(RouteInfo routeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
     {
         try
         {
             EntityManager em = getEntityManager();
             try
             {
-                Route route = em.find(Route.class, routeInfo.getId());
+                Route route = null;
+                switch (mode)
+                {
+                    case ADD:
+                        route = new Route();
+                        break;
+
+                    case UPDATE:
+                        route = em.find(Route.class, routeInfo.getId());
+                        break;
+                }
                 route.setStart(routeInfo.getStart());
                 route.setEnd(routeInfo.getEnd());
                 route.setPrice(routeInfo.getPrice());

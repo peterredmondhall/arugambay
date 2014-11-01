@@ -25,7 +25,7 @@ public interface BookingServiceAsync
     void deleteRoute(RouteInfo placeInfo, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
-    void editRoute(RouteInfo placeInfo, AsyncCallback<Boolean> callback)
+    void saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode, AsyncCallback<Boolean> callback)
             throws IllegalArgumentException;
 
     void getBookings(AsyncCallback<List<BookingInfo>> callback);

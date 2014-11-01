@@ -38,24 +38,10 @@ public class ImageServlet extends HttpServlet
             try
             {
                 bytes = manager.getImage(imageId);
-                System.out.println(bytes.length);
-                int len = 160;
-                byte[] byteArray = new byte[len];
-                for (int i = 0; i < len; i++)
-                {
-                    byteArray[i] = bytes[i];
-                    System.out.print(bytes[i] + ", ");
-                }
-                // System.out.println(Arrays.toString(byteArray));
 
                 resp.setContentType("application/png");
-                // resp.addHeader("Content-Disposition", "inline; filename=\"data.png\"");
                 resp.setContentLength(bytes.length);
 
-//                ServletOutputStream sos = resp.getOutputStream();
-//                sos.write(bytes);
-//                sos.flush();
-//                sos.close();
                 ByteArrayInputStream in = new ByteArrayInputStream(bytes);
                 OutputStream out = resp.getOutputStream();
 

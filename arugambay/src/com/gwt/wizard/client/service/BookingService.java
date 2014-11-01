@@ -27,7 +27,7 @@ public interface BookingService extends RemoteService
 
     Boolean deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException;
 
-    Boolean editRoute(RouteInfo placeInfo) throws IllegalArgumentException;
+    Boolean saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException;
 
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
