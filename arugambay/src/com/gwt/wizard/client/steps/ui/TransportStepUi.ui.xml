@@ -20,7 +20,7 @@
 			<g:VerticalPanel>
 				<g:HorizontalPanel ui:field="routeSuggestionPanel"
 					styleName="{style.addressFieldStyle}">
-					<g:Label styleName="destinationlabel">Enter your start or destination</g:Label>
+<!-- 					<g:Label styleName="destinationlabel">Enter your start or destination</g:Label> -->
 <!-- 					<g:SuggestBox ui:field="suggestBox"/>  -->
 				</g:HorizontalPanel>
 				<g:VerticalPanel ui:field="panelRoute" >

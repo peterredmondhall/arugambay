@@ -4,7 +4,6 @@
 
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
 
-
 	<g:HTMLPanel ui:field="mainPanel">
 	   <g:Label ui:field="labelBooking">
 			You are creating a new booking.
@@ -19,7 +18,7 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>Date of arrival *</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
+				<g:customCell >
 					<d:DateBox ui:field="dateBox" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
@@ -30,22 +29,23 @@
 						<!-- Flight no. -->
 			<g:row>
 				<g:customCell styleName="labelDiv">
-					<g:Label>Flight no. *</g:Label>
+					<g:Label ui:field="labelFlightNo">Flight no. *</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:TextBox ui:field="flightNo" />
+				<g:customCell>
+					<g:TextBox styleName="widgetDiv" ui:field="flightNo" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="flightErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
+						
 			<!-- Landing time -->
 			<g:row>
 				<g:customCell styleName="labelDiv">
-					<g:Label>Approx. landing time *</g:Label>
+					<g:Label ui:field="labelFlightLandingTime">Approx. landing time *</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:TextBox ui:field="flightLandingTime"/>
+				<g:customCell>
+					<g:TextBox styleName="widgetDiv" ui:field="flightLandingTime"/>
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="arrivalErrorMsg"></g:Label>
@@ -57,8 +57,8 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>Number of passengers</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:ListBox ui:field="pax"/>
+				<g:customCell >
+					<g:ListBox styleName="listbox" ui:field="pax"/>
 				</g:customCell>
 			</g:row>
 						
@@ -67,8 +67,8 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>Number of surfboards</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:ListBox ui:field="surfboards"/>
+				<g:customCell >
+					<g:ListBox styleName="listbox" ui:field="surfboards"/>
 				</g:customCell>
 			</g:row>
 			
@@ -77,8 +77,8 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>First name</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:TextBox ui:field="firstName" />
+				<g:customCell >
+					<g:TextBox styleName="widgetDiv" ui:field="firstName" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="firstNameErrorMsg"></g:Label>
@@ -90,8 +90,8 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>Last name *</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:TextBox ui:field="lastName" />
+				<g:customCell>
+					<g:TextBox styleName="widgetDiv" ui:field="lastName" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="lastNameErrorMsg"></g:Label>
@@ -103,7 +103,7 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label ui:field="labelWanttoShare">Interested in sharing</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
+				<g:customCell >
 					<g:CheckBox ui:field="checkboxWanttoShare" />
 				</g:customCell>
 			</g:row>
@@ -113,8 +113,8 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>Email *</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:TextBox ui:field="email" />
+				<g:customCell>
+					<g:TextBox styleName="widgetDiv" ui:field="email" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="emailErrorMsg"></g:Label>
@@ -126,8 +126,8 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>Email (repeat) *</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:TextBox ui:field="email2" />
+				<g:customCell>
+					<g:TextBox styleName="widgetDiv" ui:field="email2" />
 				</g:customCell>
 				<g:customCell styleName="optionalBarCellStyle">
 					<g:Label styleName="errMsg" ui:field="email2ErrorMsg"></g:Label>
@@ -137,8 +137,8 @@
 				<g:customCell styleName="labelDiv">
 					<g:Label>Other requirements:</g:Label>
 				</g:customCell>
-				<g:customCell styleName="widgetDiv">
-					<g:TextArea ui:field="requirementsBox" />
+				<g:customCell >
+					<g:TextArea ui:field="requirementsBox" styleName="widgetDiv"/>
 				</g:customCell>
 			</g:row>
 						

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
 
 public class ContactStepUi extends Composite
@@ -55,7 +56,7 @@ public class ContactStepUi extends Composite
     Label dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg, arrivalErrorMsg, labelWanttoShare;
 
     @UiField
-    Label labelSharing, labelBooking;
+    Label labelSharing, labelBooking, labelFlightLandingTime, labelFlightNo;
 
     @UiField
     TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
@@ -117,7 +118,7 @@ public class ContactStepUi extends Composite
         return email2.getValue();
     }
 
-    public String getLandingTime()
+    public String getArrivalTime()
     {
         return flightLandingTime.getText();
     }
@@ -199,6 +200,22 @@ public class ContactStepUi extends Composite
         if (sharing)
         {
             dateBox.setValue(BOOKINGINFO.getDate());
+        }
+        switch (Wizard.ROUTEINFO.getPickupType())
+        {
+            case AIRPORT:
+                labelFlightLandingTime.setText("Flight landing time");
+
+                flightNo.setText("Flight no.");
+                break;
+            case HOTEL:
+                labelFlightLandingTime.setText("Pickup time");
+                flightNo.setText("Hotel");
+
+                break;
+            default:
+                break;
+
         }
     }
 

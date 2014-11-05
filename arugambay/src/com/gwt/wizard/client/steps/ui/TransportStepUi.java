@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -83,10 +84,13 @@ public class TransportStepUi extends Composite
         super.setWidth(width);
     }
 
+    Button next;
+
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
-        next.setVisible(true);
-        prev.setEnabled(false);
+        this.next = next;
+        next.setEnabled(false);
+        prev.setVisible(false);
         cancel.setText("Cancel");
 
     }
@@ -150,8 +154,9 @@ public class TransportStepUi extends Composite
                     oracle.add(routeInfo.getKey());
                 }
                 SuggestBox suggestBox = new SuggestBox(oracle);
+                suggestBox.setWidth("600px");
                 routeSuggestionPanel.add(suggestBox);
-                suggestBox.getElement().setAttribute("placeHolder", "SOME TEXT");
+                suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
 
                 SelectionHandler<SuggestOracle.Suggestion> handler = new SelectionHandler<SuggestOracle.Suggestion>()
                 {
@@ -165,6 +170,8 @@ public class TransportStepUi extends Composite
                         imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
                         labelDescription.setText(routeInfo.getDescription());
                         panelRoute.setVisible(true);
+                        Wizard.ROUTEINFO = routeInfo;
+                        next.setEnabled(true);
 
                     }
                 };

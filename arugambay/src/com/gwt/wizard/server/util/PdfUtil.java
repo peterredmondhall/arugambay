@@ -37,6 +37,8 @@ public class PdfUtil
     public final static String OTHER1 = "Other1";
     public final static String OTHER2 = "Other2";
     public final static String OTHER3 = "Other3";
+    public final static String ARRIVAL = "Arrival";
+    public final static String FLIGHT_HOTEL = "Flight_Hotel";
 
     static final DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
     static final DateTimeFormatter fmtFormDate = DateTimeFormat.forPattern("dd MMM yyyy");
@@ -62,6 +64,22 @@ public class PdfUtil
             form.setField(FLIGHTNO, bookingInfo.getFlightNo());
             form.setField(LANDINGTIME, bookingInfo.getLandingTime());
             form.setField(PAID, bookingInfo.getPaidAmt());
+
+            switch (bookingInfo.getRouteInfo().getPickupType())
+            {
+                case AIRPORT:
+                    form.setField(FLIGHT_HOTEL, "Flight no.");
+                    form.setField(ARRIVAL, "Landing time");
+
+                    break;
+                case HOTEL:
+                    form.setField(FLIGHT_HOTEL, "Hotel");
+                    form.setField(ARRIVAL, "Pickup time");
+                    break;
+                default:
+                    break;
+
+            }
 
             List<String> chunks = Lists.newArrayList(Splitter.fixedLength(80).split(bookingInfo.getRequirements()));
             form.setField(OTHER1, chunks.size() > 0 ? chunks.get(0) : "");

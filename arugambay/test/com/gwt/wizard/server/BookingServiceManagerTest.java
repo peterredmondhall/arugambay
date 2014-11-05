@@ -19,6 +19,7 @@ import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 
 public class BookingServiceManagerTest
 {
@@ -42,6 +43,8 @@ public class BookingServiceManagerTest
 
     private BookingInfo getBookingInfo(Date date, String flightNo, String landingTime, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
     {
+        RouteInfo routeInfo = new RouteServiceManager().getRoutes().get(0);
+
         BookingInfo bi = new BookingInfo();
         bi.setDate(date);
         bi.setFlightNo(flightNo);
@@ -52,6 +55,8 @@ public class BookingServiceManagerTest
         bi.setRequirements(reqs);
         bi.setOrderType(orderType);
         bi.setShareWanted(shareWanted);
+
+        bi.setRouteInfo(routeInfo);
         return bi;
 
     }
@@ -89,7 +94,7 @@ public class BookingServiceManagerTest
 
     private void create_a_booking()
     {
-        bs.saveWithClient(getStandardBookingInfo(), "client");
+        bs.addBookingWithClient(getStandardBookingInfo(), "client");
 
     }
 
@@ -117,6 +122,7 @@ public class BookingServiceManagerTest
         List<BookingInfo> list = bs.getBookings();
         BookingInfo parentBookingInfo = list.get(0);
         BookingInfo bi = new BookingInfo();
+        bi.setRouteInfo(new RouteServiceManager().getRoutes().get(0));
         bi.setParentId(parentBookingInfo.getId());
         bi.setDate(parentBookingInfo.getDate());
         bi.setFlightNo(parentBookingInfo.getFlightNo());
@@ -129,7 +135,7 @@ public class BookingServiceManagerTest
         bi.setStatus(OrderStatus.BOOKED);
         bi.setOrderType(OrderType.SHARE);
 
-        bs.saveWithClient(bi, "clientShare");
+        bs.addBookingWithClient(bi, "clientShare");
 
         boolean tested = false;
         for (BookingInfo bookingInfo : bs.getBookings())
@@ -154,7 +160,7 @@ public class BookingServiceManagerTest
 
         BookingInfo bi = getStandardBookingInfo();
         bi.setDate(new DateTime().plusYears(20).toDate());
-        bs.saveWithClient(bi, "client");
+        bs.addBookingWithClient(bi, "client");
         List<BookingInfo> list = bs.getBookingsForTour(1234L);
         // bookin is not paid for
         assertEquals(0, list.size());
@@ -162,7 +168,7 @@ public class BookingServiceManagerTest
         bi = getStandardBookingInfo();
         bi.setDate(new DateTime().plusYears(20).toDate());
         bi.setOrderType(OrderType.SHARE);
-        bs.saveWithClient(bi, "client");
+        bs.addBookingWithClient(bi, "client");
         list = bs.getBookingsForTour(1234L);
         // bookin is not BOOKING
         assertEquals(0, list.size());

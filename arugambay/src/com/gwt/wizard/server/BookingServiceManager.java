@@ -18,12 +18,14 @@ import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Config;
 import com.gwt.wizard.server.entity.Profil;
+import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.entity.Stat;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
 /**
@@ -37,7 +39,7 @@ public class BookingServiceManager
     public final String PLACES_DATA_ENTITY = "places-data";
     static final DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
 
-    public BookingInfo saveWithClient(BookingInfo bookingInfo, String client) throws IllegalArgumentException
+    public BookingInfo addBookingWithClient(BookingInfo bookingInfo, String client) throws IllegalArgumentException
     {
         BookingInfo result = null;
         logger.info(bookingInfo.toString());
@@ -50,7 +52,8 @@ public class BookingServiceManager
             em.getTransaction().commit();
             em.detach(booking);
 
-            result = booking.getBookingInfo();
+            Route route = em.find(Route.class, bookingInfo.getRouteInfo().getId());
+            result = booking.getBookingInfo(route.getInfo());
         }
         catch (Exception e)
         {
@@ -61,6 +64,12 @@ public class BookingServiceManager
             em.close();
         }
         return result;
+    }
+
+    private RouteInfo getRouteInfo(long id, EntityManager em)
+    {
+        Route route = em.find(Route.class, id);
+        return route.getInfo();
     }
 
     private static EntityManager getEntityManager()
@@ -79,7 +88,7 @@ public class BookingServiceManager
             for (Booking booking : resultList)
             {
                 em.detach(booking);
-                BookingInfo bookingInfo = booking.getBookingInfo();
+                BookingInfo bookingInfo = booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
                 bookings.add(bookingInfo);
             }
         }
@@ -109,7 +118,7 @@ public class BookingServiceManager
                 em.getTransaction().commit();
 
                 em.detach(booking);
-                bookingInfo = resultList.get(0).getBookingInfo();
+                bookingInfo = resultList.get(0).getBookingInfo(getRouteInfo(resultList.get(0).getRoute(), em));
             }
         }
         finally
@@ -134,7 +143,7 @@ public class BookingServiceManager
             em.getTransaction().commit();
 
             em.detach(booking);
-            bookingInfo = booking.getBookingInfo();
+            bookingInfo = booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
         }
         finally
         {
@@ -229,8 +238,11 @@ public class BookingServiceManager
     {
         EntityManager em = getEntityManager();
 
-        BookingInfo sharer = em.find(Booking.class, sharerId).getBookingInfo();
-        BookingInfo parent = em.find(Booking.class, sharer.getParentId()).getBookingInfo();
+        Booking sharerBooking = em.find(Booking.class, sharerId);
+        BookingInfo sharer = sharerBooking.getBookingInfo(getRouteInfo(sharerBooking.getRoute(), em));
+
+        Booking parentBooking = em.find(Booking.class, sharer.getParentId());
+        BookingInfo parent = parentBooking.getBookingInfo(getRouteInfo(parentBooking.getRoute(), em));
         return Lists.newArrayList(parent, sharer);
     }
 
@@ -248,7 +260,7 @@ public class BookingServiceManager
             em.getTransaction().commit();
 
             em.detach(booking);
-            bookingInfo = booking.getBookingInfo();
+            bookingInfo = booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
 
         }
         finally
@@ -278,7 +290,9 @@ public class BookingServiceManager
 
     public BookingInfo getBooking(Long id)
     {
-        return getEntityManager().find(Booking.class, id).getBookingInfo();
+        EntityManager em = getEntityManager();
+        Booking booking = em.find(Booking.class, id);
+        return booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
     }
 
 }

@@ -48,12 +48,10 @@ public class Mailer
         String html = "error";
         html = BookingUtil.toConfirmationEmailHtml(bookingInfo, new File("template/confirmation.html"));
         html = html.replace("INSERT_ORDERFORM", profil.getTaxisurfUrl() + "/orderform?order=" + bookingInfo.getId());
-        // byte[] pdfData = PdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
-        byte[] pdfData = PdfUtil.get();
+        byte[] pdfData = PdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
         String email = bookingInfo.getEmail();
         send(emailMsg, email, html, pdfData);
         send(emailMsg, profil.getMonitorEmail(), html, pdfData);
-        // send(emailMsg, "arugamsurf@gmail.com", html);
         send(emailMsg, profil.getArugamBayEmail(), html, pdfData);
     }
 

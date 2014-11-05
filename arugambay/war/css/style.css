@@ -275,12 +275,22 @@ td.datePickerMonth {
 	width: 300px;
 }
 
-.widgetDiv {
+.containerDiv {
 	display: inline;
 	float: left;
 	text-align: left;
 	margin-right: 5px;
-	width: 250px;
+	width: 140px;
+}
+
+.widgetDiv {
+
+	width: 150px;
+}
+
+.listbox {
+
+	width: 160px;
 }
 
 .errMsgDiv {

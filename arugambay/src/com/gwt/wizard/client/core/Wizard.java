@@ -18,8 +18,10 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.steps.ConfirmationStep;
 import com.gwt.wizard.client.steps.ShareConfirmationStep;
+import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.TransportStep;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 
 public class Wizard extends Composite
 {
@@ -31,6 +33,7 @@ public class Wizard extends Composite
     }
 
     public static BookingInfo BOOKINGINFO = new BookingInfo();
+    public static RouteInfo ROUTEINFO;
 
     private final List<WizardStep> stepList;
     private final Map<HTML, Integer> headers = new HashMap<HTML, Integer>();
@@ -113,6 +116,16 @@ public class Wizard extends Composite
         stepList.get(currentstep).getContent().setVisible(false);
 
         currentstep++;
+
+        if (stepList.get(currentstep) instanceof ShareStep)
+        {
+            ShareStep shareStep = (ShareStep) stepList.get(currentstep);
+            int existingOrders = shareStep.getBookingList().size();
+            if (existingOrders == 0)
+            {
+                currentstep++;
+            }
+        }
 
         stepList.get(currentstep).getContent().setVisible(true);
         stepList.get(currentstep).show(true, prev, next, cancel);

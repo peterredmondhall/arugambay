@@ -6,9 +6,6 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -21,23 +18,26 @@ import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 public class RouteServiceManager
 {
     private static final Logger logger = Logger.getLogger(RouteServiceManager.class.getName());
-    public final String WIZARD_DATA_ENTITY = "wizard-data";
-    public final String PLACES_DATA_ENTITY = "places-data";
-    static final DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
 
     private static EntityManager getEntityManager()
     {
         return EMF.get().createEntityManager();
     }
 
-    public Boolean deleteRoute(RouteInfo routeInfo) throws IllegalArgumentException
+    public List<RouteInfo> deleteRoute(RouteInfo routeInfo) throws IllegalArgumentException
     {
+        List<RouteInfo> routes = null;
         EntityManager em = getEntityManager();
         try
         {
+            em.getTransaction().begin();
             Route place = em.find(Route.class, routeInfo.getId());
             em.remove(place);
-            return true;
+            em.flush();
+            em.getTransaction().commit();
+            em.close();
+            em = getEntityManager();
+            routes = getRoutesWithEM(em);
         }
         catch (Exception e)
         {
@@ -47,53 +47,65 @@ public class RouteServiceManager
         {
             em.close();
         }
-        return false;
+        return routes;
     }
 
-    public Boolean saveRoute(RouteInfo routeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
+    public List<RouteInfo> saveRoute(RouteInfo routeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
     {
+        List<RouteInfo> routes = null;
+        EntityManager em = getEntityManager();
         try
         {
-            EntityManager em = getEntityManager();
-            try
+            Route route = null;
+            switch (mode)
             {
-                Route route = null;
-                switch (mode)
-                {
-                    case ADD:
-                        route = new Route();
-                        break;
+                case ADD:
+                    route = new Route();
+                    break;
 
-                    case UPDATE:
-                        route = em.find(Route.class, routeInfo.getId());
-                        break;
-                }
-                route.setStart(routeInfo.getStart());
-                route.setEnd(routeInfo.getEnd());
-                route.setPrice(routeInfo.getPrice());
-                route.setPickupType(routeInfo.getPickupType());
-                route.setImage(routeInfo.getImage());
-                em.getTransaction().begin();
-                em.persist(route);
-                em.getTransaction().commit();
+                case UPDATE:
+                    route = em.find(Route.class, routeInfo.getId());
+                    break;
             }
-            finally
-            {
-                em.close();
-            }
-            return true;
+            route.setStart(routeInfo.getStart());
+            route.setEnd(routeInfo.getEnd());
+            route.setPrice(routeInfo.getPrice());
+            route.setPickupType(routeInfo.getPickupType());
+            route.setImage(routeInfo.getImage());
+            route.setDescription(routeInfo.getDescription());
+            em.getTransaction().begin();
+            em.persist(route);
+            em.flush();
+            em.getTransaction().commit();
+            em.persist(route);
+            em.clear();
+            em.close();
+            em = getEntityManager();
+            routes = getRoutesWithEM(em);
         }
+
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        return false;
+        finally
+        {
+            em.close();
+        }
+
+        return routes;
     }
 
     @SuppressWarnings("unchecked")
     public List<RouteInfo> getRoutes() throws IllegalArgumentException
     {
         EntityManager em = getEntityManager();
+        return getRoutesWithEM(em);
+
+    }
+
+    private List<RouteInfo> getRoutesWithEM(EntityManager em) throws IllegalArgumentException
+    {
         List<RouteInfo> routes = new ArrayList<>();
         try
         {
@@ -107,6 +119,7 @@ public class RouteServiceManager
                 Route route = Route.getRoute(routeInfo);
                 em.getTransaction().begin();
                 em.persist(route);
+                em.flush();
                 em.getTransaction().commit();
                 resultList = em.createQuery("select t from Route t ").getResultList();
             }
@@ -120,10 +133,6 @@ public class RouteServiceManager
         catch (Exception ex)
         {
             logger.severe("getting routes");
-        }
-        finally
-        {
-            em.close();
         }
         return routes;
     }

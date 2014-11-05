@@ -18,6 +18,8 @@ public class ShareStep implements WizardStep
 
     private final ShareStepUi ui;
 
+    private List<BookingInfo> existingOrders;
+
     public ShareStep()
     {
         ui = new ShareStepUi();
@@ -26,6 +28,7 @@ public class ShareStep implements WizardStep
             @Override
             public void onSuccess(List<BookingInfo> list)
             {
+                existingOrders = list;
                 setBookingList(list);
             }
 
@@ -37,16 +40,14 @@ public class ShareStep implements WizardStep
 
     }
 
+    public List<BookingInfo> getBookingList()
+    {
+        return existingOrders;
+    }
+
     public void setBookingList(List<BookingInfo> list)
     {
-        if (list.size() == 0)
-        {
-            onNext();
-        }
-        else
-        {
-            ui.setBookingList(list);
-        }
+        ui.setBookingList(list);
     }
 
     @Override

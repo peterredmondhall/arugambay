@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
 
 @Entity
 public class Booking implements Serializable, Comparable<Booking>
@@ -46,6 +47,17 @@ public class Booking implements Serializable, Comparable<Booking>
     private Date instanziated;
     private OrderType orderType;
     private Long parentId;
+    private Long route;
+
+    public Long getRoute()
+    {
+        return route;
+    }
+
+    public void setRoute(Long route)
+    {
+        this.route = route;
+    }
 
     public Boolean getShareWanted()
     {
@@ -192,11 +204,12 @@ public class Booking implements Serializable, Comparable<Booking>
         booking.setShareWanted(bookingInfo.getShareWanted());
         booking.setParentId(bookingInfo.getParentId());
         booking.setOrderType(bookingInfo.getOrderType() != null ? bookingInfo.getOrderType() : OrderType.BOOKING);
+        booking.setRoute(bookingInfo.getRouteInfo().getId());
 
         return booking;
     }
 
-    public BookingInfo getBookingInfo()
+    public BookingInfo getBookingInfo(RouteInfo routeInfo)
     {
         BookingInfo bookingInfo = new BookingInfo();
         bookingInfo.setId(key.getId());
@@ -212,6 +225,7 @@ public class Booking implements Serializable, Comparable<Booking>
         bookingInfo.setStatus(getStatus());
         bookingInfo.setOrderType(getOrderType());
         bookingInfo.setShareWanted(getShareWanted());
+        bookingInfo.setRouteInfo(routeInfo);
         return bookingInfo;
     }
 

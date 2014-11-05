@@ -20,6 +20,7 @@ public class BookingInfo implements Serializable
     private String name;
     private String email;
     private Long id;
+    private RouteInfo routeInfo;
 
     private Long parentId;
     private Boolean shareWanted;
@@ -172,6 +173,17 @@ public class BookingInfo implements Serializable
 
     public String getPaidAmt()
     {
-        return "USD160";
+        return "USD" + routeInfo.getPrice();
     }
+
+    public RouteInfo getRouteInfo()
+    {
+        return routeInfo;
+    }
+
+    public void setRouteInfo(RouteInfo routeInfo)
+    {
+        this.routeInfo = routeInfo;
+    }
+
 }

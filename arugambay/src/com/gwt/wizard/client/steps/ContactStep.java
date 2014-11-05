@@ -3,6 +3,7 @@ package com.gwt.wizard.client.steps;
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 import static com.gwt.wizard.client.GwtWizard.SERVICE;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+import static com.gwt.wizard.client.core.Wizard.ROUTEINFO;
 
 import java.util.logging.Logger;
 
@@ -60,6 +61,7 @@ public class ContactStep implements WizardStep
             ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.DATE);
             return false;
         }
+
         ui.setErrorMsg("", ErrorMsg.FLIGHTNO);
         if (ui.getFlightNo() == null || ui.getFlightNo().trim().length() == 0)
         {
@@ -67,7 +69,7 @@ public class ContactStep implements WizardStep
             return false;
         }
         ui.setErrorMsg("", ErrorMsg.ARRIVAL);
-        if (ui.getLandingTime() == null || ui.getLandingTime().trim().length() == 0)
+        if (ui.getArrivalTime() == null || ui.getArrivalTime().trim().length() == 0)
         {
             ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.ARRIVAL);
             return false;
@@ -110,7 +112,7 @@ public class ContactStep implements WizardStep
         }
 
         BOOKINGINFO.setDate(ui.getDate());
-        BOOKINGINFO.setLandingTime(ui.getLandingTime());
+        BOOKINGINFO.setLandingTime(ui.getArrivalTime());
         BOOKINGINFO.setName(ui.getFirstName() + "  " + ui.getLastName());
         BOOKINGINFO.setEmail(ui.getEmail());
 
@@ -120,6 +122,7 @@ public class ContactStep implements WizardStep
         BOOKINGINFO.setShareWanted(ui.getWantToShare());
         BOOKINGINFO.setRequirements(ui.getRequirements());
 
+        BOOKINGINFO.setRouteInfo(ROUTEINFO);
         SERVICE.addBooking(BOOKINGINFO, new AsyncCallback<BookingInfo>()
         {
             @Override

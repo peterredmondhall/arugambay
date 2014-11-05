@@ -32,17 +32,17 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public BookingInfo addBooking(BookingInfo bookingInfo) throws IllegalArgumentException
     {
-        return bookingServiceManager.saveWithClient(bookingInfo, getClient());
+        return bookingServiceManager.addBookingWithClient(bookingInfo, getClient());
     }
 
     @Override
-    public Boolean deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException
+    public List<RouteInfo> deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException
     {
         return routeServiceManager.deleteRoute(placeInfo);
     }
 
     @Override
-    public Boolean saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
+    public List<RouteInfo> saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
     {
         return routeServiceManager.saveRoute(placeInfo, mode);
     }
@@ -147,6 +147,10 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         if (stripePayment.charge(token, bookingInfo, profil))
         {
             bookingInfo = bookingServiceManager.setPayed(profil, bookingInfo, OrderStatus.PAID);
+            if (bookingInfo != null)
+            {
+                Mailer.sendConfirmation(bookingInfo, profil);
+            }
         }
         return bookingInfo;
     }

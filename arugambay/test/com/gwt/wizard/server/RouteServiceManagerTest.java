@@ -47,7 +47,8 @@ public class RouteServiceManagerTest
         List<RouteInfo> routes = rs.getRoutes();
         assertEquals(1, routes.size());
         RouteInfo routeInfo = routes.get(0);
-        rs.deleteRoute(routeInfo);
+        routes = rs.deleteRoute(routeInfo);
+        assertEquals(1, routes.size());
     }
 
     @Test
@@ -61,9 +62,7 @@ public class RouteServiceManagerTest
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setPrice(160.00f);
-        assertEquals(true, rs.saveRoute(routeInfo, RouteInfo.SaveMode.UPDATE));
-        routes = rs.getRoutes();
-        assertEquals(1, routes.size());
+        assertEquals(1, rs.saveRoute(routeInfo, RouteInfo.SaveMode.UPDATE).size());
         routeInfo = routes.get(0);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
@@ -81,9 +80,9 @@ public class RouteServiceManagerTest
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setPrice(160.00f);
-        assertEquals(true, rs.saveRoute(routeInfo, RouteInfo.SaveMode.ADD));
-        List<RouteInfo> routes = rs.getRoutes();
-        assertEquals(1, routes.size());
+        List<RouteInfo> routes = rs.saveRoute(routeInfo, RouteInfo.SaveMode.ADD);
+        routes = rs.saveRoute(routeInfo, RouteInfo.SaveMode.ADD);
+        assertEquals(2, routes.size());
         routeInfo = routes.get(0);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());

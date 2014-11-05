@@ -83,7 +83,7 @@ public class GwtWizard implements EntryPoint
         }
         else
         {
-            // List<WizardStep> l = ImmutableList.of(transportStep, creditCardStep, confirmationStep);
+            // List<WizardStep> l = ImmutableList.of(contactStep, creditCardStep, confirmationStep);
             List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, creditCardStep, confirmationStep);
             completeSetup(transportStep, l);
         }
