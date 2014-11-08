@@ -31,7 +31,7 @@ public interface BookingService extends RemoteService
 
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
-    List<BookingInfo> getBookingsForTour(Long id) throws IllegalArgumentException;
+    List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException;
 
     BookingInfo getBookingForTransaction(String ref) throws IllegalArgumentException;
 

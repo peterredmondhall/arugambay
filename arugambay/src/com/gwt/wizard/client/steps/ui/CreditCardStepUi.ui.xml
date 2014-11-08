@@ -11,6 +11,17 @@
 	    		<g:Grid>
 			<g:row>
 				<g:customCell styleName="labelDiv">
+					<g:Label>No. on credit card</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox ui:field="ccNumber" />
+				</g:customCell>
+				<g:customCell styleName="optionalBarCellStyle">
+					<g:Label styleName="errMsg" ui:field="numberErrorMsg"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell styleName="labelDiv">
 					<g:Label>Name</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -20,7 +31,7 @@
 					<g:Label styleName="errMsg" ui:field="nameErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
-			<g:row>
+						<g:row>
 				<g:customCell styleName="labelDiv">
 					<g:Label>cvc</g:Label>
 				</g:customCell>

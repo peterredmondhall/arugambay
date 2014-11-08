@@ -25,6 +25,28 @@ public class Profil implements Serializable
     private String arugamBayEmail;
     private String monitorEmail;
     private String contractorEmail;
+    private String stripeSecret = "sk_test_TCIbuNPlBRe4VowPhqekTO1L";
+    private String stripePublishable = "pk_test_rcKuNpP9OpTri7twmZ77UOI5";
+
+    public String getStripeSecret()
+    {
+        return stripeSecret;
+    }
+
+    public void setStripeSecret(String stripeSecret)
+    {
+        this.stripeSecret = stripeSecret;
+    }
+
+    public String getStripePublishable()
+    {
+        return stripePublishable;
+    }
+
+    public void setStripePublishable(String stripePublishable)
+    {
+        this.stripePublishable = stripePublishable;
+    }
 
     public String getContractorEmail()
     {
@@ -36,20 +58,9 @@ public class Profil implements Serializable
         this.contractorEmail = contractorEmail;
     }
 
-    private String price;
     private String taxisurfUrl;
 
     private static final String TAXIGANGSURF_URL = "http://taxisurf.appspot.com";
-
-    public String getPrice()
-    {
-        return price;
-    }
-
-    public void setPrice(String price)
-    {
-        this.price = price;
-    }
 
     public String getName()
     {
@@ -126,7 +137,7 @@ public class Profil implements Serializable
         ProfilInfo info = new ProfilInfo();
         info.setPaypalAccount(paypalAccount);
         info.setPaypalUrl(paypalURL);
-        info.setPrice(price);
+        info.setStripePublishable(stripePublishable);
         return info;
     }
 

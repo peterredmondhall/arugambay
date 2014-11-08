@@ -10,11 +10,6 @@ public class BookingInfo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    public BookingInfo()
-    {
-        System.out.println("");
-    }
-
     private Date date;
 
     private String name;
@@ -24,6 +19,12 @@ public class BookingInfo implements Serializable
 
     private Long parentId;
     private Boolean shareWanted;
+    private OrderStatus status;
+    private OrderType orderType;
+    private String flightNo;
+    private String landingTime;
+    private int pax = 0;
+    private int surfboards = 0;
 
     public Long getId()
     {
@@ -55,9 +56,6 @@ public class BookingInfo implements Serializable
         this.parentId = parentId;
     }
 
-    private OrderStatus status;
-    private OrderType orderType;
-
     public OrderType getOrderType()
     {
         return orderType;
@@ -77,11 +75,6 @@ public class BookingInfo implements Serializable
     {
         this.status = status;
     }
-
-    private String flightNo;
-    private String landingTime;
-    private int pax = 0;
-    private int surfboards = 0;
 
     public String getLandingTime()
     {

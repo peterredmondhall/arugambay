@@ -188,14 +188,12 @@ public class BookingServiceManager
             if (profilList.size() == 0)
             {
                 em.getTransaction().begin();
-                ;
                 profil = new Profil();
                 profil.setPaypalAccount(PaypalPaymentChecker.TEST_ACCT);
                 profil.setPaypalAT(PaypalPaymentChecker.TEST_AT);
                 profil.setPaypalURL(PaypalPaymentChecker.TEST_PAYPAL_URL);
                 profil.setTest(true);
                 profil.setName("test");
-                profil.setPrice("0.01");
                 profil.setTaxisurfUrl("http://taxisurf.appspot.com");
                 em.persist(profil);
                 em.getTransaction().commit();
@@ -214,7 +212,7 @@ public class BookingServiceManager
         return profil;
     }
 
-    public List<BookingInfo> getBookingsForTour(Long id) throws IllegalArgumentException
+    public List<BookingInfo> getBookingsForRoute(final RouteInfo routeInfo) throws IllegalArgumentException
     {
 
         Predicate<BookingInfo> acceptEven = new Predicate<BookingInfo>()
@@ -225,6 +223,7 @@ public class BookingServiceManager
                 return new DateTime(bookingInfo.getDate()).isAfter(now()) &&
                         OrderType.BOOKING == bookingInfo.getOrderType() &&
                         OrderStatus.PAID == bookingInfo.getStatus() &&
+                        routeInfo.getId().equals(bookingInfo.getRouteInfo().getId()) &&
                         bookingInfo.getShareWanted();
             }
         };

@@ -111,9 +111,9 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public List<BookingInfo> getBookingsForTour(Long id) throws IllegalArgumentException
+    public List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException
     {
-        return bookingServiceManager.getBookingsForTour(id);
+        return bookingServiceManager.getBookingsForRoute(routeInfo);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public BookingInfo payWithStripe(String token, BookingInfo bookingInfo)
     {
         Profil profil = bookingServiceManager.getProfil();
-        if (stripePayment.charge(token, bookingInfo, profil))
+        if (stripePayment.charge(token, bookingInfo, profil.getStripeSecret()))
         {
             bookingInfo = bookingServiceManager.setPayed(profil, bookingInfo, OrderStatus.PAID);
             if (bookingInfo != null)

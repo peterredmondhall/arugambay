@@ -62,7 +62,7 @@ public class Paypal extends Composite
             {
                 paypalPanel.getElementById("paypalForm").setAttribute("action", profil.getPaypalUrl());
                 paypalPanel.getElementById("hiddenBusiness").setAttribute("value", profil.getPaypalAccount());
-                paypalPanel.getElementById("hiddenAmount").setAttribute("value", profil.getPrice() != null ? profil.getPrice() : "160");
+                // paypalPanel.getElementById("hiddenAmount").setAttribute("value", profil.getPrice() != null ? profil.getPrice() : "160");
 
             }
 

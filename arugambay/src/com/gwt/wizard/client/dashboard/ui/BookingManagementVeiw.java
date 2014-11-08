@@ -28,6 +28,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
+import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class BookingManagementVeiw extends Composite
@@ -71,7 +72,10 @@ public class BookingManagementVeiw extends Composite
                 {
                     for (BookingInfo booking : result)
                     {
-                        BOOKINGS.add(booking);
+                        if (booking.getStatus().equals(OrderStatus.PAID))
+                        {
+                            BOOKINGS.add(booking);
+                        }
                     }
                 }
                 setCellTable();
@@ -129,12 +133,46 @@ public class BookingManagementVeiw extends Composite
             }
         };
 
+        TextColumn<BookingInfo> nameColumn = new TextColumn<BookingInfo>()
+        {
+            @Override
+            public String getValue(BookingInfo booking)
+            {
+                return booking.getName();
+            }
+        };
+        TextColumn<BookingInfo> emailColumn = new TextColumn<BookingInfo>()
+        {
+            @Override
+            public String getValue(BookingInfo booking)
+            {
+                return booking.getEmail();
+            }
+        };
+
+        TextColumn<BookingInfo> routeColumn = new TextColumn<BookingInfo>()
+        {
+            @Override
+            public String getValue(BookingInfo booking)
+            {
+                return booking.getRouteInfo().getKey();
+            }
+        };
+
+//        private OrderStatus status;
+//        private String flightNo;
+//        private String landingTime;
+
         bookingManagementTable.setTableLayoutFixed(true);
         // Add the columns.
         bookingManagementTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
         bookingManagementTable.addColumn(dateColumn, "Date");
 
+        bookingManagementTable.addColumn(nameColumn, "Name");
+        bookingManagementTable.addColumn(emailColumn, "Email");
+        bookingManagementTable.addColumn(paxColumn, "No. passengers");
         bookingManagementTable.addColumn(requirementsColumn, "Requirements");
+        bookingManagementTable.addColumn(routeColumn, "Requirements");
 
         bookingManagementTable.setColumnWidth(checkColumn, 40, Unit.PX);
         bookingManagementTable.setColumnWidth(dateColumn, 65, Unit.PX);

@@ -1,10 +1,10 @@
 package com.gwt.wizard.client.core;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,6 +21,7 @@ import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.TransportStep;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 
 public class Wizard extends Composite
@@ -33,10 +34,12 @@ public class Wizard extends Composite
     }
 
     public static BookingInfo BOOKINGINFO = new BookingInfo();
+    public static List<BookingInfo> EXISTING_BOOKINGS_ON_ROUTE;
     public static RouteInfo ROUTEINFO;
+    public static ProfilInfo PROFILINFO;
 
     private final List<WizardStep> stepList;
-    private final Map<HTML, Integer> headers = new HashMap<HTML, Integer>();
+    private final Map<WizardStep, HTML> headers = Maps.newHashMap();
     private int currentstep;
     private WizardStep initstep;
 
@@ -69,8 +72,8 @@ public class Wizard extends Composite
 
     public void add(WizardStep step)
     {
-        HTML headerHTML = new HTML((headers.size() + 1) + ". " + step.getCaption());
-        headers.put(headerHTML, headers.size() + 1);
+        HTML headerHTML = new HTML((stepList.size() + 1) + ". " + step.getCaption());
+        headers.put(step, headerHTML);
         header.add(headerHTML);
 
         step.getContent().setVisible(false);
@@ -117,35 +120,24 @@ public class Wizard extends Composite
 
         currentstep++;
 
+        handleShareStep();
+
+        stepList.get(currentstep).getContent().setVisible(true);
+        stepList.get(currentstep).show(true, prev, next, cancel);
+        updateHeader(currentstep);
+
+    }
+
+    private void handleShareStep()
+    {
         if (stepList.get(currentstep) instanceof ShareStep)
         {
             ShareStep shareStep = (ShareStep) stepList.get(currentstep);
-            int existingOrders = shareStep.getBookingList().size();
-            if (existingOrders == 0)
+            if (EXISTING_BOOKINGS_ON_ROUTE.size() == 0)
             {
                 currentstep++;
             }
         }
-
-        stepList.get(currentstep).getContent().setVisible(true);
-        stepList.get(currentstep).show(true, prev, next, cancel);
-        updateHeader(currentstep + 1);
-
-    }
-
-    public void onNextShare()
-    {
-        throw new RuntimeException();
-        // FIXMe
-//        int current = map.get(currentstep);
-//        currentstep.getContent().setVisible(false);
-//
-//        ((ShareStep) currentstep).onNextShare();
-//        current += 1;
-//        currentstep = getStep(current);
-//        currentstep.getContent().setVisible(true);
-//        ((Showable) currentstep.getContent()).show(true, prev, next, cancel);
-//        updateHeader(current);
 
     }
 
@@ -157,15 +149,16 @@ public class Wizard extends Composite
         currentstep = 0;	// get first step
 
         stepList.get(currentstep).getContent().setVisible(true);
-        updateHeader(1);
+        stepList.get(currentstep).show(true, prev, next, cancel);
+        updateHeader(0);
     }
 
     private void updateHeader(int current)
     {
-
-        for (HTML headerHTML : headers.keySet())
+        for (int i = 0; i < stepList.size(); i++)
         {
-            if (headers.get(headerHTML).intValue() == current)
+            HTML headerHTML = headers.get(stepList.get(i));
+            if (i == current)
             {
                 headerHTML.addStyleName("header-active");
                 headerHTML.removeStyleName("header-disable");
@@ -176,10 +169,22 @@ public class Wizard extends Composite
                 headerHTML.removeStyleName("header-active");
             }
         }
+//        for (HTML headerHTML : headers.keySet())
+//        {
+//            if (headers.get(headerHTML).intValue() == current)
+//            {
+//                headerHTML.addStyleName("header-active");
+//                headerHTML.removeStyleName("header-disable");
+//            }
+//            else
+//            {
+//                headerHTML.addStyleName("header-disable");
+//                headerHTML.removeStyleName("header-active");
+//            }
+//        }
 
         // show progress bar
-        current = current * 100;
-        double per = current / stepList.size();
+        double per = (current + 1) * 100 / stepList.size();
         progressBar.setWidth(Math.round(per) + "%");
     }
 
@@ -235,7 +240,7 @@ public class Wizard extends Composite
     {
         stepList.get(currentstep).getContent().setVisible(true);
 
-        updateHeader(1);
+        updateHeader(0);
 
         mainPanel.setVisible(true);
         if (initstep instanceof TransportStep)

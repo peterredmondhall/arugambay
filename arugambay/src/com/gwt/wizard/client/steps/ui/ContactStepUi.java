@@ -42,7 +42,7 @@ public class ContactStepUi extends Composite
     {
     }
 
-    boolean test = true;
+    // boolean test = false;
     @UiField
     HTMLPanel mainPanel;
 
@@ -80,17 +80,17 @@ public class ContactStepUi extends Composite
         dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy")));
         checkboxWanttoShare.setValue(true);
 
-        if (test)
-        {
-            dateBox.setValue(new Date());
-            flightLandingTime.setValue("12:00");
-            flightNo.setText("MH111");
-            firstName.setText("Peter");
-            lastName.setText("Hall");
-            email.setText("info@taxigang.com");
-            email2.setText("info@taxigang.com");
-
-        }
+//        if (test)
+//        {
+//            dateBox.setValue(new Date());
+//            flightLandingTime.setValue("12:00");
+//            flightNo.setText("MH111");
+//            firstName.setText("Peter");
+//            lastName.setText("Hall");
+//            email.setText("info@taxigang.com");
+//            email2.setText("info@taxigang.com");
+//
+//        }
     }
 
     public Date getDate()
@@ -188,6 +188,7 @@ public class ContactStepUi extends Composite
 
         next.setVisible(true);
         prev.setEnabled(true);
+        prev.setVisible(true);
 
         boolean sharing = BOOKINGINFO.getOrderType() == OrderType.SHARE;
 
@@ -206,11 +207,9 @@ public class ContactStepUi extends Composite
             case AIRPORT:
                 labelFlightLandingTime.setText("Flight landing time");
 
-                flightNo.setText("Flight no.");
                 break;
             case HOTEL:
                 labelFlightLandingTime.setText("Pickup time");
-                flightNo.setText("Hotel");
 
                 break;
             default:

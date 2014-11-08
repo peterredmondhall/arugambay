@@ -23,6 +23,7 @@ public class CreditCardStepUi extends Composite
 
     public enum ErrorMsg
     {
+        NUMBER,
         NAME,
         CVC
     };
@@ -37,13 +38,13 @@ public class CreditCardStepUi extends Composite
     HTMLPanel mainPanel;
 
     @UiField
-    TextBox ccName, ccCvc;
+    TextBox ccName, ccCvc, ccNumber;
 
     @UiField
     ListBox ccExpiryMonth, ccExpiryYear;
 
     @UiField
-    Label nameErrorMsg, cvcErrorMsg;
+    Label nameErrorMsg, cvcErrorMsg, numberErrorMsg;
 
     @UiField
     Label paymentExplination1, paymentExplination2;
@@ -109,6 +110,11 @@ public class CreditCardStepUi extends Composite
         progressBarPanel.add(new Label("Credit card transaction in progress..."));
     }
 
+    public String getCCNumber()
+    {
+        return ccNumber.getValue();
+    }
+
     public String getCCName()
     {
         return ccName.getValue();
@@ -133,6 +139,9 @@ public class CreditCardStepUi extends Composite
     {
         switch (errorMsg)
         {
+            case NUMBER:
+                numberErrorMsg.setText(msg);
+                break;
             case NAME:
                 nameErrorMsg.setText(msg);
                 break;

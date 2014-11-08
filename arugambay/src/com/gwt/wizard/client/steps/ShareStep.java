@@ -1,53 +1,22 @@
 package com.gwt.wizard.client.steps;
 
-import static com.gwt.wizard.client.GwtWizard.SERVICE;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
-import java.util.List;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.ShareStepUi;
 import com.gwt.wizard.shared.OrderType;
-import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ShareStep implements WizardStep
 {
 
     private final ShareStepUi ui;
 
-    private List<BookingInfo> existingOrders;
-
-    public ShareStep()
+    public ShareStep(Wizard wizard)
     {
-        ui = new ShareStepUi();
-        SERVICE.getBookingsForTour(BOOKINGINFO.getId(), new AsyncCallback<List<BookingInfo>>()
-        {
-            @Override
-            public void onSuccess(List<BookingInfo> list)
-            {
-                existingOrders = list;
-                setBookingList(list);
-            }
-
-            @Override
-            public void onFailure(Throwable caught)
-            {
-            }
-        });
-
-    }
-
-    public List<BookingInfo> getBookingList()
-    {
-        return existingOrders;
-    }
-
-    public void setBookingList(List<BookingInfo> list)
-    {
-        ui.setBookingList(list);
+        ui = new ShareStepUi(wizard);
     }
 
     @Override
@@ -65,7 +34,6 @@ public class ShareStep implements WizardStep
     @Override
     public Boolean onNext()
     {
-        BOOKINGINFO.setOrderType(OrderType.BOOKING);
         ui.removeTable();
         return true;
     }

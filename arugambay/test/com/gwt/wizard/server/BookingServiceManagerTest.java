@@ -161,7 +161,8 @@ public class BookingServiceManagerTest
         BookingInfo bi = getStandardBookingInfo();
         bi.setDate(new DateTime().plusYears(20).toDate());
         bs.addBookingWithClient(bi, "client");
-        List<BookingInfo> list = bs.getBookingsForTour(1234L);
+
+        List<BookingInfo> list = bs.getBookingsForRoute(bi.getRouteInfo());
         // bookin is not paid for
         assertEquals(0, list.size());
 
@@ -169,7 +170,7 @@ public class BookingServiceManagerTest
         bi.setDate(new DateTime().plusYears(20).toDate());
         bi.setOrderType(OrderType.SHARE);
         bs.addBookingWithClient(bi, "client");
-        list = bs.getBookingsForTour(1234L);
+        list = bs.getBookingsForRoute(bi.getRouteInfo());
         // bookin is not BOOKING
         assertEquals(0, list.size());
 
@@ -177,7 +178,7 @@ public class BookingServiceManagerTest
         bi = bs.getBookingForTransactionWithClient(bs.getProfil(), "client", OrderStatus.PAID);
         List<BookingInfo> bookings = bs.getBookings();
         assertEquals(OrderStatus.PAID, bookings.get(0).getStatus());
-        list = bs.getBookingsForTour(1234L);
+        list = bs.getBookingsForRoute(bi.getRouteInfo());
         // booking is in the past
         assertEquals(1, list.size());
 
@@ -209,7 +210,7 @@ public class BookingServiceManagerTest
     {
         create_a_booking();
         confirm_payment();
-        List<BookingInfo> list = bs.getBookingsForTour(1234L);
+        List<BookingInfo> list = bs.getBookingsForRoute(bs.getBookings().get(0).getRouteInfo());
         assertEquals(1, list.size());
         Date date = list.get(0).getDate();
         assertEquals(true, date instanceof Serializable);

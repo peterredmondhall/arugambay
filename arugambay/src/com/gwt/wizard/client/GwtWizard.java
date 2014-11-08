@@ -23,6 +23,7 @@ import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.SummaryStep;
 import com.gwt.wizard.client.steps.TransportStep;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
 /**
@@ -62,7 +63,7 @@ public class GwtWizard implements EntryPoint
         Window.setTitle("Arugam Bay Taxi");
         wizard = new Wizard();
         transportStep = new TransportStep();
-        shareStep = new ShareStep();
+        shareStep = new ShareStep(wizard);
         contactStep = new ContactStep();
         creditCardStep = new CreditCardStep(wizard);
         summaryStep = new SummaryStep();
@@ -177,18 +178,26 @@ public class GwtWizard implements EntryPoint
         {
             wizard.add(step);
         }
-        final GwtWizard thisGwtWizard = this;
         wizard.setHeight("500px");
         wizard.setWidth("800px");
 
         wizard.init();
         RootPanel.get().add(wizard);
-    }
 
-    public void shareBooking(BookingInfo bookingToShare)
-    {
-        // FIXME
-        wizard.onNextShare();
+        SERVICE.getPaypalProfil(new AsyncCallback<ProfilInfo>()
+        {
 
+            @Override
+            public void onSuccess(ProfilInfo profil)
+            {
+                Wizard.PROFILINFO = profil;
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Failed to get paypal url!");
+            }
+        });
     }
 }

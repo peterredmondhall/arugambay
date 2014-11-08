@@ -30,7 +30,7 @@ public interface BookingServiceAsync
 
     void getBookings(AsyncCallback<List<BookingInfo>> callback);
 
-    void getBookingsForTour(Long id, AsyncCallback<List<BookingInfo>> callback);
+    void getBookingsForRoute(RouteInfo id, AsyncCallback<List<BookingInfo>> callback);
 
     void getBookingForTransaction(String ref, AsyncCallback<BookingInfo> callback);
 

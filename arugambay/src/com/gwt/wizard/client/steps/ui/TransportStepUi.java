@@ -1,5 +1,9 @@
 package com.gwt.wizard.client.steps.ui;
 
+import static com.gwt.wizard.client.GwtWizard.SERVICE;
+import static com.gwt.wizard.client.core.Wizard.EXISTING_BOOKINGS_ON_ROUTE;
+import static com.gwt.wizard.client.core.Wizard.ROUTEINFO;
+
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
+import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 
 public class TransportStepUi extends Composite
@@ -89,10 +94,10 @@ public class TransportStepUi extends Composite
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
         this.next = next;
-        next.setEnabled(false);
+        next.setVisible(true);
+        next.setEnabled(EXISTING_BOOKINGS_ON_ROUTE != null);
         prev.setVisible(false);
         cancel.setText("Cancel");
-
     }
 
     // List<Integer> numbers = Lists.newArrayList(1, 2, 3, 6, 10, 34, 57, 89);
@@ -153,7 +158,7 @@ public class TransportStepUi extends Composite
                     mapRouteInfo.put(routeInfo.getKey(), routeInfo);
                     oracle.add(routeInfo.getKey());
                 }
-                SuggestBox suggestBox = new SuggestBox(oracle);
+                final SuggestBox suggestBox = new SuggestBox(oracle);
                 suggestBox.setWidth("600px");
                 routeSuggestionPanel.add(suggestBox);
                 suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
@@ -170,9 +175,22 @@ public class TransportStepUi extends Composite
                         imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
                         labelDescription.setText(routeInfo.getDescription());
                         panelRoute.setVisible(true);
-                        Wizard.ROUTEINFO = routeInfo;
-                        next.setEnabled(true);
+                        ROUTEINFO = routeInfo;
+                        SERVICE.getBookingsForRoute(Wizard.ROUTEINFO, new AsyncCallback<List<BookingInfo>>()
+                        {
+                            @Override
+                            public void onSuccess(List<BookingInfo> list)
+                            {
+                                Wizard.EXISTING_BOOKINGS_ON_ROUTE = list;
+                                next.setEnabled(true);
+                                suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
+                            }
 
+                            @Override
+                            public void onFailure(Throwable caught)
+                            {
+                            }
+                        });
                     }
                 };
 

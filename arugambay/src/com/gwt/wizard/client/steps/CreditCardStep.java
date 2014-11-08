@@ -2,6 +2,7 @@ package com.gwt.wizard.client.steps;
 
 import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+import static com.gwt.wizard.client.core.Wizard.PROFILINFO;
 
 import com.arcbees.stripe.client.CreditCard;
 import com.arcbees.stripe.client.CreditCardResponseHandler;
@@ -56,6 +57,12 @@ public class CreditCardStep implements WizardStep
             ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.NAME);
             return false;
         }
+        ui.setErrorMsg("", ErrorMsg.NUMBER);
+        if (ui.getCCNumber() == null || ui.getCCNumber().trim().length() == 0)
+        {
+            ui.setErrorMsg(MESSAGES.mayNotBeEmptyErrorMsg(), ErrorMsg.NUMBER);
+            return false;
+        }
         ui.setErrorMsg("", ErrorMsg.CVC);
         if (ui.getCvc() == null || ui.getCvc().trim().length() == 0)
         {
@@ -93,18 +100,17 @@ public class CreditCardStep implements WizardStep
 
     void payWithStripe()
     {
-        // test for silver mobility
-        StripeFactory.get().setPublishableKey("pk_test_rcKuNpP9OpTri7twmZ77UOI5");
+        StripeFactory.get().setPublishableKey(PROFILINFO.getStripePublishable());
 
         CreditCard creditCard = new CreditCard.Builder()
                 // .creditCardNumber(ui.getCCName())
-                .creditCardNumber("4242 4242 4242 4242")
+                .creditCardNumber(ui.getCCNumber())
                 // .cvc(ui.getCvc())
-                .cvc("279")
+                .cvc(ui.getCvc())
                 // .expirationMonth(ui.getCCExpiryMonth())
 //                .expirationYear(ui.getCCExpiryYear())
-                .expirationMonth(8)
-                .expirationYear(2017)
+                .expirationMonth(ui.getCCExpiryMonth())
+                .expirationYear(ui.getCCExpiryYear())
                 .name(ui.getCCName())
                 // .addressLine1("1093 Charleston rd")
 //                .addressLine2("apt. 3")

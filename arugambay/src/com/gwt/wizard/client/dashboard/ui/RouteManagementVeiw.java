@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -328,9 +329,11 @@ public class RouteManagementVeiw extends Composite
         VerticalPanel panel = new VerticalPanel();
         panel.getElement().getStyle().setWidth(100, Unit.PCT);
         panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-        panel.add(routeManagementTable);
-        panel.add(pager);
-        mainPanel.add(panel);
+        panel.add((routeManagementTable));
+        // panel.add(pager);
+        ScrollPanel scrollPanel = new ScrollPanel(panel);
+        scrollPanel.setHeight("400px");
+        mainPanel.add(scrollPanel);
     }
 
     private Widget getUploader(final Button saveButton)

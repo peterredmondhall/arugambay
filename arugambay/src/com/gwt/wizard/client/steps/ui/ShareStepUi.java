@@ -1,10 +1,10 @@
 package com.gwt.wizard.client.steps.ui;
 
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+import static com.gwt.wizard.client.core.Wizard.EXISTING_BOOKINGS_ON_ROUTE;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.cell.client.DateCell;
@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
@@ -45,35 +46,16 @@ public class ShareStepUi extends Composite
     ScrollPanel scrollPanel;
 
     private CellTable<BookingInfo> cellTable;
-    private List<BookingInfo> bookingList;
 
     private Map<Long, BookingInfo> shareMap;
+    private final Wizard wizard;
 
-    public ShareStepUi()
+    public ShareStepUi(Wizard wizard)
     {
         initWidget(uiBinder.createAndBindUi(this));
         sharePanel.setVisible(false);
         noSharePanel.setVisible(false);
-    }
-
-    public void setBookingList(List<BookingInfo> list)
-    {
-        this.bookingList = list;
-        boolean noShare = bookingList.size() == 0;
-
-        showShareNoShare();
-
-        if (!noShare && cellTable == null)
-        {
-            cellTable = new CellTable<BookingInfo>();
-            shareMap = new HashMap<>();
-            for (BookingInfo bookingInfo : bookingList)
-            {
-                shareMap.put(bookingInfo.getId(), bookingInfo);
-            }
-            fillTable();
-            scrollPanel.add(cellTable);
-        }
+        this.wizard = wizard;
     }
 
     private void fillTable()
@@ -131,12 +113,9 @@ public class ShareStepUi extends Composite
                     BOOKINGINFO.setLandingTime(bookingToShare.getLandingTime());
                     BOOKINGINFO.setOrderType(OrderType.SHARE);
                     BOOKINGINFO.setParentId(bookingToShare.getId());
-                    if (true)
-                        throw new RuntimeException();
-                    // gwtWizard.shareBooking(bookingToShare);
-                    BOOKINGINFO.setOrderType(OrderType.SHARE);
 
                     scrollPanel.remove(cellTable);
+                    wizard.onNextClick(null);
 
                 }
             }
@@ -144,42 +123,41 @@ public class ShareStepUi extends Composite
 
         // Set the total row count. This isn't strictly necessary, but it affects
         // paging calculations, so its good habit to keep the row count up to date.
-        cellTable.setRowCount(bookingList.size(), true);
+        cellTable.setRowCount(EXISTING_BOOKINGS_ON_ROUTE.size(), true);
 
         // Push the data into the widget.
-        cellTable.setRowData(0, bookingList);
+        cellTable.setRowData(0, EXISTING_BOOKINGS_ON_ROUTE);
 
     }
 
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {
-        showShareNoShare();
 
         next.setVisible(true);
         prev.setEnabled(true);
-        if (bookingList != null)
-        {
-            cellTable = new CellTable<BookingInfo>();
-            fillTable();
-            scrollPanel.add(cellTable);
-        }
+        prev.setVisible(true);
+        BOOKINGINFO.setOrderType(OrderType.BOOKING);
 
+        showShareNoShare();
     }
 
     private void showShareNoShare()
     {
-        if (bookingList == null)
-        {
+        boolean shareAvailable = EXISTING_BOOKINGS_ON_ROUTE.size() > 0;
 
-            sharePanel.setVisible(false);
-            noSharePanel.setVisible(false);
-        }
-        else
-        {
-            boolean shareAvailable = bookingList.size() > 0;
+        sharePanel.setVisible(shareAvailable);
+        noSharePanel.setVisible(!shareAvailable);
 
-            sharePanel.setVisible(shareAvailable);
-            noSharePanel.setVisible(!shareAvailable);
+        if (shareAvailable && cellTable == null)
+        {
+            cellTable = new CellTable<BookingInfo>();
+            shareMap = new HashMap<>();
+            for (BookingInfo bookingInfo : EXISTING_BOOKINGS_ON_ROUTE)
+            {
+                shareMap.put(bookingInfo.getId(), bookingInfo);
+            }
+            fillTable();
+            scrollPanel.add(cellTable);
         }
     }
 
@@ -200,6 +178,7 @@ public class ShareStepUi extends Composite
         if (cellTable != null)
         {
             scrollPanel.remove(cellTable);
+            cellTable = null;
         }
     }
 }

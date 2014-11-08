@@ -8,16 +8,16 @@ public class ProfilInfo implements Serializable
 
     private String paypalUrl;
     private String paypalAccount;
-    private String price;
+    private String stripePublishable;
 
-    public String getPrice()
+    public void setStripePublishable(String stripePublishable)
     {
-        return price;
+        this.stripePublishable = stripePublishable;
     }
 
-    public void setPrice(String price)
+    public String getStripePublishable()
     {
-        this.price = price;
+        return stripePublishable;
     }
 
     public String getPaypalUrl()
