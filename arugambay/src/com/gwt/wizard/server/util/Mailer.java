@@ -82,28 +82,6 @@ public class Mailer
                 }
 
                 // pdf
-                if (pdfData != null)
-                {
-//                    log.info("pdf:" + pdfData.length);
-//                    int counter = 0;
-//                    for (byte b : pdfData)
-//                    {
-//                        log.info(" " + (char) b);
-//                        if (counter++ > 6)
-//                            break;
-//                    }
-//                    MimeBodyPart attachment = new MimeBodyPart();
-//                    attachment.setFileName("manual.pdf");
-//                    attachment.setContent(pdfData, "application/pdf");
-//                    mp.addBodyPart(attachment);
-
-//                    MimeBodyPart attachment = new MimeBodyPart();
-//                    attachment.setFileName("whatever");
-//                    attachment.setDisposition(Part.ATTACHMENT); // Is this needed, and does it work?
-//                    DataSource dataSource = new ByteArrayDataSource(pdfData, "application/pdf");
-//                    attachment.setDataHandler(new DataHandler(dataSource));
-//                    mp.addBodyPart(attachment);
-                }
                 msg.setContent(mp);
 
                 Transport.send(msg);
@@ -125,6 +103,11 @@ public class Mailer
 
             }
         }
+    }
+
+    public static void sendError(Exception exception)
+    {
+        send(exception.getMessage(), "peterredmondhall@gmail.com", "", null);
     }
 
 }

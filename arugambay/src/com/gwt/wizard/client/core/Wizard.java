@@ -17,9 +17,11 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.steps.ConfirmationStep;
+import com.gwt.wizard.client.steps.CreditCardStep;
 import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.TransportStep;
+import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -120,7 +122,7 @@ public class Wizard extends Composite
 
         currentstep++;
 
-        handleShareStep();
+        handleStep();
 
         stepList.get(currentstep).getContent().setVisible(true);
         stepList.get(currentstep).show(true, prev, next, cancel);
@@ -128,12 +130,18 @@ public class Wizard extends Composite
 
     }
 
-    private void handleShareStep()
+    private void handleStep()
     {
         if (stepList.get(currentstep) instanceof ShareStep)
         {
-            ShareStep shareStep = (ShareStep) stepList.get(currentstep);
             if (EXISTING_BOOKINGS_ON_ROUTE.size() == 0)
+            {
+                currentstep++;
+            }
+        }
+        if (stepList.get(currentstep) instanceof CreditCardStep)
+        {
+            if (OrderType.SHARE.equals(BOOKINGINFO.getOrderType()))
             {
                 currentstep++;
             }

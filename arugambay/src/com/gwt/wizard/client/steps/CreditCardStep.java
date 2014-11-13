@@ -125,22 +125,29 @@ public class CreditCardStep implements WizardStep
             @Override
             public void onCreditCardReceived(int status, CreditCardResponse creditCardResponse)
             {
-                service.payWithStripe(creditCardResponse.getId(), BOOKINGINFO, new AsyncCallback<BookingInfo>()
+                if (creditCardResponse.getId() != null)
                 {
-
-                    @Override
-                    public void onFailure(Throwable caught)
+                    service.payWithStripe(creditCardResponse.getId(), BOOKINGINFO, new AsyncCallback<BookingInfo>()
                     {
-                        Window.alert("Failed to pay with stripe");
-                    }
 
-                    @Override
-                    public void onSuccess(BookingInfo bi)
-                    {
-                        BOOKINGINFO.setStatus(bi.getStatus());
-                        wizard.onNextClick(null);
-                    }
-                });
+                        @Override
+                        public void onFailure(Throwable caught)
+                        {
+                            Window.alert("Failed to pay with stripe");
+                        }
+
+                        @Override
+                        public void onSuccess(BookingInfo bi)
+                        {
+                            BOOKINGINFO.setStatus(bi.getStatus());
+                            wizard.onNextClick(null);
+                        }
+                    });
+                }
+                else
+                {
+                    ui.setCCNotAccepted();
+                }
 
             }
         });

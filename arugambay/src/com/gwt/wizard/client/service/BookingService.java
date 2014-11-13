@@ -35,7 +35,7 @@ public interface BookingService extends RemoteService
 
     BookingInfo getBookingForTransaction(String ref) throws IllegalArgumentException;
 
-    List<BookingInfo> getBookingsForShare(Long id) throws IllegalArgumentException;
+    List<BookingInfo> handleShareAccepted(Long id) throws IllegalArgumentException;
 
     ProfilInfo getPaypalProfil() throws IllegalArgumentException;
 

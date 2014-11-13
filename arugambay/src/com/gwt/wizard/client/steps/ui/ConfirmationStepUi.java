@@ -63,25 +63,31 @@ public class ConfirmationStepUi extends Composite
 
         if (bookingInfo != null)
         {
+            if (OrderStatus.SHARE_ACCEPTED.equals(bookingInfo.getStatus()))
+            {
+                label1.setText("Thank you for accepting the share request");
+                label2.setText("A message has been sent to the person requesting the share and they will contact you directly.");
+                return;
+            }
+
             if (OrderType.SHARE.equals(bookingInfo.getOrderType()))
             {
                 label1.setText("Thank you for your share request");
                 label2.setText("A message has been sent to the person who booked the taxi.");
+                return;
 
+            }
+            if (OrderStatus.PAID.equals(bookingInfo.getStatus()))
+            {
+                label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
+                label2.setText("Please print it out and present it to the driver on arrival.");
             }
             else
             {
-                if (OrderStatus.PAID.equals(bookingInfo.getStatus()))
-                {
-                    label1.setText("Thank you for your order. A confirmation email has been sent to the following address:");
-                    label2.setText("Please print it out and present it to the driver on arrival.");
-                }
-                else
-                {
-                    label1.setText("The payment was not successful and no order has been created");
-                    label2.setText("Please contact arugamsurf@gmail.com if you think this is a problem.");
-                }
+                label1.setText("The payment was not successful and no order has been created");
+                label2.setText("Please contact arugamsurf@gmail.com if you think this is a problem.");
             }
+
         }
         else
         {

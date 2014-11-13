@@ -1,8 +1,11 @@
 package com.gwt.wizard.server;
 
+import static com.gwt.wizard.shared.OrderStatus.SHARE_ACCEPTED;
+
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.server.entity.Profil;
@@ -117,18 +120,23 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public List<BookingInfo> getBookingsForShare(Long ref) throws IllegalArgumentException
+    public List<BookingInfo> handleShareAccepted(Long sharerId) throws IllegalArgumentException
     {
-        // TODO Auto-generated method stub
-        List<BookingInfo> list = bookingServiceManager.getBookingsForShare(ref);
-        BookingInfo parentBookingInfo = bookingServiceManager.setShareAccepted(list.get(0));
-        BookingInfo sharerBookingInfo = bookingServiceManager.setShareAccepted(list.get(1));
-        if (sharerBookingInfo.getStatus() == OrderStatus.SHARE_ACCEPTED)
+        BookingInfo sharer = bookingServiceManager.getBooking(sharerId);
+        BookingInfo parentBookingInfo = bookingServiceManager.getBooking(sharer.getParentId());
+
+        BookingInfo sharerBookingInfo = bookingServiceManager.setShareAccepted(sharer);
+        List<BookingInfo> list = null;
+        if (sharerBookingInfo.getStatus() == SHARE_ACCEPTED)
         {
+            list = Lists.newArrayList(parentBookingInfo, sharerBookingInfo);
             Mailer.sendShareAccepted(sharerBookingInfo.getEmail(), parentBookingInfo);
         }
+        else
+        {
+            logger.severe("share failed " + sharerId);
+        }
         return list;
-
     }
 
     @Override

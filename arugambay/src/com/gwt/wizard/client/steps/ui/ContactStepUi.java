@@ -1,5 +1,6 @@
 package com.gwt.wizard.client.steps.ui;
 
+import static com.google.gwt.user.datepicker.client.CalendarUtil.resetTime;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import java.util.Date;
@@ -95,7 +96,9 @@ public class ContactStepUi extends Composite
 
     public Date getDate()
     {
-        return dateBox.getValue();
+        Date date = dateBox.getValue();
+        resetTime(date);
+        return date;
     }
 
     public String getFirstName()
@@ -205,11 +208,13 @@ public class ContactStepUi extends Composite
         switch (Wizard.ROUTEINFO.getPickupType())
         {
             case AIRPORT:
-                labelFlightLandingTime.setText("Flight landing time");
+                labelFlightNo.setText("Flight no. *");
+                labelFlightLandingTime.setText("Landing time *");
 
                 break;
             case HOTEL:
-                labelFlightLandingTime.setText("Pickup time");
+                labelFlightNo.setText("Hotel *");
+                labelFlightLandingTime.setText("Pickup time *");
 
                 break;
             default:

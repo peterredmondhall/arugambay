@@ -142,12 +142,13 @@ public class BookingServiceManagerTest
         {
             if (bookingInfo.getOrderType().equals(OrderType.SHARE))
             {
-                list = bs.getBookingsForShare(bookingInfo.getId());
-                assertEquals(2, list.size());
-                assertEquals(parentBookingInfo.getId(), list.get(0).getId());
-                assertEquals(bookingInfo.getId(), list.get(1).getId());
-                tested = true;
-                break;
+//                Boo
+//                list = new List<>bs.getBookingsForShare(bookingInfo.getId());
+//                assertEquals(2, list.size());
+//                assertEquals(parentBookingInfo.getId(), list.get(0).getId());
+//                assertEquals(bookingInfo.getId(), list.get(1).getId());
+//                tested = true;
+//                break;
             }
         }
         assertEquals(true, tested);

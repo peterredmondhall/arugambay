@@ -233,25 +233,12 @@ public class BookingServiceManager
         return current;
     }
 
-    public List<BookingInfo> getBookingsForShare(Long sharerId) throws IllegalArgumentException
-    {
-        EntityManager em = getEntityManager();
-
-        Booking sharerBooking = em.find(Booking.class, sharerId);
-        BookingInfo sharer = sharerBooking.getBookingInfo(getRouteInfo(sharerBooking.getRoute(), em));
-
-        Booking parentBooking = em.find(Booking.class, sharer.getParentId());
-        BookingInfo parent = parentBooking.getBookingInfo(getRouteInfo(parentBooking.getRoute(), em));
-        return Lists.newArrayList(parent, sharer);
-    }
-
     public BookingInfo setShareAccepted(BookingInfo bookingInfo)
     {
         EntityManager em = getEntityManager();
         try
         {
-            String query = "select t from Booking t where id='" + bookingInfo.getId() + "' order by instanziated desc";
-            Booking booking = (Booking) em.createQuery(query).getSingleResult();
+            Booking booking = em.find(Booking.class, bookingInfo.getId());
 
             booking.setStatus(OrderStatus.SHARE_ACCEPTED);
             em.getTransaction().begin();
@@ -291,6 +278,7 @@ public class BookingServiceManager
     {
         EntityManager em = getEntityManager();
         Booking booking = em.find(Booking.class, id);
+        em.detach(booking);
         return booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
     }
 

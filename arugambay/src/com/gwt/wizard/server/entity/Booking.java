@@ -20,7 +20,7 @@ public class Booking implements Serializable, Comparable<Booking>
 
     public Booking()
     {
-        status = OrderStatus.BOOKED;
+        orderStatus = OrderStatus.BOOKED;
         orderType = OrderType.BOOKING;
         instanziated = new Date();
     }
@@ -38,7 +38,7 @@ public class Booking implements Serializable, Comparable<Booking>
     private String landingTime;
     private int pax;
     private int surfboards;
-    private OrderStatus status;
+    private OrderStatus orderStatus;
     private String requirements;
     private String tx;
     private String ref;
@@ -101,7 +101,7 @@ public class Booking implements Serializable, Comparable<Booking>
 
     public void setStatus(OrderStatus status)
     {
-        this.status = status;
+        this.orderStatus = status;
     }
 
     public String getTx()
@@ -126,7 +126,7 @@ public class Booking implements Serializable, Comparable<Booking>
 
     public OrderStatus getStatus()
     {
-        return status;
+        return orderStatus;
     }
 
     public String getName()

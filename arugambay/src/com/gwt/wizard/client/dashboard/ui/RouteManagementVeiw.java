@@ -11,6 +11,7 @@ import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -60,6 +61,7 @@ public class RouteManagementVeiw extends Composite
 
     private final CellTable.Resources tableRes = GWT.create(TableRes.class);
     private List<RouteInfo> ROUTES;
+    NumberFormat usdFormat = NumberFormat.getFormat(".00");
 
     CellTable<RouteInfo> routeManagementTable;
 
@@ -258,7 +260,7 @@ public class RouteManagementVeiw extends Composite
             @Override
             public String getValue(RouteInfo route)
             {
-                return java.lang.Float.toString(route.getPrice());
+                return usdFormat.format(route.getPrice());
             }
         };
 
@@ -453,8 +455,9 @@ public class RouteManagementVeiw extends Composite
         editStartTxtBox.setText(ri.getStart());
         editEndTxtBox.setText(ri.getEnd());
         editDescriptionBox.setText(ri.getDescription());
+        imageId = ri.getImage();
 
-        editPriceTxtBox.setText(java.lang.Float.toString(ri.getPrice()));
+        editPriceTxtBox.setText(usdFormat.format(ri.getPrice()));
         int i = 0;
         for (RouteInfo.PickupType t : RouteInfo.PickupType.values())
         {
@@ -502,6 +505,7 @@ public class RouteManagementVeiw extends Composite
                     routeInfo.setEnd(editEndTxtBox.getText());
                     routeInfo.setDescription(editDescriptionBox.getText());
                     routeInfo.setPickupType(listPickupType[editPickupTypeBox.getSelectedIndex()]);
+
                     if (imageId != null)
                     {
                         routeInfo.setImage(imageId);
@@ -519,7 +523,8 @@ public class RouteManagementVeiw extends Composite
                         @Override
                         public void onSuccess(List<RouteInfo> routes)
                         {
-                            initializeWidget(routes);
+                            editPlacePopUpPanel.setVisible(false);
+                            initializeWidget();
                         }
                     });
                 }
@@ -529,7 +534,7 @@ public class RouteManagementVeiw extends Composite
         int row = 0;
         addPopupPanel("Start", editStartTxtBox, grid, row++);
         addPopupPanel("Destination", editEndTxtBox, grid, row++);
-        addPopupPanel("Price", editPriceTxtBox, grid, row++);
+        addPopupPanel("Price USD", editPriceTxtBox, grid, row++);
         addPopupPanel("Pickuptype", editPickupTypeBox, grid, row++);
         addPopupPanel("Description", editDescriptionBox, grid, row++);
 
@@ -544,5 +549,4 @@ public class RouteManagementVeiw extends Composite
         editPlacePopUpPanel.show();
 
     }
-
 }

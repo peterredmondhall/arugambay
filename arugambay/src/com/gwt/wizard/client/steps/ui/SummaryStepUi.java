@@ -5,6 +5,7 @@ import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -57,7 +58,7 @@ public class SummaryStepUi extends Composite
         labelEmail.setText(BOOKINGINFO.getEmail());
         labelName.setText(BOOKINGINFO.getName());
         labelRequirements.setText(BOOKINGINFO.getRequirements());
-        labelPrice.setText("US $160");
+        labelPrice.setText("USD " + NumberFormat.getFormat(".00").format(BOOKINGINFO.getRouteInfo().getPrice()));
         labelInterestedSharing.setText(BOOKINGINFO.getShareWanted() ? "yes please" : "no, thanks");
         prev.setEnabled(true);
 

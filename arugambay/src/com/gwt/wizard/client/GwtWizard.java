@@ -149,7 +149,7 @@ public class GwtWizard implements EntryPoint
 
     private void handleShareAccepted(Long shareId)
     {
-        SERVICE.getBookingsForShare(shareId, new AsyncCallback<List<BookingInfo>>()
+        SERVICE.handleShareAccepted(shareId, new AsyncCallback<List<BookingInfo>>()
         {
 
             @Override
@@ -165,6 +165,7 @@ public class GwtWizard implements EntryPoint
                 BOOKINGINFO = sharedBookingList.get(0);
                 shareConfirmationStep.setBookingInfo(sharedBookingList);
                 completeSetup(shareConfirmationStep, ImmutableList.of((WizardStep) shareConfirmationStep));
+
             }
         });
 

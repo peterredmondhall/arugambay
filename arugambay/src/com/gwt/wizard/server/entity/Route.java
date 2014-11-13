@@ -35,7 +35,7 @@ public class Route implements Serializable
     }
 
     private PickupType pickupType;
-    private float price;
+    private Float price;
 
     private Long image;
 

@@ -34,7 +34,7 @@ public interface BookingServiceAsync
 
     void getBookingForTransaction(String ref, AsyncCallback<BookingInfo> callback);
 
-    void getBookingsForShare(Long id, AsyncCallback<List<BookingInfo>> callback);
+    void handleShareAccepted(Long id, AsyncCallback<List<BookingInfo>> callback);
 
     void getUser(AsyncCallback<Boolean> callback);
 

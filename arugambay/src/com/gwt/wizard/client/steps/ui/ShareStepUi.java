@@ -58,7 +58,7 @@ public class ShareStepUi extends Composite
         this.wizard = wizard;
     }
 
-    private void fillTable()
+    private void fillTable(String flightNoHote, String landingTimePickup)
     {
         cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
@@ -156,7 +156,18 @@ public class ShareStepUi extends Composite
             {
                 shareMap.put(bookingInfo.getId(), bookingInfo);
             }
-            fillTable();
+            switch (Wizard.ROUTEINFO.getPickupType())
+            {
+                case AIRPORT:
+                    fillTable("Flight No.", "Landing time");
+                    break;
+                case HOTEL:
+                    fillTable("Hotel", "Pickup time");
+                    break;
+                default:
+                    break;
+
+            }
             scrollPanel.add(cellTable);
         }
     }

@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -171,7 +172,9 @@ public class TransportStepUi extends Composite
                         String displayString = event.getSelectedItem().getReplacementString();
                         RouteInfo routeInfo = mapRouteInfo.get(displayString);
                         labelRouteName.setText(routeInfo.getKey());
-                        labelPrice.setText(java.lang.Float.toString(routeInfo.getPrice()));
+                        NumberFormat usdFormat = NumberFormat.getFormat(".00");
+
+                        labelPrice.setText("$" + usdFormat.format(routeInfo.getPrice()));
                         imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
                         labelDescription.setText(routeInfo.getDescription());
                         panelRoute.setVisible(true);

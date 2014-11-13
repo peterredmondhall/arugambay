@@ -55,6 +55,9 @@ public class CreditCardStepUi extends Composite
     @UiField
     Panel progressBarPanel;
 
+    Label progress = new Label("Credit card transaction in progress...");
+    Label notAccepted = new Label("Credit card was not accepted. Try another?");
+
     public CreditCardStepUi(final CreditCardStep step)
     {
         initWidget(uiBinder.createAndBindUi(this));
@@ -81,6 +84,12 @@ public class CreditCardStepUi extends Composite
                 step.pay();
             }
         });
+
+        progressBarPanel.add(progress);
+        progressBarPanel.add(notAccepted);
+        progress.setVisible(false);
+        notAccepted.setVisible(false);
+        notAccepted.setStyleName("errMsg");
     }
 
     public void showPayButton()
@@ -107,7 +116,9 @@ public class CreditCardStepUi extends Composite
 //            }
 //        };
 //        t.scheduleRepeating(1000);
-        progressBarPanel.add(new Label("Credit card transaction in progress..."));
+        progress.setVisible(true);
+        notAccepted.setVisible(false);
+
     }
 
     public String getCCNumber()
@@ -170,6 +181,12 @@ public class CreditCardStepUi extends Composite
     public void setWidth(String width)
     {
         super.setWidth(width);
+    }
+
+    public void setCCNotAccepted()
+    {
+        progress.setVisible(false);
+        notAccepted.setVisible(true);
     }
 
 }

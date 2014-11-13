@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.RouteInfo;
-import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 
 /**
  * The server-side implementation of the RPC service.
@@ -30,18 +29,17 @@ public class RouteServiceManager
         EntityManager em = getEntityManager();
         try
         {
+            Route route = em.find(Route.class, routeInfo.getId());
             em.getTransaction().begin();
-            Route place = em.find(Route.class, routeInfo.getId());
-            em.remove(place);
-            em.flush();
+            em.remove(route);
             em.getTransaction().commit();
-            em.close();
-            em = getEntityManager();
-            routes = getRoutesWithEM(em);
+            em.flush();
+            route = em.find(Route.class, routeInfo.getId());
+            routes = getRoutes();
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger.severe("deleting route");
         }
         finally
         {
@@ -70,29 +68,26 @@ public class RouteServiceManager
             route.setStart(routeInfo.getStart());
             route.setEnd(routeInfo.getEnd());
             route.setPrice(routeInfo.getPrice());
+
             route.setPickupType(routeInfo.getPickupType());
             route.setImage(routeInfo.getImage());
             route.setDescription(routeInfo.getDescription());
             em.getTransaction().begin();
             em.persist(route);
-            em.flush();
             em.getTransaction().commit();
-            em.persist(route);
-            em.clear();
-            em.close();
-            em = getEntityManager();
-            routes = getRoutesWithEM(em);
+            em.detach(route);
+            route = em.find(Route.class, route.getKey().getId());
+            routes = getRoutes();
         }
 
         catch (Exception e)
         {
-            e.printStackTrace();
+            logger.severe("saving route");
         }
         finally
         {
             em.close();
         }
-
         return routes;
     }
 
@@ -100,32 +95,12 @@ public class RouteServiceManager
     public List<RouteInfo> getRoutes() throws IllegalArgumentException
     {
         EntityManager em = getEntityManager();
-        return getRoutesWithEM(em);
-
-    }
-
-    private List<RouteInfo> getRoutesWithEM(EntityManager em) throws IllegalArgumentException
-    {
         List<RouteInfo> routes = new ArrayList<>();
         try
         {
             List<Route> resultList = em.createQuery("select t from Route t ").getResultList();
-            if (resultList.isEmpty())
-            {
-                RouteInfo routeInfo = new RouteInfo();
-                routeInfo.setStart("Arugam Bay");
-                routeInfo.setEnd("Colombo Airport");
-                routeInfo.setPickupType(PickupType.AIRPORT);
-                Route route = Route.getRoute(routeInfo);
-                em.getTransaction().begin();
-                em.persist(route);
-                em.flush();
-                em.getTransaction().commit();
-                resultList = em.createQuery("select t from Route t ").getResultList();
-            }
             for (Route route : resultList)
             {
-                em.detach(route);
                 RouteInfo routeInfo = route.getInfo();
                 routes.add(routeInfo);
             }
@@ -135,6 +110,6 @@ public class RouteServiceManager
             logger.severe("getting routes");
         }
         return routes;
-    }
 
+    }
 }

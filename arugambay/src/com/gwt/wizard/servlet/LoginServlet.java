@@ -67,14 +67,7 @@ public class LoginServlet extends HttpServlet
             }
             req.getSession().setAttribute("user", appUser);
 
-            if (!GWT.isProdMode())
-            {
-                resp.sendRedirect("/dashboard.html?gwt.codesvr=127.0.0.1:9997");  // localhost dev mode
-            }
-            else
-            {
-                resp.sendRedirect("/dashboard.html");
-            }
+            resp.sendRedirect("/dashboard.html");
         }
         catch (Exception e)
         {
