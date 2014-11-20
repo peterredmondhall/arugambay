@@ -1,11 +1,9 @@
 package com.gwt.wizard.shared.model;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ProfilInfo implements Serializable
+public class ProfilInfo implements IsSerializable
 {
-    private static final long serialVersionUID = 1L;
-
     private String paypalUrl;
     private String paypalAccount;
     private String stripePublishable;

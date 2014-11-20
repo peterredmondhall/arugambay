@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * The server-side implementation of the RPC service.
@@ -35,7 +36,7 @@ public class RouteServiceManager
             em.getTransaction().commit();
             em.flush();
             route = em.find(Route.class, routeInfo.getId());
-            routes = getRoutes();
+            routes = getRoutes(routeInfo.getId());
         }
         catch (Exception e)
         {
@@ -59,6 +60,7 @@ public class RouteServiceManager
             {
                 case ADD:
                     route = new Route();
+                    route.setUserId(routeInfo.getUserId());
                     break;
 
                 case UPDATE:
@@ -77,7 +79,7 @@ public class RouteServiceManager
             em.getTransaction().commit();
             em.detach(route);
             route = em.find(Route.class, route.getKey().getId());
-            routes = getRoutes();
+            routes = getRoutes(routeInfo.getUserId());
         }
 
         catch (Exception e)
@@ -92,7 +94,7 @@ public class RouteServiceManager
     }
 
     @SuppressWarnings("unchecked")
-    public List<RouteInfo> getRoutes() throws IllegalArgumentException
+    public List<RouteInfo> getRoutes(Long userId) throws IllegalArgumentException
     {
         EntityManager em = getEntityManager();
         List<RouteInfo> routes = new ArrayList<>();
@@ -102,7 +104,10 @@ public class RouteServiceManager
             for (Route route : resultList)
             {
                 RouteInfo routeInfo = route.getInfo();
-                routes.add(routeInfo);
+                if (userId.equals(UserInfo.PUBLIC) || userId.equals(routeInfo.getUserId()))
+                {
+                    routes.add(routeInfo);
+                }
             }
         }
         catch (Exception ex)

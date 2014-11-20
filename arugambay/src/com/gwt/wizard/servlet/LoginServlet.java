@@ -1,11 +1,8 @@
 package com.gwt.wizard.servlet;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gwt.core.shared.GWT;
-import com.gwt.wizard.server.jpa.EMF;
+import com.gwt.wizard.server.UserManager;
+import com.gwt.wizard.shared.model.UserInfo;
 
 /*
  * Login Google user and redirect to application main page
@@ -23,12 +20,9 @@ import com.gwt.wizard.server.jpa.EMF;
  */
 public class LoginServlet extends HttpServlet
 {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
     public static final Logger log = Logger.getLogger(LoginServlet.class.getName());
+    private final UserManager userManager = new UserManager();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -44,62 +38,20 @@ public class LoginServlet extends HttpServlet
             return;
         }
 
-        // check local user
-        EntityManager em = getEntityManager();
-        com.gwt.wizard.server.entity.User appUser = null;
-        try
+        UserInfo userInfo = userManager.createUser(user.getEmail());
+        if (userInfo != null)
         {
-            // To create new user for testing
-            createDefaultUser(em);
-
-            try
-            {
-                appUser = (com.gwt.wizard.server.entity.User) em.createQuery("select u from User u where u.userEmail = '" + user.getEmail() + "'").getSingleResult();
-            }
-            catch (Exception e)
-            {
-                log.log(Level.SEVERE, e.getMessage(), e);
-            }
-            if (appUser == null)
-            {
-                resp.getWriter().write("You are not authorized to access Admin Portal!");
-                return;
-            }
-            req.getSession().setAttribute("user", appUser);
+            req.getSession().setAttribute("user", user);
 
             resp.sendRedirect("/dashboard.html");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            em.close();
-        }
-    }
-
-    private void createDefaultUser(EntityManager em)
-    {
-        String user = "peterredmondhall@gmail.com";
-
-        if (!GWT.isProdMode())
-        {
-            user = "test@example.com";
-        }
-        try
-        {
-            em.createQuery("select u from User u where u.userEmail = '" + user + "'").getSingleResult();
-        }
-        catch (NoResultException ex)
-        {
-            em.getTransaction().begin();
-            com.gwt.wizard.server.entity.User newAppUser = new com.gwt.wizard.server.entity.User();
-            newAppUser.setUserEmail(user);
-            em.persist(newAppUser);
-            em.getTransaction().commit();
 
         }
+        else
+        {
+            resp.getWriter().write("You are not authorized to access Admin Portal!");
+
+        }
+
     }
 
     @Override
@@ -108,10 +60,4 @@ public class LoginServlet extends HttpServlet
     {
         doPost(req, resp);
     }
-
-    private static EntityManager getEntityManager()
-    {
-        return EMF.get().createEntityManager();
-    }
-
 }

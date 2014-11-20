@@ -5,11 +5,11 @@ import static com.gwt.wizard.shared.OrderStatus.SHARE_ACCEPTED;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.appengine.api.users.User;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.server.entity.Profil;
-import com.gwt.wizard.server.entity.User;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
@@ -30,6 +30,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
 
     private final BookingServiceManager bookingServiceManager = new BookingServiceManager();
     private final RouteServiceManager routeServiceManager = new RouteServiceManager();
+    private final UserManager userManager = new UserManager();
     private final StripePayment stripePayment = new StripePayment();
 
     @Override
@@ -51,37 +52,15 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public List<RouteInfo> getRoutes() throws IllegalArgumentException
+    public List<RouteInfo> getRoutes(Long userId) throws IllegalArgumentException
     {
-        return routeServiceManager.getRoutes();
+        return routeServiceManager.getRoutes(userId);
     }
 
     @Override
     public List<BookingInfo> getBookings() throws IllegalArgumentException
     {
         return bookingServiceManager.getBookings();
-    }
-
-    private User getUserFromSession()
-    {
-        Object obj = getThreadLocalRequest().getSession().getAttribute("user");
-        if (obj == null)
-        {
-            return null;
-        }
-        return (User) obj;
-    }
-
-    @Override
-    public Boolean getUser() throws IllegalArgumentException
-    {
-        User user = getUserFromSession();
-        // load user devices
-        if (user == null)
-        {
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -152,13 +131,18 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public BookingInfo payWithStripe(String token, BookingInfo bookingInfo)
     {
         Profil profil = bookingServiceManager.getProfil();
-        if (stripePayment.charge(token, bookingInfo, profil.getStripeSecret()))
+        String refusal = stripePayment.charge(token, bookingInfo, profil.getStripeSecret());
+        if (refusal == null)
         {
             bookingInfo = bookingServiceManager.setPayed(profil, bookingInfo, OrderStatus.PAID);
             if (bookingInfo != null)
             {
                 Mailer.sendConfirmation(bookingInfo, profil);
             }
+        }
+        else
+        {
+            bookingInfo.setStripeRefusalReason(refusal);
         }
         return bookingInfo;
     }
@@ -167,6 +151,28 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public void sendStat(StatInfo statInfo)
     {
         bookingServiceManager.sendStat(statInfo);
+    }
+
+    @Override
+    public Long getUser() throws IllegalArgumentException
+    {
+        Long userInfoId = null;
+        User user = getUserFromSession();
+        if (user != null)
+        {
+            userInfoId = userManager.getUser(user).getId();
+        }
+        return userInfoId;
+    }
+
+    private User getUserFromSession()
+    {
+        Object obj = getThreadLocalRequest().getSession().getAttribute("user");
+        if (obj == null)
+        {
+            return null;
+        }
+        return (User) obj;
     }
 
 }

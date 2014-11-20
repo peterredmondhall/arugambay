@@ -20,7 +20,7 @@ public interface BookingServiceAsync
 
     // void sendShareAccepted(List<BookingInfo> bookingInfo, AsyncCallback<BookingInfo> callback);
 
-    void getRoutes(AsyncCallback<List<RouteInfo>> callback);
+    void getRoutes(Long userId, AsyncCallback<List<RouteInfo>> callback);
 
     void deleteRoute(RouteInfo placeInfo, AsyncCallback<List<RouteInfo>> callback)
             throws IllegalArgumentException;
@@ -36,7 +36,7 @@ public interface BookingServiceAsync
 
     void handleShareAccepted(Long id, AsyncCallback<List<BookingInfo>> callback);
 
-    void getUser(AsyncCallback<Boolean> callback);
+    void getUser(AsyncCallback<Long> callback);
 
     void getPaypalProfil(AsyncCallback<ProfilInfo> callback);
 

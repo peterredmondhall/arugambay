@@ -1,5 +1,7 @@
 package com.gwt.wizard.client.dashboard.ui;
 
+import static com.gwt.wizard.client.GwtDashboard.USERINFOID;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,7 +115,8 @@ public class RouteManagementVeiw extends Composite
 
     private void fetchRoutes()
     {
-        service.getRoutes(new AsyncCallback<List<RouteInfo>>()
+
+        service.getRoutes(USERINFOID, new AsyncCallback<List<RouteInfo>>()
         {
 
             @Override

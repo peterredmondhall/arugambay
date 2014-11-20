@@ -1,10 +1,11 @@
 package com.gwt.wizard.shared.model;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class RouteInfo implements Serializable
+public class RouteInfo implements IsSerializable
 {
-    private static final long serialVersionUID = 1L;
+
+    public static final Long PUBLIC = -1L;
 
     public enum PickupType
     {
@@ -23,10 +24,21 @@ public class RouteInfo implements Serializable
     private String start;
     private String end;
     private String description;
+    private Long userId;
 
     public String getDescription()
     {
         return description;
+    }
+
+    public Long getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(Long userId)
+    {
+        this.userId = userId;
     }
 
     public void setDescription(String description)

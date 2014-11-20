@@ -20,6 +20,7 @@ import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.client.steps.ui.CreditCardStepUi;
 import com.gwt.wizard.client.steps.ui.CreditCardStepUi.ErrorMsg;
+import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class CreditCardStep implements WizardStep
@@ -139,8 +140,15 @@ public class CreditCardStep implements WizardStep
                         @Override
                         public void onSuccess(BookingInfo bi)
                         {
-                            BOOKINGINFO.setStatus(bi.getStatus());
-                            wizard.onNextClick(null);
+                            if (bi.getStatus().equals(OrderStatus.PAID))
+                            {
+                                BOOKINGINFO.setStatus(bi.getStatus());
+                                wizard.onNextClick(null);
+                            }
+                            else
+                            {
+                                ui.setCCNotRefused(bi.getStripeRefusalReason());
+                            }
                         }
                     });
                 }

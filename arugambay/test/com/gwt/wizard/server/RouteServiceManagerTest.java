@@ -12,6 +12,8 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.PickupType;
+import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
+import com.gwt.wizard.shared.model.UserInfo;
 
 public class RouteServiceManagerTest
 {
@@ -21,10 +23,16 @@ public class RouteServiceManagerTest
 
     RouteServiceManager rs = new RouteServiceManager();
 
+    UserInfo userInfo;
+
     @Before
     public void setUp()
     {
         helper.setUp();
+        userInfo = new UserManager().createUser("test@example.com");
+        RouteInfo routeInfo = new RouteInfo();
+        routeInfo.setUserId(userInfo.getId());
+        new RouteServiceManager().saveRoute(routeInfo, SaveMode.ADD);
     }
 
     @After
@@ -37,14 +45,14 @@ public class RouteServiceManagerTest
     public void should_fetch_routes()
     {
 
-        List<RouteInfo> routes = rs.getRoutes();
+        List<RouteInfo> routes = rs.getRoutes(UserInfo.PUBLIC);
         assertEquals(1, routes.size());
     }
 
     @Test
     public void should_delete_route()
     {
-        List<RouteInfo> routes = rs.getRoutes();
+        List<RouteInfo> routes = rs.getRoutes(UserInfo.PUBLIC);
         assertEquals(1, routes.size());
         RouteInfo routeInfo = routes.get(0);
         routes = rs.deleteRoute(routeInfo);
@@ -55,7 +63,7 @@ public class RouteServiceManagerTest
     public void should_update_route()
     {
 
-        List<RouteInfo> routes = rs.getRoutes();
+        List<RouteInfo> routes = rs.getRoutes(userInfo.getId());
         assertEquals(1, routes.size());
         RouteInfo routeInfo = routes.get(0);
         routeInfo.setPickupType(PickupType.HOTEL);

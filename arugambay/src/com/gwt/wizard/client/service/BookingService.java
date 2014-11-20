@@ -21,9 +21,9 @@ public interface BookingService extends RemoteService
 
     // BookingInfo sendShareAccepted(List<BookingInfo> l);
 
-    Boolean getUser() throws IllegalArgumentException;
+    Long getUser() throws IllegalArgumentException;
 
-    List<RouteInfo> getRoutes() throws IllegalArgumentException;
+    List<RouteInfo> getRoutes(Long userId) throws IllegalArgumentException;
 
     List<RouteInfo> deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException;
 

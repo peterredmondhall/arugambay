@@ -1,8 +1,6 @@
 package com.gwt.wizard.client.steps.ui;
 
-import static com.gwt.wizard.client.GwtWizard.SERVICE;
 import static com.gwt.wizard.client.core.Wizard.EXISTING_BOOKINGS_ON_ROUTE;
-import static com.gwt.wizard.client.core.Wizard.ROUTEINFO;
 
 import java.util.List;
 import java.util.Map;
@@ -26,11 +24,13 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.UserInfo;
 
 public class TransportStepUi extends Composite
 {
@@ -146,7 +146,7 @@ public class TransportStepUi extends Composite
 
     private void fetchRoutes()
     {
-        service.getRoutes(new AsyncCallback<List<RouteInfo>>()
+        service.getRoutes(UserInfo.PUBLIC, new AsyncCallback<List<RouteInfo>>()
         {
 
             @Override
@@ -178,8 +178,8 @@ public class TransportStepUi extends Composite
                         imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
                         labelDescription.setText(routeInfo.getDescription());
                         panelRoute.setVisible(true);
-                        ROUTEINFO = routeInfo;
-                        SERVICE.getBookingsForRoute(Wizard.ROUTEINFO, new AsyncCallback<List<BookingInfo>>()
+                        Wizard.ROUTEINFO = routeInfo;
+                        GwtWizard.SERVICE.getBookingsForRoute(Wizard.ROUTEINFO, new AsyncCallback<List<BookingInfo>>()
                         {
                             @Override
                             public void onSuccess(List<BookingInfo> list)

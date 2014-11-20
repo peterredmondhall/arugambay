@@ -194,7 +194,7 @@ public class BookingServiceManager
                 profil.setPaypalURL(PaypalPaymentChecker.TEST_PAYPAL_URL);
                 profil.setTest(true);
                 profil.setName("test");
-                profil.setTaxisurfUrl("http://taxisurf.appspot.com");
+                profil.setTaxisurfUrl("http://taxigangsurf.appspot.com");
                 em.persist(profil);
                 em.getTransaction().commit();
 

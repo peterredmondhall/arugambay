@@ -20,6 +20,8 @@ import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
+import com.gwt.wizard.shared.model.UserInfo;
 
 public class BookingServiceManagerTest
 {
@@ -29,10 +31,16 @@ public class BookingServiceManagerTest
 
     BookingServiceManager bs = new BookingServiceManager();
 
+    UserInfo userInfo;
+
     @Before
     public void setUp()
     {
         helper.setUp();
+        userInfo = new UserManager().createUser("test@example.com");
+        RouteInfo routeInfo = new RouteInfo();
+        routeInfo.setUserId(userInfo.getId());
+        new RouteServiceManager().saveRoute(routeInfo, SaveMode.ADD);
     }
 
     @After
@@ -43,7 +51,7 @@ public class BookingServiceManagerTest
 
     private BookingInfo getBookingInfo(Date date, String flightNo, String landingTime, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
     {
-        RouteInfo routeInfo = new RouteServiceManager().getRoutes().get(0);
+        RouteInfo routeInfo = new RouteServiceManager().getRoutes(userInfo.getId()).get(0);
 
         BookingInfo bi = new BookingInfo();
         bi.setDate(date);
@@ -122,7 +130,7 @@ public class BookingServiceManagerTest
         List<BookingInfo> list = bs.getBookings();
         BookingInfo parentBookingInfo = list.get(0);
         BookingInfo bi = new BookingInfo();
-        bi.setRouteInfo(new RouteServiceManager().getRoutes().get(0));
+        bi.setRouteInfo(new RouteServiceManager().getRoutes(UserInfo.PUBLIC).get(0));
         bi.setParentId(parentBookingInfo.getId());
         bi.setDate(parentBookingInfo.getDate());
         bi.setFlightNo(parentBookingInfo.getFlightNo());

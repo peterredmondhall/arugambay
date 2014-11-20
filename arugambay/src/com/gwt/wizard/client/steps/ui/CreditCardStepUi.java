@@ -57,6 +57,7 @@ public class CreditCardStepUi extends Composite
 
     Label progress = new Label("Credit card transaction in progress...");
     Label notAccepted = new Label("Credit card was not accepted. Try another?");
+    Label refusal = new Label("");
 
     public CreditCardStepUi(final CreditCardStep step)
     {
@@ -87,9 +88,12 @@ public class CreditCardStepUi extends Composite
 
         progressBarPanel.add(progress);
         progressBarPanel.add(notAccepted);
+        progressBarPanel.add(refusal);
         progress.setVisible(false);
         notAccepted.setVisible(false);
         notAccepted.setStyleName("errMsg");
+        refusal.setVisible(false);
+        refusal.setStyleName("errMsg");
     }
 
     public void showPayButton()
@@ -118,6 +122,7 @@ public class CreditCardStepUi extends Composite
 //        t.scheduleRepeating(1000);
         progress.setVisible(true);
         notAccepted.setVisible(false);
+        refusal.setVisible(false);
 
     }
 
@@ -187,6 +192,15 @@ public class CreditCardStepUi extends Composite
     {
         progress.setVisible(false);
         notAccepted.setVisible(true);
+        refusal.setVisible(false);
+    }
+
+    public void setCCNotRefused(String refusalReason)
+    {
+        progress.setVisible(false);
+        notAccepted.setVisible(false);
+        refusal.setVisible(true);
+        refusal.setText(refusalReason);
     }
 
 }

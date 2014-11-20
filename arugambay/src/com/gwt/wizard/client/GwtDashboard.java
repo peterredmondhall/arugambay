@@ -16,22 +16,30 @@ public class GwtDashboard implements EntryPoint
 {
     private final BookingServiceAsync service = GWT.create(BookingService.class);
 
+    public static Long USERINFOID;
+
     /**
      * This is the entry point method.
      */
     @Override
     public void onModuleLoad()
     {
-        service.getUser(new AsyncCallback<Boolean>()
+        service.getUser(new AsyncCallback<Long>()
         {
 
             @Override
-            public void onSuccess(Boolean result)
+            public void onSuccess(Long result)
             {
-                if (!result)
+                if (result == null)
+                {
                     Window.Location.replace("/login.html");
+                }
                 else
+                {
+                    USERINFOID = result;
                     RootPanel.get().add(new DashboardVeiw());
+                }
+
             }
 
             @Override

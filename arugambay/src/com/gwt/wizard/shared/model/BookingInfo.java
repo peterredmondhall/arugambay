@@ -25,6 +25,7 @@ public class BookingInfo implements Serializable
     private String landingTime;
     private int pax = 0;
     private int surfboards = 0;
+    private String stripeRefusalReason;
 
     public Long getId()
     {
@@ -177,6 +178,16 @@ public class BookingInfo implements Serializable
     public void setRouteInfo(RouteInfo routeInfo)
     {
         this.routeInfo = routeInfo;
+    }
+
+    public String getStripeRefusalReason()
+    {
+        return stripeRefusalReason;
+    }
+
+    public void setStripeRefusalReason(String stripeRefusalReason)
+    {
+        this.stripeRefusalReason = stripeRefusalReason;
     }
 
 }

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
+import com.gwt.wizard.shared.model.UserInfo;
 
 @Entity
 public class User implements Serializable
@@ -38,4 +39,12 @@ public class User implements Serializable
         this.userEmail = userEmail;
     }
 
+    public UserInfo getInfo()
+    {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(key.getId());
+        userInfo.setEmail(userEmail);
+        return userInfo;
+
+    }
 }

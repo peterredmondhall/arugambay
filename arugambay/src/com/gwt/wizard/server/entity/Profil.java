@@ -60,7 +60,7 @@ public class Profil implements Serializable
 
     private String taxisurfUrl;
 
-    private static final String TAXIGANGSURF_URL = "http://taxisurf.appspot.com";
+    private static final String TAXIGANGSURF_URL = "http://taxigangsurf.appspot.com";
 
     public String getName()
     {
