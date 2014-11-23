@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
@@ -32,6 +33,8 @@ public interface BookingService extends RemoteService
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
     List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException;
+
+    List<RatingInfo> getRatings(RouteInfo routeInfo) throws IllegalArgumentException;
 
     BookingInfo getBookingForTransaction(String ref) throws IllegalArgumentException;
 

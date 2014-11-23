@@ -14,6 +14,7 @@ import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
@@ -173,6 +174,21 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             return null;
         }
         return (User) obj;
+    }
+
+    @Override
+    public List<RatingInfo> getRatings(RouteInfo routeInfo) throws IllegalArgumentException
+    {
+        List<RatingInfo> list = Lists.newArrayList();
+        for (int i = 0; i < 20; i++)
+        {
+            RatingInfo ri = new RatingInfo();
+            ri.setStars(5L);
+            ri.setCritic("critic" + i);
+            ri.setNickname("nickname" + i);
+            list.add(ri);
+        }
+        return list;
     }
 
 }

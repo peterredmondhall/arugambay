@@ -481,6 +481,7 @@ public class RouteManagementVeiw extends Composite
             public void onClick(ClickEvent event)
             {
                 RouteInfo routeInfo = new RouteInfo();
+                routeInfo.setUserId(USERINFOID);
                 try
                 {
                     String price = editPriceTxtBox.getText();

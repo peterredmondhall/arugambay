@@ -35,14 +35,14 @@ import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.UserInfo;
 
-public class TransportStepUi extends Composite
+public class RatingStepUi extends Composite
 {
     public static final String WIDTH = "120px";
 
     private static RouteStepUiUiBinder uiBinder = GWT.create(RouteStepUiUiBinder.class);
     private final BookingServiceAsync service = GWT.create(BookingService.class);
 
-    interface RouteStepUiUiBinder extends UiBinder<Widget, TransportStepUi>
+    interface RouteStepUiUiBinder extends UiBinder<Widget, RatingStepUi>
     {
     }
 
@@ -70,7 +70,7 @@ public class TransportStepUi extends Composite
     private final ScrollPanel sp = new ScrollPanel();
     private final FlowPanel fp = new FlowPanel();
 
-    public TransportStepUi()
+    public RatingStepUi()
     {
 
         initWidget(uiBinder.createAndBindUi(this));

@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
 
@@ -31,6 +32,8 @@ public interface BookingServiceAsync
     void getBookings(AsyncCallback<List<BookingInfo>> callback);
 
     void getBookingsForRoute(RouteInfo id, AsyncCallback<List<BookingInfo>> callback);
+
+    void getRatings(RouteInfo routeInfo, AsyncCallback<List<RatingInfo>> callback);
 
     void getBookingForTransaction(String ref, AsyncCallback<BookingInfo> callback);
 
