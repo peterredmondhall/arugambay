@@ -5,14 +5,24 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class UserInfo implements IsSerializable
 {
 
+    public Long getContractorId()
+    {
+        return contractorId;
+    }
+
+    public void setProviderId(Long providerId)
+    {
+        this.contractorId = providerId;
+    }
+
     public UserInfo()
     {
 
     }
 
-    transient public static final Long PUBLIC = -1L;
     private Long id;
     private String email;
+    private Long contractorId;
 
     public Long getId()
     {

@@ -1,26 +1,25 @@
 package com.gwt.wizard.client.steps;
 
-import static com.gwt.wizard.client.GwtWizard.MESSAGES;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
-import com.gwt.wizard.client.steps.ui.TransportStepUi;
+import com.gwt.wizard.client.steps.ui.RatingStepUi;
 
 public class RatingStep implements WizardStep
 {
 
-    private final TransportStepUi ui;
+    private final RatingStepUi ui;
 
-    public RatingStep()
+    public RatingStep(Wizard wizard, ConfirmationStep confirmationStep)
     {
-        ui = new TransportStepUi();
+        ui = new RatingStepUi(wizard, confirmationStep);
     }
 
     @Override
     public String getCaption()
     {
-        return MESSAGES.firstPage();
+        return "Feedback";
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.google.appengine.labs.repackaged.com.google.common.base.Pair;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 
 public class BookingUtil
 {
@@ -42,19 +43,9 @@ public class BookingUtil
     {
         List<Pair<String, String>> list = new ArrayList<Pair<String, String>>();
         list.add(new Pair(DATE, sdf.print(new DateTime(bookingInfo.getDate()))));
-        switch (bookingInfo.getRouteInfo().getPickupType())
-        {
-            case AIRPORT:
-                list.add(new Pair(FLIGHTNO, bookingInfo.getFlightNo()));
-                list.add(new Pair(LANDING_TIME, bookingInfo.getLandingTime()));
-                break;
-            case HOTEL:
-                list.add(new Pair(HOTEL, bookingInfo.getFlightNo()));
-                list.add(new Pair(PICKUP_TIME, bookingInfo.getLandingTime()));
-                break;
-            default:
-                break;
-        }
+        PickupType pickupType = bookingInfo.getRouteInfo().getPickupType();
+        list.add(new Pair(pickupType.getLocationType(), bookingInfo.getFlightNo()));
+        list.add(new Pair(pickupType.getTimeType(), bookingInfo.getFlightNo()));
         list.add(new Pair(NAME, bookingInfo.getName()));
         list.add(new Pair(EMAIL, bookingInfo.getEmail()));
         list.add(new Pair(NUM_SURFBOARDS, Integer.toString(bookingInfo.getSurfboards())));

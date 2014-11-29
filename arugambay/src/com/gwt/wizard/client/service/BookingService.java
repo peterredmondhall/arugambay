@@ -9,6 +9,7 @@ import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
+import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * The client-side stub for the RPC service.
@@ -22,19 +23,23 @@ public interface BookingService extends RemoteService
 
     // BookingInfo sendShareAccepted(List<BookingInfo> l);
 
-    Long getUser() throws IllegalArgumentException;
+    UserInfo getUser() throws IllegalArgumentException;
 
-    List<RouteInfo> getRoutes(Long userId) throws IllegalArgumentException;
+    List<RouteInfo> getRoutes(UserInfo userInfo) throws IllegalArgumentException;
 
-    List<RouteInfo> deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException;
+    List<RouteInfo> getRoutes() throws IllegalArgumentException;
 
-    List<RouteInfo> saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException;
+    List<RouteInfo> deleteRoute(UserInfo userInfo, RouteInfo placeInfo) throws IllegalArgumentException;
+
+    List<RouteInfo> saveRoute(UserInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException;
 
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
     List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException;
 
     List<RatingInfo> getRatings(RouteInfo routeInfo) throws IllegalArgumentException;
+
+    void addRating(RatingInfo routeInfo) throws IllegalArgumentException;
 
     BookingInfo getBookingForTransaction(String ref) throws IllegalArgumentException;
 
@@ -45,5 +50,7 @@ public interface BookingService extends RemoteService
     BookingInfo payWithStripe(String token, BookingInfo bookingInfo);
 
     void sendStat(StatInfo statInfo);
+
+    UserInfo createDefaultUser();
 
 }

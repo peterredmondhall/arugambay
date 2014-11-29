@@ -63,6 +63,27 @@ public class UserManager
         }
     }
 
+    public UserInfo getUser(String email)
+    {
+
+        EntityManager em = getEntityManager();
+        UserInfo userInfo = null;
+        try
+        {
+            com.gwt.wizard.server.entity.User user = (com.gwt.wizard.server.entity.User) em.createQuery("select u from User u where u.userEmail = '" + TEST_USER + "'").getSingleResult();
+            userInfo = user.getInfo();
+        }
+        catch (NoResultException ex)
+        {
+
+        }
+        finally
+        {
+            em.close();
+        }
+        return userInfo;
+    }
+
     public UserInfo getUser(User user) throws IllegalArgumentException
     {
         return createUser(user.getEmail());

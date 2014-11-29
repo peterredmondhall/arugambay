@@ -9,8 +9,29 @@ public class RouteInfo implements IsSerializable
 
     public enum PickupType
     {
-        HOTEL,
-        AIRPORT
+
+        HOTEL("Flight No:", "Landing Time:"),
+        AIRPORT("Hotel", "Pickup Time:"),
+        TRAINSTATION("Train station", "Train arrival time:");
+
+        String locationType;
+        String timeType;
+
+        private PickupType(String locationType, String timeType)
+        {
+            this.locationType = locationType;
+            this.timeType = timeType;
+        }
+
+        public String getLocationType()
+        {
+            return locationType;
+        }
+
+        public String getTimeType()
+        {
+            return timeType;
+        }
     }
 
     public enum SaveMode
@@ -24,21 +45,21 @@ public class RouteInfo implements IsSerializable
     private String start;
     private String end;
     private String description;
-    private Long userId;
+    private Long contractorId;
 
     public String getDescription()
     {
         return description;
     }
 
-    public Long getUserId()
+    public Long getContractorId()
     {
-        return userId;
+        return contractorId;
     }
 
-    public void setUserId(Long userId)
+    public void setContractorId(Long contactorId)
     {
-        this.userId = userId;
+        this.contractorId = contactorId;
     }
 
     public void setDescription(String description)

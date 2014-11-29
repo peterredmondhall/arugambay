@@ -13,10 +13,14 @@ import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.RouteInfo.PickupType;
+import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 import com.gwt.wizard.shared.model.StatInfo;
+import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * The server-side implementation of the RPC service.
@@ -26,12 +30,12 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         BookingService
 {
     private static final Logger logger = Logger.getLogger(BookingServiceImpl.class.getName());
-//    public final String WIZARD_DATA_ENTITY = "wizard-data";
-//    public final String PLACES_DATA_ENTITY = "places-data";
 
     private final BookingServiceManager bookingServiceManager = new BookingServiceManager();
     private final RouteServiceManager routeServiceManager = new RouteServiceManager();
     private final UserManager userManager = new UserManager();
+    private final ContractorManager contractorManager = new ContractorManager();
+    private final RatingManager ratingManager = new RatingManager();
     private final StripePayment stripePayment = new StripePayment();
 
     @Override
@@ -41,21 +45,27 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public List<RouteInfo> deleteRoute(RouteInfo placeInfo) throws IllegalArgumentException
+    public List<RouteInfo> deleteRoute(UserInfo userInfo, RouteInfo placeInfo) throws IllegalArgumentException
     {
-        return routeServiceManager.deleteRoute(placeInfo);
+        return routeServiceManager.deleteRoute(userInfo, placeInfo);
     }
 
     @Override
-    public List<RouteInfo> saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
+    public List<RouteInfo> saveRoute(UserInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
     {
-        return routeServiceManager.saveRoute(placeInfo, mode);
+        return routeServiceManager.saveRoute(userInfo, placeInfo, mode);
     }
 
     @Override
-    public List<RouteInfo> getRoutes(Long userId) throws IllegalArgumentException
+    public List<RouteInfo> getRoutes(UserInfo userInfo) throws IllegalArgumentException
     {
-        return routeServiceManager.getRoutes(userId);
+        return routeServiceManager.getRoutes(userInfo);
+    }
+
+    @Override
+    public List<RouteInfo> getRoutes() throws IllegalArgumentException
+    {
+        return routeServiceManager.getRoutes();
     }
 
     @Override
@@ -155,15 +165,15 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public Long getUser() throws IllegalArgumentException
+    public UserInfo getUser() throws IllegalArgumentException
     {
-        Long userInfoId = null;
+        UserInfo userInfo = null;
         User user = getUserFromSession();
         if (user != null)
         {
-            userInfoId = userManager.getUser(user).getId();
+            userInfo = userManager.getUser(user);
         }
-        return userInfoId;
+        return userInfo;
     }
 
     private User getUserFromSession()
@@ -179,16 +189,49 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public List<RatingInfo> getRatings(RouteInfo routeInfo) throws IllegalArgumentException
     {
-        List<RatingInfo> list = Lists.newArrayList();
-        for (int i = 0; i < 20; i++)
-        {
-            RatingInfo ri = new RatingInfo();
-            ri.setStars(5L);
-            ri.setCritic("critic" + i);
-            ri.setNickname("nickname" + i);
-            list.add(ri);
-        }
-        return list;
+        return ratingManager.getRatings(routeInfo);
     }
 
+    @Override
+    public void addRating(RatingInfo ratingInfo) throws IllegalArgumentException
+    {
+        ratingManager.add(ratingInfo);
+    }
+
+    @Override
+    public UserInfo createDefaultUser()
+    {
+        if (bookingServiceManager.getMaintenceAllowed())
+        {
+            String defaultUserEmail = "test@example.com";
+            UserInfo userInfo = userManager.getUser(defaultUserEmail);
+            if (userInfo != null)
+            {
+                List<RouteInfo> routes = routeServiceManager.getRoutes(userInfo);
+                for (RouteInfo routeInfo : routes)
+                {
+                    routeServiceManager.deleteRoute(userInfo, routeInfo);
+                }
+                List<ContractorInfo> listContractors = contractorManager.getContractors(userInfo);
+                for (ContractorInfo contractorInfo : listContractors)
+                {
+                    contractorManager.delete(contractorInfo);
+                }
+            }
+            userInfo = new UserManager().createUser("test@example.com");
+            ContractorInfo contractorInfo = new ContractorInfo();
+            contractorInfo.setUserId(userInfo.getId());
+            contractorInfo = new ContractorManager().createContractor(contractorInfo);
+            RouteInfo routeInfo = new RouteInfo();
+            routeInfo.setPickupType(PickupType.AIRPORT);
+            routeInfo.setContractorId(contractorInfo.getId());
+            new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
+            return userInfo;
+        }
+        else
+        {
+            logger.info("maintence not allowed");
+            return null;
+        }
+    }
 }

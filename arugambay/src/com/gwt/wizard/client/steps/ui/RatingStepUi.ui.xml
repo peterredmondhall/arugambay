@@ -31,63 +31,20 @@
 		}
 
 	</ui:style>
+
 	<g:HTMLPanel ui:field="mainPanel">
 
-		<g:VerticalPanel styleName="{style.brd}">
-			<g:HorizontalPanel ui:field="dp">
+<g:VerticalPanel>
+			<g:HorizontalPanel ui:field="hp1" styleName="{style.brd}">
+				<g:AbsolutePanel><g:Label>Please rate your taxi transfer with Arugam Bay Taxi initiative:</g:Label></g:AbsolutePanel>
+						
 			</g:HorizontalPanel>
-			<g:HorizontalPanel ui:field="routeSuggestionPanel"
-				styleName="{style.addressFieldStyle}">
+			<g:HorizontalPanel ui:field="hp2" styleName="{style.brd}">
 			</g:HorizontalPanel>
-			<g:VerticalPanel ui:field="panelRoute">
-				<g:Label styleName="{style.title}" ui:field="labelRouteName" />
-				<g:HorizontalPanel>
-					<g:Image ui:field="imageVehicle" styleName="{style.image}" />
-					<g:VerticalPanel>
-						<g:Label>USD</g:Label>
-						<g:Label ui:field="labelPrice" />
-						<g:Label styleName="{style.desc}">Description</g:Label>
-						<g:Label ui:field="labelDescription" />
-
-					</g:VerticalPanel>
-				</g:HorizontalPanel>
-			</g:VerticalPanel>
-			<g:HorizontalPanel ui:field="ratingsPanel"
-				styleName="{style.brd}">
-
+			<g:HorizontalPanel ui:field="hp3" styleName="{style.brd}">
+						<g:Label>USD3</g:Label>
 			</g:HorizontalPanel>
-		</g:VerticalPanel>
+</g:VerticalPanel>
 	</g:HTMLPanel>
 
-
-	<!-- <g:HTMLPanel ui:field="mainPanelx"> -->
-	<!-- <g:DecoratorPanel> -->
-	<!-- <g:VerticalPanel> -->
-	<!-- <g:VerticalPanel ui:field="panelRoute" > -->
-	<!-- <g:Label styleName="{style.title}" ui:field="labelRouteName" /> -->
-	<!-- <g:HorizontalPanel> -->
-	<!-- <g:Image ui:field="imageVehicle" styleName="{style.image}" /> -->
-
-
-	<!-- </g:HorizontalPanel> -->
-
-
-	<!-- >Our trusted, approved driver will meet you upon arrival. </g:Label> -->
-	<!-- <g:Label>He will take you safely and -->
-	<!-- directly across the island to -->
-	<!-- Arugam Bay. The transit distance is -->
-	<!-- 355 km and the scenic trip will -->
-	<!-- take approx. 8 hrs. Small stops are -->
-	<!-- possible at no extra charge. -->
-	<!-- All -->
-	<!-- fuel charges and expenses are -->
-	<!-- included and we guarantee that -->
-	<!-- there -->
-	<!-- will be no extra charges.</g:Label> -->
-	<!-- </g:VerticalPanel> -->
-	<!-- </g:VerticalPanel> -->
-	<!-- </g:DecoratorPanel> -->
-
-
-	<!-- </g:HTMLPanel> -->
 </ui:UiBinder> 

@@ -8,6 +8,7 @@ import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
+import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * The async counterpart of <code>GreetingService</code>.
@@ -21,12 +22,14 @@ public interface BookingServiceAsync
 
     // void sendShareAccepted(List<BookingInfo> bookingInfo, AsyncCallback<BookingInfo> callback);
 
-    void getRoutes(Long userId, AsyncCallback<List<RouteInfo>> callback);
+    void getRoutes(UserInfo userInfo, AsyncCallback<List<RouteInfo>> callback);
 
-    void deleteRoute(RouteInfo placeInfo, AsyncCallback<List<RouteInfo>> callback)
+    void getRoutes(AsyncCallback<List<RouteInfo>> callback);
+
+    void deleteRoute(UserInfo userInfo, RouteInfo placeInfo, AsyncCallback<List<RouteInfo>> callback)
             throws IllegalArgumentException;
 
-    void saveRoute(RouteInfo placeInfo, RouteInfo.SaveMode mode, AsyncCallback<List<RouteInfo>> callback)
+    void saveRoute(UserInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode, AsyncCallback<List<RouteInfo>> callback)
             throws IllegalArgumentException;
 
     void getBookings(AsyncCallback<List<BookingInfo>> callback);
@@ -35,16 +38,20 @@ public interface BookingServiceAsync
 
     void getRatings(RouteInfo routeInfo, AsyncCallback<List<RatingInfo>> callback);
 
+    void addRating(RatingInfo statInfo, AsyncCallback<Void> asyncCallback);
+
     void getBookingForTransaction(String ref, AsyncCallback<BookingInfo> callback);
 
     void handleShareAccepted(Long id, AsyncCallback<List<BookingInfo>> callback);
 
-    void getUser(AsyncCallback<Long> callback);
+    void getUser(AsyncCallback<UserInfo> callback);
 
     void getPaypalProfil(AsyncCallback<ProfilInfo> callback);
 
     void payWithStripe(String token, BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback);
 
     void sendStat(StatInfo statInfo, AsyncCallback<Void> asyncCallback);
+
+    void createDefaultUser(AsyncCallback<UserInfo> asyncCallback);
 
 }

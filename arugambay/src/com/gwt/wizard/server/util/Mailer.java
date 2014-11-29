@@ -2,6 +2,7 @@ package com.gwt.wizard.server.util;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,18 +18,34 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class Mailer
 {
     private static final Logger log = Logger.getLogger(Mailer.class.getName());
+    public static Map<String, File> templateMap = Maps.newHashMap();
+
+    private static File getFile(String path)
+    {
+        File file = templateMap.get(path);
+        if (file == null)
+        {
+            templateMap.put(path, new File(path));
+        }
+        return templateMap.get(path);
+    }
+
+    public static final String SHARE_REQUEST = "template/shareRequest.html";
+    public static final String SHARE_ACCEPTED = "template/shareAccepted.html";
+    public static final String CONFIRMATION = "template/confirmation.html";
 
     public static void sendShareRequest(BookingInfo parentBooking, BookingInfo bookingInfo, Profil profil)
     {
 
         String emailMsg = BookingUtil.toEmailText(bookingInfo);
-        String html = BookingUtil.toConfirmationRequestHtml(bookingInfo, new File("template/shareRequest.html"), profil);
+        String html = BookingUtil.toConfirmationRequestHtml(bookingInfo, getFile(SHARE_REQUEST), profil);
         send(emailMsg, parentBooking.getEmail(), html, null);
         send(emailMsg, profil.getMonitorEmail(), html, null);
         send(emailMsg, profil.getContractorEmail(), html, null);
@@ -36,7 +53,7 @@ public class Mailer
 
     public static void sendShareAccepted(String email, BookingInfo parentBookingInfo)
     {
-        String html = BookingUtil.toConfirmationEmailHtml(parentBookingInfo, new File("template/shareAccepted.html"));
+        String html = BookingUtil.toConfirmationEmailHtml(parentBookingInfo, getFile(SHARE_ACCEPTED));
         send("emailMsg", email, html, null);
 
     }
@@ -46,7 +63,7 @@ public class Mailer
 
         String emailMsg = BookingUtil.toEmailText(bookingInfo);
         String html = "error";
-        html = BookingUtil.toConfirmationEmailHtml(bookingInfo, new File("template/confirmation.html"));
+        html = BookingUtil.toConfirmationEmailHtml(bookingInfo, getFile(CONFIRMATION));
         html = html.replace("INSERT_ORDERFORM", profil.getTaxisurfUrl() + "/orderform?order=" + bookingInfo.getId());
         byte[] pdfData = PdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
         String email = bookingInfo.getEmail();

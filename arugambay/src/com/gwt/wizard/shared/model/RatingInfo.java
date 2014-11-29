@@ -4,25 +4,76 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class RatingInfo implements IsSerializable
 {
+    private Long providerId;
 
-    public RatingInfo()
+    public Long getProviderId()
     {
-
+        return providerId;
     }
 
-    private Long stars;
+    public void setProviderId(Long providerId)
+    {
+        this.providerId = providerId;
+    }
+
     private String critic;
-    private String nickname;
 
-    public Long getStars()
+    public String getAuthor()
     {
-        return stars;
+        return author;
     }
 
-    public void setStars(Long stars)
+    public void setAuthor(String author)
     {
-        this.stars = stars;
+        this.author = author;
     }
+
+    public Integer getCleanliness()
+    {
+        return cleanliness;
+    }
+
+    public void setCleanliness(Integer cleanliness)
+    {
+        this.cleanliness = cleanliness;
+    }
+
+    public Integer getSafety()
+    {
+        return safety;
+    }
+
+    public void setSafety(Integer safety)
+    {
+        this.safety = safety;
+    }
+
+    public Integer getPunctuality()
+    {
+        return punctuality;
+    }
+
+    public void setPunctuality(Integer punctuality)
+    {
+        this.punctuality = punctuality;
+    }
+
+    public Integer getProfessionality()
+    {
+        return professionality;
+    }
+
+    public void setProfessionality(Integer professionality)
+    {
+        this.professionality = professionality;
+    }
+
+    private String author;
+
+    Integer cleanliness;
+    Integer safety;
+    Integer punctuality;
+    Integer professionality;
 
     public String getCritic()
     {
@@ -36,12 +87,12 @@ public class RatingInfo implements IsSerializable
 
     public String getNickname()
     {
-        return nickname;
+        return author;
     }
 
     public void setNickname(String nickname)
     {
-        this.nickname = nickname;
+        this.author = nickname;
     }
 
 }

@@ -18,13 +18,16 @@ import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.client.steps.ConfirmationStep;
 import com.gwt.wizard.client.steps.ContactStep;
 import com.gwt.wizard.client.steps.CreditCardStep;
+import com.gwt.wizard.client.steps.RatingStep;
 import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.SummaryStep;
 import com.gwt.wizard.client.steps.TransportStep;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.StatInfo;
+import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -42,6 +45,7 @@ public class GwtWizard implements EntryPoint
     private SummaryStep summaryStep;
     private ConfirmationStep confirmationStep;
     private ShareConfirmationStep shareConfirmationStep;
+    private RatingStep ratingStep;
 
     public static final int TRANSPORT = 1;
     public static final int SHARE = 2;
@@ -69,11 +73,30 @@ public class GwtWizard implements EntryPoint
         summaryStep = new SummaryStep();
         confirmationStep = new ConfirmationStep();
         shareConfirmationStep = new ShareConfirmationStep();
+        ratingStep = new RatingStep(wizard, confirmationStep);
 
         collectStats();
 
         String transaction = Window.Location.getParameter("tx");
         String shareId = Window.Location.getParameter("share");
+        String review = Window.Location.getParameter("review");
+        String nick = Window.Location.getParameter("nick");
+        String defaultuser = Window.Location.getParameter("defaultuser");
+        if (defaultuser != null)
+        {
+            createDefaultUser();
+            return;
+        }
+        if (review != null)
+        {
+            Wizard.RATINGINFO = new RatingInfo();
+            Wizard.RATINGINFO.setProviderId(Long.parseLong(review));
+            Wizard.RATINGINFO.setAuthor(nick);
+
+            List<WizardStep> l = ImmutableList.of((WizardStep) ratingStep);
+            completeSetup(transportStep, l);
+            return;
+        }
         if (transaction != null)
         {
             handleTransaction(transaction);
@@ -84,10 +107,29 @@ public class GwtWizard implements EntryPoint
         }
         else
         {
-            // List<WizardStep> l = ImmutableList.of(contactStep, creditCardStep, confirmationStep);
+            // List<WizardStep> l = ImmutableList.of((WizardStep) ratingStep);
             List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, creditCardStep, confirmationStep);
             completeSetup(transportStep, l);
         }
+
+    }
+
+    private void createDefaultUser()
+    {
+        SERVICE.createDefaultUser(new AsyncCallback<UserInfo>()
+        {
+
+            @Override
+            public void onSuccess(UserInfo xxx)
+            {
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Failed to get paypal url!");
+            }
+        });
 
     }
 

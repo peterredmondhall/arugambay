@@ -1,6 +1,6 @@
 package com.gwt.wizard.client.dashboard.ui;
 
-import static com.gwt.wizard.client.GwtDashboard.USERINFOID;
+import static com.gwt.wizard.client.GwtDashboard.USERINFO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
+import com.gwt.wizard.client.GwtDashboard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -116,7 +117,7 @@ public class RouteManagementVeiw extends Composite
     private void fetchRoutes()
     {
 
-        service.getRoutes(USERINFOID, new AsyncCallback<List<RouteInfo>>()
+        service.getRoutes(USERINFO, new AsyncCallback<List<RouteInfo>>()
         {
 
             @Override
@@ -172,7 +173,7 @@ public class RouteManagementVeiw extends Composite
                 {
                     if (selectionModel.isSelected(p))
                     {
-                        service.deleteRoute(p, new AsyncCallback<List<RouteInfo>>()
+                        service.deleteRoute(USERINFO, p, new AsyncCallback<List<RouteInfo>>()
                         {
 
                             @Override
@@ -481,7 +482,7 @@ public class RouteManagementVeiw extends Composite
             public void onClick(ClickEvent event)
             {
                 RouteInfo routeInfo = new RouteInfo();
-                routeInfo.setUserId(USERINFOID);
+                routeInfo.setContractorId(GwtDashboard.USERINFO.getContractorId());
                 try
                 {
                     String price = editPriceTxtBox.getText();
@@ -515,7 +516,7 @@ public class RouteManagementVeiw extends Composite
                         routeInfo.setImage(imageId);
                     }
 
-                    service.saveRoute(routeInfo, mode, new AsyncCallback<List<RouteInfo>>()
+                    service.saveRoute(GwtDashboard.USERINFO, routeInfo, mode, new AsyncCallback<List<RouteInfo>>()
                     {
 
                         @Override

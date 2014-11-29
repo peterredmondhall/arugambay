@@ -58,9 +58,16 @@ public class ConfirmationStepUi extends Composite
         super.setWidth(width);
     }
 
+    public void setRatingFeedbackConfirmation()
+    {
+        label1.setText("Thank you for your feedback.");
+        label2.setText("We look forward seeing you next season.");
+        labelConfirmationEmail.setText("");
+
+    }
+
     public void setBookingInfo(BookingInfo bookingInfo)
     {
-
         if (bookingInfo != null)
         {
             if (OrderStatus.SHARE_ACCEPTED.equals(bookingInfo.getStatus()))

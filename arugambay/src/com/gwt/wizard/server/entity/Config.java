@@ -17,6 +17,7 @@ public class Config implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
     private String profil;
+    private Boolean maintenceAllowed;
 
     public String getProfil()
     {
@@ -26,6 +27,16 @@ public class Config implements Serializable
     public void setProfil(String profil)
     {
         this.profil = profil;
+    }
+
+    public Boolean getMaintenceAllowed()
+    {
+        return maintenceAllowed;
+    }
+
+    public void setMaintenceAllowed(Boolean maintenceAllowed)
+    {
+        this.maintenceAllowed = maintenceAllowed;
     }
 
 }

@@ -2,6 +2,7 @@ package com.gwt.wizard.server;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,11 +17,12 @@ import org.junit.Test;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.gwt.wizard.server.entity.Profil;
+import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
-import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 import com.gwt.wizard.shared.model.UserInfo;
 
 public class BookingServiceManagerTest
@@ -32,15 +34,20 @@ public class BookingServiceManagerTest
     BookingServiceManager bs = new BookingServiceManager();
 
     UserInfo userInfo;
+    ContractorInfo contractorInfo;
 
     @Before
     public void setUp()
     {
         helper.setUp();
-        userInfo = new UserManager().createUser("test@example.com");
-        RouteInfo routeInfo = new RouteInfo();
-        routeInfo.setUserId(userInfo.getId());
-        new RouteServiceManager().saveRoute(routeInfo, SaveMode.ADD);
+        userInfo = new BookingServiceImpl().createDefaultUser();
+//        userInfo = new UserManager().createUser("test@example.com");
+//        ContractorInfo contractorInfo = new ContractorInfo();
+//        contractorInfo.setUserId(userInfo.getId());
+//        contractorInfo = new ContractorManager().createContractor(contractorInfo);
+//        RouteInfo routeInfo = new RouteInfo();
+//        routeInfo.setContractorId(contractorInfo.getId());
+//        new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
     }
 
     @After
@@ -49,9 +56,9 @@ public class BookingServiceManagerTest
         helper.tearDown();
     }
 
-    private BookingInfo getBookingInfo(Date date, String flightNo, String landingTime, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
+    private BookingInfo getBookingInfo(Date date, String flightNo, String landingTime, String name, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
     {
-        RouteInfo routeInfo = new RouteServiceManager().getRoutes(userInfo.getId()).get(0);
+        RouteInfo routeInfo = new RouteServiceManager().getRoutes(userInfo).get(0);
 
         BookingInfo bi = new BookingInfo();
         bi.setDate(date);
@@ -63,6 +70,7 @@ public class BookingServiceManagerTest
         bi.setRequirements(reqs);
         bi.setOrderType(orderType);
         bi.setShareWanted(shareWanted);
+        bi.setName(name);
 
         bi.setRouteInfo(routeInfo);
         return bi;
@@ -97,7 +105,7 @@ public class BookingServiceManagerTest
 
     private BookingInfo getStandardBookingInfo()
     {
-        return getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        return getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
     }
 
     private void create_a_booking()
@@ -129,34 +137,35 @@ public class BookingServiceManagerTest
     {
         List<BookingInfo> list = bs.getBookings();
         BookingInfo parentBookingInfo = list.get(0);
-        BookingInfo bi = new BookingInfo();
-        bi.setRouteInfo(new RouteServiceManager().getRoutes(UserInfo.PUBLIC).get(0));
-        bi.setParentId(parentBookingInfo.getId());
-        bi.setDate(parentBookingInfo.getDate());
-        bi.setFlightNo(parentBookingInfo.getFlightNo());
-        bi.setLandingTime(parentBookingInfo.getLandingTime());
+        BookingInfo shareBooking = new BookingInfo();
 
-        bi.setPax(22);
-        bi.setSurfboards(23);
-        bi.setEmail("sharerEmail");
+        shareBooking.setRouteInfo(new RouteServiceManager().getRoutes().get(0));
+        shareBooking.setParentId(parentBookingInfo.getId());
+        shareBooking.setDate(parentBookingInfo.getDate());
+        shareBooking.setFlightNo("sharer flight");
+        shareBooking.setLandingTime(parentBookingInfo.getLandingTime());
 
-        bi.setStatus(OrderStatus.BOOKED);
-        bi.setOrderType(OrderType.SHARE);
+        shareBooking.setPax(22);
+        shareBooking.setSurfboards(23);
+        shareBooking.setEmail("sharerEmail");
+        shareBooking.setName("Peter Sharer");
 
-        bs.addBookingWithClient(bi, "clientShare");
+        shareBooking.setStatus(OrderStatus.BOOKED);
+        shareBooking.setOrderType(OrderType.SHARE);
+
+        bs.addBookingWithClient(shareBooking, "clientShare");
 
         boolean tested = false;
         for (BookingInfo bookingInfo : bs.getBookings())
         {
             if (bookingInfo.getOrderType().equals(OrderType.SHARE))
             {
-//                Boo
-//                list = new List<>bs.getBookingsForShare(bookingInfo.getId());
-//                assertEquals(2, list.size());
-//                assertEquals(parentBookingInfo.getId(), list.get(0).getId());
-//                assertEquals(bookingInfo.getId(), list.get(1).getId());
-//                tested = true;
-//                break;
+                list = new BookingServiceImpl().handleShareAccepted(bookingInfo.getId());
+                assertEquals(2, list.size());
+                assertEquals(parentBookingInfo.getId(), list.get(0).getId());
+                assertEquals(bookingInfo.getId(), list.get(1).getId());
+                tested = true;
+                break;
             }
         }
         assertEquals(true, tested);
@@ -211,6 +220,7 @@ public class BookingServiceManagerTest
     {
         create_a_booking();
         confirm_payment();
+        Mailer.templateMap.put(Mailer.SHARE_ACCEPTED, new File("war/template/shareAccepted.html"));
         create_a_shared_booking();
     }
 

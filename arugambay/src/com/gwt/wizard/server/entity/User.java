@@ -18,6 +18,17 @@ public class User implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
     private String userEmail;
+    private Long providerId;
+
+    public Long getProviderId()
+    {
+        return providerId;
+    }
+
+    public void setProviderId(Long providerId)
+    {
+        this.providerId = providerId;
+    }
 
     public Key getKey()
     {
@@ -44,6 +55,7 @@ public class User implements Serializable
         UserInfo userInfo = new UserInfo();
         userInfo.setId(key.getId());
         userInfo.setEmail(userEmail);
+        userInfo.setProviderId(providerId);
         return userInfo;
 
     }

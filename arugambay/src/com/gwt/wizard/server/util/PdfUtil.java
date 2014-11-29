@@ -65,21 +65,8 @@ public class PdfUtil
             form.setField(LANDINGTIME, bookingInfo.getLandingTime());
             form.setField(PAID, bookingInfo.getPaidAmt());
 
-            switch (bookingInfo.getRouteInfo().getPickupType())
-            {
-                case AIRPORT:
-                    form.setField(FLIGHT_HOTEL, "Flight no.");
-                    form.setField(ARRIVAL, "Landing time");
-
-                    break;
-                case HOTEL:
-                    form.setField(FLIGHT_HOTEL, "Hotel");
-                    form.setField(ARRIVAL, "Pickup time");
-                    break;
-                default:
-                    break;
-
-            }
+            form.setField(FLIGHT_HOTEL, bookingInfo.getRouteInfo().getPickupType().getLocationType());
+            form.setField(ARRIVAL, bookingInfo.getRouteInfo().getPickupType().getTimeType());
 
             List<String> chunks = Lists.newArrayList(Splitter.fixedLength(80).split(bookingInfo.getRequirements()));
             form.setField(OTHER1, chunks.size() > 0 ? chunks.get(0) : "");

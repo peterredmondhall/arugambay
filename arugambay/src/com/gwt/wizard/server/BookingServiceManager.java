@@ -160,6 +160,34 @@ public class BookingServiceManager
 
     }
 
+    public boolean getMaintenceAllowed()
+    {
+        EntityManager em = getEntityManager();
+        boolean maintenanceAllowed = false;
+        try
+        {
+            Config config = (Config) em.createQuery("select t from Config t").getSingleResult();
+            if (config.getMaintenceAllowed() == null)
+            {
+                logger.info("maintence allowed not avail - setting false");
+                em.getTransaction().begin();
+                config.setMaintenceAllowed(false);
+                em.persist(config);
+                em.getTransaction().commit();
+                em.detach(config);
+            }
+            else
+            {
+                maintenanceAllowed = config.getMaintenceAllowed();
+            }
+        }
+        finally
+        {
+            em.close();
+        }
+        return maintenanceAllowed;
+    }
+
     public Profil getProfil()
     {
         EntityManager em = getEntityManager();

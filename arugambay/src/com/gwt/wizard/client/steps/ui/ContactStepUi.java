@@ -205,22 +205,8 @@ public class ContactStepUi extends Composite
         {
             dateBox.setValue(BOOKINGINFO.getDate());
         }
-        switch (Wizard.ROUTEINFO.getPickupType())
-        {
-            case AIRPORT:
-                labelFlightNo.setText("Flight no. *");
-                labelFlightLandingTime.setText("Landing time *");
-
-                break;
-            case HOTEL:
-                labelFlightNo.setText("Hotel *");
-                labelFlightLandingTime.setText("Pickup time *");
-
-                break;
-            default:
-                break;
-
-        }
+        labelFlightNo.setText(Wizard.ROUTEINFO.getPickupType().getLocationType());
+        labelFlightLandingTime.setText(Wizard.ROUTEINFO.getPickupType().getTimeType());
     }
 
     @Override

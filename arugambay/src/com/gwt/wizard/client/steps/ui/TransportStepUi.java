@@ -33,7 +33,6 @@ import com.gwt.wizard.client.steps.ui.widget.RatingList;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
-import com.gwt.wizard.shared.model.UserInfo;
 
 public class TransportStepUi extends Composite
 {
@@ -157,7 +156,7 @@ public class TransportStepUi extends Composite
 
     private void fetchRoutes()
     {
-        service.getRoutes(UserInfo.PUBLIC, new AsyncCallback<List<RouteInfo>>()
+        service.getRoutes(new AsyncCallback<List<RouteInfo>>()
         {
 
             @Override

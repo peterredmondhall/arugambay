@@ -59,6 +59,11 @@ public class ConfirmationStep implements WizardStep
 
     }
 
+    public void setRatingFeedbackConfirmation()
+    {
+        ui.setRatingFeedbackConfirmation();
+    }
+
     @Override
     public void show(boolean visible, Button prev, Button next, Button cancel)
     {

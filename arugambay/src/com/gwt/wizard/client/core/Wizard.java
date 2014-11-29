@@ -24,6 +24,7 @@ import com.gwt.wizard.client.steps.TransportStep;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
+import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 
 public class Wizard extends Composite
@@ -39,6 +40,7 @@ public class Wizard extends Composite
     public static List<BookingInfo> EXISTING_BOOKINGS_ON_ROUTE;
     public static RouteInfo ROUTEINFO;
     public static ProfilInfo PROFILINFO;
+    public static RatingInfo RATINGINFO;
 
     private final List<WizardStep> stepList;
     private final Map<WizardStep, HTML> headers = Maps.newHashMap();

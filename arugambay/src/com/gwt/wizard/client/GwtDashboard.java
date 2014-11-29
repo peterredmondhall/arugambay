@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.gwt.wizard.client.dashboard.ui.DashboardVeiw;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
+import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -16,7 +17,7 @@ public class GwtDashboard implements EntryPoint
 {
     private final BookingServiceAsync service = GWT.create(BookingService.class);
 
-    public static Long USERINFOID;
+    public static UserInfo USERINFO;
 
     /**
      * This is the entry point method.
@@ -24,11 +25,11 @@ public class GwtDashboard implements EntryPoint
     @Override
     public void onModuleLoad()
     {
-        service.getUser(new AsyncCallback<Long>()
+        service.getUser(new AsyncCallback<UserInfo>()
         {
 
             @Override
-            public void onSuccess(Long result)
+            public void onSuccess(UserInfo result)
             {
                 if (result == null)
                 {
@@ -36,7 +37,7 @@ public class GwtDashboard implements EntryPoint
                 }
                 else
                 {
-                    USERINFOID = result;
+                    USERINFO = result;
                     RootPanel.get().add(new DashboardVeiw());
                 }
 

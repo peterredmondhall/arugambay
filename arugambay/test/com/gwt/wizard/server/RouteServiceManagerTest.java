@@ -31,8 +31,8 @@ public class RouteServiceManagerTest
         helper.setUp();
         userInfo = new UserManager().createUser("test@example.com");
         RouteInfo routeInfo = new RouteInfo();
-        routeInfo.setUserId(userInfo.getId());
-        new RouteServiceManager().saveRoute(routeInfo, SaveMode.ADD);
+        routeInfo.setContractorId(userInfo.getId());
+        new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
     }
 
     @After
@@ -45,32 +45,31 @@ public class RouteServiceManagerTest
     public void should_fetch_routes()
     {
 
-        List<RouteInfo> routes = rs.getRoutes(UserInfo.PUBLIC);
+        List<RouteInfo> routes = rs.getRoutes();
         assertEquals(1, routes.size());
     }
 
     @Test
     public void should_delete_route()
     {
-        List<RouteInfo> routes = rs.getRoutes(UserInfo.PUBLIC);
+        List<RouteInfo> routes = rs.getRoutes();
         assertEquals(1, routes.size());
         RouteInfo routeInfo = routes.get(0);
-        routes = rs.deleteRoute(routeInfo);
+        routes = rs.deleteRoute(userInfo, routeInfo);
         assertEquals(1, routes.size());
     }
 
     @Test
     public void should_update_route()
     {
-
-        List<RouteInfo> routes = rs.getRoutes(userInfo.getId());
+        List<RouteInfo> routes = rs.getRoutes(userInfo);
         assertEquals(1, routes.size());
         RouteInfo routeInfo = routes.get(0);
         routeInfo.setPickupType(PickupType.HOTEL);
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setPrice(160.00f);
-        assertEquals(1, rs.saveRoute(routeInfo, RouteInfo.SaveMode.UPDATE).size());
+        assertEquals(1, rs.saveRoute(userInfo, routeInfo, RouteInfo.SaveMode.UPDATE).size());
         routeInfo = routes.get(0);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
@@ -88,8 +87,8 @@ public class RouteServiceManagerTest
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setPrice(160.00f);
-        List<RouteInfo> routes = rs.saveRoute(routeInfo, RouteInfo.SaveMode.ADD);
-        routes = rs.saveRoute(routeInfo, RouteInfo.SaveMode.ADD);
+        List<RouteInfo> routes = rs.saveRoute(userInfo, routeInfo, RouteInfo.SaveMode.ADD);
+        routes = rs.saveRoute(userInfo, routeInfo, RouteInfo.SaveMode.ADD);
         assertEquals(2, routes.size());
         routeInfo = routes.get(0);
         assertEquals("start", routeInfo.getStart());

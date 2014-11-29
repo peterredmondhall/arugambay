@@ -23,16 +23,16 @@ public class Route implements Serializable
     private String start;
     private String end;
     private String description;
-    private Long userId;
+    private Long providerId;
 
     public Long getUserId()
     {
-        return userId;
+        return providerId;
     }
 
-    public void setUserId(Long userId)
+    public void setProviderId(Long providerId)
     {
-        this.userId = userId;
+        this.providerId = providerId;
     }
 
     public String getDescription()
@@ -120,7 +120,7 @@ public class Route implements Serializable
         this.key = key;
     }
 
-    public static Route getRoute(RouteInfo routeInfo, Long userId)
+    public static Route getRoute(RouteInfo routeInfo, Long providerId)
     {
         Route route = new Route();
         route.setStart(routeInfo.getStart());
@@ -129,7 +129,7 @@ public class Route implements Serializable
         route.setPrice(routeInfo.getPrice());
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());
-        route.setUserId(userId);
+        route.setProviderId(providerId);
         return route;
     }
 
@@ -143,7 +143,7 @@ public class Route implements Serializable
         routeInfo.setPrice(price);
         routeInfo.setPickupType(pickupType);
         routeInfo.setImage(image);
-        routeInfo.setUserId(userId);
+        routeInfo.setContractorId(providerId);
         return routeInfo;
     }
 

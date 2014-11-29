@@ -156,18 +156,7 @@ public class ShareStepUi extends Composite
             {
                 shareMap.put(bookingInfo.getId(), bookingInfo);
             }
-            switch (Wizard.ROUTEINFO.getPickupType())
-            {
-                case AIRPORT:
-                    fillTable("Flight No.", "Landing time");
-                    break;
-                case HOTEL:
-                    fillTable("Hotel", "Pickup time");
-                    break;
-                default:
-                    break;
-
-            }
+            fillTable(Wizard.ROUTEINFO.getPickupType().getLocationType(), Wizard.ROUTEINFO.getPickupType().getTimeType());
             scrollPanel.add(cellTable);
         }
     }
