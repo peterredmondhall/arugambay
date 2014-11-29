@@ -1,6 +1,7 @@
 package com.gwt.wizard.server.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,27 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
-import com.gwt.wizard.shared.model.UserInfo;
+import com.gwt.wizard.shared.model.AgentInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 
 @Entity
-public class User implements Serializable
+public class Agent implements Serializable
 {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
     private String userEmail;
-    private Long providerId;
-
-    public Long getProviderId()
-    {
-        return providerId;
-    }
-
-    public void setProviderId(Long providerId)
-    {
-        this.providerId = providerId;
-    }
 
     public Key getKey()
     {
@@ -50,13 +41,13 @@ public class User implements Serializable
         this.userEmail = userEmail;
     }
 
-    public UserInfo getInfo()
+    public AgentInfo getInfo(List<ContractorInfo> contractors)
     {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(key.getId());
-        userInfo.setEmail(userEmail);
-        userInfo.setProviderId(providerId);
-        return userInfo;
+        AgentInfo agentInfo = new AgentInfo();
+        agentInfo.setId(key.getId());
+        agentInfo.setEmail(userEmail);
+        agentInfo.setContractors(contractors);
+        return agentInfo;
 
     }
 }

@@ -26,6 +26,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -49,6 +50,7 @@ import com.google.gwt.view.client.SelectionModel;
 import com.gwt.wizard.client.GwtDashboard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
+import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 
@@ -80,6 +82,26 @@ public class RouteManagementVeiw extends Composite
     private final SelectionModel<RouteInfo> selectionModel = new MultiSelectionModel<RouteInfo>(null);
     private final RouteInfo.PickupType[] listPickupType;
     private Long imageId;
+    private final RouteAddEditClickHandler handler = new RouteAddEditClickHandler();
+
+    final TextBox editStartTxtBox = new TextBox();
+    final TextBox editEndTxtBox = new TextBox();
+    final TextArea editDescriptionBox = new TextArea();
+    final TextBox editPriceTxtBox = new TextBox();
+    final ListBox editPickupTypeBox = new ListBox();
+    final ListBox editContractorTypeBox = new ListBox();
+    final CheckBox editReturnCheckBox = new CheckBox();
+
+    final Label startLabel = new Label("Start");
+    final Label destinationLabel = new Label("Destination");
+    final Label priceLabel = new Label("Price USD");
+    final Label pickupLabel = new Label("Pickuptype");
+    final Label contractorLabel = new Label("Contractor");
+    final Label generateReturnLabel = new Label("Generate Return");
+
+    final Label descLabel = new Label("Description");
+
+    final Label imageLabel = new Label("Image");
 
     // The list of data to display.
 
@@ -152,7 +174,10 @@ public class RouteManagementVeiw extends Composite
         addPlaceBtn = new Button();
         addPlaceBtn.setStyleName("btn btn-primary");
         addPlaceBtn.setText("Add");
-        addPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.ADD));
+        handler.setMode(SaveMode.ADD);
+        editReturnCheckBox.setVisible(true);
+        generateReturnLabel.setVisible(true);
+        addPlaceBtn.addClickHandler(handler);
         addPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         addPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
         btnContainer.add(addPlaceBtn);
@@ -202,16 +227,19 @@ public class RouteManagementVeiw extends Composite
         editPlaceBtn = new Button();
         editPlaceBtn.setStyleName("btn btn-primary");
         editPlaceBtn.setText("Edit");
-        editPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.UPDATE));
+        handler.setMode(SaveMode.UPDATE);
+        editReturnCheckBox.setVisible(false);
+        generateReturnLabel.setVisible(false);
+        editPlaceBtn.addClickHandler(handler);
 
         editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         editPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
         btnContainer.add(editPlaceBtn);
     }
 
-    private void addPopupPanel(String label, Widget widget, Grid grid, int row)
+    private void addPopupPanel(Label label, Widget widget, Grid grid, int row)
     {
-        grid.setWidget(row, 0, new Label(label));
+        grid.setWidget(row, 0, label);
         grid.setWidget(row, 1, widget);
     }
 
@@ -392,7 +420,11 @@ public class RouteManagementVeiw extends Composite
     {
         RouteInfo.SaveMode mode;
 
-        public RouteAddEditClickHandler(RouteInfo.SaveMode mode)
+        public RouteAddEditClickHandler()
+        {
+        }
+
+        public void setMode(RouteInfo.SaveMode mode)
         {
             this.mode = mode;
         }
@@ -406,7 +438,14 @@ public class RouteManagementVeiw extends Composite
                     update(event);
                     break;
                 case ADD:
-                    add(event);
+                    if (editReturnCheckBox.getValue())
+                    {
+                        addWithReturn(event);
+                    }
+                    else
+                    {
+                        add(event);
+                    }
                     break;
             }
         }
@@ -435,6 +474,11 @@ public class RouteManagementVeiw extends Composite
                 Window.alert("Select one row to edit");
         }
 
+        public void addWithReturn(ClickEvent event)
+        {
+            showEditPopup(new RouteInfo(), 0, SaveMode.ADD_WITH_RETURN, event);
+        }
+
         public void add(ClickEvent event)
         {
             showEditPopup(new RouteInfo(), 0, mode, event);
@@ -446,15 +490,10 @@ public class RouteManagementVeiw extends Composite
     {
         final PopupPanel editPlacePopUpPanel = new PopupPanel(true);
         final VerticalPanel vPanel = new VerticalPanel();
-        Grid grid = new Grid(6, 2);
+        Grid grid = new Grid(8, 2);
         vPanel.add(grid);
         final Label errLbl = new Label();
         errLbl.setStyleName("errLbl");
-        final TextBox editStartTxtBox = new TextBox();
-        final TextBox editEndTxtBox = new TextBox();
-        final TextArea editDescriptionBox = new TextArea();
-        final TextBox editPriceTxtBox = new TextBox();
-        final ListBox editPickupTypeBox = new ListBox();
 
         editStartTxtBox.setText(ri.getStart());
         editEndTxtBox.setText(ri.getEnd());
@@ -473,6 +512,17 @@ public class RouteManagementVeiw extends Composite
             i++;
         }
 
+        i = 0;
+        for (ContractorInfo contractorInfo : USERINFO.getContractors())
+        {
+            editContractorTypeBox.addItem(contractorInfo.getName());
+            if (contractorInfo.getId().equals(ri.getContractorId()))
+            {
+                editContractorTypeBox.setSelectedIndex(i);
+            }
+            i++;
+        }
+
         Button saveBtn = new Button("Save");
         saveBtn.setStyleName("btn btn-primary");
         saveBtn.addClickHandler(new ClickHandler()
@@ -482,7 +532,9 @@ public class RouteManagementVeiw extends Composite
             public void onClick(ClickEvent event)
             {
                 RouteInfo routeInfo = new RouteInfo();
-                routeInfo.setContractorId(GwtDashboard.USERINFO.getContractorId());
+                int selectedContractorIndex = editContractorTypeBox.getSelectedIndex();
+                ContractorInfo contractorInfo = GwtDashboard.USERINFO.getContractors().get(selectedContractorIndex);
+                routeInfo.setContractorId(contractorInfo.getId());
                 try
                 {
                     String price = editPriceTxtBox.getText();
@@ -537,13 +589,26 @@ public class RouteManagementVeiw extends Composite
         });
         // Setting up Popup Panel
         int row = 0;
-        addPopupPanel("Start", editStartTxtBox, grid, row++);
-        addPopupPanel("Destination", editEndTxtBox, grid, row++);
-        addPopupPanel("Price USD", editPriceTxtBox, grid, row++);
-        addPopupPanel("Pickuptype", editPickupTypeBox, grid, row++);
-        addPopupPanel("Description", editDescriptionBox, grid, row++);
 
-        addPopupPanel("Image", getUploader(saveBtn), grid, row++);
+        final Label startLabel = new Label("Start");
+        final Label destinationLabel = new Label("Destination");
+        final Label priceLabel = new Label("Price USD");
+        final Label pickupLabel = new Label("Pickuptype");
+        final Label contractorLabel = new Label("Contractor");
+        final Label generateReturnLabel = new Label("Generate Return");
+
+        final Label descLabel = new Label("Description");
+
+        final Label imageLabel = new Label("Image");
+
+        addPopupPanel(startLabel, editStartTxtBox, grid, row++);
+        addPopupPanel(destinationLabel, editEndTxtBox, grid, row++);
+        addPopupPanel(priceLabel, editPriceTxtBox, grid, row++);
+        addPopupPanel(pickupLabel, editPickupTypeBox, grid, row++);
+        addPopupPanel(contractorLabel, editContractorTypeBox, grid, row++);
+        addPopupPanel(generateReturnLabel, editReturnCheckBox, grid, row++);
+        addPopupPanel(descLabel, editDescriptionBox, grid, row++);
+        addPopupPanel(imageLabel, getUploader(saveBtn), grid, row++);
 
         editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         vPanel.add(saveBtn);

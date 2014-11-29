@@ -1,38 +1,43 @@
 package com.gwt.wizard.server;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
-import com.google.appengine.api.users.User;
+import com.google.common.collect.Lists;
+import com.gwt.wizard.server.entity.Agent;
+import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.jpa.EMF;
-import com.gwt.wizard.shared.model.UserInfo;
+import com.gwt.wizard.shared.model.AgentInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 
 public class UserManager
 {
     private static final Logger logger = Logger.getLogger(UserManager.class.getName());
 
-    private static final String TEST_USER = "test@example.com";
+    private static final String TEST_AGENT = "test@example.com";
 
     private static EntityManager getEntityManager()
     {
         return EMF.get().createEntityManager();
     }
 
-    public UserInfo createUser(String userEmail)
+    public AgentInfo createAgent(String agentEmail)
     {
         // check local user
         EntityManager em = getEntityManager();
-        UserInfo userInfo = null;
+        AgentInfo agentInfo = null;
         try
         {
             // To create new user for testing
-            createDefaultUser(em);
+            createDefaultAgent(em);
 
-            com.gwt.wizard.server.entity.User appUser = (com.gwt.wizard.server.entity.User) em.createQuery("select u from User u where u.userEmail = '" + userEmail + "'").getSingleResult();
-            userInfo = appUser.getInfo();
+            Agent agent = (Agent) em.createQuery("select u from Agent u where u.userEmail = '" + agentEmail + "'").getSingleResult();
+            List<ContractorInfo> contractors = Lists.newArrayList();
+            agentInfo = agent.getInfo(contractors);
         }
         catch (Exception e)
         {
@@ -42,36 +47,43 @@ public class UserManager
         {
             em.close();
         }
-        return userInfo;
+        return agentInfo;
     }
 
-    private void createDefaultUser(EntityManager em)
+    private void createDefaultAgent(EntityManager em)
     {
 
         try
         {
-            em.createQuery("select u from User u where u.userEmail = '" + TEST_USER + "'").getSingleResult();
+            em.createQuery("select u from Agent u where u.userEmail = '" + TEST_AGENT + "'").getSingleResult();
         }
         catch (NoResultException ex)
         {
             em.getTransaction().begin();
-            com.gwt.wizard.server.entity.User newAppUser = new com.gwt.wizard.server.entity.User();
-            newAppUser.setUserEmail(TEST_USER);
+            com.gwt.wizard.server.entity.Agent newAppUser = new com.gwt.wizard.server.entity.Agent();
+            newAppUser.setUserEmail(TEST_AGENT);
             em.persist(newAppUser);
             em.getTransaction().commit();
 
         }
     }
 
-    public UserInfo getUser(String email)
+    public AgentInfo getUser(String email)
     {
 
         EntityManager em = getEntityManager();
-        UserInfo userInfo = null;
+        AgentInfo agentInfo = null;
         try
         {
-            com.gwt.wizard.server.entity.User user = (com.gwt.wizard.server.entity.User) em.createQuery("select u from User u where u.userEmail = '" + TEST_USER + "'").getSingleResult();
-            userInfo = user.getInfo();
+            Agent agent = (Agent) em.createQuery("select u from Agent u where u.userEmail = '" + TEST_AGENT + "'").getSingleResult();
+            @SuppressWarnings("unchecked")
+            List<Contractor> contractors = em.createQuery("select u from Contractor u where u.agentId = " + agent.getKey().getId()).getResultList();
+            List<ContractorInfo> contractorIdList = Lists.newArrayList();
+            for (Contractor contractor : contractors)
+            {
+                contractorIdList.add(contractor.getInfo());
+            }
+            agentInfo = agent.getInfo(contractorIdList);
         }
         catch (NoResultException ex)
         {
@@ -81,18 +93,12 @@ public class UserManager
         {
             em.close();
         }
-        return userInfo;
+        return agentInfo;
     }
 
-    public UserInfo getUser(User user) throws IllegalArgumentException
-    {
-        return createUser(user.getEmail());
-//      // load user devices
-//      if (user == null)
-//      {
-//          return false;
-//      }
-//      return true;
-    }
+//    public AgentInfo getUser(User user) throws IllegalArgumentException
+//    {
+//        return createAgent(user.getEmail());
+//    }
 
 }

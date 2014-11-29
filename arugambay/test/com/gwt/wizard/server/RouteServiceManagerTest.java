@@ -13,7 +13,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
-import com.gwt.wizard.shared.model.UserInfo;
+import com.gwt.wizard.shared.model.AgentInfo;
 
 public class RouteServiceManagerTest
 {
@@ -23,13 +23,13 @@ public class RouteServiceManagerTest
 
     RouteServiceManager rs = new RouteServiceManager();
 
-    UserInfo userInfo;
+    AgentInfo userInfo;
 
     @Before
     public void setUp()
     {
         helper.setUp();
-        userInfo = new UserManager().createUser("test@example.com");
+        userInfo = new UserManager().createAgent("test@example.com");
         RouteInfo routeInfo = new RouteInfo();
         routeInfo.setContractorId(userInfo.getId());
         new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);

@@ -9,6 +9,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
@@ -23,11 +24,11 @@ import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.SummaryStep;
 import com.gwt.wizard.client.steps.TransportStep;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.StatInfo;
-import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -81,7 +82,7 @@ public class GwtWizard implements EntryPoint
         String shareId = Window.Location.getParameter("share");
         String review = Window.Location.getParameter("review");
         String nick = Window.Location.getParameter("nick");
-        String defaultuser = Window.Location.getParameter("defaultuser");
+        String defaultuser = Window.Location.getParameter("defaultagent");
         if (defaultuser != null)
         {
             createDefaultUser();
@@ -116,12 +117,22 @@ public class GwtWizard implements EntryPoint
 
     private void createDefaultUser()
     {
-        SERVICE.createDefaultUser(new AsyncCallback<UserInfo>()
+        SERVICE.createDefaultUser(new AsyncCallback<AgentInfo>()
         {
 
             @Override
-            public void onSuccess(UserInfo xxx)
+            public void onSuccess(AgentInfo agentInfo)
             {
+                if (agentInfo != null)
+                {
+                    RootPanel.get().add(new Label("agent created:" + agentInfo.getEmail()));
+
+                }
+                else
+                {
+                    RootPanel.get().add(new Label("agent not created"));
+
+                }
             }
 
             @Override

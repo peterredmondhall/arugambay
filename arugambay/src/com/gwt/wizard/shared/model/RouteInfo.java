@@ -37,7 +37,8 @@ public class RouteInfo implements IsSerializable
     public enum SaveMode
     {
         UPDATE,
-        ADD
+        ADD,
+        ADD_WITH_RETURN
     };
 
     private Long id;

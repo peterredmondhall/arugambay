@@ -13,6 +13,16 @@ import com.gwt.wizard.shared.model.ContractorInfo;
 @Entity
 public class Contractor implements Serializable
 {
+    public Key getKey()
+    {
+        return key;
+    }
+
+    public void setKey(Key key)
+    {
+        this.key = key;
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -20,24 +30,24 @@ public class Contractor implements Serializable
     private Key key;
 
     private String name;
-    private Long userId;
+    private Long agentId;
 
     public static Contractor getContractor(ContractorInfo contractorInfo)
     {
         Contractor contractor = new Contractor();
         contractor.setName(contractorInfo.getName());
-        contractor.setUserId(contractorInfo.getUserId());
+        contractor.setAgentId(contractorInfo.getUserId());
         return contractor;
     }
 
-    public Long getUserId()
+    public Long getAgentId()
     {
-        return userId;
+        return agentId;
     }
 
-    public void setUserId(Long userId)
+    public void setAgentId(Long userId)
     {
-        this.userId = userId;
+        this.agentId = userId;
     }
 
     public String getName()
@@ -55,7 +65,7 @@ public class Contractor implements Serializable
         ContractorInfo contractorInfo = new ContractorInfo();
         contractorInfo.setId(key.getId());
         contractorInfo.setName(name);
-        contractorInfo.setUserId(userId);
+        contractorInfo.setUserId(agentId);
         return contractorInfo;
     }
 

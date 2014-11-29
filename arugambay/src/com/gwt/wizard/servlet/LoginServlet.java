@@ -12,7 +12,7 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.gwt.wizard.server.UserManager;
-import com.gwt.wizard.shared.model.UserInfo;
+import com.gwt.wizard.shared.model.AgentInfo;
 
 /*
  * Login Google user and redirect to application main page
@@ -38,7 +38,7 @@ public class LoginServlet extends HttpServlet
             return;
         }
 
-        UserInfo userInfo = userManager.createUser(user.getEmail());
+        AgentInfo userInfo = userManager.createAgent(user.getEmail());
         if (userInfo != null)
         {
             req.getSession().setAttribute("user", user);

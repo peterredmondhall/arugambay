@@ -12,6 +12,7 @@ import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
@@ -20,7 +21,6 @@ import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 import com.gwt.wizard.shared.model.StatInfo;
-import com.gwt.wizard.shared.model.UserInfo;
 
 /**
  * The server-side implementation of the RPC service.
@@ -45,19 +45,19 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public List<RouteInfo> deleteRoute(UserInfo userInfo, RouteInfo placeInfo) throws IllegalArgumentException
+    public List<RouteInfo> deleteRoute(AgentInfo userInfo, RouteInfo placeInfo) throws IllegalArgumentException
     {
         return routeServiceManager.deleteRoute(userInfo, placeInfo);
     }
 
     @Override
-    public List<RouteInfo> saveRoute(UserInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
+    public List<RouteInfo> saveRoute(AgentInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
     {
         return routeServiceManager.saveRoute(userInfo, placeInfo, mode);
     }
 
     @Override
-    public List<RouteInfo> getRoutes(UserInfo userInfo) throws IllegalArgumentException
+    public List<RouteInfo> getRoutes(AgentInfo userInfo) throws IllegalArgumentException
     {
         return routeServiceManager.getRoutes(userInfo);
     }
@@ -165,13 +165,13 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public UserInfo getUser() throws IllegalArgumentException
+    public AgentInfo getUser() throws IllegalArgumentException
     {
-        UserInfo userInfo = null;
+        AgentInfo userInfo = null;
         User user = getUserFromSession();
         if (user != null)
         {
-            userInfo = userManager.getUser(user);
+            userInfo = userManager.getUser(user.getEmail());
         }
         return userInfo;
     }
@@ -199,12 +199,12 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public UserInfo createDefaultUser()
+    public AgentInfo createDefaultUser()
     {
         if (bookingServiceManager.getMaintenceAllowed())
         {
             String defaultUserEmail = "test@example.com";
-            UserInfo userInfo = userManager.getUser(defaultUserEmail);
+            AgentInfo userInfo = userManager.getUser(defaultUserEmail);
             if (userInfo != null)
             {
                 List<RouteInfo> routes = routeServiceManager.getRoutes(userInfo);
@@ -218,15 +218,21 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
                     contractorManager.delete(contractorInfo);
                 }
             }
-            userInfo = new UserManager().createUser("test@example.com");
-            ContractorInfo contractorInfo = new ContractorInfo();
-            contractorInfo.setUserId(userInfo.getId());
-            contractorInfo = new ContractorManager().createContractor(contractorInfo);
-            RouteInfo routeInfo = new RouteInfo();
-            routeInfo.setPickupType(PickupType.AIRPORT);
-            routeInfo.setContractorId(contractorInfo.getId());
-            new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
-            return userInfo;
+            userInfo = new UserManager().createAgent(defaultUserEmail);
+            for (int i = 0; i < 2; i++)
+            {
+                ContractorInfo contractorInfo = new ContractorInfo();
+                contractorInfo.setUserId(userInfo.getId());
+                contractorInfo.setName("contractor" + i);
+                contractorInfo = new ContractorManager().createContractor(contractorInfo);
+                RouteInfo routeInfo = new RouteInfo();
+                routeInfo.setStart("start" + i);
+                routeInfo.setEnd("end" + i);
+                routeInfo.setPickupType(PickupType.AIRPORT);
+                routeInfo.setContractorId(contractorInfo.getId());
+                new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
+            }
+            return new UserManager().getUser(defaultUserEmail);
         }
         else
         {

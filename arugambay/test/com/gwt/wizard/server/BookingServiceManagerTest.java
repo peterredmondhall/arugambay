@@ -20,10 +20,10 @@ import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
-import com.gwt.wizard.shared.model.UserInfo;
 
 public class BookingServiceManagerTest
 {
@@ -33,7 +33,7 @@ public class BookingServiceManagerTest
 
     BookingServiceManager bs = new BookingServiceManager();
 
-    UserInfo userInfo;
+    AgentInfo userInfo;
     ContractorInfo contractorInfo;
 
     @Before

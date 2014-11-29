@@ -9,8 +9,8 @@ import javax.persistence.EntityManager;
 import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.jpa.EMF;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
-import com.gwt.wizard.shared.model.UserInfo;
 
 public class ContractorManager
 {
@@ -69,14 +69,15 @@ public class ContractorManager
 
     }
 
-    public List<ContractorInfo> getContractors(UserInfo userInfo)
+    public List<ContractorInfo> getContractors(AgentInfo agentInfo)
     {
         // check local user
         EntityManager em = getEntityManager();
         List<ContractorInfo> list = Lists.newArrayList();
         try
         {
-            List<Contractor> contractorList = em.createQuery("select t from Contractor t where userId=" + userInfo.getId()).getResultList();
+            @SuppressWarnings("unchecked")
+            List<Contractor> contractorList = em.createQuery("select t from Contractor t where agentId=" + agentInfo.getId()).getResultList();
             for (Contractor contractor : contractorList)
             {
                 list.add(contractor.getInfo());
@@ -100,7 +101,7 @@ public class ContractorManager
         try
         {
             em.getTransaction().begin();
-            Contractor contractor = Contractor.getContractor(contractorInfo);
+            Contractor contractor = em.find(Contractor.class, contractorInfo.getId());
             em.remove(contractor);
             em.getTransaction().commit();
         }

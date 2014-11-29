@@ -202,6 +202,7 @@ public class BookingServiceManager
                 ;
                 config = new Config();
                 config.setProfil("test");
+                config.setMaintenceAllowed(true);
                 em.persist(config);
                 em.getTransaction().commit();
             }

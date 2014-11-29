@@ -9,7 +9,7 @@ import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
-import com.gwt.wizard.shared.model.UserInfo;
+import com.gwt.wizard.shared.model.AgentInfo;
 
 /**
  * The client-side stub for the RPC service.
@@ -23,15 +23,15 @@ public interface BookingService extends RemoteService
 
     // BookingInfo sendShareAccepted(List<BookingInfo> l);
 
-    UserInfo getUser() throws IllegalArgumentException;
+    AgentInfo getUser() throws IllegalArgumentException;
 
-    List<RouteInfo> getRoutes(UserInfo userInfo) throws IllegalArgumentException;
+    List<RouteInfo> getRoutes(AgentInfo userInfo) throws IllegalArgumentException;
 
     List<RouteInfo> getRoutes() throws IllegalArgumentException;
 
-    List<RouteInfo> deleteRoute(UserInfo userInfo, RouteInfo placeInfo) throws IllegalArgumentException;
+    List<RouteInfo> deleteRoute(AgentInfo userInfo, RouteInfo placeInfo) throws IllegalArgumentException;
 
-    List<RouteInfo> saveRoute(UserInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException;
+    List<RouteInfo> saveRoute(AgentInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException;
 
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 
@@ -51,6 +51,6 @@ public interface BookingService extends RemoteService
 
     void sendStat(StatInfo statInfo);
 
-    UserInfo createDefaultUser();
+    AgentInfo createDefaultUser();
 
 }

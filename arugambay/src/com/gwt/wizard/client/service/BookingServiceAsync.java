@@ -8,7 +8,7 @@ import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
-import com.gwt.wizard.shared.model.UserInfo;
+import com.gwt.wizard.shared.model.AgentInfo;
 
 /**
  * The async counterpart of <code>GreetingService</code>.
@@ -22,14 +22,14 @@ public interface BookingServiceAsync
 
     // void sendShareAccepted(List<BookingInfo> bookingInfo, AsyncCallback<BookingInfo> callback);
 
-    void getRoutes(UserInfo userInfo, AsyncCallback<List<RouteInfo>> callback);
+    void getRoutes(AgentInfo userInfo, AsyncCallback<List<RouteInfo>> callback);
 
     void getRoutes(AsyncCallback<List<RouteInfo>> callback);
 
-    void deleteRoute(UserInfo userInfo, RouteInfo placeInfo, AsyncCallback<List<RouteInfo>> callback)
+    void deleteRoute(AgentInfo userInfo, RouteInfo placeInfo, AsyncCallback<List<RouteInfo>> callback)
             throws IllegalArgumentException;
 
-    void saveRoute(UserInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode, AsyncCallback<List<RouteInfo>> callback)
+    void saveRoute(AgentInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode, AsyncCallback<List<RouteInfo>> callback)
             throws IllegalArgumentException;
 
     void getBookings(AsyncCallback<List<BookingInfo>> callback);
@@ -44,7 +44,7 @@ public interface BookingServiceAsync
 
     void handleShareAccepted(Long id, AsyncCallback<List<BookingInfo>> callback);
 
-    void getUser(AsyncCallback<UserInfo> callback);
+    void getUser(AsyncCallback<AgentInfo> callback);
 
     void getPaypalProfil(AsyncCallback<ProfilInfo> callback);
 
@@ -52,6 +52,6 @@ public interface BookingServiceAsync
 
     void sendStat(StatInfo statInfo, AsyncCallback<Void> asyncCallback);
 
-    void createDefaultUser(AsyncCallback<UserInfo> asyncCallback);
+    void createDefaultUser(AsyncCallback<AgentInfo> asyncCallback);
 
 }
