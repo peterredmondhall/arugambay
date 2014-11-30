@@ -4,20 +4,24 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class ContractorInfo implements IsSerializable
 {
-    // public static final Long PUBLIC = -1L;
+    public enum SaveMode
+    {
+        UPDATE,
+        ADD
+    };
 
     private String name;
     private Long id;
-    private Long userId;
+    private Long agentId;
 
-    public Long getUserId()
+    public Long getAgentId()
     {
-        return userId;
+        return agentId;
     }
 
-    public void setUserId(Long userId)
+    public void setAgentId(Long agentId)
     {
-        this.userId = userId;
+        this.agentId = agentId;
     }
 
     public Long getId()

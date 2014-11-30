@@ -66,6 +66,7 @@ public class RouteManagementVeiw extends Composite
 
     private final CellTable.Resources tableRes = GWT.create(TableRes.class);
     private List<RouteInfo> ROUTES;
+    private List<ContractorInfo> CONTRACTORS;
     NumberFormat usdFormat = NumberFormat.getFormat(".00");
 
     CellTable<RouteInfo> routeManagementTable;
@@ -123,17 +124,42 @@ public class RouteManagementVeiw extends Composite
         btnContainer.clear();
         mainPanel.clear();
         routeManagementTable = new CellTable<RouteInfo>(13, tableRes);
-        fetchRoutes();
+        fetchContractorsAndRoutes();
     }
 
-    private void initializeWidget(List<RouteInfo> routeInfo)
+    private void initializeWidget(List<RouteInfo> routes)
     {
-        ROUTES = routeInfo;
+        ROUTES = routes;
         btnContainer.clear();
         mainPanel.clear();
         routeManagementTable = new CellTable<RouteInfo>(13, tableRes);
         setCellTable();
         setRouteManagementPanel();
+    }
+
+    private void fetchContractorsAndRoutes()
+    {
+
+        service.getContractors(USERINFO, new AsyncCallback<List<ContractorInfo>>()
+        {
+
+            @Override
+            public void onSuccess(List<ContractorInfo> contractors)
+            {
+
+                for (ContractorInfo contractor : contractors)
+                {
+                    CONTRACTORS.add(contractor);
+                    fetchRoutes();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Failed to connect to Server!");
+            }
+        });
     }
 
     private void fetchRoutes()
@@ -513,7 +539,7 @@ public class RouteManagementVeiw extends Composite
         }
 
         i = 0;
-        for (ContractorInfo contractorInfo : USERINFO.getContractors())
+        for (ContractorInfo contractorInfo : CONTRACTORS)
         {
             editContractorTypeBox.addItem(contractorInfo.getName());
             if (contractorInfo.getId().equals(ri.getContractorId()))
@@ -533,7 +559,7 @@ public class RouteManagementVeiw extends Composite
             {
                 RouteInfo routeInfo = new RouteInfo();
                 int selectedContractorIndex = editContractorTypeBox.getSelectedIndex();
-                ContractorInfo contractorInfo = GwtDashboard.USERINFO.getContractors().get(selectedContractorIndex);
+                ContractorInfo contractorInfo = CONTRACTORS.get(selectedContractorIndex);
                 routeInfo.setContractorId(contractorInfo.getId());
                 try
                 {

@@ -40,14 +40,8 @@ public class BookingServiceManagerTest
     public void setUp()
     {
         helper.setUp();
+        new BookingServiceManager().getProfil();
         userInfo = new BookingServiceImpl().createDefaultUser();
-//        userInfo = new UserManager().createUser("test@example.com");
-//        ContractorInfo contractorInfo = new ContractorInfo();
-//        contractorInfo.setUserId(userInfo.getId());
-//        contractorInfo = new ContractorManager().createContractor(contractorInfo);
-//        RouteInfo routeInfo = new RouteInfo();
-//        routeInfo.setContractorId(contractorInfo.getId());
-//        new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
     }
 
     @After

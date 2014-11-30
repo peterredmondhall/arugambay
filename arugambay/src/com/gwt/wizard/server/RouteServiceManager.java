@@ -32,7 +32,6 @@ public class RouteServiceManager
             em.getTransaction().begin();
             em.remove(route);
             em.getTransaction().commit();
-            em.flush();
             route = em.find(Route.class, routeInfo.getId());
             routes = getRoutes(userInfo);
         }
@@ -80,17 +79,7 @@ public class RouteServiceManager
                     persist(em, route, routeInfo);
                     break;
             }
-//            route.setStart(routeInfo.getStart());
-//            route.setEnd(routeInfo.getEnd());
-//            route.setPrice(routeInfo.getPrice());
-//
-//            route.setPickupType(routeInfo.getPickupType());
-//            route.setImage(routeInfo.getImage());
-//            route.setDescription(routeInfo.getDescription());
-//            em.getTransaction().begin();
-//            em.persist(route);
-//            em.getTransaction().commit();
-//            em.detach(route);
+
             route = em.find(Route.class, route.getKey().getId());
             routes = getRoutes(userInfo);
         }
@@ -115,6 +104,7 @@ public class RouteServiceManager
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());
         route.setDescription(routeInfo.getDescription());
+        route.setContractorId(routeInfo.getContractorId());
         em.getTransaction().begin();
         em.persist(route);
         em.getTransaction().commit();

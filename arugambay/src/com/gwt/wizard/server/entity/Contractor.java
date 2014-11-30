@@ -36,7 +36,7 @@ public class Contractor implements Serializable
     {
         Contractor contractor = new Contractor();
         contractor.setName(contractorInfo.getName());
-        contractor.setAgentId(contractorInfo.getUserId());
+        contractor.setAgentId(contractorInfo.getAgentId());
         return contractor;
     }
 
@@ -65,7 +65,7 @@ public class Contractor implements Serializable
         ContractorInfo contractorInfo = new ContractorInfo();
         contractorInfo.setId(key.getId());
         contractorInfo.setName(name);
-        contractorInfo.setUserId(agentId);
+        contractorInfo.setAgentId(agentId);
         return contractorInfo;
     }
 

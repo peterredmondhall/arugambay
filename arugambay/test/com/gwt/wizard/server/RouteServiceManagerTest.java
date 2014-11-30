@@ -10,10 +10,9 @@ import org.junit.Test;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.PickupType;
-import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
-import com.gwt.wizard.shared.model.AgentInfo;
 
 public class RouteServiceManagerTest
 {
@@ -23,16 +22,14 @@ public class RouteServiceManagerTest
 
     RouteServiceManager rs = new RouteServiceManager();
 
-    AgentInfo userInfo;
+    AgentInfo agentInfo;
 
     @Before
     public void setUp()
     {
         helper.setUp();
-        userInfo = new UserManager().createAgent("test@example.com");
-        RouteInfo routeInfo = new RouteInfo();
-        routeInfo.setContractorId(userInfo.getId());
-        new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
+        new BookingServiceManager().getProfil();
+        agentInfo = new BookingServiceImpl().createDefaultUser();
     }
 
     @After
@@ -46,30 +43,30 @@ public class RouteServiceManagerTest
     {
 
         List<RouteInfo> routes = rs.getRoutes();
-        assertEquals(1, routes.size());
+        assertEquals(2, routes.size());
     }
 
     @Test
     public void should_delete_route()
     {
         List<RouteInfo> routes = rs.getRoutes();
-        assertEquals(1, routes.size());
+        assertEquals(2, routes.size());
         RouteInfo routeInfo = routes.get(0);
-        routes = rs.deleteRoute(userInfo, routeInfo);
+        routes = rs.deleteRoute(agentInfo, routeInfo);
         assertEquals(1, routes.size());
     }
 
     @Test
     public void should_update_route()
     {
-        List<RouteInfo> routes = rs.getRoutes(userInfo);
-        assertEquals(1, routes.size());
+        List<RouteInfo> routes = rs.getRoutes(agentInfo);
+        assertEquals(2, routes.size());
         RouteInfo routeInfo = routes.get(0);
         routeInfo.setPickupType(PickupType.HOTEL);
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setPrice(160.00f);
-        assertEquals(1, rs.saveRoute(userInfo, routeInfo, RouteInfo.SaveMode.UPDATE).size());
+        assertEquals(2, rs.saveRoute(agentInfo, routeInfo, RouteInfo.SaveMode.UPDATE).size());
         routeInfo = routes.get(0);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
@@ -81,16 +78,18 @@ public class RouteServiceManagerTest
     @Test
     public void should_add_route()
     {
+        List<RouteInfo> routes = rs.getRoutes(agentInfo);
+        Long contractorId = routes.get(0).getContractorId();
 
         RouteInfo routeInfo = new RouteInfo();
         routeInfo.setPickupType(PickupType.HOTEL);
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setPrice(160.00f);
-        List<RouteInfo> routes = rs.saveRoute(userInfo, routeInfo, RouteInfo.SaveMode.ADD);
-        routes = rs.saveRoute(userInfo, routeInfo, RouteInfo.SaveMode.ADD);
-        assertEquals(2, routes.size());
-        routeInfo = routes.get(0);
+        routeInfo.setContractorId(contractorId);
+        routes = rs.saveRoute(agentInfo, routeInfo, RouteInfo.SaveMode.ADD);
+        assertEquals(3, routes.size());
+        routeInfo = routes.get(2);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
         assertEquals(PickupType.HOTEL, routeInfo.getPickupType());

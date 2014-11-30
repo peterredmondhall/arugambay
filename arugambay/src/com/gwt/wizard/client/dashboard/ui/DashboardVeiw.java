@@ -31,6 +31,9 @@ public class DashboardVeiw extends Composite
     @UiField
     Anchor routeManagement;
 
+    @UiField
+    Anchor contractorManagement;
+
     private final HTMLPanel displayContainer = new HTMLPanel("");
 
     public DashboardVeiw()
@@ -61,6 +64,16 @@ public class DashboardVeiw extends Composite
             {
                 displayContainer.clear();
                 displayContainer.add(new RouteManagementVeiw());
+            }
+        });
+        contractorManagement.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                displayContainer.clear();
+                displayContainer.add(new ContractorManagementVeiw());
             }
         });
         displayContainer.add(new BookingManagementVeiw());

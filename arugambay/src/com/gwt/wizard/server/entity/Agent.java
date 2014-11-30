@@ -46,7 +46,6 @@ public class Agent implements Serializable
         AgentInfo agentInfo = new AgentInfo();
         agentInfo.setId(key.getId());
         agentInfo.setEmail(userEmail);
-        agentInfo.setContractors(contractors);
         return agentInfo;
 
     }

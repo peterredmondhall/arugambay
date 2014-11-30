@@ -114,4 +114,77 @@ public class ContractorManager
             em.close();
         }
     }
+
+    public List<ContractorInfo> deleteContractor(AgentInfo agentInfo, ContractorInfo contractorInfo)
+    {
+        List<ContractorInfo> contractors = null;
+        EntityManager em = getEntityManager();
+        try
+        {
+            Contractor contractor = em.find(Contractor.class, contractorInfo.getId());
+            em.getTransaction().begin();
+            em.remove(contractor);
+            em.getTransaction().commit();
+            contractor = em.find(Contractor.class, contractorInfo.getId());
+            contractors = getContractors(agentInfo);
+        }
+        catch (Exception e)
+        {
+            logger.severe("deleting route");
+        }
+        finally
+        {
+            em.close();
+        }
+        return contractors;
+    }
+
+    public List<ContractorInfo> saveContractor(AgentInfo agentInfo, ContractorInfo contractorInfo, ContractorInfo.SaveMode mode) throws IllegalArgumentException
+    {
+        List<ContractorInfo> routes = null;
+        EntityManager em = getEntityManager();
+        contractorInfo.setAgentId(agentInfo.getId());
+        try
+        {
+            Contractor contractor = null;
+            switch (mode)
+            {
+                case ADD:
+                    contractor = new Contractor();
+                    persist(em, contractor, contractorInfo);
+                    break;
+
+                case UPDATE:
+                    contractor = em.find(Contractor.class, contractorInfo.getId());
+                    persist(em, contractor, contractorInfo);
+                    break;
+            }
+
+            contractor = em.find(Contractor.class, contractor.getKey().getId());
+            routes = getContractors(agentInfo);
+        }
+
+        catch (Exception e)
+        {
+            logger.severe("saving contractor");
+        }
+        finally
+        {
+            em.close();
+        }
+        return routes;
+    }
+
+    private void persist(EntityManager em, Contractor contractor, ContractorInfo contractorInfo)
+    {
+        contractor.setName(contractorInfo.getName());
+        contractor.setAgentId(contractorInfo.getAgentId());
+
+        em.getTransaction().begin();
+        em.persist(contractor);
+        em.getTransaction().commit();
+        em.detach(contractor);
+
+    }
+
 }

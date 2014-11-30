@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.StatInfo;
-import com.gwt.wizard.shared.model.AgentInfo;
 
 /**
  * The client-side stub for the RPC service.
@@ -27,11 +28,17 @@ public interface BookingService extends RemoteService
 
     List<RouteInfo> getRoutes(AgentInfo userInfo) throws IllegalArgumentException;
 
+    List<ContractorInfo> getContractors(AgentInfo userInfo) throws IllegalArgumentException;
+
     List<RouteInfo> getRoutes() throws IllegalArgumentException;
 
     List<RouteInfo> deleteRoute(AgentInfo userInfo, RouteInfo placeInfo) throws IllegalArgumentException;
 
+    List<ContractorInfo> deleteContractor(AgentInfo userInfo, ContractorInfo placeInfo) throws IllegalArgumentException;
+
     List<RouteInfo> saveRoute(AgentInfo userInfo, RouteInfo placeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException;
+
+    List<ContractorInfo> saveContractor(AgentInfo userInfo, ContractorInfo placeInfo, ContractorInfo.SaveMode mode) throws IllegalArgumentException;
 
     List<BookingInfo> getBookings() throws IllegalArgumentException;
 

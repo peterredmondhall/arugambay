@@ -1,7 +1,6 @@
 package com.gwt.wizard.shared.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class AgentInfo implements Serializable
 {
@@ -9,18 +8,6 @@ public class AgentInfo implements Serializable
 
     private Long id;
     private String email;
-    // private Long contractorId;
-    private List<ContractorInfo> contractors;
-
-    public List<ContractorInfo> getContractors()
-    {
-        return contractors;
-    }
-
-    public void setContractors(List<ContractorInfo> contractors)
-    {
-        this.contractors = contractors;
-    }
 
     public Long getId()
     {

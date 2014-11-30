@@ -222,7 +222,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             for (int i = 0; i < 2; i++)
             {
                 ContractorInfo contractorInfo = new ContractorInfo();
-                contractorInfo.setUserId(userInfo.getId());
+                contractorInfo.setAgentId(userInfo.getId());
                 contractorInfo.setName("contractor" + i);
                 contractorInfo = new ContractorManager().createContractor(contractorInfo);
                 RouteInfo routeInfo = new RouteInfo();
@@ -239,5 +239,23 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             logger.info("maintence not allowed");
             return null;
         }
+    }
+
+    @Override
+    public List<ContractorInfo> getContractors(AgentInfo agentInfo) throws IllegalArgumentException
+    {
+        return contractorManager.getContractors(agentInfo);
+    }
+
+    @Override
+    public List<ContractorInfo> deleteContractor(AgentInfo agentInfo, ContractorInfo contractorInfo) throws IllegalArgumentException
+    {
+        return contractorManager.deleteContractor(agentInfo, contractorInfo);
+    }
+
+    @Override
+    public List<ContractorInfo> saveContractor(AgentInfo agentInfo, ContractorInfo contractorInfo, ContractorInfo.SaveMode mode) throws IllegalArgumentException
+    {
+        return contractorManager.saveContractor(agentInfo, contractorInfo, mode);
     }
 }

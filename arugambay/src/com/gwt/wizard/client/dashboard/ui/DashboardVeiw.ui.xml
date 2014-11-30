@@ -39,7 +39,8 @@
 				<g:HTML styleName="{style.heading}">Dashboard</g:HTML>
 				<g:Anchor ui:field="bookingManagement">Manage Booking</g:Anchor>
 				<g:Anchor ui:field="routeManagement">Manage Routes</g:Anchor>
-			</g:VerticalPanel>
+				<g:Anchor ui:field="contractorManagement">Manage Contractors</g:Anchor>
+							</g:VerticalPanel>
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="dataContainer" styleName="dashboardDataContainer">
 		</g:HTMLPanel>
