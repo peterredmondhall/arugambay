@@ -69,7 +69,7 @@ public class RouteInfo implements IsSerializable
     }
 
     private PickupType pickupType;
-    private float price;
+    private Long cents;
     private Long image;
 
     public Long getImage()
@@ -122,14 +122,14 @@ public class RouteInfo implements IsSerializable
         this.pickupType = pickupType;
     }
 
-    public float getPrice()
+    public Long getCents()
     {
-        return price;
+        return cents;
     }
 
-    public void setPrice(float price)
+    public void setCents(Long cents)
     {
-        this.price = price;
+        this.cents = cents;
     }
 
     public String getKey()

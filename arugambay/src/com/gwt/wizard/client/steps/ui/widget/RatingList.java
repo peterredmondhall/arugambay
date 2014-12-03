@@ -17,19 +17,19 @@ import com.gwt.wizard.shared.model.RatingInfo;
 public class RatingList
 {
 
-    String cwDisclosurePanelDescription = "xxxx";
-
-    String cwDisclosurePanelFormAdvancedCriteria = "xxxxxxx";
-
-    String cwDisclosurePanelFormDescription = "xxxxxxx";
-
-    String cwDisclosurePanelFormLocation = "xxxxxxx";
-
-    String cwDisclosurePanelFormName = "xxxxxxx";
-
-    String cwDisclosurePanelFormTitle = "xxxxx";
-
-    String cwDisclosurePanelName = "xxxxxxx";
+//    String cwDisclosurePanelDescription = "xxxx";
+//
+    String cwDisclosurePanelFormAdvancedCriteria = "cwDisclosurePanelFormAdvancedCriteria";
+//
+//    String cwDisclosurePanelFormDescription = "xxxxxxx";
+//
+    String cwDisclosurePanelFormLocation = "cwDisclosurePanelFormLocation";
+//
+//    String cwDisclosurePanelFormName = "xxxxxxx";
+//
+    String cwDisclosurePanelFormTitle = "";
+//
+//    String cwDisclosurePanelName = "xxxxxxx";
 
     List<RatingInfo> ratings;
 

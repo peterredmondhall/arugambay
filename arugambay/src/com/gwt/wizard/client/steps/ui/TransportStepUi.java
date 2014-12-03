@@ -182,9 +182,12 @@ public class TransportStepUi extends Composite
                         String displayString = event.getSelectedItem().getReplacementString();
                         RouteInfo routeInfo = mapRouteInfo.get(displayString);
                         labelRouteName.setText(routeInfo.getKey());
-                        NumberFormat usdFormat = NumberFormat.getFormat(".00");
-
-                        labelPrice.setText("$" + usdFormat.format(routeInfo.getPrice()));
+                        if (routeInfo.getCents() != null)
+                        {
+                            NumberFormat usdFormat = NumberFormat.getFormat(".00");
+                            Double d = (double) routeInfo.getCents() / 100;
+                            labelPrice.setText("$" + usdFormat.format(d));
+                        }
                         imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
                         labelDescription.setText(routeInfo.getDescription());
 

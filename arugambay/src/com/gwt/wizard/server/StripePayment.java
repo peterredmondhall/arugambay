@@ -21,7 +21,7 @@ public class StripePayment
             Stripe.apiKey = stripeSecret;
 
             Map<String, Object> chargeParams = new HashMap<String, Object>();
-            int cents = (int) (bookingInfo.getRouteInfo().getPrice() * 100);
+            long cents = bookingInfo.getRouteInfo().getCents();
             chargeParams.put("amount", cents);
             chargeParams.put("currency", "usd");
             chargeParams.put("card", card); // obtained with Stripe.js

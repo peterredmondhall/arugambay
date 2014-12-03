@@ -167,7 +167,8 @@ public class BookingInfo implements Serializable
 
     public String getPaidAmt()
     {
-        return "USD" + routeInfo.getPrice();
+        Double d = (double) routeInfo.getCents() / 100;
+        return "USD" + d;
     }
 
     public RouteInfo getRouteInfo()

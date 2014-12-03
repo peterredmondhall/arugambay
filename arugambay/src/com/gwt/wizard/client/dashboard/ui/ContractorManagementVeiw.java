@@ -67,7 +67,7 @@ public class ContractorManagementVeiw extends Composite
     VerticalPanel layout;
     private Button addPlaceBtn;
     private Button editPlaceBtn;
-    private Button deletePlaceBtn;
+    // private Button deletePlaceBtn;
     private final SelectionModel<ContractorInfo> selectionModel = new MultiSelectionModel<ContractorInfo>(null);
 
     final TextBox editContractorNameTxtBox = new TextBox();
@@ -129,7 +129,6 @@ public class ContractorManagementVeiw extends Composite
 
     private void setContractorManagementPanel()
     {
-        setDeleteContractorBtn();
         setUpdateContracttorBtn();
         setAddContractorBtn();
     }
@@ -143,45 +142,6 @@ public class ContractorManagementVeiw extends Composite
         addPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         addPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
         btnContainer.add(addPlaceBtn);
-    }
-
-    private void setDeleteContractorBtn()
-    {
-        deletePlaceBtn = new Button();
-        deletePlaceBtn.setStyleName("btn btn-primary");
-        deletePlaceBtn.setText("Delete");
-        deletePlaceBtn.addClickHandler(new ClickHandler()
-        {
-
-            @Override
-            public void onClick(ClickEvent event)
-            {
-                for (ContractorInfo p : CONTRACTORS)
-                {
-                    if (selectionModel.isSelected(p))
-                    {
-                        service.deleteContractor(USERINFO, p, new AsyncCallback<List<ContractorInfo>>()
-                        {
-
-                            @Override
-                            public void onFailure(Throwable caught)
-                            {
-                                Window.alert("Failed to connect to server");
-                            }
-
-                            @Override
-                            public void onSuccess(List<ContractorInfo> result)
-                            {
-                                initializeWidget(result);
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        deletePlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
-        deletePlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
-        btnContainer.add(deletePlaceBtn);
     }
 
     private void setUpdateContracttorBtn()

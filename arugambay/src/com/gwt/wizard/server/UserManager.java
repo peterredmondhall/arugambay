@@ -84,6 +84,7 @@ public class UserManager
                 contractorIdList.add(contractor.getInfo());
             }
             agentInfo = agent.getInfo(contractorIdList);
+            logger.info("getUser for email " + email + " returned " + agentInfo.getEmail() + "  " + agentInfo.getId());
         }
         catch (NoResultException ex)
         {

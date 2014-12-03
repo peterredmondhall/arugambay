@@ -71,6 +71,8 @@ public class ContractorManager
 
     public List<ContractorInfo> getContractors(AgentInfo agentInfo)
     {
+        logger.info("getting contractors for agent email " + agentInfo.getEmail() + " id " + agentInfo.getId());
+
         // check local user
         EntityManager em = getEntityManager();
         List<ContractorInfo> list = Lists.newArrayList();
@@ -78,6 +80,7 @@ public class ContractorManager
         {
             @SuppressWarnings("unchecked")
             List<Contractor> contractorList = em.createQuery("select t from Contractor t where agentId=" + agentInfo.getId()).getResultList();
+            logger.info("query returned " + contractorList.size());
             for (Contractor contractor : contractorList)
             {
                 list.add(contractor.getInfo());

@@ -14,13 +14,13 @@
 		width: 250px; }
 		.addressFieldStyle{ width: 250px; }
 		.brd {
-		border: 1px solid silver;
+		borderx: 1px solid silver;
 		padding: 2px;
 		margin-bottom:6px;
 		width:767px;
 		}
 		.ratingspanel {
-		border: 1px solid silver;
+		borderx: 1px solid silver;
 		padding: 2px;
 		margin-bottom:6px;
 		height:100px;

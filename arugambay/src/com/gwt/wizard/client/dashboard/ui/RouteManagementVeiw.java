@@ -4,8 +4,10 @@ import static com.gwt.wizard.client.GwtDashboard.USERINFO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ImageResourceCell;
 import com.google.gwt.core.client.GWT;
@@ -83,7 +85,6 @@ public class RouteManagementVeiw extends Composite
     private final SelectionModel<RouteInfo> selectionModel = new MultiSelectionModel<RouteInfo>(null);
     private final RouteInfo.PickupType[] listPickupType;
     private Long imageId;
-    private final RouteAddEditClickHandler handler = new RouteAddEditClickHandler();
 
     final TextBox editStartTxtBox = new TextBox();
     final TextBox editEndTxtBox = new TextBox();
@@ -103,6 +104,8 @@ public class RouteManagementVeiw extends Composite
     final Label descLabel = new Label("Description");
 
     final Label imageLabel = new Label("Image");
+    final Map<Long, ContractorInfo> contractorMap = Maps.newHashMap();
+    private Long[] contractorIdList;
 
     // The list of data to display.
 
@@ -123,7 +126,6 @@ public class RouteManagementVeiw extends Composite
         ROUTES = new ArrayList<>();
         btnContainer.clear();
         mainPanel.clear();
-        routeManagementTable = new CellTable<RouteInfo>(13, tableRes);
         fetchContractorsAndRoutes();
     }
 
@@ -132,7 +134,7 @@ public class RouteManagementVeiw extends Composite
         ROUTES = routes;
         btnContainer.clear();
         mainPanel.clear();
-        routeManagementTable = new CellTable<RouteInfo>(13, tableRes);
+        routeManagementTable = new CellTable<RouteInfo>(routes.size(), tableRes);
         setCellTable();
         setRouteManagementPanel();
     }
@@ -146,12 +148,16 @@ public class RouteManagementVeiw extends Composite
             @Override
             public void onSuccess(List<ContractorInfo> contractors)
             {
-
-                for (ContractorInfo contractor : contractors)
+                CONTRACTORS = contractors;
+                contractorIdList = new Long[CONTRACTORS.size()];
+                int i = 0;
+                for (ContractorInfo contractorInfo : CONTRACTORS)
                 {
-                    CONTRACTORS.add(contractor);
-                    fetchRoutes();
+                    contractorMap.put(contractorInfo.getId(), contractorInfo);
+                    contractorIdList[i++] = contractorInfo.getId();
                 }
+                fetchRoutes();
+
             }
 
             @Override
@@ -171,11 +177,9 @@ public class RouteManagementVeiw extends Composite
             @Override
             public void onSuccess(List<RouteInfo> routes)
             {
+                ROUTES = routes;
 
-                for (RouteInfo route : routes)
-                {
-                    ROUTES.add(route);
-                }
+                routeManagementTable = new CellTable<RouteInfo>(routes.size(), tableRes);
                 setCellTable();
                 setRouteManagementPanel();
             }
@@ -200,10 +204,9 @@ public class RouteManagementVeiw extends Composite
         addPlaceBtn = new Button();
         addPlaceBtn.setStyleName("btn btn-primary");
         addPlaceBtn.setText("Add");
-        handler.setMode(SaveMode.ADD);
         editReturnCheckBox.setVisible(true);
         generateReturnLabel.setVisible(true);
-        addPlaceBtn.addClickHandler(handler);
+        addPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.ADD));
         addPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         addPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
         btnContainer.add(addPlaceBtn);
@@ -253,10 +256,9 @@ public class RouteManagementVeiw extends Composite
         editPlaceBtn = new Button();
         editPlaceBtn.setStyleName("btn btn-primary");
         editPlaceBtn.setText("Edit");
-        handler.setMode(SaveMode.UPDATE);
         editReturnCheckBox.setVisible(false);
         generateReturnLabel.setVisible(false);
-        editPlaceBtn.addClickHandler(handler);
+        editPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.UPDATE));
 
         editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         editPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
@@ -318,7 +320,12 @@ public class RouteManagementVeiw extends Composite
             @Override
             public String getValue(RouteInfo route)
             {
-                return usdFormat.format(route.getPrice());
+                if (route.getCents() != null)
+                {
+                    Double d = (double) route.getCents() / 100;
+                    return usdFormat.format(d);
+                }
+                return null;
             }
         };
 
@@ -352,6 +359,15 @@ public class RouteManagementVeiw extends Composite
             }
         };
 
+        TextColumn<RouteInfo> contractorColumn = new TextColumn<RouteInfo>()
+        {
+            @Override
+            public String getValue(RouteInfo route)
+            {
+                return contractorMap.get(route.getContractorId()).getName();
+            }
+        };
+
         routeManagementTable.setTableLayoutFixed(true);
         // Add the columns.
 
@@ -362,6 +378,7 @@ public class RouteManagementVeiw extends Composite
         routeManagementTable.addColumn(priceColumn, "Price USD");
         routeManagementTable.addColumn(descriptionColumn, "Description");
         routeManagementTable.addColumn(pickuptypeColumn, "Pickuptype");
+        routeManagementTable.addColumn(contractorColumn, "Contractor");
 
         // Create a data provider.
         ListDataProvider<RouteInfo> dataProvider = new ListDataProvider<RouteInfo>();
@@ -446,11 +463,7 @@ public class RouteManagementVeiw extends Composite
     {
         RouteInfo.SaveMode mode;
 
-        public RouteAddEditClickHandler()
-        {
-        }
-
-        public void setMode(RouteInfo.SaveMode mode)
+        public RouteAddEditClickHandler(RouteInfo.SaveMode mode)
         {
             this.mode = mode;
         }
@@ -526,7 +539,10 @@ public class RouteManagementVeiw extends Composite
         editDescriptionBox.setText(ri.getDescription());
         imageId = ri.getImage();
 
-        editPriceTxtBox.setText(usdFormat.format(ri.getPrice()));
+        if (ri.getCents() != null)
+        {
+            editPriceTxtBox.setText(usdFormat.format(ri.getCents() * 100));
+        }
         int i = 0;
         for (RouteInfo.PickupType t : RouteInfo.PickupType.values())
         {
@@ -539,6 +555,7 @@ public class RouteManagementVeiw extends Composite
         }
 
         i = 0;
+        editContractorTypeBox.clear();
         for (ContractorInfo contractorInfo : CONTRACTORS)
         {
             editContractorTypeBox.addItem(contractorInfo.getName());
@@ -564,8 +581,9 @@ public class RouteManagementVeiw extends Composite
                 try
                 {
                     String price = editPriceTxtBox.getText();
-                    java.lang.Float priceL = java.lang.Float.parseFloat(price);
-                    routeInfo.setPrice(priceL);
+                    Double priceL = Double.parseDouble(price);
+                    Double cents = priceL * 100;
+                    routeInfo.setCents(Math.round(cents));
                 }
                 catch (Exception ex)
                 {
@@ -588,6 +606,7 @@ public class RouteManagementVeiw extends Composite
                     routeInfo.setEnd(editEndTxtBox.getText());
                     routeInfo.setDescription(editDescriptionBox.getText());
                     routeInfo.setPickupType(listPickupType[editPickupTypeBox.getSelectedIndex()]);
+                    routeInfo.setContractorId(contractorIdList[editContractorTypeBox.getSelectedIndex()]);
 
                     if (imageId != null)
                     {

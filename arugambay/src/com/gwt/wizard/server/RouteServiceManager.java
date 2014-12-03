@@ -2,6 +2,7 @@ package com.gwt.wizard.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -57,15 +58,12 @@ public class RouteServiceManager
             {
                 case ADD:
                     route = new Route();
-                    route.setContractorId(routeInfo.getContractorId());
                     persist(em, route, routeInfo);
                     break;
                 case ADD_WITH_RETURN:
                     route = new Route();
-                    route.setContractorId(routeInfo.getContractorId());
                     persist(em, route, routeInfo);
                     route = new Route();
-                    route.setContractorId(routeInfo.getContractorId());
                     String start = routeInfo.getEnd();
                     String end = routeInfo.getStart();
                     routeInfo.setStart(start);
@@ -99,7 +97,7 @@ public class RouteServiceManager
     {
         route.setStart(routeInfo.getStart());
         route.setEnd(routeInfo.getEnd());
-        route.setPrice(routeInfo.getPrice());
+        route.setCents(routeInfo.getCents());
 
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());
@@ -119,30 +117,38 @@ public class RouteServiceManager
         List<RouteInfo> routes = new ArrayList<>();
         try
         {
+            logger.info("getting routes for agent email " + agentInfo.getEmail() + " id " + agentInfo.getId());
+
             // find a list of providers being managed by this user
-            // List<Contractor> contractorList = em.createQuery("select t from Contractor t").getResultList();
-            // System.out.println(contractorList.get(0).getUserId());
             List<Contractor> contractorList = em.createQuery("select t from Contractor t where agentId=" + agentInfo.getId()).getResultList();
+
             List<Long> contractorIdList = Lists.newArrayList();
             for (Contractor contractor : contractorList)
             {
                 contractorIdList.add(contractor.getInfo().getId());
+                logger.info("contractorId:" + contractor.getInfo().getId());
             }
 
             List<Route> resultList = em.createQuery("select t from Route t ").getResultList();
+            logger.info("get route count " + resultList.size());
             for (Route route : resultList)
             {
                 RouteInfo routeInfo = route.getInfo();
-                if (agentInfo == null || contractorIdList.contains(routeInfo.getContractorId()))
+                logger.info("routeInfo.getContractorId() " + routeInfo.getContractorId());
+
+                // TODO
+                // if (agentInfo == null || contractorIdList.contains(routeInfo.getContractorId()))
                 {
                     routes.add(routeInfo);
                 }
             }
+            logger.info("returning routeinfo count " + routes.size());
 
         }
         catch (Exception ex)
         {
-            logger.severe("getting routes");
+            ex.printStackTrace();
+            logger.severe("getting routes for " + agentInfo.getEmail() + "  :" + ex.getMessage());
         }
         return routes;
 
@@ -156,7 +162,13 @@ public class RouteServiceManager
         try
         {
 
+            logger.severe("starting...");
+            Object o = em.createQuery("select t from Route t ").getResultList();
+            logger.severe(o.toString());
+
             List<Route> resultList = em.createQuery("select t from Route t ").getResultList();
+
+            logger.info("get all routes returned " + resultList.size());
             for (Route route : resultList)
             {
                 RouteInfo routeInfo = route.getInfo();
@@ -165,7 +177,8 @@ public class RouteServiceManager
         }
         catch (Exception ex)
         {
-            logger.severe("getting routes");
+            ex.printStackTrace();
+            logger.log(Level.SEVERE, "getting all routes" + ex.getMessage(), ex);
         }
         return routes;
 

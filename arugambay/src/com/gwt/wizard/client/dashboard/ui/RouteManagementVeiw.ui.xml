@@ -4,7 +4,7 @@
 	<ui:style>
 	</ui:style>
 	<g:VerticalPanel  ui:field="layout" width="100%">
-	<g:HTML styleName="title">Manage Places</g:HTML>
+	<g:HTML styleName="title">Manage Routes</g:HTML>
 
 	<g:HTMLPanel ui:field="btnContainer">
 	</g:HTMLPanel>

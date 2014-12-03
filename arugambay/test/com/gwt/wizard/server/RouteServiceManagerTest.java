@@ -65,13 +65,13 @@ public class RouteServiceManagerTest
         routeInfo.setPickupType(PickupType.HOTEL);
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
-        routeInfo.setPrice(160.00f);
+        routeInfo.setCents(16000L);
         assertEquals(2, rs.saveRoute(agentInfo, routeInfo, RouteInfo.SaveMode.UPDATE).size());
         routeInfo = routes.get(0);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
         assertEquals(PickupType.HOTEL, routeInfo.getPickupType());
-        assertEquals(Float.toString(160.00f), Float.toString(routeInfo.getPrice()));
+        assertEquals(Double.toString(16000f), Double.toString(routeInfo.getCents() * 100));
 
     }
 
@@ -85,7 +85,7 @@ public class RouteServiceManagerTest
         routeInfo.setPickupType(PickupType.HOTEL);
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
-        routeInfo.setPrice(160.00f);
+        routeInfo.setCents(16000L);
         routeInfo.setContractorId(contractorId);
         routes = rs.saveRoute(agentInfo, routeInfo, RouteInfo.SaveMode.ADD);
         assertEquals(3, routes.size());
@@ -93,7 +93,7 @@ public class RouteServiceManagerTest
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
         assertEquals(PickupType.HOTEL, routeInfo.getPickupType());
-        assertEquals(Float.toString(160.00f), Float.toString(routeInfo.getPrice()));
+        assertEquals(Double.toString(160.00), Double.toString(routeInfo.getCents()));
     }
 
 }

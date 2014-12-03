@@ -46,7 +46,7 @@ public class Route implements Serializable
     }
 
     private PickupType pickupType;
-    private Float price;
+    private Long cents = 10000L;
 
     private Long image;
 
@@ -95,14 +95,9 @@ public class Route implements Serializable
         this.pickupType = pickupType;
     }
 
-    public float getPrice()
+    public void setCents(Long cents)
     {
-        return price;
-    }
-
-    public void setPrice(float price)
-    {
-        this.price = price;
+        this.cents = cents;
     }
 
 //    public Blob getImage()
@@ -126,7 +121,7 @@ public class Route implements Serializable
         route.setStart(routeInfo.getStart());
         route.setEnd(routeInfo.getEnd());
         route.setDescription(routeInfo.getDescription());
-        route.setPrice(routeInfo.getPrice());
+        route.setCents(routeInfo.getCents());
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());
         route.setContractorId(providerId);
@@ -140,11 +135,18 @@ public class Route implements Serializable
         routeInfo.setStart(start);
         routeInfo.setEnd(end);
         routeInfo.setDescription(description);
-        routeInfo.setPrice(price);
+        routeInfo.setCents(cents);
+
         routeInfo.setPickupType(pickupType);
         routeInfo.setImage(image);
-        routeInfo.setContractorId(contractorId);
+        if (contractorId == null)
+        {
+            routeInfo.setContractorId(4840028442198016L);
+        }
+        else
+        {
+            routeInfo.setContractorId(contractorId);
+        }
         return routeInfo;
     }
-
 }
