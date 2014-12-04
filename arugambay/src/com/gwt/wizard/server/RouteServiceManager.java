@@ -161,14 +161,9 @@ public class RouteServiceManager
         List<RouteInfo> routes = new ArrayList<>();
         try
         {
-
-            logger.severe("starting...");
-            Object o = em.createQuery("select t from Route t ").getResultList();
-            logger.severe(o.toString());
-
             List<Route> resultList = em.createQuery("select t from Route t ").getResultList();
 
-            logger.info("get all routes returned " + resultList.size());
+            logger.info("get all routes returned no. of routes" + resultList.size());
             for (Route route : resultList)
             {
                 RouteInfo routeInfo = route.getInfo();

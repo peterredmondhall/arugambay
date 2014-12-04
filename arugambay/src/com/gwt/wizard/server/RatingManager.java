@@ -41,8 +41,13 @@ public class RatingManager
 
     public List<RatingInfo> getRatings(RouteInfo routeInfo)
     {
+
         EntityManager em = getEntityManager();
         List<RatingInfo> ratings = newArrayList();
+
+        if (true)
+            return ratings;
+
         try
         {
             List<Rating> resultList = em.createQuery("select t from Rating t where routeId='" + routeInfo.getId() + "'").getResultList();
