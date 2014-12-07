@@ -21,12 +21,21 @@
 		<servlet-name>UploadServlet</servlet-name>
 		<url-pattern>*.gupld</url-pattern>
 	</servlet-mapping>
-
+	<servlet-mapping>
+		<servlet-name>DumpServlet</servlet-name>
+		<url-pattern>/dumpservice</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>ImageServlet</servlet-name>
 		<url-pattern>/imageservice</url-pattern>
 	</servlet-mapping>
 
+
+	<servlet>
+		<servlet-name>DumpServlet</servlet-name>
+		<servlet-class>com.gwt.wizard.servlet.DumpServlet</servlet-class>
+	</servlet>
 
 	<servlet>
 		<servlet-name>ImageServlet</servlet-name>

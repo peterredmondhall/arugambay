@@ -10,8 +10,8 @@ public class RouteInfo implements IsSerializable
     public enum PickupType
     {
 
-        HOTEL("Flight No:", "Landing Time:"),
-        AIRPORT("Hotel", "Pickup Time:"),
+        HOTEL("Hotel", "Pickup Time:"),
+        AIRPORT("Flight No:", "Landing Time:"),
         TRAINSTATION("Train station", "Train arrival time:");
 
         String locationType;

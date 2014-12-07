@@ -13,6 +13,8 @@ import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.RouteInfo.PickupType;
+import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 
 public class RouteServiceManager
 {
@@ -57,19 +59,19 @@ public class RouteServiceManager
             switch (mode)
             {
                 case ADD:
-                    route = new Route();
-                    persist(em, route, routeInfo);
-                    break;
                 case ADD_WITH_RETURN:
                     route = new Route();
                     persist(em, route, routeInfo);
-                    route = new Route();
-                    String start = routeInfo.getEnd();
-                    String end = routeInfo.getStart();
-                    routeInfo.setStart(start);
-                    routeInfo.setEnd(end);
-                    persist(em, route, routeInfo);
-
+                    if (mode.equals(SaveMode.ADD_WITH_RETURN))
+                    {
+                        route = new Route();
+                        String start = routeInfo.getEnd();
+                        String end = routeInfo.getStart();
+                        routeInfo.setStart(start);
+                        routeInfo.setEnd(end);
+                        routeInfo.setPickupType(PickupType.HOTEL);
+                        persist(em, route, routeInfo);
+                    }
                     break;
 
                 case UPDATE:
@@ -78,7 +80,6 @@ public class RouteServiceManager
                     break;
             }
 
-            route = em.find(Route.class, route.getKey().getId());
             routes = getRoutes(userInfo);
         }
 
@@ -107,6 +108,7 @@ public class RouteServiceManager
         em.persist(route);
         em.getTransaction().commit();
         em.detach(route);
+        route = em.find(Route.class, route.getKey().getId());
 
     }
 

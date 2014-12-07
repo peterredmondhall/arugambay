@@ -204,8 +204,6 @@ public class RouteManagementVeiw extends Composite
         addPlaceBtn = new Button();
         addPlaceBtn.setStyleName("btn btn-primary");
         addPlaceBtn.setText("Add");
-        editReturnCheckBox.setVisible(true);
-        generateReturnLabel.setVisible(true);
         addPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.ADD));
         addPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         addPlaceBtn.getElement().getStyle().setMargin(3, Unit.PX);
@@ -256,8 +254,6 @@ public class RouteManagementVeiw extends Composite
         editPlaceBtn = new Button();
         editPlaceBtn.setStyleName("btn btn-primary");
         editPlaceBtn.setText("Edit");
-        editReturnCheckBox.setVisible(false);
-        generateReturnLabel.setVisible(false);
         editPlaceBtn.addClickHandler(new RouteAddEditClickHandler(SaveMode.UPDATE));
 
         editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
@@ -477,14 +473,7 @@ public class RouteManagementVeiw extends Composite
                     update(event);
                     break;
                 case ADD:
-                    if (editReturnCheckBox.getValue())
-                    {
-                        addWithReturn(event);
-                    }
-                    else
-                    {
-                        add(event);
-                    }
+                    add(event);
                     break;
             }
         }
@@ -513,11 +502,6 @@ public class RouteManagementVeiw extends Composite
                 Window.alert("Select one row to edit");
         }
 
-        public void addWithReturn(ClickEvent event)
-        {
-            showEditPopup(new RouteInfo(), 0, SaveMode.ADD_WITH_RETURN, event);
-        }
-
         public void add(ClickEvent event)
         {
             showEditPopup(new RouteInfo(), 0, mode, event);
@@ -541,9 +525,11 @@ public class RouteManagementVeiw extends Composite
 
         if (ri.getCents() != null)
         {
-            editPriceTxtBox.setText(usdFormat.format(ri.getCents() * 100));
+            String price = usdFormat.format(ri.getCents() / 100);
+            editPriceTxtBox.setText(price);
         }
         int i = 0;
+        editPickupTypeBox.clear();
         for (RouteInfo.PickupType t : RouteInfo.PickupType.values())
         {
             editPickupTypeBox.addItem(t.name());
@@ -612,8 +598,13 @@ public class RouteManagementVeiw extends Composite
                     {
                         routeInfo.setImage(imageId);
                     }
+                    SaveMode txSaveMode = SaveMode.UPDATE;
+                    if (mode.equals(SaveMode.ADD))
+                    {
+                        txSaveMode = editReturnCheckBox.getValue() ? SaveMode.ADD_WITH_RETURN : SaveMode.ADD;
+                    }
 
-                    service.saveRoute(GwtDashboard.USERINFO, routeInfo, mode, new AsyncCallback<List<RouteInfo>>()
+                    service.saveRoute(GwtDashboard.USERINFO, routeInfo, txSaveMode, new AsyncCallback<List<RouteInfo>>()
                     {
 
                         @Override
@@ -651,7 +642,10 @@ public class RouteManagementVeiw extends Composite
         addPopupPanel(priceLabel, editPriceTxtBox, grid, row++);
         addPopupPanel(pickupLabel, editPickupTypeBox, grid, row++);
         addPopupPanel(contractorLabel, editContractorTypeBox, grid, row++);
-        addPopupPanel(generateReturnLabel, editReturnCheckBox, grid, row++);
+        if (mode.equals(SaveMode.ADD))
+        {
+            addPopupPanel(generateReturnLabel, editReturnCheckBox, grid, row++);
+        }
         addPopupPanel(descLabel, editDescriptionBox, grid, row++);
         addPopupPanel(imageLabel, getUploader(saveBtn), grid, row++);
 
