@@ -1,7 +1,5 @@
 package com.gwt.wizard.server.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,16 +9,12 @@ import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.model.ContractorInfo;
 
 @Entity
-public class Contractor implements Serializable
+public class Contractor extends ArugamEntity<ContractorInfo>
 {
+
     public Key getKey()
     {
         return key;
-    }
-
-    public void setKey(Key key)
-    {
-        this.key = key;
     }
 
     private static final long serialVersionUID = 1L;
@@ -28,6 +22,12 @@ public class Contractor implements Serializable
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
+
+    @Override
+    public void setKey(Key key)
+    {
+        this.key = key;
+    }
 
     private String name;
     private Long agentId;
@@ -60,6 +60,7 @@ public class Contractor implements Serializable
         this.name = name;
     }
 
+    @Override
     public ContractorInfo getInfo()
     {
         ContractorInfo contractorInfo = new ContractorInfo();

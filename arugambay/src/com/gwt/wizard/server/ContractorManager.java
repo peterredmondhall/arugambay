@@ -12,7 +12,7 @@ import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 
-public class ContractorManager
+public class ContractorManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(ContractorManager.class.getName());
 
@@ -69,6 +69,7 @@ public class ContractorManager
 
     }
 
+    @SuppressWarnings("unchecked")
     public List<ContractorInfo> getContractors(AgentInfo agentInfo)
     {
         logger.info("getting contractors for agent email " + agentInfo.getEmail() + " id " + agentInfo.getId());
@@ -79,7 +80,15 @@ public class ContractorManager
         try
         {
             @SuppressWarnings("unchecked")
-            List<Contractor> contractorList = em.createQuery("select t from Contractor t where agentId=" + agentInfo.getId()).getResultList();
+            List<Contractor> contractorList;
+            if (agentInfo != null)
+            {
+                contractorList = em.createQuery("select t from Contractor t where agentId=" + agentInfo.getId()).getResultList();
+            }
+            else
+            {
+                contractorList = em.createQuery("select t from Contractor t ").getResultList();
+            }
             logger.info("query returned " + contractorList.size());
             for (Contractor contractor : contractorList)
             {

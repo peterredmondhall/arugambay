@@ -33,7 +33,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
 
     private final BookingServiceManager bookingServiceManager = new BookingServiceManager();
     private final RouteServiceManager routeServiceManager = new RouteServiceManager();
-    private final UserManager userManager = new UserManager();
+    private final AgentManager userManager = new AgentManager();
     private final ContractorManager contractorManager = new ContractorManager();
     private final RatingManager ratingManager = new RatingManager();
     private final StripePayment stripePayment = new StripePayment();
@@ -171,7 +171,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         User user = getUserFromSession();
         if (user != null)
         {
-            userInfo = userManager.getUser(user.getEmail());
+            userInfo = userManager.getAgent(user.getEmail());
         }
         return userInfo;
     }
@@ -204,7 +204,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         if (bookingServiceManager.getMaintenceAllowed())
         {
             String defaultUserEmail = "test@example.com";
-            AgentInfo userInfo = userManager.getUser(defaultUserEmail);
+            AgentInfo userInfo = userManager.getAgent(defaultUserEmail);
             if (userInfo != null)
             {
                 List<RouteInfo> routes = routeServiceManager.getRoutes(userInfo);
@@ -218,7 +218,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
                     contractorManager.delete(contractorInfo);
                 }
             }
-            userInfo = new UserManager().createAgent(defaultUserEmail);
+            userInfo = new AgentManager().createAgent(defaultUserEmail);
             for (int i = 0; i < 2; i++)
             {
                 ContractorInfo contractorInfo = new ContractorInfo();
@@ -232,7 +232,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
                 routeInfo.setContractorId(contractorInfo.getId());
                 new RouteServiceManager().saveRoute(userInfo, routeInfo, SaveMode.ADD);
             }
-            return new UserManager().getUser(defaultUserEmail);
+            return new AgentManager().getAgent(defaultUserEmail);
         }
         else
         {

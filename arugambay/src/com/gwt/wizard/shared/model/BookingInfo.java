@@ -1,12 +1,11 @@
 package com.gwt.wizard.shared.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 
-public class BookingInfo implements Serializable
+public class BookingInfo extends Info
 {
     private static final long serialVersionUID = 1L;
 

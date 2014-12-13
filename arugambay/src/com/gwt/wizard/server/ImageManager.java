@@ -15,7 +15,7 @@ import com.gwt.wizard.server.jpa.EMF;
 /**
  * The server-side implementation of the RPC service.
  */
-public class ImageManager
+public class ImageManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(ImageManager.class.getName());
 
@@ -61,4 +61,33 @@ public class ImageManager
         ArugamImage image = getEntityManager().find(ArugamImage.class, imageId);
         return image.getImage().getBytes();
     }
+
+//    public String dump()
+//    {
+//        EntityManager em = getEntityManager();
+//        List<ArugamImage> imageList = Lists.newArrayList();
+//        try
+//        {
+//            @SuppressWarnings("unchecked")
+//            List<Route> routes = em.createQuery("select t from Route t ").getResultList();
+//            for (Route route : routes)
+//            {
+//                if (route.getImage() != null)
+//                {
+//                    ArugamImage image = em.find(ArugamImage.class, route.getImage());
+//                    imageList.add(image);
+//                }
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            logger.log(Level.SEVERE, e.getMessage(), e);
+//        }
+//        finally
+//        {
+//            em.close();
+//        }
+//
+//        return new XStream().toXML(imageList);
+//    }
 }

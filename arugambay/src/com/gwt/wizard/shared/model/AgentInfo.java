@@ -1,22 +1,21 @@
 package com.gwt.wizard.shared.model;
 
-import java.io.Serializable;
 
-public class AgentInfo implements Serializable
+public class AgentInfo extends Info
 {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
     private String email;
+    private boolean admin;
 
-    public Long getId()
+    public boolean isAdmin()
     {
-        return id;
+        return admin;
     }
 
-    public void setId(Long id)
+    public void setAdmin(boolean admin)
     {
-        this.id = id;
+        this.admin = admin;
     }
 
     public String getEmail()

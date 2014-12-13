@@ -1,7 +1,5 @@
 package com.gwt.wizard.server.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +10,7 @@ import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 
 @Entity
-public class Route implements Serializable
+public class Route extends ArugamEntity<RouteInfo>
 {
     private static final long serialVersionUID = 1L;
 
@@ -128,6 +126,7 @@ public class Route implements Serializable
         return route;
     }
 
+    @Override
     public RouteInfo getInfo()
     {
         RouteInfo routeInfo = new RouteInfo();

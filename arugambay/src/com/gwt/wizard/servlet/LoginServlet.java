@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.gwt.wizard.server.UserManager;
+import com.gwt.wizard.server.AgentManager;
 import com.gwt.wizard.shared.model.AgentInfo;
 
 /*
@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
     public static final Logger log = Logger.getLogger(LoginServlet.class.getName());
-    private final UserManager userManager = new UserManager();
+    private final AgentManager userManager = new AgentManager();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)

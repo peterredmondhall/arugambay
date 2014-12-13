@@ -3,7 +3,9 @@ package com.gwt.wizard.server;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,9 @@ import org.junit.Test;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
@@ -244,6 +249,37 @@ public class BookingServiceManagerTest
         bookings = bs.getBookings();
         assertEquals(1, bookings.size());
         assertEquals(OrderStatus.PAID, bookings.get(0).getStatus());
+
+    }
+
+    @Test
+    public void should_delete_all()
+    {
+        create_a_booking();
+        bs.deleteAll(Booking.class);
+        List<BookingInfo> bookings = bs.getBookings();
+        assertEquals(0, bookings.size());
+
+    }
+
+    @Test
+    public void should_create_dataset()
+    {
+        create_a_booking();
+        String dataset = bs.dump(Booking.class);
+        assertEquals(3, (dataset.split("com.gwt.wizard.shared.model.BookingInfo").length));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void should_import_booking() throws IOException
+    {
+        URL url = Resources.getResource("test/dataset.txt");
+        String text = Resources.toString(url, Charsets.UTF_8);
+        String dataset = text.split("list")[0];
+        bs.importDataset(dataset, Booking.class);
+        List<BookingInfo> bookings = bs.getBookings();
+        assertEquals(2, bookings.size());
 
     }
 

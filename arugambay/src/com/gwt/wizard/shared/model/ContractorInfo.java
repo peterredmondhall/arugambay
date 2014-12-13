@@ -1,8 +1,6 @@
 package com.gwt.wizard.shared.model;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class ContractorInfo implements IsSerializable
+public class ContractorInfo extends Info
 {
     public enum SaveMode
     {
@@ -11,7 +9,7 @@ public class ContractorInfo implements IsSerializable
     };
 
     private String name;
-    private Long id;
+    // private Long id;
     private Long agentId;
 
     public Long getAgentId()
@@ -24,15 +22,17 @@ public class ContractorInfo implements IsSerializable
         this.agentId = agentId;
     }
 
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
+//    @Override
+//    public Long getId()
+//    {
+//        return id;
+//    }
+//
+//    @Override
+//    public void setId(Long id)
+//    {
+//        this.id = id;
+//    }
 
     public String getName()
     {

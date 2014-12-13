@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,14 +14,23 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.common.io.ByteStreams;
+import com.gwt.wizard.server.AgentManager;
+import com.gwt.wizard.server.BookingServiceManager;
+import com.gwt.wizard.server.ContractorManager;
 import com.gwt.wizard.server.ImageManager;
+import com.gwt.wizard.server.RouteServiceManager;
+import com.gwt.wizard.server.entity.Booking;
 
-public class UploadServlet extends HttpServlet
+public class DatasetUploadServlet extends HttpServlet
 {
     public static final Logger log = Logger.getLogger(LoginServlet.class.getName());
 
     private static final long serialVersionUID = 1L;
     ImageManager imageManager = new ImageManager();
+    BookingServiceManager bookingServiceManager = new BookingServiceManager();
+    RouteServiceManager routeServiceManager = new RouteServiceManager();
+    ContractorManager contractorManager = new ContractorManager();
+    AgentManager agentManager = new AgentManager();
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -48,11 +56,15 @@ public class UploadServlet extends HttpServlet
                     log.warning("Got an uploaded file: " + item.getFieldName() +
                             ", name = " + item.getName());
 
-                    byte[] image = ByteStreams.toByteArray(stream);
-                    Long id = imageManager.addImage(image);
+                    String dataset = new String(ByteStreams.toByteArray(stream));
+                    String[] data = dataset.split("<list>");
+                    String bookings = data[1];
+                    String images = data[2];
+                    String routes = data[3];
+                    String contractors = data[4];
+                    String agents = data[5];
 
-                    ServletOutputStream os = res.getOutputStream();
-                    os.print("***" + id + "***");
+                    bookingServiceManager.deleteAll(Booking.class);
                 }
             }
         }

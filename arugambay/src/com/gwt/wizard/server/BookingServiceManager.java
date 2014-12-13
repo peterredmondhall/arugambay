@@ -32,7 +32,7 @@ import com.gwt.wizard.shared.model.StatInfo;
  * The server-side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class BookingServiceManager
+public class BookingServiceManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(BookingServiceManager.class.getName());
     public final String WIZARD_DATA_ENTITY = "wizard-data";
@@ -310,5 +310,4 @@ public class BookingServiceManager
         em.detach(booking);
         return booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
     }
-
 }

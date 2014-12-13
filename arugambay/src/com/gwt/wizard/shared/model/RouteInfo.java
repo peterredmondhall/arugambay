@@ -1,8 +1,6 @@
 package com.gwt.wizard.shared.model;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
-public class RouteInfo implements IsSerializable
+public class RouteInfo extends Info
 {
 
     public static final Long PUBLIC = -1L;
@@ -41,8 +39,6 @@ public class RouteInfo implements IsSerializable
         ADD_WITH_RETURN
     };
 
-    private Long id;
-
     private String start;
     private String end;
     private String description;
@@ -80,16 +76,6 @@ public class RouteInfo implements IsSerializable
     public void setImage(Long image)
     {
         this.image = image;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public String getStart()

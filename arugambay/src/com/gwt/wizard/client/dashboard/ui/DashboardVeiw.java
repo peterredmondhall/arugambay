@@ -34,6 +34,9 @@ public class DashboardVeiw extends Composite
     @UiField
     Anchor contractorManagement;
 
+    @UiField
+    Anchor adminManagement;
+
     private final HTMLPanel displayContainer = new HTMLPanel("");
 
     public DashboardVeiw()
@@ -45,6 +48,17 @@ public class DashboardVeiw extends Composite
 
     private void setMenu()
     {
+        adminManagement.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                displayContainer.clear();
+                displayContainer.add(new AdminManagementVeiw());
+            }
+        });
+
         bookingManagement.addClickHandler(new ClickHandler()
         {
 

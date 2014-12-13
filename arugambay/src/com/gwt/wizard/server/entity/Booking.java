@@ -12,10 +12,11 @@ import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.Info;
 import com.gwt.wizard.shared.model.RouteInfo;
 
 @Entity
-public class Booking implements Serializable, Comparable<Booking>
+public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntity implements Serializable, Comparable<Booking>
 {
 
     public Booking()
@@ -30,6 +31,12 @@ public class Booking implements Serializable, Comparable<Booking>
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
+
+    @Override
+    public void setKey(Key key)
+    {
+        this.key = key;
+    }
 
     private Date date;
     private String name;
@@ -209,6 +216,12 @@ public class Booking implements Serializable, Comparable<Booking>
         return booking;
     }
 
+    @Override
+    public BookingInfo getInfo()
+    {
+        return getBookingInfo(null);
+    }
+
     public BookingInfo getBookingInfo(RouteInfo routeInfo)
     {
         BookingInfo bookingInfo = new BookingInfo();
@@ -280,4 +293,5 @@ public class Booking implements Serializable, Comparable<Booking>
         // other and 0 if they are supposed to be equal
         return this.instanziated.after(instanziated) ? -1 : 1;
     }
+
 }

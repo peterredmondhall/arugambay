@@ -9,14 +9,12 @@ import javax.persistence.NoResultException;
 
 import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Agent;
-import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.AgentInfo;
-import com.gwt.wizard.shared.model.ContractorInfo;
 
-public class UserManager
+public class AgentManager extends Manager
 {
-    private static final Logger logger = Logger.getLogger(UserManager.class.getName());
+    private static final Logger logger = Logger.getLogger(AgentManager.class.getName());
 
     private static final String TEST_AGENT = "test@example.com";
 
@@ -36,8 +34,7 @@ public class UserManager
             createDefaultAgent(em);
 
             Agent agent = (Agent) em.createQuery("select u from Agent u where u.userEmail = '" + agentEmail + "'").getSingleResult();
-            List<ContractorInfo> contractors = Lists.newArrayList();
-            agentInfo = agent.getInfo(contractors);
+            agentInfo = agent.getInfo();
         }
         catch (Exception e)
         {
@@ -60,15 +57,16 @@ public class UserManager
         catch (NoResultException ex)
         {
             em.getTransaction().begin();
-            com.gwt.wizard.server.entity.Agent newAppUser = new com.gwt.wizard.server.entity.Agent();
-            newAppUser.setUserEmail(TEST_AGENT);
-            em.persist(newAppUser);
+            Agent agent = new Agent();
+            agent.setUserEmail(TEST_AGENT);
+            agent.setAdmin(true);
+            em.persist(agent);
             em.getTransaction().commit();
 
         }
     }
 
-    public AgentInfo getUser(String email)
+    public AgentInfo getAgent(String email)
     {
 
         EntityManager em = getEntityManager();
@@ -76,14 +74,7 @@ public class UserManager
         try
         {
             Agent agent = (Agent) em.createQuery("select u from Agent u where u.userEmail = '" + TEST_AGENT + "'").getSingleResult();
-            @SuppressWarnings("unchecked")
-            List<Contractor> contractors = em.createQuery("select u from Contractor u where u.agentId = " + agent.getKey().getId()).getResultList();
-            List<ContractorInfo> contractorIdList = Lists.newArrayList();
-            for (Contractor contractor : contractors)
-            {
-                contractorIdList.add(contractor.getInfo());
-            }
-            agentInfo = agent.getInfo(contractorIdList);
+            agentInfo = agent.getInfo();
             logger.info("getUser for email " + email + " returned " + agentInfo.getEmail() + "  " + agentInfo.getId());
         }
         catch (NoResultException ex)
@@ -97,9 +88,27 @@ public class UserManager
         return agentInfo;
     }
 
-//    public AgentInfo getUser(User user) throws IllegalArgumentException
-//    {
-//        return createAgent(user.getEmail());
-//    }
+    public List<AgentInfo> getAgents()
+    {
+        List<AgentInfo> list = Lists.newArrayList();
+        EntityManager em = getEntityManager();
+        try
+        {
+            List<Agent> agents = em.createQuery("select u from Agent u ").getResultList();
+            for (Agent agent : agents)
+            {
+                list.add(agent.getInfo());
+            }
+        }
+        catch (NoResultException ex)
+        {
+
+        }
+        finally
+        {
+            em.close();
+        }
+        return list;
+    }
 
 }

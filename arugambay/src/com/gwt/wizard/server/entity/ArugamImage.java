@@ -1,7 +1,5 @@
 package com.gwt.wizard.server.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,10 +7,16 @@ import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Key;
+import com.gwt.wizard.shared.model.ArugamImageInfo;
 
 @Entity
-public class ArugamImage implements Serializable
+public class ArugamImage extends ArugamEntity<ArugamImageInfo>
 {
+    public Key getKey()
+    {
+        return key;
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -21,9 +25,10 @@ public class ArugamImage implements Serializable
 
     private Blob image;
 
-    public Key getKey()
+    @Override
+    public void setKey(Key key)
     {
-        return key;
+        this.key = key;
     }
 
     public Blob getImage()
@@ -36,4 +41,11 @@ public class ArugamImage implements Serializable
         this.image = image;
     }
 
+    @Override
+    public ArugamImageInfo getInfo()
+    {
+        ArugamImageInfo info = new ArugamImageInfo();
+        info.setId(key.getId());
+        return info;
+    }
 }

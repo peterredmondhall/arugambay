@@ -18,12 +18,16 @@
 		<url-pattern>/gwt_dashboard/service</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>UploadServlet</servlet-name>
+		<servlet-name>ImageUploadServlet</servlet-name>
 		<url-pattern>*.gupld</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>DatasetUploadServlet</servlet-name>
+		<url-pattern>*.datasetupld</url-pattern>
+	</servlet-mapping>
+		<servlet-mapping>
 		<servlet-name>DumpServlet</servlet-name>
-		<url-pattern>/dumpservice</url-pattern>
+		<url-pattern>/dataset</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
@@ -53,10 +57,14 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>UploadServlet</servlet-name>
-		<servlet-class>com.gwt.wizard.servlet.UploadServlet</servlet-class>
+		<servlet-name>ImageUploadServlet</servlet-name>
+		<servlet-class>com.gwt.wizard.servlet.ImageUploadServlet</servlet-class>
 	</servlet>
-
+	<servlet>
+		<servlet-name>DatasetUploadServlet</servlet-name>
+		<servlet-class>com.gwt.wizard.servlet.DatasetUploadServlet</servlet-class>
+	</servlet>
+	
 	<servlet>
 		<servlet-name>PDFRendererServlet</servlet-name>
 		<servlet-class>com.gwt.wizard.servlet.PDFRendererServlet</servlet-class>

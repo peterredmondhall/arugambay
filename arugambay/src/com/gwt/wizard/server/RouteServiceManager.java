@@ -16,7 +16,7 @@ import com.gwt.wizard.shared.model.RouteInfo;
 import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 
-public class RouteServiceManager
+public class RouteServiceManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(RouteServiceManager.class.getName());
 
@@ -180,4 +180,5 @@ public class RouteServiceManager
         return routes;
 
     }
+
 }
