@@ -46,6 +46,14 @@ public class ArugamImage extends ArugamEntity<ArugamImageInfo>
     {
         ArugamImageInfo info = new ArugamImageInfo();
         info.setId(key.getId());
+        info.setContent(image.getBytes());
         return info;
+    }
+
+    public static ArugamImage getArugamImage(ArugamImageInfo info)
+    {
+        ArugamImage arugamImage = new ArugamImage();
+        arugamImage.setImage(new Blob(info.getContent()));
+        return arugamImage;
     }
 }

@@ -274,9 +274,8 @@ public class BookingServiceManagerTest
     @Test
     public void should_import_booking() throws IOException
     {
-        URL url = Resources.getResource("test/dataset.txt");
-        String text = Resources.toString(url, Charsets.UTF_8);
-        String dataset = text.split("list")[0];
+        URL url = Resources.getResource("dataset.txt");
+        String dataset = Resources.toString(url, Charsets.UTF_8);
         bs.importDataset(dataset, Booking.class);
         List<BookingInfo> bookings = bs.getBookings();
         assertEquals(2, bookings.size());

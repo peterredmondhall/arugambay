@@ -23,6 +23,7 @@ public class Agent extends ArugamEntity<AgentInfo>
         return key;
     }
 
+    @Override
     public void setKey(Key key)
     {
         this.key = key;
@@ -46,6 +47,14 @@ public class Agent extends ArugamEntity<AgentInfo>
         agentInfo.setEmail(userEmail);
         agentInfo.setAdmin(admin);
         return agentInfo;
+
+    }
+
+    public static Agent getAgent(AgentInfo agentInfo)
+    {
+        Agent agent = new Agent();
+        agent.setUserEmail(agentInfo.getEmail());
+        return agent;
 
     }
 

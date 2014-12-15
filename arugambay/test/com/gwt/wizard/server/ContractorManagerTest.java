@@ -117,17 +117,7 @@ public class ContractorManagerTest
     public void should_import() throws IOException
     {
         URL url = Resources.getResource("dataset.txt");
-        String text = Resources.toString(url, Charsets.UTF_8);
-        String dataset = null;
-        for (String s : text.split("<list>"))
-        {
-            if (s.contains(ContractorInfo.class.getName()))
-            {
-                dataset = "<list>" + s;
-                System.out.println(dataset);
-                break;
-            }
-        }
+        String dataset = Resources.toString(url, Charsets.UTF_8);
         contractorManager.importDataset(dataset, Contractor.class);
         List<ContractorInfo> list = contractorManager.getAllInfo(Contractor.class);
         assertEquals(5, list.size());
@@ -137,13 +127,6 @@ public class ContractorManagerTest
             ids.add(info.getId());
         }
         Collections.sort(ids);
-        System.out.println(ids);
-
-        // System.out.println(dataset);
-//        bs.importDataset(dataset, Booking.class);
-//        List<BookingInfo> bookings = bs.getBookings();
-//        assertEquals(2, bookings.size());
-
     }
 
 }

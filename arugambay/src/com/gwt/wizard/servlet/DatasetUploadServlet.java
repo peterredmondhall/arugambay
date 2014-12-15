@@ -19,7 +19,11 @@ import com.gwt.wizard.server.BookingServiceManager;
 import com.gwt.wizard.server.ContractorManager;
 import com.gwt.wizard.server.ImageManager;
 import com.gwt.wizard.server.RouteServiceManager;
+import com.gwt.wizard.server.entity.Agent;
+import com.gwt.wizard.server.entity.ArugamImage;
 import com.gwt.wizard.server.entity.Booking;
+import com.gwt.wizard.server.entity.Contractor;
+import com.gwt.wizard.server.entity.Route;
 
 public class DatasetUploadServlet extends HttpServlet
 {
@@ -57,14 +61,12 @@ public class DatasetUploadServlet extends HttpServlet
                             ", name = " + item.getName());
 
                     String dataset = new String(ByteStreams.toByteArray(stream));
-                    String[] data = dataset.split("<list>");
-                    String bookings = data[1];
-                    String images = data[2];
-                    String routes = data[3];
-                    String contractors = data[4];
-                    String agents = data[5];
 
-                    bookingServiceManager.deleteAll(Booking.class);
+                    bookingServiceManager.importDataset(dataset, Booking.class);
+                    imageManager.importDataset(dataset, ArugamImage.class);
+                    routeServiceManager.importDataset(dataset, Route.class);
+                    contractorManager.importDataset(dataset, Contractor.class);
+                    agentManager.importDataset(dataset, Agent.class);
                 }
             }
         }

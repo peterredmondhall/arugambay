@@ -108,12 +108,13 @@ public class Route extends ArugamEntity<RouteInfo>
 //        this.image = image;
 //    }
 
+    @Override
     public void setKey(Key key)
     {
         this.key = key;
     }
 
-    public static Route getRoute(RouteInfo routeInfo, Long providerId)
+    public static Route getRoute(RouteInfo routeInfo)
     {
         Route route = new Route();
         route.setStart(routeInfo.getStart());
@@ -122,7 +123,7 @@ public class Route extends ArugamEntity<RouteInfo>
         route.setCents(routeInfo.getCents());
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());
-        route.setContractorId(providerId);
+        route.setContractorId(routeInfo.getContractorId());
         return route;
     }
 

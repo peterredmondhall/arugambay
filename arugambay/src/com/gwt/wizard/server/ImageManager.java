@@ -4,13 +4,13 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
 import com.gwt.wizard.server.entity.ArugamImage;
 import com.gwt.wizard.server.jpa.EMF;
+import com.gwt.wizard.shared.model.ArugamImageInfo;
 
 /**
  * The server-side implementation of the RPC service.
@@ -37,8 +37,9 @@ public class ImageManager extends Manager
         EntityManager em = getEntityManager();
         try
         {
-            ArugamImage arugamImage = new ArugamImage();
-            arugamImage.setImage(new Blob(image));
+            ArugamImageInfo info = new ArugamImageInfo();
+            info.setContent(image);
+            ArugamImage arugamImage = ArugamImage.getArugamImage(info);
             em.getTransaction().begin();
             em.persist(arugamImage);
             em.getTransaction().commit();
