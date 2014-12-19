@@ -191,7 +191,7 @@ public class ContractorManagementVeiw extends Composite
         // Add the columns.
 
         contractorManagementTable.addColumn(checkColumn, "Select");
-        contractorManagementTable.addColumn(nameColumn, "Start");
+        contractorManagementTable.addColumn(nameColumn, "Contractor");
 
         // Create a data provider.
         ListDataProvider<ContractorInfo> dataProvider = new ListDataProvider<ContractorInfo>();
@@ -334,7 +334,7 @@ public class ContractorManagementVeiw extends Composite
         // Setting up Popup Panel
         int row = 0;
 
-        final Label startLabel = new Label("Start");
+        final Label startLabel = new Label("Contractor");
         final Label destinationLabel = new Label("Destination");
         final Label priceLabel = new Label("Price USD");
         final Label pickupLabel = new Label("Pickuptype");

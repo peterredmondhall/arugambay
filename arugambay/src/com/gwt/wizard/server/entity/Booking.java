@@ -211,7 +211,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         booking.setShareWanted(bookingInfo.getShareWanted());
         booking.setParentId(bookingInfo.getParentId());
         booking.setOrderType(bookingInfo.getOrderType() != null ? bookingInfo.getOrderType() : OrderType.BOOKING);
-        booking.setRoute(bookingInfo.getRouteInfo().getId());
+        booking.setRoute(bookingInfo.getRouteId());
 
         return booking;
     }
@@ -239,6 +239,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         bookingInfo.setOrderType(getOrderType());
         bookingInfo.setShareWanted(getShareWanted());
         bookingInfo.setRouteInfo(routeInfo);
+        bookingInfo.setRouteId(route);
         return bookingInfo;
     }
 

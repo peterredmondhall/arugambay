@@ -123,6 +123,7 @@ public class ContactStep implements WizardStep
         BOOKINGINFO.setRequirements(ui.getRequirements());
 
         BOOKINGINFO.setRouteInfo(ROUTEINFO);
+        BOOKINGINFO.setRouteId(ROUTEINFO.getId());
         SERVICE.addBooking(BOOKINGINFO, new AsyncCallback<BookingInfo>()
         {
             @Override

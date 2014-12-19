@@ -15,6 +15,17 @@ public class BookingInfo extends Info
     private String email;
     private Long id;
     private RouteInfo routeInfo;
+    private Long routeId;
+
+    public Long getRouteId()
+    {
+        return routeId;
+    }
+
+    public void setRouteId(Long routeId)
+    {
+        this.routeId = routeId;
+    }
 
     private Long parentId;
     private Boolean shareWanted;
@@ -26,11 +37,13 @@ public class BookingInfo extends Info
     private int surfboards = 0;
     private String stripeRefusalReason;
 
+    @Override
     public Long getId()
     {
         return id;
     }
 
+    @Override
     public void setId(Long id)
     {
         this.id = id;
