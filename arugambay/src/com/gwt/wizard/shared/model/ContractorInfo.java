@@ -1,5 +1,7 @@
 package com.gwt.wizard.shared.model;
 
+import java.util.List;
+
 public class ContractorInfo extends Info
 {
     public enum SaveMode
@@ -9,7 +11,18 @@ public class ContractorInfo extends Info
     };
 
     private String name;
-    // private Long id;
+    private List<String> address;
+
+    public List<String> getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(List<String> address)
+    {
+        this.address = address;
+    }
+
     private Long agentId;
 
     public Long getAgentId()
@@ -21,18 +34,6 @@ public class ContractorInfo extends Info
     {
         this.agentId = agentId;
     }
-
-//    @Override
-//    public Long getId()
-//    {
-//        return id;
-//    }
-//
-//    @Override
-//    public void setId(Long id)
-//    {
-//        this.id = id;
-//    }
 
     public String getName()
     {

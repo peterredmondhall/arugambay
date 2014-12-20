@@ -191,6 +191,7 @@ public class ContractorManager extends Manager
     {
         contractor.setName(contractorInfo.getName());
         contractor.setAgentId(contractorInfo.getAgentId());
+        contractor.setAddress(contractorInfo.getAddress());
 
         em.getTransaction().begin();
         em.persist(contractor);

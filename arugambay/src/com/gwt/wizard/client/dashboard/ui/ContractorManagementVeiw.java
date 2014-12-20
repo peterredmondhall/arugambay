@@ -5,7 +5,9 @@ import static com.gwt.wizard.client.GwtDashboard.USERINFO;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Float;
@@ -71,6 +73,7 @@ public class ContractorManagementVeiw extends Composite
     private final SelectionModel<ContractorInfo> selectionModel = new MultiSelectionModel<ContractorInfo>(null);
 
     final TextBox editContractorNameTxtBox = new TextBox();
+    final TextBox[] addrNameTxtBox = { new TextBox(), new TextBox(), new TextBox(), new TextBox() };
 
     final Label nameLabel = new Label("Name");
 
@@ -187,11 +190,21 @@ public class ContractorManagementVeiw extends Composite
             }
         };
 
+        TextColumn<ContractorInfo> addressColumn = new TextColumn<ContractorInfo>()
+        {
+            @Override
+            public String getValue(ContractorInfo contractor)
+            {
+                return Joiner.on(",").skipNulls().join(contractor.getAddress());
+            }
+        };
+
         contractorManagementTable.setTableLayoutFixed(true);
         // Add the columns.
 
         contractorManagementTable.addColumn(checkColumn, "Select");
         contractorManagementTable.addColumn(nameColumn, "Contractor");
+        contractorManagementTable.addColumn(addressColumn, "Address");
 
         // Create a data provider.
         ListDataProvider<ContractorInfo> dataProvider = new ListDataProvider<ContractorInfo>();
@@ -290,7 +303,10 @@ public class ContractorManagementVeiw extends Composite
         errLbl.setStyleName("errLbl");
 
         editContractorNameTxtBox.setText(ri.getName());
-
+        for (int i = 0; i < addrNameTxtBox.length; i++)
+        {
+            addrNameTxtBox[i].setText(ri.getAddress() != null && ri.getAddress().size() > i ? ri.getAddress().get(i) : "");
+        }
         Button saveBtn = new Button("Save");
         saveBtn.setStyleName("btn btn-primary");
         saveBtn.addClickHandler(new ClickHandler()
@@ -312,6 +328,12 @@ public class ContractorManagementVeiw extends Composite
                     contractorInfo.setId(routeId);
                     contractorInfo.setAgentId(USERINFO.getId());
                     contractorInfo.setName(editContractorNameTxtBox.getText());
+                    List<String> addr = Lists.newArrayList();
+                    for (int i = 0; i < addrNameTxtBox.length; i++)
+                    {
+                        addr.add(addrNameTxtBox[i].getText());
+                    }
+                    contractorInfo.setAddress(addr);
                     service.saveContractor(GwtDashboard.USERINFO, contractorInfo, mode, new AsyncCallback<List<ContractorInfo>>()
                     {
 
@@ -334,18 +356,13 @@ public class ContractorManagementVeiw extends Composite
         // Setting up Popup Panel
         int row = 0;
 
-        final Label startLabel = new Label("Contractor");
-        final Label destinationLabel = new Label("Destination");
-        final Label priceLabel = new Label("Price USD");
-        final Label pickupLabel = new Label("Pickuptype");
-        final Label contractorLabel = new Label("Contractor");
-        final Label generateReturnLabel = new Label("Generate Return");
+        final Label nameLabel = new Label("Contractor");
 
-        final Label descLabel = new Label("Description");
-
-        final Label imageLabel = new Label("Image");
-
-        addPopupPanel(startLabel, editContractorNameTxtBox, grid, row++);
+        addPopupPanel(nameLabel, editContractorNameTxtBox, grid, row++);
+        addPopupPanel(new Label("Address 1"), addrNameTxtBox[0], grid, row++);
+        addPopupPanel(new Label("Address 2"), addrNameTxtBox[1], grid, row++);
+        addPopupPanel(new Label("Address 3"), addrNameTxtBox[2], grid, row++);
+        addPopupPanel(new Label("Address 4"), addrNameTxtBox[3], grid, row++);
 
         editPlaceBtn.getElement().getStyle().setFloat(Float.RIGHT);
         vPanel.add(saveBtn);

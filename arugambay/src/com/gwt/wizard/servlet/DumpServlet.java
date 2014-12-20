@@ -30,11 +30,19 @@ public class DumpServlet extends HttpServlet
     private static final long serialVersionUID = 1L;
     RouteServiceManager routeServiceManager = new RouteServiceManager();
     ImageManager imageManager = new ImageManager();
+    BookingServiceManager bookingServiceManager = new BookingServiceManager();
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        String bookings = new BookingServiceManager().dump(Booking.class);
+
+        if (!bookingServiceManager.getMaintenceAllowed())
+        {
+            log.info("not allowed");
+            return;
+        }
+        String bookings = bookingServiceManager.dump(Booking.class);
         String routes = routeServiceManager.dump(Route.class);
         String images = imageManager.dump(ArugamImage.class);
         String contractors = new ContractorManager().dump(Contractor.class);

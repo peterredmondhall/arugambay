@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.GwtDashboard;
 
 public class DashboardVeiw extends Composite
 {
@@ -44,6 +45,7 @@ public class DashboardVeiw extends Composite
         initWidget(uiBinder.createAndBindUi(this));
         setMenu();
         dataContainer.add(displayContainer);
+        adminManagement.setVisible(Boolean.TRUE.equals(GwtDashboard.USERINFO.isAdmin()));
     }
 
     private void setMenu()

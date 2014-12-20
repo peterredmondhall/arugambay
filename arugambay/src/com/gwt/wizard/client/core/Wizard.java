@@ -261,6 +261,7 @@ public class Wizard extends Composite
         {
             ((ConfirmationStep) initstep).init(prev, next, cancel);
         }
+
     }
 
     public void setInitialStep(WizardStep initstep)

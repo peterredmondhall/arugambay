@@ -1,11 +1,14 @@
 package com.gwt.wizard.server.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.common.collect.Lists;
 import com.gwt.wizard.shared.model.ContractorInfo;
 
 @Entity
@@ -30,6 +33,18 @@ public class Contractor extends ArugamEntity<ContractorInfo>
     }
 
     private String name;
+    private List<String> address;
+
+    public List<String> getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(List<String> address)
+    {
+        this.address = address;
+    }
+
     private Long agentId;
 
     public static Contractor getContractor(ContractorInfo contractorInfo)
@@ -37,6 +52,7 @@ public class Contractor extends ArugamEntity<ContractorInfo>
         Contractor contractor = new Contractor();
         contractor.setName(contractorInfo.getName());
         contractor.setAgentId(contractorInfo.getAgentId());
+        contractor.setAddress(contractorInfo.getAddress());
         return contractor;
     }
 
@@ -67,6 +83,7 @@ public class Contractor extends ArugamEntity<ContractorInfo>
         contractorInfo.setId(key.getId());
         contractorInfo.setName(name);
         contractorInfo.setAgentId(agentId);
+        contractorInfo.setAddress(Lists.newArrayList(address));
         return contractorInfo;
     }
 

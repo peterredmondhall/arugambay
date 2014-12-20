@@ -1,7 +1,5 @@
 package com.gwt.wizard.client.steps.ui;
 
-import static com.gwt.wizard.client.core.Wizard.EXISTING_BOOKINGS_ON_ROUTE;
-
 import java.util.List;
 import java.util.Map;
 
@@ -54,16 +52,11 @@ public class TransportStepUi extends Composite
     @UiField
     Panel routeSuggestionPanel, panelRoute;
 
-//    @UiField(provided = true)
-//    SuggestBox suggestBox;
-
     @UiField
     Label labelRouteName, labelPrice;
 
     @UiField
     Label labelDescription;
-
-    // private final List<RouteInfo> routes = Lists.newArrayList();
 
     private final Map<String, RouteInfo> mapRouteInfo = Maps.newHashMap();
     private final ScrollPanel sp = new ScrollPanel();
@@ -74,7 +67,6 @@ public class TransportStepUi extends Composite
 
         initWidget(uiBinder.createAndBindUi(this));
         fetchRoutes();
-        // routeSuggestion.addSelectionHandler(getSelectionHandler(routeSuggestion));
         panelRoute.setVisible(false);
         sp.setHeight("100px");
         ratingsPanel.add(sp);
@@ -106,53 +98,9 @@ public class TransportStepUi extends Composite
     {
         this.next = next;
         next.setVisible(true);
-        next.setEnabled(EXISTING_BOOKINGS_ON_ROUTE != null);
         prev.setVisible(false);
         cancel.setText("Cancel");
     }
-
-    // List<Integer> numbers = Lists.newArrayList(1, 2, 3, 6, 10, 34, 57, 89);
-
-//    List<Integer> evenNumbers = Lists.newArrayList(Collections2.filter(numbers, acceptEven));
-//    Integer found = Collections.binarySearch(evenNumbers, 57);
-//    assertThat(found, lessThan(0));
-
-//    private SelectionHandler<SuggestOracle.Suggestion> getSelectionHandler(final SuggestBox suggestBox)
-//    {
-//        SelectionHandler<SuggestOracle.Suggestion> handler = new SelectionHandler<SuggestOracle.Suggestion>()
-//        {
-//
-//            @Override
-//            public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event)
-//            {
-//                {
-//                    final String entry = routeSuggestion.getText();
-//                    if (entry != null && entry.length() > 0)
-//                    {
-//                        Predicate<RouteInfo> acceptMatches = new Predicate<RouteInfo>()
-//                        {
-//
-//                            @Override
-//                            public boolean apply(RouteInfo routeInfo)
-//                            {
-//                                return routeInfo.getStart().contains(entry) || routeInfo.getEnd().contains(entry);
-//                            }
-//
-//                        };
-//                        List<RouteInfo> visibleList = Lists.newArrayList(Collections2.filter(routes, acceptMatches));
-//                        // suggestBox.getSuggestOracle().
-//
-//                    }
-//                    else
-//                    {
-//                        Window.alert("Please enter your start or destinatin!");
-//                    }
-//                }
-//            }
-//        };
-//
-//        return handler;
-//    }
 
     private void fetchRoutes()
     {
@@ -209,27 +157,24 @@ public class TransportStepUi extends Composite
                             }
                         });
 
-                        GwtWizard.SERVICE.getRatings(Wizard.ROUTEINFO, new AsyncCallback<List<RatingInfo>>()
+                        if (false)
                         {
-                            @Override
-                            public void onSuccess(List<RatingInfo> ratings)
+                            GwtWizard.SERVICE.getRatings(Wizard.ROUTEINFO, new AsyncCallback<List<RatingInfo>>()
                             {
+                                @Override
+                                public void onSuccess(List<RatingInfo> ratings)
+                                {
 
-                                fp.add(new RatingList(ratings).createAdvancedForm());
-//                                    DecoratorPanel dp = new DecoratorPanel();
-//                                    HorizontalPanel hp = new HorizontalPanel();
-//                                    Label stars = new Label("*****");
-//                                    Label 
-//                                    dp.add(new Label(ri.getCritic()));
-//                                    fp.add(dp);
+                                    fp.add(new RatingList(ratings).createAdvancedForm());
 
-                            }
+                                }
 
-                            @Override
-                            public void onFailure(Throwable caught)
-                            {
-                            }
-                        });
+                                @Override
+                                public void onFailure(Throwable caught)
+                                {
+                                }
+                            });
+                        }
 
                     }
                 };
