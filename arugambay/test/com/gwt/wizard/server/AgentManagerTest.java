@@ -9,7 +9,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 
-public class UserManagerTest
+public class AgentManagerTest
 {
 
     private final LocalServiceTestHelper helper =

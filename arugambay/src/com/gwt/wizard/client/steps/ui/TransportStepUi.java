@@ -98,6 +98,7 @@ public class TransportStepUi extends Composite
     {
         this.next = next;
         next.setVisible(true);
+        next.setEnabled(false);
         prev.setVisible(false);
         cancel.setText("Cancel");
     }

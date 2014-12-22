@@ -1,14 +1,21 @@
 package com.gwt.wizard.client.dashboard.ui;
 
+import static com.gwt.wizard.client.GwtDashboard.getAgentInfo;
+
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -16,13 +23,13 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.GwtDashboard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
-import com.gwt.wizard.shared.model.ContractorInfo;
+import com.gwt.wizard.shared.model.AgentInfo;
 
 public class AdminManagementVeiw extends Composite
 {
@@ -34,10 +41,10 @@ public class AdminManagementVeiw extends Composite
     {
     }
 
-    private final CellTable.Resources tableRes = GWT.create(TableRes.class);
     NumberFormat usdFormat = NumberFormat.getFormat(".00");
 
-    CellTable<ContractorInfo> contractorManagementTable;
+    final ListBox agentListBox = new ListBox();;
+    private List<AgentInfo> listAgents;
 
     @UiField
     HTMLPanel mainPanel;
@@ -46,12 +53,6 @@ public class AdminManagementVeiw extends Composite
     @UiField
     VerticalPanel layout;
     private Button uploadBtn;
-
-    final TextBox editContractorNameTxtBox = new TextBox();
-
-    final Label nameLabel = new Label("Name");
-
-    // The list of data to display.
 
     public AdminManagementVeiw()
     {
@@ -63,10 +64,54 @@ public class AdminManagementVeiw extends Composite
     {
         btnContainer.clear();
         mainPanel.clear();
-        contractorManagementTable = new CellTable<ContractorInfo>(13, tableRes);
-        // TODO fetch agents
-        // fetchContractors();
         setAdminManagementPanel();
+        mainPanel.add(agentListBox);
+        createAgentSelection();
+        fetchAgents();
+    }
+
+    private void createAgentSelection()
+    {
+        agentListBox.addChangeHandler(new ChangeHandler()
+        {
+
+            @Override
+            public void onChange(ChangeEvent event)
+            {
+                AgentInfo agentInfo = listAgents.get(agentListBox.getSelectedIndex());
+                GwtDashboard.setAgentInfo(agentInfo);
+            }
+        });
+    }
+
+    private void fetchAgents()
+    {
+        service.getAgents(new AsyncCallback<List<AgentInfo>>()
+        {
+            @Override
+            public void onSuccess(List<AgentInfo> agents)
+            {
+                listAgents = agents;
+                agentListBox.clear();
+                int i = 0;
+                for (AgentInfo agent : agents)
+                {
+                    agentListBox.addItem(agent.getEmail());
+                    if (agent.getEmail().equals(getAgentInfo().getEmail()))
+                    {
+                        agentListBox.setSelectedIndex(i);
+                    }
+                    i++;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
+                Window.alert("Failed to connect to Server!");
+            }
+        });
     }
 
     private void setAdminManagementPanel()

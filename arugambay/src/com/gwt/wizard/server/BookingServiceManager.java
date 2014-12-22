@@ -88,9 +88,14 @@ public class BookingServiceManager extends Manager
             for (Booking booking : resultList)
             {
                 em.detach(booking);
-                BookingInfo bookingInfo = booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
+                RouteInfo routeInfo = getRouteInfo(booking.getRoute(), em);
+                BookingInfo bookingInfo = booking.getBookingInfo(routeInfo);
                 bookings.add(bookingInfo);
             }
+        }
+        catch (Exception ex)
+        {
+            logger.severe(ex.getMessage());
         }
         finally
         {

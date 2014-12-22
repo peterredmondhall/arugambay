@@ -9,6 +9,8 @@ import java.util.Date;
 import org.junit.Test;
 
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 
 public class PdfUtilTest
 {
@@ -18,17 +20,21 @@ public class PdfUtilTest
     {
         Path file = Paths.get("xx.pdf");
         BookingInfo bookingInfo = new BookingInfo();
-        bookingInfo.setId(1234L);
+        bookingInfo.setId(123456789L);
         bookingInfo.setDate(new Date());
         bookingInfo.setName("Steven Moore");
         bookingInfo.setFlightNo("FL200");
         bookingInfo.setLandingTime("10:00");
         bookingInfo.setPax(22);
+        RouteInfo routeInfo = new RouteInfo();
+        routeInfo.setPickupType(PickupType.HOTEL);
+        routeInfo.setCents(100L);
+        bookingInfo.setRouteInfo(routeInfo);
         bookingInfo.setSurfboards(23);
         bookingInfo.setEmail("email@taxisurf.com");
         bookingInfo.setRequirements("A Path instance contains the information used to specify the location of a file or directory. At the time it is defined, a Path is provided with a series of one or more names. A root element or a file name might be included, but neither are required. A Path might consist of just a single directory or file name.");
 
-        byte[] buf = PdfUtil.generateTaxiOrder("war/template/order.pdf", bookingInfo);
+        byte[] buf = new PdfUtil().generateTaxiOrder("war/template/order_blank.pdf", bookingInfo);
         Files.write(file, buf);
 
     }

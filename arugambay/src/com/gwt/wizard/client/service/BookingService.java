@@ -26,6 +26,8 @@ public interface BookingService extends RemoteService
 
     AgentInfo getUser() throws IllegalArgumentException;
 
+    List<AgentInfo> getAgents() throws IllegalArgumentException;
+
     List<RouteInfo> getRoutes(AgentInfo userInfo) throws IllegalArgumentException;
 
     List<ContractorInfo> getContractors(AgentInfo userInfo) throws IllegalArgumentException;

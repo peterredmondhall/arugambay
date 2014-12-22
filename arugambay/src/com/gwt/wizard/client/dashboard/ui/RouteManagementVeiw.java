@@ -1,7 +1,5 @@
 package com.gwt.wizard.client.dashboard.ui;
 
-import static com.gwt.wizard.client.GwtDashboard.USERINFO;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -142,7 +140,7 @@ public class RouteManagementVeiw extends Composite
     private void fetchContractorsAndRoutes()
     {
 
-        service.getContractors(USERINFO, new AsyncCallback<List<ContractorInfo>>()
+        service.getContractors(GwtDashboard.getAgentInfo(), new AsyncCallback<List<ContractorInfo>>()
         {
 
             @Override
@@ -171,7 +169,7 @@ public class RouteManagementVeiw extends Composite
     private void fetchRoutes()
     {
 
-        service.getRoutes(USERINFO, new AsyncCallback<List<RouteInfo>>()
+        service.getRoutes(GwtDashboard.getAgentInfo(), new AsyncCallback<List<RouteInfo>>()
         {
 
             @Override
@@ -225,7 +223,7 @@ public class RouteManagementVeiw extends Composite
                 {
                     if (selectionModel.isSelected(p))
                     {
-                        service.deleteRoute(USERINFO, p, new AsyncCallback<List<RouteInfo>>()
+                        service.deleteRoute(GwtDashboard.getAgentInfo(), p, new AsyncCallback<List<RouteInfo>>()
                         {
 
                             @Override
@@ -360,7 +358,9 @@ public class RouteManagementVeiw extends Composite
             @Override
             public String getValue(RouteInfo route)
             {
-                return contractorMap.get(route.getContractorId()).getName();
+                Long contractorId = route.getContractorId();
+                ContractorInfo contractorInfo = contractorMap.get(contractorId);
+                return contractorInfo.getName();
             }
         };
 
@@ -604,7 +604,7 @@ public class RouteManagementVeiw extends Composite
                         txSaveMode = editReturnCheckBox.getValue() ? SaveMode.ADD_WITH_RETURN : SaveMode.ADD;
                     }
 
-                    service.saveRoute(GwtDashboard.USERINFO, routeInfo, txSaveMode, new AsyncCallback<List<RouteInfo>>()
+                    service.saveRoute(GwtDashboard.getAgentInfo(), routeInfo, txSaveMode, new AsyncCallback<List<RouteInfo>>()
                     {
 
                         @Override

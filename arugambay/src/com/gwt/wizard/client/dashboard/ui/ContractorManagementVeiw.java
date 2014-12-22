@@ -1,7 +1,5 @@
 package com.gwt.wizard.client.dashboard.ui;
 
-import static com.gwt.wizard.client.GwtDashboard.USERINFO;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +105,7 @@ public class ContractorManagementVeiw extends Composite
     private void fetchContractors()
     {
 
-        service.getContractors(USERINFO, new AsyncCallback<List<ContractorInfo>>()
+        service.getContractors(GwtDashboard.getAgentInfo(), new AsyncCallback<List<ContractorInfo>>()
         {
 
             @Override
@@ -326,7 +324,7 @@ public class ContractorManagementVeiw extends Composite
                 else
                 {
                     contractorInfo.setId(routeId);
-                    contractorInfo.setAgentId(USERINFO.getId());
+                    contractorInfo.setAgentId(GwtDashboard.getAgentInfo().getId());
                     contractorInfo.setName(editContractorNameTxtBox.getText());
                     List<String> addr = Lists.newArrayList();
                     for (int i = 0; i < addrNameTxtBox.length; i++)
@@ -334,7 +332,7 @@ public class ContractorManagementVeiw extends Composite
                         addr.add(addrNameTxtBox[i].getText());
                     }
                     contractorInfo.setAddress(addr);
-                    service.saveContractor(GwtDashboard.USERINFO, contractorInfo, mode, new AsyncCallback<List<ContractorInfo>>()
+                    service.saveContractor(GwtDashboard.getAgentInfo(), contractorInfo, mode, new AsyncCallback<List<ContractorInfo>>()
                     {
 
                         @Override

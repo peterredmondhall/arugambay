@@ -55,6 +55,8 @@ public interface BookingServiceAsync
 
     void getUser(AsyncCallback<AgentInfo> callback);
 
+    void getAgents(AsyncCallback<List<AgentInfo>> callback) throws IllegalArgumentException;
+
     void getPaypalProfil(AsyncCallback<ProfilInfo> callback);
 
     void payWithStripe(String token, BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback);

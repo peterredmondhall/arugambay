@@ -70,6 +70,7 @@ public class BookingServiceManagerTest
         bi.setOrderType(orderType);
         bi.setShareWanted(shareWanted);
         bi.setName(name);
+        bi.setRouteId(routeInfo.getId());
 
         bi.setRouteInfo(routeInfo);
         return bi;
@@ -138,7 +139,10 @@ public class BookingServiceManagerTest
         BookingInfo parentBookingInfo = list.get(0);
         BookingInfo shareBooking = new BookingInfo();
 
-        shareBooking.setRouteInfo(new RouteServiceManager().getRoutes().get(0));
+        RouteInfo routeInfo = new RouteServiceManager().getRoutes().get(0);
+        shareBooking.setRouteInfo(routeInfo);
+        shareBooking.setRouteId(routeInfo.getId());
+
         shareBooking.setParentId(parentBookingInfo.getId());
         shareBooking.setDate(parentBookingInfo.getDate());
         shareBooking.setFlightNo("sharer flight");
@@ -155,7 +159,8 @@ public class BookingServiceManagerTest
         bs.addBookingWithClient(shareBooking, "clientShare");
 
         boolean tested = false;
-        for (BookingInfo bookingInfo : bs.getBookings())
+        List<BookingInfo> existingBookings = bs.getBookings();
+        for (BookingInfo bookingInfo : existingBookings)
         {
             if (bookingInfo.getOrderType().equals(OrderType.SHARE))
             {
@@ -272,13 +277,24 @@ public class BookingServiceManagerTest
 
     @SuppressWarnings("unchecked")
     @Test
+    public void should_import_booking_from_a_string() throws IOException
+    {
+        create_a_booking();
+        String dataset = bs.dump(Booking.class);
+
+        bs.importDataset(dataset, Booking.class);
+        List<BookingInfo> bookings = bs.getBookings();
+        assertEquals(1, bookings.size());
+
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
     public void should_import_booking() throws IOException
     {
         URL url = Resources.getResource("dataset.txt");
         String dataset = Resources.toString(url, Charsets.UTF_8);
-        bs.importDataset(dataset, Booking.class);
-        List<BookingInfo> bookings = bs.getBookings();
-        assertEquals(2, bookings.size());
+        assertEquals(true, dataset.length() > 100);
 
     }
 

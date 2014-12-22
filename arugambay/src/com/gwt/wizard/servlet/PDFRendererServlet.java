@@ -19,6 +19,7 @@ public class PDFRendererServlet extends HttpServlet
      */
     private static final long serialVersionUID = 1L;
     BookingServiceManager bookingService = new BookingServiceManager();
+    PdfUtil pdfUtil = new PdfUtil();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
@@ -32,7 +33,7 @@ public class PDFRendererServlet extends HttpServlet
                 BookingInfo bookingInfo = bookingService.getBooking(Long.parseLong(bookingId));
                 if (bookingInfo != null)
                 {
-                    bytes = PdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
+                    bytes = pdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
 
                     resp.setContentType("application/pdf");
                     resp.addHeader("Content-Disposition", "inline; filename=\"data.pdf\"");

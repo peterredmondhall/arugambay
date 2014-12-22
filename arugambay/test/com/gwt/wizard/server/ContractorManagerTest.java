@@ -109,7 +109,7 @@ public class ContractorManagerTest
         assertEquals(3, contractors.size());
 
         String dataset = contractorManager.dump(Contractor.class);
-        assertEquals((dataset.split("com.gwt.wizard.shared.model.ContractorInfo").length), 7);
+        assertEquals((dataset.split("com.gwt.wizard.shared.model.ContractorInfo").length), 11);
     }
 
     @SuppressWarnings("unchecked")

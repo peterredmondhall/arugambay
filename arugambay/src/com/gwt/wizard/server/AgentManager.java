@@ -16,8 +16,6 @@ public class AgentManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(AgentManager.class.getName());
 
-    private static final String TEST_AGENT = "test@example.com";
-
     private static EntityManager getEntityManager()
     {
         return EMF.get().createEntityManager();
@@ -31,7 +29,10 @@ public class AgentManager extends Manager
         try
         {
             // To create new user for testing
-            createDefaultAgent(em);
+            createTestAgent(agentEmail, em);
+
+            // TODO remove only for local testing
+            createTestAgent("agent@example.com", em);
 
             Agent agent = (Agent) em.createQuery("select u from Agent u where u.userEmail = '" + agentEmail + "'").getSingleResult();
             agentInfo = agent.getInfo();
@@ -47,18 +48,18 @@ public class AgentManager extends Manager
         return agentInfo;
     }
 
-    private void createDefaultAgent(EntityManager em)
+    private void createTestAgent(String testAgent, EntityManager em)
     {
 
         try
         {
-            em.createQuery("select u from Agent u where u.userEmail = '" + TEST_AGENT + "'").getSingleResult();
+            em.createQuery("select u from Agent u where u.userEmail = '" + testAgent + "'").getSingleResult();
         }
         catch (NoResultException ex)
         {
             em.getTransaction().begin();
             Agent agent = new Agent();
-            agent.setUserEmail(TEST_AGENT);
+            agent.setUserEmail(testAgent);
             agent.setAdmin(true);
             em.persist(agent);
             em.getTransaction().commit();
@@ -73,9 +74,9 @@ public class AgentManager extends Manager
         AgentInfo agentInfo = null;
         try
         {
-            Agent agent = (Agent) em.createQuery("select u from Agent u where u.userEmail = '" + TEST_AGENT + "'").getSingleResult();
+            Agent agent = (Agent) em.createQuery("select u from Agent u where u.userEmail = '" + email + "'").getSingleResult();
             agentInfo = agent.getInfo();
-            logger.info("getUser for email " + email + " returned " + agentInfo.getEmail() + "  " + agentInfo.getId());
+            logger.info("getUser for email " + email + " returned " + agentInfo.getEmail() + "  " + agentInfo.getId() + " " + agentInfo.isAdmin());
         }
         catch (NoResultException ex)
         {

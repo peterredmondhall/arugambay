@@ -17,7 +17,17 @@ public class GwtDashboard implements EntryPoint
 {
     private final BookingServiceAsync service = GWT.create(BookingService.class);
 
-    public static AgentInfo USERINFO;
+    private static AgentInfo USERINFO;
+
+    public static void setAgentInfo(AgentInfo agentInfo)
+    {
+        USERINFO = agentInfo;
+    }
+
+    public static AgentInfo getAgentInfo()
+    {
+        return USERINFO;
+    }
 
     /**
      * This is the entry point method.

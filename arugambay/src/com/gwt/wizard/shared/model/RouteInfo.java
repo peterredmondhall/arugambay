@@ -8,9 +8,9 @@ public class RouteInfo extends Info
     public enum PickupType
     {
 
-        HOTEL("Hotel", "Pickup Time:"),
-        AIRPORT("Flight No:", "Landing Time:"),
-        TRAINSTATION("Train station", "Train arrival time:");
+        HOTEL("Hotel", "Pickup Time"),
+        AIRPORT("Flight No", "Landing Time"),
+        TRAINSTATION("Train station", "Train arrival time");
 
         String locationType;
         String timeType;

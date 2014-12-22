@@ -79,6 +79,7 @@ a:VISITED {
 
 .main-content {
 	margin: 15px 10px 10px 15px;
+	height: 84%;
 }
 
 .wizard {
@@ -88,6 +89,7 @@ a:VISITED {
 .footer {
 	float: right;
 	margin-top: 10px;
+	margin-right: 10px;
 }
 
 .footer input {

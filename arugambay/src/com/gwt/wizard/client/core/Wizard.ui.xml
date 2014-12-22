@@ -14,12 +14,12 @@
 		</g:HTMLPanel>
 		<g:HTMLPanel styleName="main">
 			<g:HTMLPanel ui:field="steps" styleName="main-content" />
-		</g:HTMLPanel>
-		
 		<div class="footer">
 			<g:Button ui:field="prev" text="Previous" styleName="btn btn-primary" />
 			<g:Button ui:field="next" text="Next" styleName="btn btn-primary" />
 			<g:Button ui:field="cancel" text="Cancel" styleName="btn btn-primary" />
 		</div>
+					</g:HTMLPanel>
+		
 	</g:HTMLPanel>
 </ui:UiBinder> 

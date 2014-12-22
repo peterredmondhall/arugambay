@@ -43,35 +43,35 @@ public class RouteServiceManagerTest
     {
 
         List<RouteInfo> routes = rs.getRoutes();
-        assertEquals(2, routes.size());
+        assertEquals(4, routes.size());
     }
 
     @Test
     public void should_delete_route()
     {
         List<RouteInfo> routes = rs.getRoutes();
-        assertEquals(2, routes.size());
+        assertEquals(4, routes.size());
         RouteInfo routeInfo = routes.get(0);
         routes = rs.deleteRoute(agentInfo, routeInfo);
-        assertEquals(1, routes.size());
+        assertEquals(3, routes.size());
     }
 
     @Test
     public void should_update_route()
     {
         List<RouteInfo> routes = rs.getRoutes(agentInfo);
-        assertEquals(2, routes.size());
+        assertEquals(4, routes.size());
         RouteInfo routeInfo = routes.get(0);
         routeInfo.setPickupType(PickupType.HOTEL);
         routeInfo.setStart("start");
         routeInfo.setEnd("end");
         routeInfo.setCents(16000L);
-        assertEquals(2, rs.saveRoute(agentInfo, routeInfo, RouteInfo.SaveMode.UPDATE).size());
+        assertEquals(4, rs.saveRoute(agentInfo, routeInfo, RouteInfo.SaveMode.UPDATE).size());
         routeInfo = routes.get(0);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
         assertEquals(PickupType.HOTEL, routeInfo.getPickupType());
-        assertEquals(Double.toString(16000f), Double.toString(routeInfo.getCents() * 100));
+        assertEquals(Double.toString(16000f), Double.toString(routeInfo.getCents()));
 
     }
 
@@ -88,12 +88,11 @@ public class RouteServiceManagerTest
         routeInfo.setCents(16000L);
         routeInfo.setContractorId(contractorId);
         routes = rs.saveRoute(agentInfo, routeInfo, RouteInfo.SaveMode.ADD);
-        assertEquals(3, routes.size());
-        routeInfo = routes.get(2);
+        assertEquals(5, routes.size());
+        routeInfo = routes.get(4);
         assertEquals("start", routeInfo.getStart());
         assertEquals("end", routeInfo.getEnd());
         assertEquals(PickupType.HOTEL, routeInfo.getPickupType());
-        assertEquals(Double.toString(160.00), Double.toString(routeInfo.getCents()));
+        assertEquals(Double.toString(16000), Double.toString(routeInfo.getCents()));
     }
-
 }

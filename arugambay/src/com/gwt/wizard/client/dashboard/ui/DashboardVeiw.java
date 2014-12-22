@@ -45,7 +45,7 @@ public class DashboardVeiw extends Composite
         initWidget(uiBinder.createAndBindUi(this));
         setMenu();
         dataContainer.add(displayContainer);
-        adminManagement.setVisible(Boolean.TRUE.equals(GwtDashboard.USERINFO.isAdmin()));
+        adminManagement.setVisible(Boolean.TRUE.equals(GwtDashboard.getAgentInfo().isAdmin()));
     }
 
     private void setMenu()

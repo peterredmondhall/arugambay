@@ -54,6 +54,7 @@ body {
 
 .main-content {
 	margin: 15px 10px 10px 15px;
+	height: 85%;
 }
 .wizard {
 	margin: 0 auto;
@@ -62,6 +63,7 @@ body {
 .footer {
 	float: right;
 	margin-top: 10px;
+	margin-right: 10px;
 }
 
 .footer input {

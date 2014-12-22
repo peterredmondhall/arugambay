@@ -35,15 +35,14 @@ public class ImageManagerTest
     }
 
     @Test
-    public void should_create_an_image()
+    public void should_create_an_image() throws IOException
     {
-        byte[] image = "xyz".getBytes();
+        URL url = Resources.getResource("Boston City Flow.jpg");
+        byte[] image = Resources.toByteArray(url);
+
         Long id = manager.addImage(image);
         image = manager.getImage(id);
-        assertEquals(image.length, 3);
-        assertEquals(image[0], 'x');
-        assertEquals(image[1], 'y');
-        assertEquals(image[2], 'z');
+        assertEquals(image.length, 20182);
     }
 
     @Test

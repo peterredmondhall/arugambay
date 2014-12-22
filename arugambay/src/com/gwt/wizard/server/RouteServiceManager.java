@@ -138,8 +138,7 @@ public class RouteServiceManager extends Manager
                 RouteInfo routeInfo = route.getInfo();
                 logger.info("routeInfo.getContractorId() " + routeInfo.getContractorId());
 
-                // TODO
-                // if (agentInfo == null || contractorIdList.contains(routeInfo.getContractorId()))
+                if (agentInfo == null || contractorIdList.contains(routeInfo.getContractorId()))
                 {
                     routes.add(routeInfo);
                 }
