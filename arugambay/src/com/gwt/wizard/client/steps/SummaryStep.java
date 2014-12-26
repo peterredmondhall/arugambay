@@ -12,7 +12,8 @@ import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
-import com.gwt.wizard.client.steps.ui.SummaryStepUi;
+import com.gwt.wizard.client.steps.ui.summary.SummaryStepMobileUi;
+import com.gwt.wizard.client.steps.ui.summary.SummaryStepUi;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 
@@ -24,7 +25,14 @@ public class SummaryStep implements WizardStep
 
     public SummaryStep()
     {
-        ui = new SummaryStepUi();
+        if (Wizard.MOBILE)
+        {
+            ui = new SummaryStepMobileUi();
+        }
+        else
+        {
+            ui = new SummaryStepUi();
+        }
     }
 
     @Override
@@ -77,9 +85,9 @@ public class SummaryStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
-        ui.show(visible, prev, next, cancel);
+        ui.show(visible, prev, next);
     }
 
 }

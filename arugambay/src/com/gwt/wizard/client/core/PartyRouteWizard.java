@@ -129,7 +129,7 @@ public class PartyRouteWizard extends Composite
 
         updateButtons();
         currentstep.getContent().setVisible(true);
-        currentstep.show(true, prev, next, cancel);
+        currentstep.show(true, prev, next);
         updateHeader(current);
     }
 

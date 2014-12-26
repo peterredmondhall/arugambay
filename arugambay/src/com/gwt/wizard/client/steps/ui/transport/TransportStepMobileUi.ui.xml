@@ -34,8 +34,8 @@
 			width: 100%;
 			max-width: 320px; /* Will be AT MOST 320px wide */
 		}
-		.imageSearch {
-			src: 'images/search-512.png'; 
+		.imageRoute {
+			max-width: 100px;
 		}
 
 	</ui:style>
@@ -53,7 +53,7 @@
 			<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />
 				<g:HorizontalPanel>
-					    <g:Image ui:field="imageVehicle" styleName="{style.imageSearch}" />
+					    <g:Image ui:field="imageVehicle" styleName="{style.imageRoute}" />
 					<g:VerticalPanel>
 						<g:Label>USD</g:Label>
 						<g:Label ui:field="labelPrice" />

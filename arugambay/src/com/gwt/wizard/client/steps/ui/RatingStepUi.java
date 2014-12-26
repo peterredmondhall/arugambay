@@ -76,13 +76,12 @@ public class RatingStepUi extends Composite
 
     Button next;
 
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
         this.next = next;
         next.setVisible(true);
         next.setEnabled(EXISTING_BOOKINGS_ON_ROUTE != null);
         prev.setVisible(false);
-        cancel.setText("Cancel");
     }
 
     RadioBar cleanliness = new RadioBar("cleanliness");

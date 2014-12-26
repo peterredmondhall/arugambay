@@ -169,7 +169,7 @@ public class CreditCardStepUi extends Composite
         }
     }
 
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);

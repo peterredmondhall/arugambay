@@ -22,7 +22,7 @@ public class ShareStep implements WizardStep
     @Override
     public String getCaption()
     {
-        return "Sharing";
+        return Wizard.MOBILE ? "" : "Sharing";
     }
 
     @Override
@@ -58,9 +58,9 @@ public class ShareStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
-        ui.show(visible, prev, next, cancel);
+        ui.show(visible, prev, next);
     }
 
 }

@@ -61,8 +61,6 @@ public class Wizard extends Composite
     Button prev;
     @UiField
     Button next;
-    @UiField
-    Button cancel;
 
     public Wizard()
     {
@@ -113,7 +111,7 @@ public class Wizard extends Composite
         currentstep--;
 
         stepList.get(currentstep).getContent().setVisible(true);
-        stepList.get(currentstep).show(true, prev, next, cancel);
+        stepList.get(currentstep).show(true, prev, next);
         updateHeader(currentstep);
     }
 
@@ -133,7 +131,7 @@ public class Wizard extends Composite
         handleStep();
 
         stepList.get(currentstep).getContent().setVisible(true);
-        stepList.get(currentstep).show(true, prev, next, cancel);
+        stepList.get(currentstep).show(true, prev, next);
         updateHeader(currentstep);
 
     }
@@ -157,18 +155,6 @@ public class Wizard extends Composite
 
     }
 
-    @UiHandler("cancel")
-    public void onCancelClick(ClickEvent event)
-    {
-        // just move to step 1
-        stepList.get(currentstep).getContent().setVisible(false);
-        currentstep = 0;	// get first step
-
-        stepList.get(currentstep).getContent().setVisible(true);
-        stepList.get(currentstep).show(true, prev, next, cancel);
-        updateHeader(0);
-    }
-
     private void updateHeader(int current)
     {
         for (int i = 0; i < stepList.size(); i++)
@@ -185,72 +171,11 @@ public class Wizard extends Composite
                 headerHTML.removeStyleName("header-active");
             }
         }
-//        for (HTML headerHTML : headers.keySet())
-//        {
-//            if (headers.get(headerHTML).intValue() == current)
-//            {
-//                headerHTML.addStyleName("header-active");
-//                headerHTML.removeStyleName("header-disable");
-//            }
-//            else
-//            {
-//                headerHTML.addStyleName("header-disable");
-//                headerHTML.removeStyleName("header-active");
-//            }
-//        }
 
         // show progress bar
         double per = (current + 1) * 100 / stepList.size();
         progressBar.setWidth(Math.round(per) + "%");
     }
-
-//    /**
-//     * must called to show wizard
-//     */
-//    @Override
-//    public Composite getWidget()
-//    {
-//        for (WizardStep step : map.keySet())
-//        {
-//            if (step instanceof TransportStep)
-//            {
-//                currentstep = step;
-//                currentstep.getContent().setVisible(true);
-//
-//                updateHeader(1);
-//
-//                mainPanel.setVisible(true);
-//                ((TransportStep) step).init(prev, next, cancel);
-//
-//                break;
-//            }
-//            if (step instanceof ConfirmationStep)
-//            {
-//                currentstep = step;
-//                currentstep.getContent().setVisible(true);
-//
-//                updateHeader(1);
-//
-//                mainPanel.setVisible(true);
-//                ((ConfirmationStep) step).init(prev, next, cancel);
-//
-//                break;
-//            }
-//            if (step instanceof ShareConfirmationStep)
-//            {
-//                currentstep = step;
-//                currentstep.getContent().setVisible(true);
-//
-//                updateHeader(1);
-//
-//                mainPanel.setVisible(true);
-//                // sendShareAcceptedCb.execute();
-//
-//                break;
-//            }
-//        }
-//        return this;
-//    }
 
     public void init()
     {
@@ -261,11 +186,11 @@ public class Wizard extends Composite
         mainPanel.setVisible(true);
         if (initstep instanceof TransportStep)
         {
-            ((TransportStep) initstep).init(prev, next, cancel);
+            ((TransportStep) initstep).init(prev, next);
         }
         if (initstep instanceof ConfirmationStep)
         {
-            ((ConfirmationStep) initstep).init(prev, next, cancel);
+            ((ConfirmationStep) initstep).init(prev, next);
         }
 
     }
@@ -283,6 +208,6 @@ public class Wizard extends Composite
 
     public void activateShareConfirmationStep(ShareConfirmationStep step)
     {
-        step.init(prev, next, cancel);
+        step.init(prev, next);
     }
 }

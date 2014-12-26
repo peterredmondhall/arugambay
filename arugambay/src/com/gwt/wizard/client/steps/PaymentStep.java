@@ -49,9 +49,9 @@ public class PaymentStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
-        ui.show(visible, prev, next, cancel);
+        ui.show(visible, prev, next);
     }
 
 }

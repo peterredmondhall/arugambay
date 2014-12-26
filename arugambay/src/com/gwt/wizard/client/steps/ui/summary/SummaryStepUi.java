@@ -1,4 +1,4 @@
-package com.gwt.wizard.client.steps.ui;
+package com.gwt.wizard.client.steps.ui.summary;
 
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
@@ -38,13 +38,18 @@ public class SummaryStepUi extends Composite
 
     public SummaryStepUi()
     {
-        initWidget(uiBinder.createAndBindUi(this));
+        createUi();
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         // paypal.setUrl();
         // stripe1.setVisible(true);
     }
 
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    protected void createUi()
+    {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public void show(boolean visible, Button prev, Button next)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);

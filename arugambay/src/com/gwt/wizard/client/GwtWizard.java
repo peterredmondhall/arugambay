@@ -41,14 +41,6 @@ public class GwtWizard implements EntryPoint
     public static final BookingServiceAsync SERVICE = GWT.create(BookingService.class);
     public static ClientMessages MESSAGES = GWT.create(ClientMessages.class);
 
-//    public String DESKTOP_HEIGHT = "500px";
-//    public String DESKTOP_WIDTH = "800px";
-//    public String MOBILE_HEIGHT = "100%";
-//    public String MOBILE_WIDTH = "100%";
-//
-//    private String width = DESKTOP_WIDTH;
-//    private String height = DESKTOP_HEIGHT;
-
     private TransportStep transportStep;
     private ShareStep shareStep;
     private ContactStep contactStep;
@@ -78,8 +70,8 @@ public class GwtWizard implements EntryPoint
         String userAgent = getUserAgent();
         logger.info("user agent:" + userAgent);
         Wizard.MOBILE = (userAgent != null && userAgent.contains("iphone"));
-        Wizard.MOBILE = true;
 
+        // Wizard.MOBILE = true;
         if (Wizard.MOBILE)
         {
             wizard = new WizardMobile();

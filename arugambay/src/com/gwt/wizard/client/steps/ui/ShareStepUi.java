@@ -130,7 +130,7 @@ public class ShareStepUi extends Composite
 
     }
 
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
 
         next.setVisible(true);

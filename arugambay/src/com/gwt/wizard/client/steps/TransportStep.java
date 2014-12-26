@@ -6,8 +6,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
-import com.gwt.wizard.client.steps.ui.mobile.TransportStepMobileUi;
-import com.gwt.wizard.client.steps.ui.mobile.TransportStepUi;
+import com.gwt.wizard.client.steps.ui.transport.TransportStepMobileUi;
+import com.gwt.wizard.client.steps.ui.transport.TransportStepUi;
 
 public class TransportStep implements WizardStep
 {
@@ -38,9 +38,9 @@ public class TransportStep implements WizardStep
         return ui;
     }
 
-    public void init(Button prev, Button next, Button cancel)
+    public void init(Button prev, Button next)
     {
-        ui.show(true, prev, next, cancel);
+        ui.show(true, prev, next);
     }
 
     @Override
@@ -63,9 +63,9 @@ public class TransportStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
-        ui.show(visible, prev, next, cancel);
+        ui.show(visible, prev, next);
     }
 
 }

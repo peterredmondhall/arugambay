@@ -6,7 +6,15 @@
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
 
 	<ui:style>
-
+		.labelDiv {
+			display: inline;
+			float: left;
+			font-size: 14px;
+			margin-top: 2px;
+			text-align: right;
+			margin-right: 15px;
+			width: 100px;
+	}
 	</ui:style>
 
 	<g:HTMLPanel ui:field="mainPanel">
@@ -14,7 +22,7 @@
 		<g:Grid>
 			<!-- Datum -->
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Date of arrival</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -23,7 +31,7 @@
 			</g:row>
 			<!-- Hinfahrt von -->
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Flight no.</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -31,7 +39,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Time of landing</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -41,7 +49,7 @@
 						<!-- Abholung am von -->
 			<!-- Rückfahr von -->
 			<g:row  >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label ui:field="labelRPP">No. of passengers</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -50,7 +58,7 @@
 			</g:row>
 			<!-- Abholung am von -->
 			<g:row  >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label ui:field="labelRPT">No. of surfboards</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -59,7 +67,7 @@
 			</g:row>
 			<!-- Total no. passengers -->
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Name</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -67,7 +75,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Interested in sharing</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -75,7 +83,7 @@
 				</g:customCell>
 			</g:row>
 						<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Email</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -83,7 +91,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Other requirements:</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -91,21 +99,13 @@
 				</g:customCell>
 			</g:row >
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label ui:field="pay1">Price</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:Label ui:field="labelPrice" />
 				</g:customCell>
 			</g:row >
-<!-- 			<g:row > -->
-<!-- 				<g:customCell styleName="labelDiv"> -->
-<!-- 					<g:Label ui:field="pay2">Pay now with Paypal</g:Label> -->
-<!-- 				</g:customCell> -->
-<!-- 				<g:customCell> -->
-<!-- 					<my:Paypal ui:field="paypal"/> -->
-<!-- 				</g:customCell> -->
-<!-- 			</g:row> -->
 		</g:Grid>
 
 	</g:HTMLPanel>

@@ -49,9 +49,9 @@ public class ConfirmationStep implements WizardStep
 
     }
 
-    public void init(Button prev, Button next, Button cancel)
+    public void init(Button prev, Button next)
     {
-        ui.show(true, prev, next, cancel);
+        ui.show(true, prev, next);
     }
 
     public void setBookingInfo(BookingInfo bookingInfo)
@@ -66,8 +66,8 @@ public class ConfirmationStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next, Button cancel)
+    public void show(boolean visible, Button prev, Button next)
     {
-        ui.show(visible, prev, next, cancel);
+        ui.show(visible, prev, next);
     }
 }
