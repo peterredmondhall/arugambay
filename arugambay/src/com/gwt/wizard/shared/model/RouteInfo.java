@@ -2,7 +2,7 @@ package com.gwt.wizard.shared.model;
 
 public class RouteInfo extends Info
 {
-
+    private static final long serialVersionUID = 1L;
     public static final Long PUBLIC = -1L;
 
     public enum PickupType

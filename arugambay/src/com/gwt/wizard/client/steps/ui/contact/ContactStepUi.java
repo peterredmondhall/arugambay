@@ -1,4 +1,4 @@
-package com.gwt.wizard.client.steps.ui;
+package com.gwt.wizard.client.steps.ui.contact;
 
 import static com.google.gwt.user.datepicker.client.CalendarUtil.resetTime;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
@@ -54,10 +54,10 @@ public class ContactStepUi extends Composite
     ListBox pax, surfboards;
 
     @UiField
-    Label dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg, arrivalErrorMsg, labelWanttoShare;
+    Label dateMsg, dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg, arrivalErrorMsg, labelWanttoShare;
 
     @UiField
-    Label labelSharing, labelBooking, labelFlightLandingTime, labelFlightNo;
+    Label labelSharing, labelBooking, labelFlightLandingTime, labelFlightNo, firstNameMsg, lastNameMsg, labelEmailMsg, labelEmail2Msg;
 
     @UiField
     TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
@@ -70,7 +70,7 @@ public class ContactStepUi extends Composite
 
     public ContactStepUi()
     {
-        initWidget(uiBinder.createAndBindUi(this));
+        createUi();
 
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         for (int i = 1; i < 20; i++)
@@ -94,10 +94,18 @@ public class ContactStepUi extends Composite
 //        }
     }
 
+    protected void createUi()
+    {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
     public Date getDate()
     {
         Date date = dateBox.getValue();
-        resetTime(date);
+        if (date != null)
+        {
+            resetTime(date);
+        }
         return date;
     }
 
@@ -207,6 +215,9 @@ public class ContactStepUi extends Composite
         }
         labelFlightNo.setText(Wizard.ROUTEINFO.getPickupType().getLocationType());
         labelFlightLandingTime.setText(Wizard.ROUTEINFO.getPickupType().getTimeType());
+
+        labelBooking.setText(Wizard.ROUTEINFO.getKey());
+
     }
 
     @Override

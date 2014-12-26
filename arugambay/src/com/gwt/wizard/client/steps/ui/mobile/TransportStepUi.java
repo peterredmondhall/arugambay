@@ -1,4 +1,4 @@
-package com.gwt.wizard.client.steps.ui;
+package com.gwt.wizard.client.steps.ui.mobile;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ import com.gwt.wizard.shared.model.RouteInfo;
 
 public class TransportStepUi extends Composite
 {
-    public static final String WIDTH = "120px";
+    // public static final String WIDTH = "120px";
 
     private static RouteStepUiUiBinder uiBinder = GWT.create(RouteStepUiUiBinder.class);
     private final BookingServiceAsync service = GWT.create(BookingService.class);
@@ -64,14 +64,19 @@ public class TransportStepUi extends Composite
 
     public TransportStepUi()
     {
-
-        initWidget(uiBinder.createAndBindUi(this));
+        createUi();
+        // initWidget(uiBinder.createAndBindUi(this));
         fetchRoutes();
-        panelRoute.setVisible(false);
+        // panelRoute.setVisible(false);
         sp.setHeight("100px");
         ratingsPanel.add(sp);
         sp.add(fp);
 
+    }
+
+    protected void createUi()
+    {
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     @Override
@@ -119,7 +124,7 @@ public class TransportStepUi extends Composite
                     oracle.add(routeInfo.getKey());
                 }
                 final SuggestBox suggestBox = new SuggestBox(oracle);
-                suggestBox.setWidth("600px");
+                // suggestBox.setWidth("100%");
                 routeSuggestionPanel.add(suggestBox);
                 suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
 

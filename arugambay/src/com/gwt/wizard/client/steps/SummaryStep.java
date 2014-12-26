@@ -8,6 +8,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
@@ -29,7 +30,7 @@ public class SummaryStep implements WizardStep
     @Override
     public String getCaption()
     {
-        return MESSAGES.fourthPage();
+        return Wizard.MOBILE ? "" : MESSAGES.fourthPage();
     }
 
     @Override

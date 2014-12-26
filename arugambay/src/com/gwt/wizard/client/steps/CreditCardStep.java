@@ -40,7 +40,7 @@ public class CreditCardStep implements WizardStep
     @Override
     public String getCaption()
     {
-        return "Payment";
+        return Wizard.MOBILE ? "" : "Payment";
     }
 
     @Override

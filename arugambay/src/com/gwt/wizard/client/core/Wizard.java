@@ -41,6 +41,7 @@ public class Wizard extends Composite
     public static RouteInfo ROUTEINFO;
     public static ProfilInfo PROFILINFO;
     public static RatingInfo RATINGINFO;
+    public static boolean MOBILE = false;
 
     private final List<WizardStep> stepList;
     private final Map<WizardStep, HTML> headers = Maps.newHashMap();
@@ -66,12 +67,17 @@ public class Wizard extends Composite
     public Wizard()
     {
         stepList = Lists.newArrayList();
-        initWidget(uiBinder.createAndBindUi(this));
+        initWidget();
         steps.clear();
         header.clear();
         mainPanel.setVisible(false);
         next.ensureDebugId("button_next");
         currentstep = 0;
+    }
+
+    protected void initWidget()
+    {
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     public void add(WizardStep step)

@@ -3,6 +3,7 @@ package com.gwt.wizard.client;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gwt.core.client.EntryPoint;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.gwt.wizard.client.core.Wizard;
+import com.gwt.wizard.client.core.WizardMobile;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.resources.ClientMessages;
 import com.gwt.wizard.client.service.BookingService;
@@ -35,9 +37,17 @@ import com.gwt.wizard.shared.model.StatInfo;
  */
 public class GwtWizard implements EntryPoint
 {
-
+    public static final Logger logger = Logger.getLogger(GwtWizard.class.getName());
     public static final BookingServiceAsync SERVICE = GWT.create(BookingService.class);
     public static ClientMessages MESSAGES = GWT.create(ClientMessages.class);
+
+//    public String DESKTOP_HEIGHT = "500px";
+//    public String DESKTOP_WIDTH = "800px";
+//    public String MOBILE_HEIGHT = "100%";
+//    public String MOBILE_WIDTH = "100%";
+//
+//    private String width = DESKTOP_WIDTH;
+//    private String height = DESKTOP_HEIGHT;
 
     private TransportStep transportStep;
     private ShareStep shareStep;
@@ -57,8 +67,6 @@ public class GwtWizard implements EntryPoint
 
     private Wizard wizard;
 
-    // private List<BookingInfo> sharers;
-
     /**
      * This is the entry point method.
      */
@@ -66,7 +74,21 @@ public class GwtWizard implements EntryPoint
     public void onModuleLoad()
     {
         Window.setTitle("Arugam Bay Taxi");
-        wizard = new Wizard();
+
+        String userAgent = getUserAgent();
+        logger.info("user agent:" + userAgent);
+        Wizard.MOBILE = (userAgent != null && userAgent.contains("iphone"));
+        Wizard.MOBILE = true;
+
+        if (Wizard.MOBILE)
+        {
+            wizard = new WizardMobile();
+        }
+        else
+        {
+            wizard = new Wizard();
+
+        }
         transportStep = new TransportStep();
         shareStep = new ShareStep(wizard);
         contactStep = new ContactStep();
@@ -232,8 +254,8 @@ public class GwtWizard implements EntryPoint
         {
             wizard.add(step);
         }
-        wizard.setHeight("500px");
-        wizard.setWidth("800px");
+//        wizard.setHeight(height);
+//        wizard.setWidth(width);
 
         wizard.init();
         RootPanel.get().add(wizard);
@@ -254,4 +276,10 @@ public class GwtWizard implements EntryPoint
             }
         });
     }
+
+    // private List<BookingInfo> sharers;
+    public static native String getUserAgent() /*-{
+		return navigator.userAgent.toLowerCase();
+    }-*/;
+
 }

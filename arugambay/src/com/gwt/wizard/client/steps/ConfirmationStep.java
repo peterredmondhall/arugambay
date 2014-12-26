@@ -4,6 +4,7 @@ import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.ConfirmationStepUi;
 import com.gwt.wizard.shared.model.BookingInfo;
@@ -21,7 +22,7 @@ public class ConfirmationStep implements WizardStep
     @Override
     public String getCaption()
     {
-        return MESSAGES.fifthPage();
+        return Wizard.MOBILE ? "" : MESSAGES.fifthPage();
     }
 
     @Override

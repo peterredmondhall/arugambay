@@ -14,12 +14,14 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.core.Wizard;
+import com.gwt.wizard.client.dashboard.ui.Helper;
 import com.gwt.wizard.client.steps.CreditCardStep;
 
 public class CreditCardStepUi extends Composite
 {
-    private static final String PE1 = "We ask you to prepay your booking using a credit card.";
-    private static final String PE2 = "Our experience has shown this to provide a better and more convienient service.";
+    private static final String PE1 = "Pay now to book the taxi.";
+    private static final String PE2 = "Cancel anytime up to 24hrs beforehand for a full refund.";
 
     public enum ErrorMsg
     {
@@ -174,6 +176,8 @@ public class CreditCardStepUi extends Composite
 
         next.setVisible(false);
         prev.setEnabled(true);
+
+        payWithCC.setText("Pay $" + Helper.getDollars(Wizard.ROUTEINFO));
     }
 
     @Override

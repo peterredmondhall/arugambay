@@ -4,8 +4,10 @@ import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
-import com.gwt.wizard.client.steps.ui.TransportStepUi;
+import com.gwt.wizard.client.steps.ui.mobile.TransportStepMobileUi;
+import com.gwt.wizard.client.steps.ui.mobile.TransportStepUi;
 
 public class TransportStep implements WizardStep
 {
@@ -14,13 +16,20 @@ public class TransportStep implements WizardStep
 
     public TransportStep()
     {
-        ui = new TransportStepUi();
+        if (Wizard.MOBILE)
+        {
+            ui = new TransportStepMobileUi();
+        }
+        else
+        {
+            ui = new TransportStepUi();
+        }
     }
 
     @Override
     public String getCaption()
     {
-        return MESSAGES.firstPage();
+        return Wizard.MOBILE ? "" : MESSAGES.firstPage();
     }
 
     @Override

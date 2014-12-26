@@ -10,9 +10,11 @@ import java.util.logging.Logger;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
-import com.gwt.wizard.client.steps.ui.ContactStepUi;
-import com.gwt.wizard.client.steps.ui.ContactStepUi.ErrorMsg;
+import com.gwt.wizard.client.steps.ui.contact.ContactStepMobileUi;
+import com.gwt.wizard.client.steps.ui.contact.ContactStepUi;
+import com.gwt.wizard.client.steps.ui.contact.ContactStepUi.ErrorMsg;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ContactStep implements WizardStep
@@ -23,13 +25,21 @@ public class ContactStep implements WizardStep
 
     public ContactStep()
     {
-        ui = new ContactStepUi();
+        if (Wizard.MOBILE)
+        {
+            ui = new ContactStepMobileUi();
+        }
+        else
+        {
+            ui = new ContactStepUi();
+        }
+
     }
 
     @Override
     public String getCaption()
     {
-        return "Contact";
+        return Wizard.MOBILE ? "" : "Contact";
     }
 
     @Override

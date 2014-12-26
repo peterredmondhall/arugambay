@@ -4,6 +4,18 @@
 
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
 
+		<ui:style>
+		.labelDiv {
+			display: inline;
+			float: left;
+			font-size: 14px;
+			margin-top: 2px;
+			text-align: right;
+			margin-right: 15px;
+			width: 100px;
+		}
+	</ui:style>
+	
 	<g:HTMLPanel ui:field="mainPanel">
 	   <g:Label ui:field="labelBooking">
 			You are creating a new booking.
@@ -15,46 +27,37 @@
 		<g:Grid>
 			<!-- Date -->
 			<g:row>
-				<g:customCell styleName="labelDiv">
-					<g:Label>Date of arrival *</g:Label>
+				<g:customCell   styleName="{style.labelDiv}" >
+					<g:Label ui:field="dateMsg">Date of arrival *</g:Label>
 				</g:customCell>
 				<g:customCell >
 					<d:DateBox ui:field="dateBox" />
-				</g:customCell>
-				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="dateErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
 			
 						<!-- Flight no. -->
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell   styleName="{style.labelDiv}" >
 					<g:Label ui:field="labelFlightNo">Flight no. *</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox styleName="widgetDiv" ui:field="flightNo" />
 				</g:customCell>
-				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="flightErrorMsg"></g:Label>
-				</g:customCell>
 			</g:row>
 						
 			<!-- Landing time -->
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell   styleName="{style.labelDiv}" >
 					<g:Label ui:field="labelFlightLandingTime">Approx. landing time *</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox styleName="widgetDiv" ui:field="flightLandingTime"/>
 				</g:customCell>
-				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="arrivalErrorMsg"></g:Label>
-				</g:customCell>
 							</g:row>
 			
 			<!-- No. passengers -->
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell   styleName="{style.labelDiv}" >
 					<g:Label>Number of passengers</g:Label>
 				</g:customCell>
 				<g:customCell >
@@ -64,7 +67,7 @@
 						
 			<!-- No. surfboards -->
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell   styleName="{style.labelDiv}" >
 					<g:Label>Number of surfboards</g:Label>
 				</g:customCell>
 				<g:customCell >
@@ -74,33 +77,27 @@
 			
 			<!-- First name -->			
 			<g:row>
-				<g:customCell styleName="labelDiv">
-					<g:Label>First name</g:Label>
+				<g:customCell   styleName="{style.labelDiv}" >
+					<g:Label ui:field="firstNameMsg">First name</g:Label>
 				</g:customCell>
 				<g:customCell >
 					<g:TextBox styleName="widgetDiv" ui:field="firstName" />
-				</g:customCell>
-				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="firstNameErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
 			
 			<!-- Surname -->			
 			<g:row>
-				<g:customCell styleName="labelDiv">
-					<g:Label>Last name *</g:Label>
+				<g:customCell   styleName="{style.labelDiv}" >
+					<g:Label ui:field="lastNameMsg">Last name *</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox styleName="widgetDiv" ui:field="lastName" />
-				</g:customCell>
-				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="lastNameErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
 						
 			<!-- want to share -->			
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell   styleName="{style.labelDiv}" >
 					<g:Label ui:field="labelWanttoShare">Interested in sharing</g:Label>
 				</g:customCell>
 				<g:customCell >
@@ -110,31 +107,25 @@
 						
 						<!-- email -->			
 			<g:row>
-				<g:customCell styleName="labelDiv">
-					<g:Label>Email *</g:Label>
+				<g:customCell   styleName="{style.labelDiv}" >
+					<g:Label ui:field="labelEmailMsg">Email *</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox styleName="widgetDiv" ui:field="email" />
-				</g:customCell>
-				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="emailErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
 			
 			<!-- email repeat -->			
 			<g:row>
-				<g:customCell styleName="labelDiv">
-					<g:Label>Email (repeat) *</g:Label>
+				<g:customCell   styleName="{style.labelDiv}" >
+					<g:Label ui:field="labelEmail2Msg">Email (repeat) *</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox styleName="widgetDiv" ui:field="email2" />
 				</g:customCell>
-				<g:customCell styleName="optionalBarCellStyle">
-					<g:Label styleName="errMsg" ui:field="email2ErrorMsg"></g:Label>
-				</g:customCell>
 			</g:row>
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell   styleName="{style.labelDiv}" >
 					<g:Label>Other requirements:</g:Label>
 				</g:customCell>
 				<g:customCell >
@@ -143,7 +134,16 @@
 			</g:row>
 						
 		</g:Grid>
-
+		<g:FlowPanel visible="false">
+		<g:Label ui:field="dateErrorMsg"></g:Label>
+		<g:Label ui:field="arrivalErrorMsg"></g:Label>
+		<g:Label ui:field="flightErrorMsg"></g:Label>
+		<g:Label ui:field="firstNameErrorMsg"></g:Label>
+		<g:Label ui:field="lastNameErrorMsg"></g:Label>
+		<g:Label ui:field="emailErrorMsg"></g:Label>
+		<g:Label ui:field="email2ErrorMsg"></g:Label>
+		</g:FlowPanel>
+														
 	</g:HTMLPanel>
 
 </ui:UiBinder> 
