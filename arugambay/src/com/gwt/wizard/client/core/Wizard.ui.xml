@@ -9,7 +9,7 @@
 
 		.main-content
 		{
-			margin: 15px 10px 10px 15px;
+			margin: 15px 15px 15px 15px;
 			heightx: 84%;
 			height: 500px; 	
 		}

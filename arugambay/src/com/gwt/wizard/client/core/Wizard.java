@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.steps.ConfirmationStep;
 import com.gwt.wizard.client.steps.CreditCardStep;
+import com.gwt.wizard.client.steps.RatingStep;
 import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.TransportStep;
@@ -191,6 +192,10 @@ public class Wizard extends Composite
         if (initstep instanceof ConfirmationStep)
         {
             ((ConfirmationStep) initstep).init(prev, next);
+        }
+        if (initstep instanceof RatingStep)
+        {
+            ((RatingStep) initstep).init(prev, next);
         }
 
     }

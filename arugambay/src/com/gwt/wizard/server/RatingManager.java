@@ -7,7 +7,9 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
+import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Rating;
+import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -26,6 +28,9 @@ public class RatingManager
         EntityManager em = getEntityManager();
         try
         {
+            Booking booking = em.find(Booking.class, ratingInfo.getBookingId());
+            Route route = em.find(Route.class, booking.getRoute());
+            ratingInfo.setContractorId(route.getContractorId());
             em.getTransaction().begin();
             Rating rating = Rating.getRating(ratingInfo);
             em.persist(rating);
@@ -45,12 +50,9 @@ public class RatingManager
         EntityManager em = getEntityManager();
         List<RatingInfo> ratings = newArrayList();
 
-        if (true)
-            return ratings;
-
         try
         {
-            List<Rating> resultList = em.createQuery("select t from Rating t where routeId='" + routeInfo.getId() + "'").getResultList();
+            List<Rating> resultList = em.createQuery("select t from Rating t where contractorId=" + routeInfo.getContractorId()).getResultList();
             for (Rating rating : resultList)
             {
                 ratings.add(rating.getInfo());

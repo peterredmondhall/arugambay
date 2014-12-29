@@ -4,16 +4,27 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class RatingInfo implements IsSerializable
 {
-    private Long providerId;
+    private Long bookingId;
+    private Long contractorId;
 
-    public Long getProviderId()
+    public Long getContractorId()
     {
-        return providerId;
+        return contractorId;
     }
 
-    public void setProviderId(Long providerId)
+    public void setContractorId(Long contractorId)
     {
-        this.providerId = providerId;
+        this.contractorId = contractorId;
+    }
+
+    public Long getBookingId()
+    {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId)
+    {
+        this.bookingId = bookingId;
     }
 
     private String critic;
@@ -82,17 +93,23 @@ public class RatingInfo implements IsSerializable
 
     public void setCritic(String critic)
     {
+        if (critic.length() > 400)
+        {
+            critic = critic.substring(0, 400);
+        }
         this.critic = critic;
     }
 
-    public String getNickname()
+    public int getAverage()
     {
-        return author;
-    }
+        int total = 0;
+        total += cleanliness != null ? cleanliness : 0;
+        total += safety != null ? safety : 0;
+        total += punctuality != null ? punctuality : 0;
+        total += professionality != null ? professionality : 0;
 
-    public void setNickname(String nickname)
-    {
-        this.author = nickname;
+        int average = (total / 4);
+        int roundup = (total % 4) > 0 ? 1 : 0;
+        return average + roundup;
     }
-
 }

@@ -88,7 +88,7 @@ public class GwtWizard implements EntryPoint
         summaryStep = new SummaryStep();
         confirmationStep = new ConfirmationStep();
         shareConfirmationStep = new ShareConfirmationStep();
-        ratingStep = new RatingStep(wizard, confirmationStep);
+        ratingStep = new RatingStep();
 
         collectStats();
 
@@ -105,11 +105,11 @@ public class GwtWizard implements EntryPoint
         if (review != null)
         {
             Wizard.RATINGINFO = new RatingInfo();
-            Wizard.RATINGINFO.setProviderId(Long.parseLong(review));
+            Wizard.RATINGINFO.setBookingId(Long.parseLong(review));
             Wizard.RATINGINFO.setAuthor(nick);
 
             List<WizardStep> l = ImmutableList.of((WizardStep) ratingStep);
-            completeSetup(transportStep, l);
+            completeSetup(ratingStep, l);
             return;
         }
         if (transaction != null)

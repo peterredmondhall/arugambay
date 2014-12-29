@@ -19,21 +19,22 @@ public class Rating implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
 
-    Long providerId;
-
-    public Long getproviderId()
-    {
-        return providerId;
-    }
-
-    public void setProviderId(Long providerId)
-    {
-        this.providerId = providerId;
-    }
+    Long contractorId;
 
     Integer cleanliness;
     Integer safety;
     Integer punctuality;
+
+    public Long getContractorId()
+    {
+        return contractorId;
+    }
+
+    public void setContractorId(Long contractorId)
+    {
+        this.contractorId = contractorId;
+    }
+
     Integer professionality;
     String critic;
     String author;
@@ -101,7 +102,7 @@ public class Rating implements Serializable
     public static Rating getRating(RatingInfo ratingInfo)
     {
         Rating rating = new Rating();
-        rating.setProviderId(ratingInfo.getProviderId());
+        rating.setContractorId(ratingInfo.getContractorId());
         rating.setCleanliness(ratingInfo.getCleanliness());
         rating.setPunctuality(ratingInfo.getPunctuality());
         rating.setProfessionality(ratingInfo.getProfessionality());
@@ -115,7 +116,6 @@ public class Rating implements Serializable
     public RatingInfo getInfo()
     {
         RatingInfo ratingInfo = new RatingInfo();
-        ratingInfo.setProviderId(providerId);
         ratingInfo.setCleanliness(cleanliness);
         ratingInfo.setPunctuality(punctuality);
         ratingInfo.setProfessionality(professionality);

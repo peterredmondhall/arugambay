@@ -2,7 +2,6 @@ package com.gwt.wizard.client.steps;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.RatingStepUi;
 
@@ -11,9 +10,9 @@ public class RatingStep implements WizardStep
 
     private final RatingStepUi ui;
 
-    public RatingStep(Wizard wizard, ConfirmationStep confirmationStep)
+    public RatingStep()
     {
-        ui = new RatingStepUi(wizard, confirmationStep);
+        ui = new RatingStepUi();
     }
 
     @Override

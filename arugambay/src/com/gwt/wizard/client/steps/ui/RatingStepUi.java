@@ -1,6 +1,5 @@
 package com.gwt.wizard.client.steps.ui;
 
-import static com.gwt.wizard.client.core.Wizard.EXISTING_BOOKINGS_ON_ROUTE;
 import static com.gwt.wizard.client.core.Wizard.RATINGINFO;
 
 import com.google.gwt.core.client.GWT;
@@ -18,12 +17,21 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.GwtWizard;
-import com.gwt.wizard.client.core.Wizard;
-import com.gwt.wizard.client.steps.ConfirmationStep;
+
+class ConfirmationPopupPanel extends PopupPanel
+{
+
+    ConfirmationPopupPanel()
+    {
+        super(true);
+        setWidget(new Label("Thank you for your feedback!"));
+    }
+};
 
 public class RatingStepUi extends Composite
 {
@@ -36,24 +44,12 @@ public class RatingStepUi extends Composite
     @UiField
     Panel mainPanel, hp2;
 
-    // private final List<RouteInfo> routes = Lists.newArrayList();
-    Wizard wizard;
-    ConfirmationStep confirmationStep;
-
-    public RatingStepUi(Wizard wizard, ConfirmationStep confirmationStep)
+    public RatingStepUi()
     {
 
         initWidget(uiBinder.createAndBindUi(this));
-//        DockLayoutPanel p = new DockLayoutPanel(Unit.EM);
-//        p.addNorth(new HTML("header"), 2);
-//        p.addSouth(new HTML("footer"), 2);
-//        p.addWest(new HTML("navigation"), 10);
-//        p.add(new HTML("xxxx xxxx xxxx"));
-//        layoutPanel.add(p);
-        mainPanel.setVisible(true);
+        setVisible(true);
         hp2.add(getRatingTable());
-        this.wizard = wizard;
-        this.confirmationStep = confirmationStep;
     }
 
     @Override
@@ -74,13 +70,9 @@ public class RatingStepUi extends Composite
         super.setWidth(width);
     }
 
-    Button next;
-
     public void show(boolean visible, Button prev, Button next)
     {
-        this.next = next;
-        next.setVisible(true);
-        next.setEnabled(EXISTING_BOOKINGS_ON_ROUTE != null);
+        next.setVisible(false);
         prev.setVisible(false);
     }
 
@@ -89,6 +81,7 @@ public class RatingStepUi extends Composite
     RadioBar punctuality = new RadioBar("punctuality");
     RadioBar professionality = new RadioBar("professionality");
     TextArea critic = new TextArea();
+    Label l = new Label("Thanks for your feedback.");
 
     private DecoratorPanel getRatingTable()
     {
@@ -102,22 +95,26 @@ public class RatingStepUi extends Composite
         cellFormatter.setHorizontalAlignment(
                 0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-        layout.setWidget(1, 1, new Label("Cleanliness"));
-        layout.setWidget(2, 1, new Label("Safety"));
-        layout.setWidget(3, 1, new Label("Punctuality"));
-        layout.setWidget(4, 1, new Label("Professionality"));
+        layout.setWidget(1, 1, new Label("1=poor  5=excellent"));
 
-        layout.setWidget(1, 2, cleanliness.getPanel());
-        layout.setWidget(2, 2, safety.getPanel());
-        layout.setWidget(3, 2, punctuality.getPanel());
-        layout.setWidget(4, 2, professionality.getPanel());
+        layout.setWidget(2, 1, new Label("Cleanliness"));
+        layout.setWidget(3, 1, new Label("Safety"));
+        layout.setWidget(4, 1, new Label("Punctuality"));
+        layout.setWidget(5, 1, new Label("Professionality"));
 
-        critic.setWidth("400px");
+        layout.setWidget(2, 2, cleanliness.getPanel());
+        layout.setWidget(3, 2, safety.getPanel());
+        layout.setWidget(4, 2, punctuality.getPanel());
+        layout.setWidget(5, 2, professionality.getPanel());
+
+        critic.setWidth("500px");
         critic.setHeight("100px");
 
-        layout.setWidget(5, 1, new Label("How was your experience in words?"));
-        layout.setWidget(5, 2, critic);
-        layout.setWidget(6, 3, getSubmitButton());
+        layout.setWidget(6, 1, new Label("How was your experience in words?"));
+        layout.setWidget(6, 2, critic);
+        layout.setWidget(7, 2, getSubmitButton());
+        l.setVisible(false);
+        layout.setWidget(8, 2, l);
 
         // Wrap the contents in a DecoratorPanel
         DecoratorPanel decPanel = new DecoratorPanel();
@@ -127,7 +124,7 @@ public class RatingStepUi extends Composite
 
     private Button getSubmitButton()
     {
-        Button button = new Button("Send Feedback");
+        final Button button = new Button("Send Feedback");
         button.setStyleName("btn btn-primary");
         button.setSize("120px", "30px");
 
@@ -147,8 +144,8 @@ public class RatingStepUi extends Composite
                     @Override
                     public void onSuccess(Void xxx)
                     {
-                        confirmationStep.setRatingFeedbackConfirmation();
-                        wizard.onNextClick(null);
+                        button.setVisible(false);
+                        l.setVisible(true);
                     }
 
                     @Override
@@ -174,11 +171,11 @@ public class RatingStepUi extends Composite
 
         RadioBar(String group)
         {
-            rb1 = new RadioButton(group, "");
-            rb2 = new RadioButton(group, "");
-            rb3 = new RadioButton(group, "");
-            rb4 = new RadioButton(group, "");
-            rb5 = new RadioButton(group, "");
+            rb1 = new RadioButton(group, "1");
+            rb2 = new RadioButton(group, " ");
+            rb3 = new RadioButton(group, " ");
+            rb4 = new RadioButton(group, " ");
+            rb5 = new RadioButton(group, "5");
 
             panel.add(rb1);
             panel.add(rb2);

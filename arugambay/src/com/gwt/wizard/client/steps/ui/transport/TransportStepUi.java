@@ -67,7 +67,7 @@ public class TransportStepUi extends Composite
         createUi();
         fetchRoutes();
         panelRoute.setVisible(false);
-        sp.setHeight("100px");
+        sp.setHeight("200px");
         ratingsPanel.add(sp);
         sp.add(fp);
 
@@ -161,26 +161,24 @@ public class TransportStepUi extends Composite
                             }
                         });
 
-                        if (false)
+                        GwtWizard.SERVICE.getRatings(Wizard.ROUTEINFO, new AsyncCallback<List<RatingInfo>>()
                         {
-                            GwtWizard.SERVICE.getRatings(Wizard.ROUTEINFO, new AsyncCallback<List<RatingInfo>>()
+                            @Override
+                            public void onSuccess(List<RatingInfo> ratings)
                             {
-                                @Override
-                                public void onSuccess(List<RatingInfo> ratings)
+                                if (ratings.size() > 0)
                                 {
-
                                     fp.add(new RatingList(ratings).createAdvancedForm());
-
                                 }
+                            }
 
-                                @Override
-                                public void onFailure(Throwable caught)
-                                {
-                                }
-                            });
-                        }
-
+                            @Override
+                            public void onFailure(Throwable caught)
+                            {
+                            }
+                        });
                     }
+
                 };
 
                 suggestBox.addSelectionHandler(handler);

@@ -45,7 +45,7 @@ public class BookingUtil
         list.add(new Pair(DATE, sdf.print(new DateTime(bookingInfo.getDate()))));
         PickupType pickupType = bookingInfo.getRouteInfo().getPickupType();
         list.add(new Pair(pickupType.getLocationType(), bookingInfo.getFlightNo()));
-        list.add(new Pair(pickupType.getTimeType(), bookingInfo.getFlightNo()));
+        list.add(new Pair(pickupType.getTimeType(), bookingInfo.getLandingTime()));
         list.add(new Pair(NAME, bookingInfo.getName()));
         list.add(new Pair(EMAIL, bookingInfo.getEmail()));
         list.add(new Pair(NUM_SURFBOARDS, Integer.toString(bookingInfo.getSurfboards())));

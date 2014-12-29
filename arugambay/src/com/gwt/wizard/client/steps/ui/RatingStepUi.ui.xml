@@ -5,29 +5,26 @@
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
 	<ui:style>
 		.title { font-weight:bold; color: #62ba37; margin-bottom:
-		10px; font-size:
-		30px;}
+			10px; font-size:
+			30px;}
 		.desc { font-weight:bold; margin-bottom: 10px;
-		font-size: 15px;}
+			font-size: 15px;}
 		.image { margin-right: 10px;}
-		.addressContainerStyle{
-		width: 250px; }
-		.addressFieldStyle{ width: 250px; }
+
 		.brd {
-		border: 1px solid silver;
-		padding: 2px;
-		margin-bottom:6px;
-		width:767px;
+			border: 1px solid silver;
+			margin-bottom:6px;
+			width:767px;
 		}
 		.ratingspanel {
-		border: 1px solid silver;
-		padding: 2px;
-		margin-bottom:6px;
-		height:100px;
+			border: 1px solid silver;
+			padding: 2px;
+			margin-bottom:6px;
+			height:100px;
 		}
 		.tarea {
-		width: 100%;
-		max-width: 320px; /* Will be AT MOST 320px wide */
+			width: 100%;
+			max-width: 320px; /* Will be AT MOST 320px wide */
 		}
 
 	</ui:style>
@@ -35,14 +32,14 @@
 	<g:HTMLPanel ui:field="mainPanel">
 
 <g:VerticalPanel>
+			<g:Image ui:field="imageSearch" url="images/banner.jpg" width="100%"/>			
 			<g:HorizontalPanel ui:field="hp1" styleName="{style.brd}">
-				<g:AbsolutePanel><g:Label>Please rate your taxi transfer with Arugam Bay Taxi initiative:</g:Label></g:AbsolutePanel>
+			<g:Label>Please rate your taxi transfer with Arugam Bay Taxi initiative:</g:Label>
 						
 			</g:HorizontalPanel>
 			<g:HorizontalPanel ui:field="hp2" styleName="{style.brd}">
 			</g:HorizontalPanel>
 			<g:HorizontalPanel ui:field="hp3" styleName="{style.brd}">
-						<g:Label>USD3</g:Label>
 			</g:HorizontalPanel>
 </g:VerticalPanel>
 	</g:HTMLPanel>

@@ -28,6 +28,7 @@ import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
+import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 
 public class BookingServiceManagerTest
@@ -37,6 +38,7 @@ public class BookingServiceManagerTest
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
     BookingServiceManager bs = new BookingServiceManager();
+    RatingManager ratingManager = new RatingManager();
 
     AgentInfo userInfo;
     ContractorInfo contractorInfo;
@@ -310,4 +312,34 @@ public class BookingServiceManagerTest
         assertEquals(OrderStatus.PAID, hasPaid);
     }
 
+    @Test
+    public void should_add_rating()
+    {
+        create_a_booking();
+        Profil profil = new Profil();
+        List<BookingInfo> bookings = bs.getBookings();
+        assertEquals(1, bookings.size());
+        BookingInfo bi = bs.setPayed(profil, bookings.get(0), OrderStatus.PAID);
+
+        RatingInfo ratingInfo = new RatingInfo();
+        ratingInfo.setAuthor("author");
+        ratingInfo.setCleanliness(5);
+        ratingInfo.setProfessionality(4);
+        ratingInfo.setPunctuality(3);
+        ratingInfo.setSafety(2);
+        ratingInfo.setCritic("good");
+        ratingInfo.setBookingId(bi.getId());
+
+        ratingManager.add(ratingInfo);
+
+        List<RatingInfo> ratings = ratingManager.getRatings(bi.getRouteInfo());
+        assertEquals(1, ratings.size());
+        assertEquals("author", ratingInfo.getAuthor());
+        assertEquals(new Integer(5), ratingInfo.getCleanliness());
+        assertEquals(new Integer(4), ratingInfo.getProfessionality());
+        assertEquals(new Integer(3), ratingInfo.getPunctuality());
+        assertEquals(new Integer(2), ratingInfo.getSafety());
+        assertEquals("good", ratingInfo.getCritic());
+
+    }
 }

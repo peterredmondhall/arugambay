@@ -23,7 +23,7 @@ public class Route extends ArugamEntity<RouteInfo>
     private String description;
     private Long contractorId;
 
-    public Long getUserId()
+    public Long getContractorId()
     {
         return contractorId;
     }
