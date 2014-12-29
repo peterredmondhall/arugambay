@@ -38,6 +38,7 @@ public class Mailer
     }
 
     public static final String SHARE_REQUEST = "template/shareRequest.html";
+    public static final String FEEDBACK_REQUEST = "template/feedbackRequest.html";
     public static final String SHARE_ACCEPTED = "template/shareAccepted.html";
     public static final String CONFIRMATION = "template/confirmation.html";
 
@@ -76,6 +77,7 @@ public class Mailer
     {
         if (toEmail != null)
         {
+            log.info("send:" + toEmail);
             // ...
             Properties props = new Properties();
             Session session = Session.getDefaultInstance(props, null);
@@ -83,11 +85,11 @@ public class Mailer
             try
             {
                 Message msg = new MimeMessage(session);
-                msg.setFrom(new InternetAddress("peterredmondhall@gmail.com", "taxisurf"));
+                msg.setFrom(new InternetAddress("peterredmondhall@gmail.com", "taxisurfr"));
                 msg.addRecipient(Message.RecipientType.TO,
                         new InternetAddress(toEmail, "Arugam Taxi"));
                 msg.setSubject("Arugam Taxi");
-                msg.setText(msgBody);
+                // msg.setText(msgBody);
 
                 Multipart mp = new MimeMultipart();
 
@@ -125,6 +127,19 @@ public class Mailer
     public static void sendError(Exception exception)
     {
         send(exception.getMessage(), "peterredmondhall@gmail.com", "", null);
+    }
+
+    public static String setFeedbackRequest(BookingInfo bookingInfo, Profil profil)
+    {
+        String html = BookingUtil.toConfirmationRequestHtml(bookingInfo, getFile(FEEDBACK_REQUEST), profil);
+        log.info("send:" + html.substring(0, 100));
+        html = html.replace("___NAME__", bookingInfo.getName());
+        html = html.replace("___LINK__", profil.getTaxisurfUrl() + "?review=" + bookingInfo.getId());
+
+        send(null, bookingInfo.getEmail(), html, null);
+
+        return html;
+
     }
 
 }

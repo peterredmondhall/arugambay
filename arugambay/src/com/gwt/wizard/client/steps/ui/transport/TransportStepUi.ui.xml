@@ -36,6 +36,9 @@
 		.imageSearch {
 			src: 'images/search-512.png'; 
 		}
+		.imagePlace {
+			max-width: 300px; 
+		}
 
 	</ui:style>
 	<g:HTMLPanel ui:field="mainPanel">
@@ -52,7 +55,7 @@
 			<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />
 				<g:HorizontalPanel>
-					    <g:Image ui:field="imageVehicle" styleName="{style.imageSearch}" />
+					    <g:Image ui:field="imageVehicle" styleName="{style.imagePlace}" />
 					<g:VerticalPanel>
 						<g:Label>USD</g:Label>
 						<g:Label ui:field="labelPrice" />

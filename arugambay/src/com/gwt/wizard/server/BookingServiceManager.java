@@ -315,4 +315,43 @@ public class BookingServiceManager extends Manager
         em.detach(booking);
         return booking.getBookingInfo(getRouteInfo(booking.getRoute(), em));
     }
+
+    public List<BookingInfo> getListFeedbackRequest()
+    {
+        EntityManager em = getEntityManager();
+        List<BookingInfo> bookings = new ArrayList<>();
+        try
+        {
+            @SuppressWarnings("unchecked")
+            List<Booking> resultList = em.createQuery("select t from Booking t").getResultList();
+            for (Booking booking : resultList)
+            {
+                if (booking.getRated() != null && !booking.getRated())
+                {
+                    DateTime bookingDate = new DateTime(booking.getDate());
+                    if (bookingDate.plusDays(1).isBefore(DateTime.now()))
+                    {
+                        em.getTransaction().begin();
+                        booking.setRated(true);
+                        em.persist(booking);
+                        em.getTransaction().commit();
+                        em.detach(booking);
+                        RouteInfo routeInfo = getRouteInfo(booking.getRoute(), em);
+                        BookingInfo bookingInfo = booking.getBookingInfo(routeInfo);
+                        bookings.add(bookingInfo);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.severe(ex.getMessage());
+        }
+        finally
+        {
+            em.close();
+        }
+        return bookings;
+
+    }
 }

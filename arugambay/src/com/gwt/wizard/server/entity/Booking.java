@@ -24,6 +24,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         orderStatus = OrderStatus.BOOKED;
         orderType = OrderType.BOOKING;
         instanziated = new Date();
+        rated = false;
     }
 
     private static final long serialVersionUID = 1L;
@@ -55,6 +56,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
     private OrderType orderType;
     private Long parentId;
     private Long route;
+    private Boolean rated;
 
     public Long getRoute()
     {
@@ -64,6 +66,16 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
     public void setRoute(Long route)
     {
         this.route = route;
+    }
+
+    public Boolean getRated()
+    {
+        return rated;
+    }
+
+    public void setRated(boolean rated)
+    {
+        this.rated = rated;
     }
 
     public Boolean getShareWanted()

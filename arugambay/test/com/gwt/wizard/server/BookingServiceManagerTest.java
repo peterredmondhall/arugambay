@@ -135,6 +135,11 @@ public class BookingServiceManagerTest
         return new DateTime().plusMonths(1).toDate();
     }
 
+    private Date getDateTwoDaysPrevious()
+    {
+        return new DateTime().minusDays(2).toDate();
+    }
+
     private void create_a_shared_booking()
     {
         List<BookingInfo> list = bs.getBookings();
@@ -342,4 +347,21 @@ public class BookingServiceManagerTest
         assertEquals("good", ratingInfo.getCritic());
 
     }
+
+    @Test
+    public void should_return_unrated()
+    {
+        BookingInfo bookingInfo = getBookingInfo(getDateTwoDaysPrevious(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        bs.addBookingWithClient(bookingInfo, "client");
+
+        bookingInfo = getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        bs.addBookingWithClient(bookingInfo, "client");
+
+        List<BookingInfo> bookings = bs.getListFeedbackRequest();
+        assertEquals(1, bookings.size());
+        bookings = bs.getListFeedbackRequest();
+        assertEquals(0, bookings.size());
+
+    }
+
 }

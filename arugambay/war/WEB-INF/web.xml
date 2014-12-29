@@ -70,15 +70,26 @@
 		<servlet-class>com.gwt.wizard.servlet.PDFRendererServlet</servlet-class>
 	</servlet>
 
-	<servlet-mapping>
+	<servlet>
+		<servlet-name>RatingServlet</servlet-name>
+		<servlet-class>com.gwt.wizard.servlet.RatingServlet</servlet-class>
+	</servlet>
+
+		<servlet-mapping>
 		<servlet-name>PDFRendererServlet</servlet-name>
 		<url-pattern>/orderform</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
+	<servlet-mapping>
+		<servlet-name>RatingServlet</servlet-name>
+		<url-pattern>/rating</url-pattern>
+	</servlet-mapping>
+
+		<servlet>
 	    <servlet-name>remoteLogging</servlet-name>
 	    <servlet-class>com.google.gwt.logging.server.RemoteLoggingServiceImpl</servlet-class>
 	</servlet>
+	
 	<servlet-mapping>
 	    <servlet-name>remoteLogging</servlet-name>
 	    <url-pattern>/gwt_wizard/remote_logging</url-pattern>

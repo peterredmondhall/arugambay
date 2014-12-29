@@ -272,4 +272,17 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     {
         return agentManager.getAgents();
     }
+
+    public void sendRatingRequest()
+    {
+        Profil profil = bookingServiceManager.getProfil();
+        List<BookingInfo> list = bookingServiceManager.getListFeedbackRequest();
+        logger.info("todo size:" + list.size());
+        for (BookingInfo bi : list)
+        {
+            Mailer.setFeedbackRequest(bi, profil);
+        }
+
+    }
+
 }

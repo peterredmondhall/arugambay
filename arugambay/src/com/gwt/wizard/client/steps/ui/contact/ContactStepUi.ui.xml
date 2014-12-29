@@ -88,7 +88,7 @@
 			<!-- First name -->			
 			<g:row>
 				<g:customCell   styleName="{style.labelDiv}" >
-					<g:Label ui:field="firstNameMsg">First name</g:Label>
+					<g:Label ui:field="firstNameMsg">First name *</g:Label>
 				</g:customCell>
 				<g:customCell >
 					<g:TextBox styleName="widgetDiv" ui:field="firstName" />

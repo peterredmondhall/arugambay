@@ -5,7 +5,6 @@ import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -13,6 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.dashboard.ui.Helper;
 import com.gwt.wizard.shared.OrderType;
 
 public class SummaryStepUi extends Composite
@@ -63,7 +63,7 @@ public class SummaryStepUi extends Composite
         labelEmail.setText(BOOKINGINFO.getEmail());
         labelName.setText(BOOKINGINFO.getName());
         labelRequirements.setText(BOOKINGINFO.getRequirements());
-        labelPrice.setText("USD " + NumberFormat.getFormat(".00").format(BOOKINGINFO.getRouteInfo().getCents()));
+        labelPrice.setText("US$ " + Helper.getDollars(BOOKINGINFO.getRouteInfo()));
         labelInterestedSharing.setText(BOOKINGINFO.getShareWanted() ? "yes please" : "no, thanks");
         prev.setEnabled(true);
 
