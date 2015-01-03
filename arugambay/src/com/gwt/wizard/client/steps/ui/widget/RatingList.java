@@ -58,7 +58,7 @@ public class RatingList
 
         Grid maingrid = new Grid(1, 2);
 
-        Grid grid = new Grid(4, 2);
+        Grid grid = new Grid(5, 2);
         int i = 0;
         grid.setHTML(i, 0, "cleanliness");
         grid.setWidget(i++, 1, getStars(ratingInfo.getCleanliness()));
