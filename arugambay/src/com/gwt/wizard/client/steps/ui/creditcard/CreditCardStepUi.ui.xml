@@ -3,7 +3,17 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
 
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
-
+	<ui:style>
+		.labelDiv {
+			display: inline;
+			float: left;
+			font-size: 14px;
+			margin-top: 2px;
+			text-align: right;
+			margin-right: 15px;
+			width: 300px;
+	}
+	</ui:style>
 
 	<g:HTMLPanel ui:field="mainPanel">
 	    <g:Label ui:field="paymentExplination1"/>
@@ -70,6 +80,7 @@
 				</g:customCell>
 			</g:row>
 		</g:Grid>
+		<span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=tCKKSZGdkpZrvS45zG1s44renabnSnngwdbfHUTUiPN8lHwXEq1g3xWKgYsr"></script></span>
 	</g:HTMLPanel>
 
 </ui:UiBinder> 

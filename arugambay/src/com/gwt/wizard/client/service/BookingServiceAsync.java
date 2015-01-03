@@ -41,7 +41,7 @@ public interface BookingServiceAsync
     void saveContractor(AgentInfo userInfo, ContractorInfo placeInfo, ContractorInfo.SaveMode mode, AsyncCallback<List<ContractorInfo>> callback)
             throws IllegalArgumentException;
 
-    void getBookings(AsyncCallback<List<BookingInfo>> callback);
+    void getBookings(AgentInfo userInfo, AsyncCallback<List<BookingInfo>> callback);
 
     void getBookingsForRoute(RouteInfo id, AsyncCallback<List<BookingInfo>> callback);
 

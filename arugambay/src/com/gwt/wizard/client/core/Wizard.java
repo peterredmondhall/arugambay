@@ -43,6 +43,8 @@ public class Wizard extends Composite
     public static ProfilInfo PROFILINFO;
     public static RatingInfo RATINGINFO;
     public static boolean MOBILE = false;
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
 
     private final List<WizardStep> stepList;
     private final Map<WizardStep, HTML> headers = Maps.newHashMap();
@@ -111,6 +113,8 @@ public class Wizard extends Composite
 
         currentstep--;
 
+        handlePreviousStep();
+
         stepList.get(currentstep).getContent().setVisible(true);
         stepList.get(currentstep).show(true, prev, next);
         updateHeader(currentstep);
@@ -129,7 +133,7 @@ public class Wizard extends Composite
 
         currentstep++;
 
-        handleStep();
+        handleNextStep();
 
         stepList.get(currentstep).getContent().setVisible(true);
         stepList.get(currentstep).show(true, prev, next);
@@ -137,7 +141,7 @@ public class Wizard extends Composite
 
     }
 
-    private void handleStep()
+    private void handleNextStep()
     {
         if (stepList.get(currentstep) instanceof ShareStep)
         {
@@ -154,6 +158,17 @@ public class Wizard extends Composite
             }
         }
 
+    }
+
+    private void handlePreviousStep()
+    {
+        if (stepList.get(currentstep) instanceof ShareStep)
+        {
+            if (EXISTING_BOOKINGS_ON_ROUTE.size() == 0)
+            {
+                currentstep--;
+            }
+        }
     }
 
     private void updateHeader(int current)

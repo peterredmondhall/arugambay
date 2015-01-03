@@ -18,8 +18,9 @@ import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
-import com.gwt.wizard.client.steps.ui.CreditCardStepUi;
-import com.gwt.wizard.client.steps.ui.CreditCardStepUi.ErrorMsg;
+import com.gwt.wizard.client.steps.ui.creditcard.CreditCardStepMobileUi;
+import com.gwt.wizard.client.steps.ui.creditcard.CreditCardStepUi;
+import com.gwt.wizard.client.steps.ui.creditcard.CreditCardStepUi.ErrorMsg;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
@@ -33,7 +34,14 @@ public class CreditCardStep implements WizardStep
 
     public CreditCardStep(Wizard wizard)
     {
-        ui = new CreditCardStepUi(this);
+        if (Wizard.MOBILE)
+        {
+            ui = new CreditCardStepMobileUi(this);
+        }
+        else
+        {
+            ui = new CreditCardStepUi(this);
+        }
         this.wizard = wizard;
     }
 

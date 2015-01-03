@@ -21,6 +21,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.gwt.wizard.server.entity.Booking;
+import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
@@ -224,6 +225,32 @@ public class BookingServiceManagerTest
         validateBookingInfo(bookings.get(0), "ref", expectedDate, "flightNo", "landingTime", 10, 11, "email", "reqs", OrderStatus.BOOKED, OrderType.BOOKING, true);
 
         confirm_payment();
+    }
+
+    @Test
+    public void should_return_only_bookings_for_agent()
+    {
+        BookingInfo bi1 = getStandardBookingInfo();
+        BookingInfo bi2 = getStandardBookingInfo();
+
+        RouteInfo routeInfo1 = new RouteServiceManager().getRoutes(userInfo).get(0);
+        RouteInfo routeInfo2 = new RouteServiceManager().getRoutes(userInfo).get(1);
+
+        List<Contractor> contractor = new ContractorManager().getAll(Contractor.class);
+        assertEquals(contractor.get(0).getAgentId(), contractor.get(1).getAgentId());
+
+        bi1.setRouteInfo(routeInfo1);
+        bi2.setRouteInfo(routeInfo2);
+
+        bs.addBookingWithClient(bi1, "client");
+        bs.addBookingWithClient(bi2, "client");
+
+        AgentInfo agent1 = new AgentManager().getAgent("test@example.com");
+        AgentInfo agent2 = new AgentManager().getAgent("agent@example.com");
+
+        assertEquals(2, bs.getBookings().size());
+        assertEquals(0, bs.getBookings(agent2.getId()).size());
+        assertEquals(2, bs.getBookings(agent1.getId()).size());
     }
 
     @Test

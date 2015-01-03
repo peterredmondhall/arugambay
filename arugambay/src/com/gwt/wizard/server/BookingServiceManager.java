@@ -17,6 +17,7 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Config;
+import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.entity.Stat;
@@ -77,7 +78,14 @@ public class BookingServiceManager extends Manager
         return EMF.get().createEntityManager();
     }
 
-    public List<BookingInfo> getBookings() throws IllegalArgumentException
+    private static final long ALL_BOOKINGS = -1;
+
+    public List<BookingInfo> getBookings()
+    {
+        return getBookings(ALL_BOOKINGS);
+    }
+
+    public List<BookingInfo> getBookings(Long agentId) throws IllegalArgumentException
     {
         EntityManager em = getEntityManager();
         List<BookingInfo> bookings = new ArrayList<>();
@@ -90,7 +98,11 @@ public class BookingServiceManager extends Manager
                 em.detach(booking);
                 RouteInfo routeInfo = getRouteInfo(booking.getRoute(), em);
                 BookingInfo bookingInfo = booking.getBookingInfo(routeInfo);
-                bookings.add(bookingInfo);
+                Contractor contractor = em.find(Contractor.class, routeInfo.getContractorId());
+                if (agentId == ALL_BOOKINGS || contractor.getAgentId().equals(agentId))
+                {
+                    bookings.add(bookingInfo);
+                }
             }
         }
         catch (Exception ex)
@@ -354,4 +366,5 @@ public class BookingServiceManager extends Manager
         return bookings;
 
     }
+
 }

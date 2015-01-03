@@ -45,7 +45,7 @@
 			<g:HorizontalPanel ui:field="dp">
 			</g:HorizontalPanel>
 			<g:HorizontalPanel>
-				<g:Image ui:field="imageSearch" url="images/search-512.png" width="32px"  height="32px"/>
+				<g:Image ui:field="imageSearch" url="images/search-512.png" width="24px"  height="24px"/>
 			    <g:FlowPanel ui:field="routeSuggestionPanel"
 					styleName="{style.selectContainerStyle}">
 				</g:FlowPanel>

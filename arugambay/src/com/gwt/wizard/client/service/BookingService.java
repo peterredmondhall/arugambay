@@ -42,7 +42,7 @@ public interface BookingService extends RemoteService
 
     List<ContractorInfo> saveContractor(AgentInfo userInfo, ContractorInfo placeInfo, ContractorInfo.SaveMode mode) throws IllegalArgumentException;
 
-    List<BookingInfo> getBookings() throws IllegalArgumentException;
+    List<BookingInfo> getBookings(AgentInfo userInfo) throws IllegalArgumentException;
 
     List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException;
 

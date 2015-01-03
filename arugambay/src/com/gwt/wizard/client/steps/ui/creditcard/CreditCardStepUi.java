@@ -1,4 +1,4 @@
-package com.gwt.wizard.client.steps.ui;
+package com.gwt.wizard.client.steps.ui.creditcard;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
@@ -63,7 +63,7 @@ public class CreditCardStepUi extends Composite
 
     public CreditCardStepUi(final CreditCardStep step)
     {
-        initWidget(uiBinder.createAndBindUi(this));
+        createUi();
 
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         paymentExplination1.setText(PE1);
@@ -96,6 +96,11 @@ public class CreditCardStepUi extends Composite
         notAccepted.setStyleName("errMsg");
         refusal.setVisible(false);
         refusal.setStyleName("errMsg");
+    }
+
+    protected void createUi()
+    {
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     public void showPayButton()

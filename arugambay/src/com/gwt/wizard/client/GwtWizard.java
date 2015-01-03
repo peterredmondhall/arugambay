@@ -65,13 +65,12 @@ public class GwtWizard implements EntryPoint
     @Override
     public void onModuleLoad()
     {
-        Window.setTitle("Arugam Bay Taxi");
+        Window.setTitle("taxisurfr");
 
-        String userAgent = getUserAgent();
-        logger.info("user agent:" + userAgent);
-        Wizard.MOBILE = (userAgent != null && userAgent.contains("iphone"));
+        Wizard.SCREEN_WIDTH = Window.getClientWidth();
+        Wizard.SCREEN_HEIGHT = Window.getClientHeight();
+        Wizard.MOBILE = Wizard.SCREEN_WIDTH < 500;
 
-        // Wizard.MOBILE = true;
         if (Wizard.MOBILE)
         {
             wizard = new WizardMobile();

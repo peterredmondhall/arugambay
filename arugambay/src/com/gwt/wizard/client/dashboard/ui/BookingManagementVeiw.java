@@ -26,6 +26,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
+import com.gwt.wizard.client.GwtDashboard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.OrderStatus;
@@ -62,7 +63,7 @@ public class BookingManagementVeiw extends Composite
 
     private void fetchBookings()
     {
-        service.getBookings(new AsyncCallback<List<BookingInfo>>()
+        service.getBookings(GwtDashboard.getAgentInfo(), new AsyncCallback<List<BookingInfo>>()
         {
 
             @Override

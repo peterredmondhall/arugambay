@@ -67,10 +67,10 @@ public class TransportStepUi extends Composite
         createUi();
         fetchRoutes();
         panelRoute.setVisible(false);
-        sp.setHeight("200px");
+        sp.setHeight(getPanelHeight());
         ratingsPanel.add(sp);
         sp.add(fp);
-
+        panelRoute.setHeight(getPanelHeight());
     }
 
     protected void createUi()
@@ -102,7 +102,7 @@ public class TransportStepUi extends Composite
     {
         this.next = next;
         next.setVisible(true);
-        next.setEnabled(Wizard.RATINGINFO != null);
+        next.setEnabled(Wizard.ROUTEINFO != null);
         prev.setVisible(false);
     }
 
@@ -122,7 +122,7 @@ public class TransportStepUi extends Composite
                     oracle.add(routeInfo.getKey());
                 }
                 final SuggestBox suggestBox = new SuggestBox(oracle);
-                suggestBox.setWidth(Wizard.MOBILE ? "300px" : "500px");
+                setSuggestBoxWidth(suggestBox);
                 routeSuggestionPanel.add(suggestBox);
                 suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
 
@@ -168,7 +168,7 @@ public class TransportStepUi extends Composite
                             {
                                 if (ratings.size() > 0)
                                 {
-                                    fp.add(new RatingList(ratings).createAdvancedForm());
+                                    fp.add(new RatingList(ratings).createRatingForm());
                                 }
                             }
 
@@ -191,4 +191,28 @@ public class TransportStepUi extends Composite
             }
         });
     }
+
+    private void setSuggestBoxWidth(SuggestBox suggestBox)
+    {
+
+        int suggestBoxWidth = 700;
+        if (Wizard.MOBILE)
+        {
+            suggestBoxWidth = (int) (Wizard.SCREEN_WIDTH * 0.75);
+        }
+        suggestBox.setWidth(suggestBoxWidth + "px");
+
+    }
+
+    private String getPanelHeight()
+    {
+        int panelHeight = 200;
+        if (Wizard.MOBILE)
+        {
+            panelHeight = (int) (Wizard.SCREEN_HEIGHT / 2 * 0.5);
+        }
+
+        return panelHeight + "px";
+    }
+
 }

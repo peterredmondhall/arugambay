@@ -1,4 +1,40 @@
-image
-einfache fahrt
-Kontakt
-Flight Landing at
+important
+---------
+taxisurfr ssl
+check android and iphone
+
+email from taxisurfr.com
+
+
+
+
+start selenium testing appieyes
+
+taxisurfr in arugam bay wordpress
+
+
+optional
+--------
+decorator box around review
+
+
+
+
+to test
+----
+mobile wide search box
+mobile wide review
+feedback request formatting
+agent only bookings in admin
+pdf show route
+taxisurfr branding
+previous no share
+rating must select 
+author in review
+payment layout
+
+
+
+done
+----
+strategy to fred

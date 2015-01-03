@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.model.RatingInfo;
 
 public class RatingList
@@ -25,7 +26,7 @@ public class RatingList
     /**
      * Create a form that contains undisclosed advanced options.
      */
-    public Widget createAdvancedForm()
+    public Widget createRatingForm()
     {
         // Create a table to layout the form options
         FlexTable layout = new FlexTable();
@@ -42,18 +43,13 @@ public class RatingList
         int index = 1;
         for (RatingInfo ratingInfo : ratings)
         {
-            // Grid advancedOptions = new Grid(1, 2);
-            // advancedOptions.setCellSpacing(6);
-
-            // Add advanced options to form in a disclosure panel
-
             layout.setWidget(index, 0, getStars(ratingInfo.getAverage()));
             layout.setWidget(index++, 1, getDisclosure(ratingInfo));
 
         }
         // Wrap the contents in a DecoratorPanel
         DecoratorPanel decPanel = new DecoratorPanel();
-        decPanel.setWidget(layout);
+        decPanel.add(layout);
         return decPanel;
     }
 
@@ -72,9 +68,13 @@ public class RatingList
         grid.setWidget(i++, 1, getStars(ratingInfo.getPunctuality()));
         grid.setHTML(i, 0, "professionality");
         grid.setWidget(i++, 1, getStars(ratingInfo.getProfessionality()));
+        grid.setHTML(i, 0, ratingInfo.getAuthor());
 
         maingrid.setWidget(0, 0, grid);
-        maingrid.setWidget(0, 1, new Label(ratingInfo.getCritic()));
+        if (!Wizard.MOBILE)
+        {
+            maingrid.setWidget(0, 1, new Label(ratingInfo.getCritic()));
+        }
 
         // CellFormatter cellFormatter = grid.getCellFormatter();
 

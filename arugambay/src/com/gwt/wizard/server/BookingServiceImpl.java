@@ -69,9 +69,9 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public List<BookingInfo> getBookings() throws IllegalArgumentException
+    public List<BookingInfo> getBookings(AgentInfo agentInfo) throws IllegalArgumentException
     {
-        return bookingServiceManager.getBookings();
+        return bookingServiceManager.getBookings(agentInfo.getId());
     }
 
     @Override

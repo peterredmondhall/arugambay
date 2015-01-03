@@ -12,7 +12,15 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.io.Files;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfReader;
@@ -41,6 +49,10 @@ public class PdfUtil
     static final DateTimeFormatter fmtFormDate = DateTimeFormat.forPattern("dd MMM yyyy");
 
     static final float TABLE_WIDTH = 452;
+    static final float TABLE_Y = 500;
+    static final float INSET = 72;
+
+    static final String CUSTOMER_FEEDBACK = "Customer Feedback";
 
     public byte[] generateTaxiOrder(String path, BookingInfo bookingInfo)
     {
@@ -52,9 +64,20 @@ public class PdfUtil
             reader = new PdfReader(IOUtils.toByteArray(fis));
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             PdfStamper stamper = new PdfStamper(reader, out);
+            PdfContentByte canvas = stamper.getOverContent(1);
 
             PdfPTable table = createBookingTable(bookingInfo);
-            table.writeSelectedRows(0, 2, 0, 11, 72, 570, stamper.getOverContent(1));
+            table.writeSelectedRows(0, 2, 0, 11, INSET, TABLE_Y, canvas);
+
+            Font helvetica = new Font(FontFamily.HELVETICA, 20);
+            BaseFont bf_helv = helvetica.getCalculatedBaseFont(false);
+            Chunk c1 = new Chunk(bookingInfo.getRouteInfo().getKey(), helvetica);
+            Chunk c2 = new Chunk(CUSTOMER_FEEDBACK, helvetica);
+
+            ColumnText.showTextAligned(canvas,
+                    Element.ALIGN_LEFT, new Phrase(c1), INSET, 540, 0);
+            ColumnText.showTextAligned(canvas,
+                    Element.ALIGN_LEFT, new Phrase(c2), INSET, 200, 0);
 
             stamper.close();
             reader.close();

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.GwtWizard;
 
@@ -80,8 +81,16 @@ public class RatingStepUi extends Composite
     RadioBar safety = new RadioBar("safety");
     RadioBar punctuality = new RadioBar("punctuality");
     RadioBar professionality = new RadioBar("professionality");
+
+    Label labelCleanliness = new Label("select a rating");
+    Label labelSafety = new Label("select a rating");
+    Label labelPunctuality = new Label("select a rating");
+    Label labelProfessionality = new Label("select a rating");
+
     TextArea critic = new TextArea();
     Label l = new Label("Thanks for your feedback.");
+
+    TextBox nicknameField = new TextBox();
 
     private DecoratorPanel getRatingTable()
     {
@@ -107,12 +116,21 @@ public class RatingStepUi extends Composite
         layout.setWidget(4, 2, punctuality.getPanel());
         layout.setWidget(5, 2, professionality.getPanel());
 
+        layout.setWidget(2, 3, labelCleanliness);
+        layout.setWidget(3, 3, labelSafety);
+        layout.setWidget(4, 3, labelPunctuality);
+        layout.setWidget(5, 3, labelProfessionality);
+
+        hideLabels();
+
         critic.setWidth("500px");
         critic.setHeight("100px");
 
         layout.setWidget(6, 1, new Label("How was your experience in words?"));
         layout.setWidget(6, 2, critic);
-        layout.setWidget(7, 2, getSubmitButton());
+        layout.setWidget(7, 1, new Label("Your nickname"));
+        layout.setWidget(7, 2, nicknameField);
+        layout.setWidget(8, 2, getSubmitButton());
         l.setVisible(false);
         layout.setWidget(8, 2, l);
 
@@ -120,6 +138,14 @@ public class RatingStepUi extends Composite
         DecoratorPanel decPanel = new DecoratorPanel();
         decPanel.setWidget(layout);
         return decPanel;
+    }
+
+    private void hideLabels()
+    {
+        labelCleanliness.setVisible(false);
+        labelSafety.setVisible(false);
+        labelPunctuality.setVisible(false);
+        labelProfessionality.setVisible(false);
     }
 
     private Button getSubmitButton()
@@ -133,11 +159,33 @@ public class RatingStepUi extends Composite
             @Override
             public void onClick(ClickEvent event)
             {
+                hideLabels();
+                if (cleanliness.getSelection() == -1)
+                {
+                    labelCleanliness.setVisible(true);
+                    return;
+                }
+                if (safety.getSelection() == -1)
+                {
+                    labelSafety.setVisible(true);
+                    return;
+                }
+                if (professionality.getSelection() == -1)
+                {
+                    labelProfessionality.setVisible(true);
+                    return;
+                }
+                if (punctuality.getSelection() == -1)
+                {
+                    labelPunctuality.setVisible(true);
+                    return;
+                }
                 RATINGINFO.setCleanliness(cleanliness.getSelection());
                 RATINGINFO.setProfessionality(professionality.getSelection());
                 RATINGINFO.setPunctuality(punctuality.getSelection());
                 RATINGINFO.setSafety(safety.getSelection());
                 RATINGINFO.setCritic(critic.getText());
+                RATINGINFO.setAuthor(nicknameField.getText());
 
                 GwtWizard.SERVICE.addRating(RATINGINFO, new AsyncCallback<Void>()
                 {
