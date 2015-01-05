@@ -221,10 +221,10 @@ public class Wizard extends Composite
 
     }
 
-    public void shareBooking(BookingInfo ref)
-    {
-
-    }
+//    public void shareBooking(BookingInfo ref)
+//    {
+//
+//    }
 
     public void activateShareConfirmationStep(ShareConfirmationStep step)
     {

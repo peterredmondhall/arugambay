@@ -14,7 +14,7 @@ import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 
-public class RatingManager
+public class RatingManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(RatingManager.class.getName());
 

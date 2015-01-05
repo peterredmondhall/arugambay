@@ -27,6 +27,8 @@ public class Mailer
     private static final Logger log = Logger.getLogger(Mailer.class.getName());
     public static Map<String, File> templateMap = Maps.newHashMap();
 
+    private static final String DISPATCHER = "dispatch@taxisurfr.com";
+
     private static File getFile(String path)
     {
         File file = templateMap.get(path);
@@ -45,35 +47,33 @@ public class Mailer
     public static void sendShareRequest(BookingInfo parentBooking, BookingInfo bookingInfo, Profil profil)
     {
 
-        String emailMsg = BookingUtil.toEmailText(bookingInfo);
         String html = BookingUtil.toConfirmationRequestHtml(bookingInfo, getFile(SHARE_REQUEST), profil);
-        send(emailMsg, parentBooking.getEmail(), html, null);
-        send(emailMsg, profil.getMonitorEmail(), html, null);
-        send(emailMsg, profil.getContractorEmail(), html, null);
+        send(parentBooking.getEmail(), html, null);
+        send(profil.getMonitorEmail(), html, null);
+        send(profil.getContractorEmail(), html, null);
     }
 
     public static void sendShareAccepted(String email, BookingInfo parentBookingInfo)
     {
         String html = BookingUtil.toConfirmationEmailHtml(parentBookingInfo, getFile(SHARE_ACCEPTED));
-        send("emailMsg", email, html, null);
+        send(email, html, null);
 
     }
 
     public static void sendConfirmation(BookingInfo bookingInfo, Profil profil)
     {
 
-        String emailMsg = BookingUtil.toEmailText(bookingInfo);
         String html = "error";
         html = BookingUtil.toConfirmationEmailHtml(bookingInfo, getFile(CONFIRMATION));
         html = html.replace("INSERT_ORDERFORM", profil.getTaxisurfUrl() + "/orderform?order=" + bookingInfo.getId());
         byte[] pdfData = new PdfUtil().generateTaxiOrder("template/order.pdf", bookingInfo);
         String email = bookingInfo.getEmail();
-        send(emailMsg, email, html, pdfData);
-        send(emailMsg, profil.getMonitorEmail(), html, pdfData);
-        send(emailMsg, profil.getArugamBayEmail(), html, pdfData);
+        send(email, html, pdfData);
+        send(profil.getMonitorEmail(), html, pdfData);
+        send(profil.getArugamBayEmail(), html, pdfData);
     }
 
-    private static void send(String msgBody, String toEmail, String htmlBody, byte[] pdfData)
+    private static void send(String toEmail, String htmlBody, byte[] pdfData)
     {
         if (toEmail != null)
         {
@@ -85,9 +85,9 @@ public class Mailer
             try
             {
                 Message msg = new MimeMessage(session);
-                msg.setFrom(new InternetAddress("peterredmondhall@gmail.com", "taxisurfr"));
+                msg.setFrom(new InternetAddress(DISPATCHER, "taxisurfr"));
                 msg.addRecipient(Message.RecipientType.TO,
-                        new InternetAddress(toEmail, "Arugam Taxi"));
+                        new InternetAddress(toEmail, toEmail));
                 msg.setSubject("Arugam Taxi");
                 // msg.setText(msgBody);
 
@@ -110,14 +110,17 @@ public class Mailer
             catch (AddressException e)
             {
                 log.log(Level.SEVERE, "address exception :" + e.getMessage());
+                sendError(e);
                 throw new RuntimeException(e);
             }
             catch (MessagingException e)
             {
+                sendError(e);
                 throw new RuntimeException(e);
             }
             catch (UnsupportedEncodingException e)
             {
+                sendError(e);
                 throw new RuntimeException(e);
 
             }
@@ -126,7 +129,7 @@ public class Mailer
 
     public static void sendError(Exception exception)
     {
-        send(exception.getMessage(), "peterredmondhall@gmail.com", "", null);
+        send("peterredmondhall@gmail.com", exception.getMessage(), null);
     }
 
     public static String setFeedbackRequest(BookingInfo bookingInfo, Profil profil)
@@ -136,7 +139,7 @@ public class Mailer
         html = html.replace("___NAME__", bookingInfo.getName());
         html = html.replace("___LINK__", profil.getTaxisurfUrl() + "?review=" + bookingInfo.getId());
 
-        send(null, bookingInfo.getEmail(), html, null);
+        send(bookingInfo.getEmail(), html, null);
 
         return html;
 

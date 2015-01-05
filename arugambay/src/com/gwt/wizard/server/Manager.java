@@ -11,6 +11,7 @@ import com.gwt.wizard.server.entity.ArugamEntity;
 import com.gwt.wizard.server.entity.ArugamImage;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Contractor;
+import com.gwt.wizard.server.entity.Rating;
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.AgentInfo;
@@ -18,6 +19,7 @@ import com.gwt.wizard.shared.model.ArugamImageInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.Info;
+import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 import com.thoughtworks.xstream.XStream;
 
@@ -107,6 +109,11 @@ public class Manager<T extends Info, K extends ArugamEntity<?>>
             if (type.equals(Agent.class))
             {
                 Agent entity = Agent.getAgent((AgentInfo) info);
+                save(entity, type, info);
+            }
+            if (type.equals(Rating.class))
+            {
+                Rating entity = Rating.getRating((RatingInfo) info);
                 save(entity, type, info);
             }
         }

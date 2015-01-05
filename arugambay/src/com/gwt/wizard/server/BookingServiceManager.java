@@ -273,7 +273,10 @@ public class BookingServiceManager extends Manager
                         bookingInfo.getShareWanted();
             }
         };
-        List<BookingInfo> current = Lists.newArrayList(Collections2.filter(getBookings(), acceptEven));
+        List<BookingInfo> bookings = getBookings();
+        System.out.println("booking:" + bookings.get(0).getDate());
+        System.out.println("now:" + now());
+        List<BookingInfo> current = Lists.newArrayList(Collections2.filter(bookings, acceptEven));
 
         logger.info("share candidates size = " + current.size());
         return current;

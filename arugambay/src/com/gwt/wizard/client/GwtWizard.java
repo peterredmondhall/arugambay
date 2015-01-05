@@ -231,6 +231,7 @@ public class GwtWizard implements EntryPoint
                 BOOKINGINFO = sharedBookingList.get(0);
                 shareConfirmationStep.setBookingInfo(sharedBookingList);
                 completeSetup(shareConfirmationStep, ImmutableList.of((WizardStep) shareConfirmationStep));
+                wizard.activateShareConfirmationStep(shareConfirmationStep);
 
             }
         });

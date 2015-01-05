@@ -40,6 +40,17 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
     }
 
     private Date date;
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+
     private String name;
     private String email;
     private String flightNo;
@@ -186,16 +197,6 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
     public void setRequirements(String requirements)
     {
         this.requirements = requirements;
-    }
-
-    public Date getDate()
-    {
-        return date;
-    }
-
-    public void setDate(Date date)
-    {
-        this.date = date;
     }
 
     public int getSurfboards()

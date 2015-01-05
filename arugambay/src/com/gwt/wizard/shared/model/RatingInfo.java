@@ -1,8 +1,7 @@
 package com.gwt.wizard.shared.model;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class RatingInfo implements IsSerializable
+public class RatingInfo extends Info
 {
     private Long bookingId;
     private Long contractorId;

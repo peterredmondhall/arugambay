@@ -14,11 +14,13 @@ import com.gwt.wizard.server.AgentManager;
 import com.gwt.wizard.server.BookingServiceManager;
 import com.gwt.wizard.server.ContractorManager;
 import com.gwt.wizard.server.ImageManager;
+import com.gwt.wizard.server.RatingManager;
 import com.gwt.wizard.server.RouteServiceManager;
 import com.gwt.wizard.server.entity.Agent;
 import com.gwt.wizard.server.entity.ArugamImage;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Contractor;
+import com.gwt.wizard.server.entity.Rating;
 import com.gwt.wizard.server.entity.Route;
 
 public class DumpServlet extends HttpServlet
@@ -31,6 +33,7 @@ public class DumpServlet extends HttpServlet
     RouteServiceManager routeServiceManager = new RouteServiceManager();
     ImageManager imageManager = new ImageManager();
     BookingServiceManager bookingServiceManager = new BookingServiceManager();
+    RatingManager ratingManager = new RatingManager();
 
     @Override
     @SuppressWarnings("unchecked")
@@ -43,11 +46,12 @@ public class DumpServlet extends HttpServlet
             return;
         }
         String bookings = bookingServiceManager.dump(Booking.class);
+        String ratings = ratingManager.dump(Rating.class);
         String routes = routeServiceManager.dump(Route.class);
         String images = imageManager.dump(ArugamImage.class);
         String contractors = new ContractorManager().dump(Contractor.class);
         String agents = new AgentManager().dump(Agent.class);
-        String content = bookings + images + routes + contractors + agents;
+        String content = bookings + ratings + images + routes + contractors + agents;
         byte[] bytes = null;
         try
         {

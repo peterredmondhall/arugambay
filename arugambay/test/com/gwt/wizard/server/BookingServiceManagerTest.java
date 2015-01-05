@@ -23,6 +23,7 @@ import com.google.common.io.Resources;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
+import com.gwt.wizard.server.entity.Rating;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
@@ -111,9 +112,29 @@ public class BookingServiceManagerTest
         return getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
     }
 
-    private void create_a_booking()
+    private BookingInfo create_a_booking()
     {
-        bs.addBookingWithClient(getStandardBookingInfo(), "client");
+        return bs.addBookingWithClient(getStandardBookingInfo(), "client");
+    }
+
+    private List<RatingInfo> create_a_rating()
+    {
+        Profil profil = new Profil();
+        List<BookingInfo> bookings = bs.getBookings();
+        assertEquals(1, bookings.size());
+        BookingInfo bi = bs.setPayed(profil, bookings.get(0), OrderStatus.PAID);
+
+        RatingInfo ratingInfo = new RatingInfo();
+        ratingInfo.setAuthor("author");
+        ratingInfo.setCleanliness(5);
+        ratingInfo.setProfessionality(4);
+        ratingInfo.setPunctuality(3);
+        ratingInfo.setSafety(2);
+        ratingInfo.setCritic("good");
+        ratingInfo.setBookingId(bi.getId());
+
+        ratingManager.add(ratingInfo);
+        return ratingManager.getRatings(bi.getRouteInfo());
 
     }
 
@@ -271,7 +292,6 @@ public class BookingServiceManagerTest
         assertEquals(1, list.size());
         Date date = list.get(0).getDate();
         assertEquals(true, date instanceof Serializable);
-        System.out.println(date);
 
     }
 
@@ -305,8 +325,11 @@ public class BookingServiceManagerTest
     public void should_create_dataset()
     {
         create_a_booking();
+        create_a_rating();
         String dataset = bs.dump(Booking.class);
         assertEquals(3, (dataset.split("com.gwt.wizard.shared.model.BookingInfo").length));
+        dataset = ratingManager.dump(Rating.class);
+        assertEquals(3, (dataset.split("com.gwt.wizard.shared.model.RatingInfo").length));
     }
 
     @SuppressWarnings("unchecked")
@@ -314,11 +337,17 @@ public class BookingServiceManagerTest
     public void should_import_booking_from_a_string() throws IOException
     {
         create_a_booking();
+        create_a_rating();
         String dataset = bs.dump(Booking.class);
 
         bs.importDataset(dataset, Booking.class);
         List<BookingInfo> bookings = bs.getBookings();
         assertEquals(1, bookings.size());
+
+        dataset = ratingManager.dump(Rating.class);
+
+        ratingManager.importDataset(dataset, Rating.class);
+        assertEquals(1, ratingManager.getAll(Rating.class).size());
 
     }
 
@@ -348,24 +377,10 @@ public class BookingServiceManagerTest
     public void should_add_rating()
     {
         create_a_booking();
-        Profil profil = new Profil();
-        List<BookingInfo> bookings = bs.getBookings();
-        assertEquals(1, bookings.size());
-        BookingInfo bi = bs.setPayed(profil, bookings.get(0), OrderStatus.PAID);
+        List<RatingInfo> ratings = create_a_rating();
 
-        RatingInfo ratingInfo = new RatingInfo();
-        ratingInfo.setAuthor("author");
-        ratingInfo.setCleanliness(5);
-        ratingInfo.setProfessionality(4);
-        ratingInfo.setPunctuality(3);
-        ratingInfo.setSafety(2);
-        ratingInfo.setCritic("good");
-        ratingInfo.setBookingId(bi.getId());
-
-        ratingManager.add(ratingInfo);
-
-        List<RatingInfo> ratings = ratingManager.getRatings(bi.getRouteInfo());
         assertEquals(1, ratings.size());
+        RatingInfo ratingInfo = ratings.get(0);
         assertEquals("author", ratingInfo.getAuthor());
         assertEquals(new Integer(5), ratingInfo.getCleanliness());
         assertEquals(new Integer(4), ratingInfo.getProfessionality());

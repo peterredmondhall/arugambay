@@ -78,7 +78,7 @@ public class ConfirmationStepUi extends Composite
             if (OrderType.SHARE.equals(bookingInfo.getOrderType()))
             {
                 label1.setText("Thank you for your share request");
-                label2.setText("A message has been sent to the person who booked the taxi.");
+                label2.setText("A message has been sent to the person who booked the taxi. You will be contacted by email when they accept you share request.");
                 return;
 
             }

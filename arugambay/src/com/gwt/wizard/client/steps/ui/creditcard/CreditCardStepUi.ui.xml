@@ -20,7 +20,7 @@
 	    <g:Label ui:field="paymentExplination2"/>
 	    		<g:Grid>
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>No. on credit card</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -31,7 +31,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Name</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -42,7 +42,7 @@
 				</g:customCell>
 			</g:row>
 						<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>cvc</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -53,7 +53,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Expiry</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -64,7 +64,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label></g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -72,7 +72,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row>
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label></g:Label>
 				</g:customCell>
 				<g:customCell>

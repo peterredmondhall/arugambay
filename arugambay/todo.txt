@@ -3,8 +3,14 @@ important
 taxisurfr ssl
 check android and iphone
 
-email from taxisurfr.com
+email from dispatch@taxisurfr.com
+hsbc
+about
+agent details in pdf dynamic
+share accepted confirmation
 
+
+testing with selenium sauce labs
 
 
 
@@ -32,6 +38,7 @@ previous no share
 rating must select 
 author in review
 payment layout
+download ratings
 
 
 

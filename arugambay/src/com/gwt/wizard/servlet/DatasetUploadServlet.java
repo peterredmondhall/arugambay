@@ -18,11 +18,13 @@ import com.gwt.wizard.server.AgentManager;
 import com.gwt.wizard.server.BookingServiceManager;
 import com.gwt.wizard.server.ContractorManager;
 import com.gwt.wizard.server.ImageManager;
+import com.gwt.wizard.server.RatingManager;
 import com.gwt.wizard.server.RouteServiceManager;
 import com.gwt.wizard.server.entity.Agent;
 import com.gwt.wizard.server.entity.ArugamImage;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Contractor;
+import com.gwt.wizard.server.entity.Rating;
 import com.gwt.wizard.server.entity.Route;
 
 public class DatasetUploadServlet extends HttpServlet
@@ -35,6 +37,7 @@ public class DatasetUploadServlet extends HttpServlet
     RouteServiceManager routeServiceManager = new RouteServiceManager();
     ContractorManager contractorManager = new ContractorManager();
     AgentManager agentManager = new AgentManager();
+    RatingManager ratingManager = new RatingManager();
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -63,6 +66,7 @@ public class DatasetUploadServlet extends HttpServlet
                     String dataset = new String(ByteStreams.toByteArray(stream));
 
                     bookingServiceManager.importDataset(dataset, Booking.class);
+                    ratingManager.importDataset(dataset, Rating.class);
                     imageManager.importDataset(dataset, ArugamImage.class);
                     routeServiceManager.importDataset(dataset, Route.class);
                     contractorManager.importDataset(dataset, Contractor.class);

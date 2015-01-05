@@ -65,7 +65,7 @@ public class ShareConfirmationStepUi extends Composite
             if (OrderStatus.PAID.equals(bookingInfo.get(0).getStatus()))
             {
                 BookingInfo sharer = bookingInfo.get(1);
-                label1.setText("Thank you for sharing your ride.");
+                label1.setText("Thank you agreeing to share your ride. Now, please get in contact directly with the person requesting the share.");
                 label2.setText("Below are the details of your fellow passenger.");
                 labelName.setText(sharer.getName());
                 labelEmail.setText(sharer.getEmail());

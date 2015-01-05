@@ -1,7 +1,5 @@
 package com.gwt.wizard.server.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +9,7 @@ import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.model.RatingInfo;
 
 @Entity
-public class Rating implements Serializable
+public class Rating extends ArugamEntity<RatingInfo>
 {
     private static final long serialVersionUID = 1L;
 
@@ -24,6 +22,12 @@ public class Rating implements Serializable
     Integer cleanliness;
     Integer safety;
     Integer punctuality;
+
+    @Override
+    public void setKey(Key key)
+    {
+        this.key = key;
+    }
 
     public Long getContractorId()
     {
@@ -113,6 +117,7 @@ public class Rating implements Serializable
         return rating;
     }
 
+    @Override
     public RatingInfo getInfo()
     {
         RatingInfo ratingInfo = new RatingInfo();
@@ -122,6 +127,7 @@ public class Rating implements Serializable
         ratingInfo.setSafety(safety);
         ratingInfo.setCritic(critic);
         ratingInfo.setAuthor(author);
+        ratingInfo.setId(key.getId());
 
         return ratingInfo;
     }
