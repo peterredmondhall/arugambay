@@ -145,7 +145,7 @@ public class Wizard extends Composite
     {
         if (stepList.get(currentstep) instanceof ShareStep)
         {
-            if (EXISTING_BOOKINGS_ON_ROUTE.size() == 0)
+            if (EXISTING_BOOKINGS_ON_ROUTE == null || EXISTING_BOOKINGS_ON_ROUTE.size() == 0)
             {
                 currentstep++;
             }

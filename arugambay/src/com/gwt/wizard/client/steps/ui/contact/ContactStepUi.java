@@ -1,6 +1,5 @@
 package com.gwt.wizard.client.steps.ui.contact;
 
-import static com.google.gwt.user.datepicker.client.CalendarUtil.resetTime;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import java.util.Date;
@@ -104,7 +103,7 @@ public class ContactStepUi extends Composite
         Date date = dateBox.getValue();
         if (date != null)
         {
-            resetTime(date);
+            date.setHours(12);
         }
         return date;
     }
