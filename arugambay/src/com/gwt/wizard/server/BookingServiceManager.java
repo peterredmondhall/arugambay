@@ -266,6 +266,7 @@ public class BookingServiceManager extends Manager
             @Override
             public boolean apply(BookingInfo bookingInfo)
             {
+                // TODO test this
                 return new DateTime(bookingInfo.getDate()).isAfter(now()) &&
                         OrderType.BOOKING == bookingInfo.getOrderType() &&
                         OrderStatus.PAID == bookingInfo.getStatus() &&
@@ -273,10 +274,7 @@ public class BookingServiceManager extends Manager
                         bookingInfo.getShareWanted();
             }
         };
-        List<BookingInfo> bookings = getBookings();
-        System.out.println("booking:" + bookings.get(0).getDate());
-        System.out.println("now:" + now());
-        List<BookingInfo> current = Lists.newArrayList(Collections2.filter(bookings, acceptEven));
+        List<BookingInfo> current = Lists.newArrayList(Collections2.filter(getBookings(), acceptEven));
 
         logger.info("share candidates size = " + current.size());
         return current;

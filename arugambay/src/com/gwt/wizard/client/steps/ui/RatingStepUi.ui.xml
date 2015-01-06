@@ -34,7 +34,7 @@
 <g:VerticalPanel>
 			<g:Image ui:field="imageSearch" url="images/banner.jpg" width="100%"/>			
 			<g:HorizontalPanel ui:field="hp1" styleName="{style.brd}">
-			<g:Label>Please rate your taxi transfer with Arugam Bay Taxi initiative:</g:Label>
+			<g:Label ui:field="instruction"/>
 						
 			</g:HorizontalPanel>
 			<g:HorizontalPanel ui:field="hp2" styleName="{style.brd}">

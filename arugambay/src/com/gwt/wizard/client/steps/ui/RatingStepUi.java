@@ -17,22 +17,11 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.GwtWizard;
-
-class ConfirmationPopupPanel extends PopupPanel
-{
-
-    ConfirmationPopupPanel()
-    {
-        super(true);
-        setWidget(new Label("Thank you for your feedback!"));
-    }
-};
 
 public class RatingStepUi extends Composite
 {
@@ -45,12 +34,17 @@ public class RatingStepUi extends Composite
     @UiField
     Panel mainPanel, hp2;
 
+    @UiField
+    Label instruction;
+
     public RatingStepUi()
     {
 
         initWidget(uiBinder.createAndBindUi(this));
         setVisible(true);
         hp2.add(getRatingTable());
+        // TODO contractor name
+        instruction.setText("Please rate your transfer");
     }
 
     @Override
@@ -83,6 +77,7 @@ public class RatingStepUi extends Composite
     RadioBar professionality = new RadioBar("professionality");
 
     Label labelCleanliness = new Label("select a rating");
+
     Label labelSafety = new Label("select a rating");
     Label labelPunctuality = new Label("select a rating");
     Label labelProfessionality = new Label("select a rating");
@@ -104,7 +99,7 @@ public class RatingStepUi extends Composite
         cellFormatter.setHorizontalAlignment(
                 0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-        layout.setWidget(1, 1, new Label("1=poor  5=excellent"));
+        layout.setWidget(1, 2, new Label("1=poor  5=excellent"));
 
         layout.setWidget(2, 1, new Label("Cleanliness"));
         layout.setWidget(3, 1, new Label("Safety"));
@@ -120,11 +115,15 @@ public class RatingStepUi extends Composite
         layout.setWidget(3, 3, labelSafety);
         layout.setWidget(4, 3, labelPunctuality);
         layout.setWidget(5, 3, labelProfessionality);
+        labelCleanliness.setWidth("100px");
+        labelSafety.setWidth("100px");
+        labelPunctuality.setWidth("100px");
+        labelProfessionality.setWidth("100px");
 
         hideLabels();
 
         critic.setWidth("500px");
-        critic.setHeight("100px");
+        critic.setHeight("30px");
 
         layout.setWidget(6, 1, new Label("How was your experience in words?"));
         layout.setWidget(6, 2, critic);
@@ -132,7 +131,7 @@ public class RatingStepUi extends Composite
         layout.setWidget(7, 2, nicknameField);
         layout.setWidget(8, 2, getSubmitButton());
         l.setVisible(false);
-        layout.setWidget(8, 2, l);
+        layout.setWidget(9, 2, l);
 
         // Wrap the contents in a DecoratorPanel
         DecoratorPanel decPanel = new DecoratorPanel();

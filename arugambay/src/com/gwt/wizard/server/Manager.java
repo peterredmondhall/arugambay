@@ -53,6 +53,7 @@ public class Manager<T extends Info, K extends ArugamEntity<?>>
         List<T> list = Lists.newArrayList();
         for (K entity : resultList)
         {
+            em.detach(entity);
             list.add((T) entity.getInfo());
         }
         em.close();
