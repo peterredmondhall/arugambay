@@ -20,14 +20,11 @@ import com.gwt.wizard.server.entity.Config;
 import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.entity.Route;
-import com.gwt.wizard.server.entity.Stat;
-import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
-import com.gwt.wizard.shared.model.StatInfo;
 
 /**
  * The server-side implementation of the RPC service.
@@ -71,11 +68,6 @@ public class BookingServiceManager extends Manager
     {
         Route route = em.find(Route.class, id);
         return route.getInfo();
-    }
-
-    private static EntityManager getEntityManager()
-    {
-        return EMF.get().createEntityManager();
     }
 
     private static final long ALL_BOOKINGS = -1;
@@ -301,24 +293,6 @@ public class BookingServiceManager extends Manager
             em.close();
         }
         return bookingInfo;
-    }
-
-    public void sendStat(StatInfo statInfo)
-    {
-        EntityManager em = getEntityManager();
-        try
-        {
-            Stat stat = Stat.getStat(statInfo);
-            em.persist(stat);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            em.close();
-        }
     }
 
     public BookingInfo getBooking(Long id)

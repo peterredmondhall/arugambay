@@ -1,7 +1,5 @@
 package com.gwt.wizard.server.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +9,7 @@ import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.model.StatInfo;
 
 @Entity
-public class Stat implements Serializable
+public class Stat extends ArugamEntity<StatInfo>
 {
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +34,20 @@ public class Stat implements Serializable
     public void setCountry(String country)
     {
         this.country = country;
+    }
+
+    @Override
+    public void setKey(Key key)
+    {
+        this.key = key;
+
+    }
+
+    @Override
+    public StatInfo getInfo()
+    {
+        // TODO
+        return null;
     }
 
 }

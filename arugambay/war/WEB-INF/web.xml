@@ -31,6 +31,11 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
+		<servlet-name>StatServlet</servlet-name>
+		<url-pattern>/stat</url-pattern>
+	</servlet-mapping>
+			
+	<servlet-mapping>
 		<servlet-name>ImageServlet</servlet-name>
 		<url-pattern>/imageservice</url-pattern>
 	</servlet-mapping>
@@ -75,6 +80,11 @@
 		<servlet-class>com.gwt.wizard.servlet.RatingServlet</servlet-class>
 	</servlet>
 
+		<servlet>
+		<servlet-name>StatServlet</servlet-name>
+		<servlet-class>com.gwt.wizard.servlet.StatServlet</servlet-class>
+	</servlet>
+	
 		<servlet-mapping>
 		<servlet-name>PDFRendererServlet</servlet-name>
 		<url-pattern>/orderform</url-pattern>
@@ -84,8 +94,8 @@
 		<servlet-name>RatingServlet</servlet-name>
 		<url-pattern>/rating</url-pattern>
 	</servlet-mapping>
-
-		<servlet>
+		
+	<servlet>
 	    <servlet-name>remoteLogging</servlet-name>
 	    <servlet-class>com.google.gwt.logging.server.RemoteLoggingServiceImpl</servlet-class>
 	</servlet>

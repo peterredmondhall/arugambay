@@ -10,18 +10,12 @@ import javax.persistence.EntityManager;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Rating;
 import com.gwt.wizard.server.entity.Route;
-import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 
 public class RatingManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(RatingManager.class.getName());
-
-    private static EntityManager getEntityManager()
-    {
-        return EMF.get().createEntityManager();
-    }
 
     public void add(RatingInfo ratingInfo)
     {

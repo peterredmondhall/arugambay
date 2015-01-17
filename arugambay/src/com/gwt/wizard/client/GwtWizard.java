@@ -8,6 +8,11 @@ import java.util.logging.Logger;
 import com.google.common.collect.ImmutableList;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
@@ -30,7 +35,6 @@ import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
-import com.gwt.wizard.shared.model.StatInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -89,8 +93,6 @@ public class GwtWizard implements EntryPoint
         shareConfirmationStep = new ShareConfirmationStep();
         ratingStep = new RatingStep();
 
-        collectStats();
-
         String transaction = Window.Location.getParameter("tx");
         String shareId = Window.Location.getParameter("share");
         String review = Window.Location.getParameter("review");
@@ -125,6 +127,7 @@ public class GwtWizard implements EntryPoint
             List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, creditCardStep, confirmationStep);
             completeSetup(transportStep, l);
         }
+        collectStats();
 
     }
 
@@ -159,25 +162,28 @@ public class GwtWizard implements EntryPoint
 
     private void collectStats()
     {
-        StatInfo statInfo = new StatInfo();
-        String country = Window.Location.getParameter("X-AppEngine-Country");
-        statInfo.setCountry(country);
+        String protocol = Window.Location.getProtocol();
+        String url = protocol + "//" + Window.Location.getHost() + "/stat";
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 
-        SERVICE.sendStat(statInfo, new AsyncCallback<Void>()
+        try
         {
-
-            @Override
-            public void onFailure(Throwable caught)
+            Request response = builder.sendRequest(null, new RequestCallback()
             {
-                Window.alert("Failed to connect to server");
-            }
+                @Override
+                public void onError(Request request, Throwable exception)
+                {
+                }
 
-            @Override
-            public void onSuccess(Void bi)
-            {
-
-            }
-        });
+                @Override
+                public void onResponseReceived(Request request, Response response)
+                {
+                }
+            });
+        }
+        catch (RequestException e)
+        {
+        }
 
 //        
 //

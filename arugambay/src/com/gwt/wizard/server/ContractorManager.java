@@ -8,18 +8,12 @@ import javax.persistence.EntityManager;
 
 import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Contractor;
-import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 
 public class ContractorManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(ContractorManager.class.getName());
-
-    private static EntityManager getEntityManager()
-    {
-        return EMF.get().createEntityManager();
-    }
 
     public ContractorInfo createContractor(ContractorInfo contractorInfo)
     {

@@ -1,8 +1,7 @@
 package com.gwt.wizard.shared.model;
 
-import java.io.Serializable;
 
-public class StatInfo implements Serializable
+public class StatInfo extends Info
 {
     /**
      * 

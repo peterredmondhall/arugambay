@@ -9,17 +9,11 @@ import javax.persistence.NoResultException;
 
 import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Agent;
-import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.AgentInfo;
 
 public class AgentManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(AgentManager.class.getName());
-
-    private static EntityManager getEntityManager()
-    {
-        return EMF.get().createEntityManager();
-    }
 
     public AgentInfo createAgent(String agentEmail)
     {

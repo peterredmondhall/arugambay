@@ -9,7 +9,6 @@ import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
 import com.gwt.wizard.server.entity.ArugamImage;
-import com.gwt.wizard.server.jpa.EMF;
 import com.gwt.wizard.shared.model.ArugamImageInfo;
 
 /**
@@ -18,11 +17,6 @@ import com.gwt.wizard.shared.model.ArugamImageInfo;
 public class ImageManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(ImageManager.class.getName());
-
-    private static EntityManager getEntityManager()
-    {
-        return EMF.get().createEntityManager();
-    }
 
     public Long addImage(byte[] image) throws IllegalArgumentException
     {

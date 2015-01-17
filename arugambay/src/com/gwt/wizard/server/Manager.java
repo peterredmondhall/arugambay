@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.XStream;
 public class Manager<T extends Info, K extends ArugamEntity<?>>
 {
 
-    private static EntityManager getEntityManager()
+    protected static EntityManager getEntityManager()
     {
         return EMF.get().createEntityManager();
     }

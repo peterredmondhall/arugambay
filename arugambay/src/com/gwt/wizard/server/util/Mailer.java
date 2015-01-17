@@ -145,4 +145,9 @@ public class Mailer
 
     }
 
+    public static void sendReport(String report)
+    {
+        send("hall@hall-services.de", report, null);
+    }
+
 }

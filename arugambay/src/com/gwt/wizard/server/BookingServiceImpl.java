@@ -161,7 +161,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public void sendStat(StatInfo statInfo)
     {
-        bookingServiceManager.sendStat(statInfo);
+        // TODO remove
     }
 
     @Override
