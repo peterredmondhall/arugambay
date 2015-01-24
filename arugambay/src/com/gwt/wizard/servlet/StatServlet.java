@@ -26,14 +26,17 @@ public class StatServlet extends HttpServlet
             throws IOException
     {
         String country = req.getHeader("X-AppEngine-Country");
-        String info = req.getHeader("X-AppEngine-CityLatLong");
-
+        String cityLatLong = req.getHeader("X-AppEngine-CityLatLong");
+        String region = req.getHeader("X-AppEngine-Region");
+        String city = req.getHeader("X-AppEngine-City");
         if (country == null || country.trim().length() == 0)
         {
             country = "XXX";
         }
         log.info("country:" + country);
-        log.info("info:" + info);
+        log.info("cityLatLong:" + cityLatLong);
+        log.info("region:" + region);
+        log.info("city:" + city);
         final String ip = req.getRemoteAddr();
         StatInfo statInfo = new StatInfo();
         statInfo.setCountry(country);

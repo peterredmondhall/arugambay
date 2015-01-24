@@ -106,6 +106,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException
     {
+        logger.info("route inquiry:" + routeInfo.getDescription());
         return bookingServiceManager.getBookingsForRoute(routeInfo);
     }
 
