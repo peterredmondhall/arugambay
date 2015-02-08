@@ -313,7 +313,7 @@ public class BookingServiceManager extends Manager
             List<Booking> resultList = em.createQuery("select t from Booking t").getResultList();
             for (Booking booking : resultList)
             {
-                if (booking.getRated() != null && !booking.getRated())
+                if (booking.getRated() != null && !booking.getRated() && OrderStatus.PAID.equals(booking.getStatus()))
                 {
                     DateTime bookingDate = new DateTime(booking.getDate());
                     if (bookingDate.plusDays(1).isBefore(DateTime.now()))
@@ -341,5 +341,4 @@ public class BookingServiceManager extends Manager
         return bookings;
 
     }
-
 }

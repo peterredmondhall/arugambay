@@ -5,6 +5,7 @@ import java.io.File;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class BookingUtilTest
@@ -22,7 +23,7 @@ public class BookingUtilTest
         bookingInfo.setEmail("email");
         bookingInfo.setRequirements("requirements");
         bookingInfo.setId(1234L);
-        String html = BookingUtil.toConfirmationEmailHtml(bookingInfo, new File("war/template/confirmation.html"));
+        String html = BookingUtil.toConfirmationEmailHtml(bookingInfo, new File("war/template/confirmation.html"), new Profil());
         System.out.println(html);
     }
 

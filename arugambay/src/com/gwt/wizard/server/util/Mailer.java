@@ -53,9 +53,9 @@ public class Mailer
         send(profil.getContractorEmail(), html, null);
     }
 
-    public static void sendShareAccepted(String email, BookingInfo parentBookingInfo)
+    public static void sendShareAccepted(String email, BookingInfo parentBookingInfo, Profil profil)
     {
-        String html = BookingUtil.toConfirmationEmailHtml(parentBookingInfo, getFile(SHARE_ACCEPTED));
+        String html = BookingUtil.toConfirmationEmailHtml(parentBookingInfo, getFile(SHARE_ACCEPTED), profil);
         send(email, html, null);
 
     }
@@ -64,8 +64,9 @@ public class Mailer
     {
 
         String html = "error";
-        html = BookingUtil.toConfirmationEmailHtml(bookingInfo, getFile(CONFIRMATION));
+        html = BookingUtil.toConfirmationEmailHtml(bookingInfo, getFile(CONFIRMATION), profil);
         html = html.replace("INSERT_ORDERFORM", profil.getTaxisurfUrl() + "/orderform?order=" + bookingInfo.getId());
+
         byte[] pdfData = new PdfUtil().generateTaxiOrder("template/order.pdf", bookingInfo);
         String email = bookingInfo.getEmail();
         send(email, html, pdfData);

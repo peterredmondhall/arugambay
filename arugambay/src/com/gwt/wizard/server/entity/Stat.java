@@ -17,12 +17,26 @@ public class Stat extends ArugamEntity<StatInfo>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key key;
 
+    String type;
+
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
     String country;
 
     public static Stat getStat(StatInfo statInfo)
     {
         Stat stat = new Stat();
         stat.setCountry(statInfo.getCountry());
+        stat.setType(statInfo.getType());
+
         return stat;
     }
 

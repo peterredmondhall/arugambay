@@ -118,9 +118,9 @@ public class RouteInfo extends Info
         this.cents = cents;
     }
 
-    public String getKey()
+    public String getKey(String price)
     {
-        return getStart() + " to " + getEnd();
+        return getStart() + " to " + getEnd() + " " + price;
     }
 
 }

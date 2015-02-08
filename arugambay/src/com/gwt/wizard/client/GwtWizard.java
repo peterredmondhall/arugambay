@@ -35,6 +35,8 @@ import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
+import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.StatInfo;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -98,6 +100,7 @@ public class GwtWizard implements EntryPoint
         String review = Window.Location.getParameter("review");
         String nick = Window.Location.getParameter("nick");
         String defaultuser = Window.Location.getParameter("defaultagent");
+        String routeId = Window.Location.getParameter("route");
         if (defaultuser != null)
         {
             createDefaultUser();
@@ -123,9 +126,9 @@ public class GwtWizard implements EntryPoint
         }
         else
         {
-            // List<WizardStep> l = ImmutableList.of((WizardStep) ratingStep);
             List<WizardStep> l = ImmutableList.of(transportStep, shareStep, contactStep, summaryStep, creditCardStep, confirmationStep);
             completeSetup(transportStep, l);
+            displayRoute(transportStep, routeId);
         }
         collectStats();
 
@@ -280,4 +283,54 @@ public class GwtWizard implements EntryPoint
 		return navigator.userAgent.toLowerCase();
     }-*/;
 
+    public static void sendStat(String type)
+    {
+        StatInfo statInfo = new StatInfo();
+        statInfo.setType(type);
+        SERVICE.sendStat(statInfo, new AsyncCallback<Void>()
+        {
+
+            @Override
+            public void onSuccess(Void profil)
+            {
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
+            }
+        });
+
+    }
+
+    private void displayRoute(final TransportStep transportStep, String routeId)
+    {
+        if (routeId == null)
+        {
+            return;
+        }
+        try
+        {
+            Long id = Long.parseLong(routeId);
+            SERVICE.getRoute(id, new AsyncCallback<RouteInfo>()
+            {
+
+                @Override
+                public void onSuccess(RouteInfo routeInfo)
+                {
+                    Wizard.ROUTEINFO = routeInfo;
+                    transportStep.displayRoute();
+                }
+
+                @Override
+                public void onFailure(Throwable caught)
+                {
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
 }

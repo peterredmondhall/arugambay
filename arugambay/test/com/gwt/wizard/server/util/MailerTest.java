@@ -15,7 +15,7 @@ import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 public class MailerTest
 {
     @Test
-    public void test()
+    public void testFeedbackRequest() throws Exception
     {
         BookingInfo bookingInfo = new BookingInfo();
 

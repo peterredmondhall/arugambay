@@ -70,18 +70,18 @@ public class BookingUtil
     public static String toConfirmationRequestHtml(BookingInfo bookingInfo, File file, Profil profil)
     {
         String html = getTemplate(file);
-        html = toConfirmationEmailHtml(bookingInfo, html);
+        html = toConfirmationEmailHtml(bookingInfo, html, profil);
         html = html.replace("AGREE_SHARE_LINK", profil.getTaxisurfUrl() + "?share=" + bookingInfo.getId());
         return html;
     }
 
-    public static String toConfirmationEmailHtml(BookingInfo bookingInfo, File file)
+    public static String toConfirmationEmailHtml(BookingInfo bookingInfo, File file, Profil profil)
     {
         String html = getTemplate(file);
-        return toConfirmationEmailHtml(bookingInfo, html);
+        return toConfirmationEmailHtml(bookingInfo, html, profil);
     }
 
-    public static String toConfirmationEmailHtml(BookingInfo bookingInfo, String html)
+    public static String toConfirmationEmailHtml(BookingInfo bookingInfo, String html, Profil profil)
     {
         String insertion = "";
         for (Pair<String, String> pair : toPairList(bookingInfo))
@@ -89,6 +89,15 @@ public class BookingUtil
             insertion += "<tr>\n";
             insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.first);
             insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.second);
+            insertion += "</tr>\n";
+        }
+        if (bookingInfo.getShareWanted())
+        {
+            String insertShare = profil.getTaxisurfUrl() + "?route=" + bookingInfo.getRouteId();
+
+            insertion += "<tr>\n";
+            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", "Here is a link to your route to help find sharers ");
+            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", insertShare);
             insertion += "</tr>\n";
         }
 

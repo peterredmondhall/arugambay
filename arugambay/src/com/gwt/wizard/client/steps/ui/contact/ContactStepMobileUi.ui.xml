@@ -21,7 +21,7 @@
 			You are creating a new booking.
 		</g:Label>
 	   <g:Label ui:field="labelSharing">
-			You are creating a share enquiry. If you want to make a new booking, go back to to the previous step.
+			You are creating a share request. If you want to make a new booking, go back to to the previous step.
 		</g:Label>
 	   	    
 		<g:Grid>

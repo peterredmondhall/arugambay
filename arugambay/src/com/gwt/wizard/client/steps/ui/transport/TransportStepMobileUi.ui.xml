@@ -37,6 +37,11 @@
 		.imageRoute {
 			max-width: 100px;
 		}
+		.callaction {
+			margin-top:20px;
+			margin-left:10px;
+			margin-right:10px;
+		}
 
 	</ui:style>
 	<g:HTMLPanel ui:field="mainPanel">
@@ -50,13 +55,25 @@
 					styleName="{style.selectContainerStyle}">
 				</g:FlowPanel>
 			</g:HorizontalPanel>
-			<g:VerticalPanel ui:field="panelRoute">
+				<g:VerticalPanel ui:field="panelMotivation">
+				<g:Label  styleName="{style.callaction}">
+					Hi. Welcome to taxisurfr. 
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					If you want to book a reliable and safe taxi you are in right place. Just enter details and book the taxi.
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					Apart from being a taxi booking service, we also offer taxi sharing.
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					Book now. The earlier you book, the better your chances of somebody sharing with you.
+				</g:Label>
+				</g:VerticalPanel>			
+						<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />
 				<g:HorizontalPanel>
 					    <g:Image ui:field="imageVehicle" styleName="{style.imageRoute}" />
 					<g:VerticalPanel>
-						<g:Label>USD</g:Label>
-						<g:Label ui:field="labelPrice" />
 						<g:Label styleName="{style.desc}">Description</g:Label>
 						<g:Label ui:field="labelDescription" />
 

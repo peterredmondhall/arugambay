@@ -27,6 +27,8 @@ public interface BookingServiceAsync
 
     void getContractors(AgentInfo userInfo, AsyncCallback<List<ContractorInfo>> callback);
 
+    void getRoute(Long routeId, AsyncCallback<RouteInfo> callback);
+
     void getRoutes(AsyncCallback<List<RouteInfo>> callback);
 
     void deleteRoute(AgentInfo userInfo, RouteInfo placeInfo, AsyncCallback<List<RouteInfo>> callback)

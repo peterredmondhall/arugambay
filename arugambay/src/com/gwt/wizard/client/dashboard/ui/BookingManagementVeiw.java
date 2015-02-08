@@ -156,7 +156,7 @@ public class BookingManagementVeiw extends Composite
             @Override
             public String getValue(BookingInfo booking)
             {
-                return booking.getRouteInfo().getKey();
+                return booking.getRouteInfo().getKey("");
             }
         };
 

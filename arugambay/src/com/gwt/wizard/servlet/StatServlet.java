@@ -39,6 +39,7 @@ public class StatServlet extends HttpServlet
         log.info("city:" + city);
         final String ip = req.getRemoteAddr();
         StatInfo statInfo = new StatInfo();
+        statInfo.setType("country");
         statInfo.setCountry(country);
         statManager.sendStat(statInfo);
 

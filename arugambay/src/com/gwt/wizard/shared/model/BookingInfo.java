@@ -180,7 +180,7 @@ public class BookingInfo extends Info
     public String getPaidAmt()
     {
         Double d = (double) routeInfo.getCents() / 100;
-        return "USD" + d;
+        return "US$" + d;
     }
 
     public RouteInfo getRouteInfo()

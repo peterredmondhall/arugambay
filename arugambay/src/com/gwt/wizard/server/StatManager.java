@@ -37,17 +37,32 @@ public class StatManager extends Manager
     public void report()
     {
         Map<String, Integer> countries = Maps.newHashMap();
+        Map<String, Integer> steps = Maps.newHashMap();
         List<Stat> list = getAll(Stat.class);
         for (Stat stat : list)
         {
-            String country = stat.getCountry();
-            if (countries.get(country) == null)
+            if ("country".equals(stat.getType()))
             {
-                countries.put(country, 0);
+                String country = stat.getCountry();
+                if (countries.get(country) == null)
+                {
+                    countries.put(country, 0);
+                }
+                Integer count = countries.get(country);
+                count++;
+                countries.put(country, count);
             }
-            Integer count = countries.get(country);
-            count++;
-            countries.put(country, count);
+            if ((stat.getType() != null && stat.getType().startsWith("step")))
+            {
+                if (steps.get(stat.getType()) == null)
+                {
+                    steps.put(stat.getType(), 0);
+                }
+                Integer count = steps.get(stat.getType());
+                count++;
+                steps.put(stat.getType(), count);
+
+            }
         }
 
         String report = "countries:" + countries.keySet().size();
@@ -55,6 +70,12 @@ public class StatManager extends Manager
         {
             Integer count = countries.get(country);
             report += "<br>" + country + " " + count;
+        }
+
+        for (String stepz : steps.keySet())
+        {
+            Integer count = steps.get(stepz);
+            report += "<br>" + stepz + " " + count;
         }
 
         Mailer.sendReport(report);

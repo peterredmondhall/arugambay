@@ -182,7 +182,7 @@ public class CreditCardStepUi extends Composite
         next.setVisible(false);
         prev.setEnabled(true);
 
-        payWithCC.setText("Pay $" + Helper.getDollars(Wizard.ROUTEINFO));
+        payWithCC.setText("Pay " + Helper.getDollars(Wizard.ROUTEINFO));
     }
 
     @Override

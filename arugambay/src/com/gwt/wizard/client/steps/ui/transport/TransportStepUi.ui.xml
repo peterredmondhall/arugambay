@@ -43,6 +43,11 @@
 		.description {
 			margin-left:6px;
 		}
+		.callaction {
+			margin-top:20px;
+			margin-left:100px;
+			margin-right:100px;
+		}
 
 	</ui:style>
 	<g:HTMLPanel ui:field="mainPanel">
@@ -55,14 +60,33 @@
 			    <g:FlowPanel ui:field="routeSuggestionPanel"
 					styleName="{style.selectContainerStyle}">
 				</g:FlowPanel>
+			    
 			</g:HorizontalPanel>
-			<g:VerticalPanel ui:field="panelRoute">
+				<g:VerticalPanel ui:field="panelMotivation">
+				<g:Label  styleName="{style.callaction}">
+					Hi. Welcome to taxisurfr. 
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					If you want to book a reliable and safe taxi you are in right place. Just enter details and book the taxi.
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					Apart from being a taxi booking service, we also offer taxi sharing. When you book your taxi and you wish to share, your booking will seen by others who are booking the same route.
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					If you want to join an existing booking, then just search for your route above and, if there is a share available, you can join it.
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					Book now. The earlier you book, the better your chances of somebody sharing with you.
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					Go a question? Post it below. Thanks for using taxisurfr.
+				</g:Label>
+				</g:VerticalPanel>			
+				<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />
 				<g:HorizontalPanel>
 					    <g:Image ui:field="imageVehicle" styleName="{style.imagePlace}" />
 					<g:VerticalPanel styleName="{style.description}">
-						<g:Label>USD</g:Label>
-						<g:Label ui:field="labelPrice" />
 						<g:Label styleName="{style.desc}">Description</g:Label>
 						<g:Label ui:field="labelDescription" />
 

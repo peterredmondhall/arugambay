@@ -12,7 +12,7 @@ public class Helper
         if (routeInfo.getCents() != null)
         {
             Double d = (double) routeInfo.getCents() / 100;
-            return usdFormat.format(d);
+            return "US$" + usdFormat.format(d);
         }
         return "no price";
 

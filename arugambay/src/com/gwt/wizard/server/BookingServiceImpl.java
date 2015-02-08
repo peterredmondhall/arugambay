@@ -35,6 +35,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     private final RouteServiceManager routeServiceManager = new RouteServiceManager();
     private final AgentManager agentManager = new AgentManager();
     private final ContractorManager contractorManager = new ContractorManager();
+    private final StatManager statManager = new StatManager();
     private final RatingManager ratingManager = new RatingManager();
     private final StripePayment stripePayment = new StripePayment();
 
@@ -106,7 +107,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException
     {
-        logger.info("route inquiry:" + routeInfo.getDescription());
+        logger.info("route inquiry:" + routeInfo.getStart() + " -> " + routeInfo.getEnd());
         return bookingServiceManager.getBookingsForRoute(routeInfo);
     }
 
@@ -121,7 +122,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         if (sharerBookingInfo.getStatus() == SHARE_ACCEPTED)
         {
             list = Lists.newArrayList(parentBookingInfo, sharerBookingInfo);
-            Mailer.sendShareAccepted(sharerBookingInfo.getEmail(), parentBookingInfo);
+            Mailer.sendShareAccepted(sharerBookingInfo.getEmail(), parentBookingInfo, bookingServiceManager.getProfil());
         }
         else
         {
@@ -162,7 +163,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public void sendStat(StatInfo statInfo)
     {
-        // TODO remove
+        statManager.sendStat(statInfo);
     }
 
     @Override
@@ -284,6 +285,12 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             Mailer.setFeedbackRequest(bi, profil);
         }
 
+    }
+
+    @Override
+    public RouteInfo getRoute(Long routeId) throws IllegalArgumentException
+    {
+        return routeServiceManager.getRoute(routeId);
     }
 
 }

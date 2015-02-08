@@ -22,9 +22,9 @@
 			
 		</g:Label>
 	   <g:Label ui:field="labelSharing">
-			You are creating a share enquiry. If you want to make a new booking, go back to to the previous step.
+			You are creating a share request. Enter your details in order to coordinate with your fellow passenger.
 		</g:Label>
-	   	    
+	   	   	    
 		<g:Grid>
 			<!-- Date -->
 			<g:row>

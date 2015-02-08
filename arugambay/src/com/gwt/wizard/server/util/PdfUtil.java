@@ -71,7 +71,7 @@ public class PdfUtil
 
             Font helvetica = new Font(FontFamily.HELVETICA, 20);
             BaseFont bf_helv = helvetica.getCalculatedBaseFont(false);
-            Chunk c1 = new Chunk(bookingInfo.getRouteInfo().getKey(), helvetica);
+            Chunk c1 = new Chunk(bookingInfo.getRouteInfo().getKey(""), helvetica);
             Chunk c2 = new Chunk(CUSTOMER_FEEDBACK, helvetica);
 
             ColumnText.showTextAligned(canvas,

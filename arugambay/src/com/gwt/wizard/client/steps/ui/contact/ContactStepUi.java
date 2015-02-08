@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.user.datepicker.client.DateBox.DefaultFormat;
 import com.gwt.wizard.client.core.Wizard;
+import com.gwt.wizard.client.dashboard.ui.Helper;
 import com.gwt.wizard.shared.OrderType;
 
 public class ContactStepUi extends Composite
@@ -215,7 +216,7 @@ public class ContactStepUi extends Composite
         labelFlightNo.setText(Wizard.ROUTEINFO.getPickupType().getLocationType());
         labelFlightLandingTime.setText(Wizard.ROUTEINFO.getPickupType().getTimeType());
 
-        labelBooking.setText(Wizard.ROUTEINFO.getKey());
+        labelBooking.setText(Wizard.ROUTEINFO.getKey(Helper.getDollars(Wizard.ROUTEINFO)));
 
     }
 

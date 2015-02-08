@@ -174,4 +174,25 @@ public class RouteServiceManager extends Manager
 
     }
 
+    public RouteInfo getRoute(Long routeId)
+    {
+        RouteInfo routeInfo = null;
+        try
+        {
+            List<Route> resultList = getEntityManager().createQuery("select t from Route t ").getResultList();
+
+            // Route route = (Route) getEntityManager().createQuery("select t from Route t where id=routeId").getSingleResult();
+
+            Route route = getEntityManager().find(Route.class, routeId);
+            routeInfo = route.getInfo();
+
+        }
+        catch (Exception ex)
+        {
+            logger.log(Level.INFO, "getting route failed " + routeId + ex.getMessage(), ex);
+
+        }
+        return routeInfo;
+    }
+
 }

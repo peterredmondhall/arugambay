@@ -7,7 +7,6 @@ import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -25,6 +24,7 @@ import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.core.Wizard;
+import com.gwt.wizard.client.dashboard.ui.Helper;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.client.steps.ui.widget.RatingList;
@@ -44,7 +44,7 @@ public class TransportStepUi extends Composite
     }
 
     @UiField
-    Panel mainPanel, ratingsPanel, dp;
+    Panel mainPanel, ratingsPanel, dp, panelMotivation;
 
     @UiField
     Image imageVehicle;
@@ -53,7 +53,7 @@ public class TransportStepUi extends Composite
     Panel routeSuggestionPanel, panelRoute;
 
     @UiField
-    Label labelRouteName, labelPrice;
+    Label labelRouteName;
 
     @UiField
     Label labelDescription;
@@ -118,8 +118,10 @@ public class TransportStepUi extends Composite
 
                 for (RouteInfo routeInfo : routes)
                 {
-                    mapRouteInfo.put(routeInfo.getKey(), routeInfo);
-                    oracle.add(routeInfo.getKey());
+                    String key = routeInfo.getKey(Helper.getDollars(routeInfo));
+                    mapRouteInfo.put(key, routeInfo);
+
+                    oracle.add(key);
                 }
                 final SuggestBox suggestBox = new SuggestBox(oracle);
                 setSuggestBoxWidth(suggestBox);
@@ -133,50 +135,8 @@ public class TransportStepUi extends Composite
                     {
                         String displayString = event.getSelectedItem().getReplacementString();
                         RouteInfo routeInfo = mapRouteInfo.get(displayString);
-                        labelRouteName.setText(routeInfo.getKey());
-                        if (routeInfo.getCents() != null)
-                        {
-                            NumberFormat usdFormat = NumberFormat.getFormat(".00");
-                            Double d = (double) routeInfo.getCents() / 100;
-                            labelPrice.setText("$" + usdFormat.format(d));
-                        }
-                        imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
-                        labelDescription.setText(routeInfo.getDescription());
-
-                        panelRoute.setVisible(true);
                         Wizard.ROUTEINFO = routeInfo;
-                        next.setEnabled(true);
-                        GwtWizard.SERVICE.getBookingsForRoute(Wizard.ROUTEINFO, new AsyncCallback<List<BookingInfo>>()
-                        {
-                            @Override
-                            public void onSuccess(List<BookingInfo> list)
-                            {
-                                Wizard.EXISTING_BOOKINGS_ON_ROUTE = list;
-                                suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
-                            }
-
-                            @Override
-                            public void onFailure(Throwable caught)
-                            {
-                            }
-                        });
-
-                        GwtWizard.SERVICE.getRatings(Wizard.ROUTEINFO, new AsyncCallback<List<RatingInfo>>()
-                        {
-                            @Override
-                            public void onSuccess(List<RatingInfo> ratings)
-                            {
-                                if (ratings.size() > 0)
-                                {
-                                    fp.add(new RatingList(ratings).createRatingForm());
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Throwable caught)
-                            {
-                            }
-                        });
+                        displayRoute(/* suggestBox, */);
                     }
 
                 };
@@ -188,6 +148,49 @@ public class TransportStepUi extends Composite
             public void onFailure(Throwable caught)
             {
                 Window.alert("Failed to connect to Server!");
+            }
+        });
+    }
+
+    public void displayRoute()
+    {
+        panelMotivation.setVisible(false);
+        RouteInfo routeInfo = Wizard.ROUTEINFO;
+        labelRouteName.setText(routeInfo.getKey(Helper.getDollars(routeInfo)));
+        imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
+        labelDescription.setText(routeInfo.getDescription());
+
+        panelRoute.setVisible(true);
+        next.setEnabled(true);
+        GwtWizard.SERVICE.getBookingsForRoute(Wizard.ROUTEINFO, new AsyncCallback<List<BookingInfo>>()
+        {
+            @Override
+            public void onSuccess(List<BookingInfo> list)
+            {
+                Wizard.EXISTING_BOOKINGS_ON_ROUTE = list;
+                // suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
+            }
+        });
+
+        GwtWizard.SERVICE.getRatings(Wizard.ROUTEINFO, new AsyncCallback<List<RatingInfo>>()
+        {
+            @Override
+            public void onSuccess(List<RatingInfo> ratings)
+            {
+                if (ratings.size() > 0)
+                {
+                    fp.add(new RatingList(ratings).createRatingForm());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable caught)
+            {
             }
         });
     }
@@ -214,5 +217,4 @@ public class TransportStepUi extends Composite
 
         return panelHeight + "px";
     }
-
 }

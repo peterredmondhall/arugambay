@@ -4,6 +4,7 @@ import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.transport.TransportStepMobileUi;
@@ -46,7 +47,7 @@ public class TransportStep implements WizardStep
     @Override
     public Boolean onNext()
     {
-
+        GwtWizard.sendStat("step:Transport");
         return true;
     }
 
@@ -68,4 +69,8 @@ public class TransportStep implements WizardStep
         ui.show(visible, prev, next);
     }
 
+    public void displayRoute()
+    {
+        ui.displayRoute();
+    }
 }
