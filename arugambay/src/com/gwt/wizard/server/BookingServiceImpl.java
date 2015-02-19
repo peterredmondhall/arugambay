@@ -163,7 +163,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public void sendStat(StatInfo statInfo)
     {
-        statManager.sendStat(statInfo);
+        statManager.updateSessionStat(statInfo);
     }
 
     @Override

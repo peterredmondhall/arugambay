@@ -1,13 +1,11 @@
 package com.gwt.wizard.server;
 
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 
-import com.google.common.collect.Maps;
-import com.gwt.wizard.server.entity.Stat;
+import com.gwt.wizard.server.entity.SessionStat;
 import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.model.StatInfo;
 
@@ -16,13 +14,23 @@ public class StatManager extends Manager
     private static final Logger logger = Logger.getLogger(StatManager.class.getName());
     public static String newline = System.getProperty("line.separator");
 
-    public void sendStat(StatInfo statInfo)
+    public void updateSessionStat(StatInfo statInfo)
     {
         EntityManager em = getEntityManager();
         try
         {
-            Stat stat = Stat.getStat(statInfo);
-            em.persist(stat);
+            SessionStat sessionStat = (SessionStat) em.createQuery("select t from SessionStat t where ident=" + statInfo.getIdent()).getSingleResult();
+
+            switch (statInfo.getUpdate())
+            {
+                case TYPE:
+                    sessionStat.setType(statInfo.getDetail());
+                    break;
+                case ROUTE:
+                    sessionStat.setRoute(statInfo.getDetail());
+                    break;
+            }
+            em.persist(sessionStat);
         }
         catch (Exception e)
         {
@@ -36,50 +44,34 @@ public class StatManager extends Manager
 
     public void report()
     {
-        Map<String, Integer> countries = Maps.newHashMap();
-        Map<String, Integer> steps = Maps.newHashMap();
-        List<Stat> list = getAll(Stat.class);
-        for (Stat stat : list)
+        List<SessionStat> list = getAll(SessionStat.class);
+        String report = "sessions:" + list.size();
+        for (SessionStat stat : list)
         {
-            if ("country".equals(stat.getType()))
-            {
-                String country = stat.getCountry();
-                if (countries.get(country) == null)
-                {
-                    countries.put(country, 0);
-                }
-                Integer count = countries.get(country);
-                count++;
-                countries.put(country, count);
-            }
-            if ((stat.getType() != null && stat.getType().startsWith("step")))
-            {
-                if (steps.get(stat.getType()) == null)
-                {
-                    steps.put(stat.getType(), 0);
-                }
-                Integer count = steps.get(stat.getType());
-                count++;
-                steps.put(stat.getType(), count);
+            report += "<br> src=" + stat.getSrc() + "  country=" + stat.getCountry() + "  type=" + stat.getType();
 
-            }
-        }
-
-        String report = "countries:" + countries.keySet().size();
-        for (String country : countries.keySet())
-        {
-            Integer count = countries.get(country);
-            report += "<br>" + country + " " + count;
-        }
-
-        for (String stepz : steps.keySet())
-        {
-            Integer count = steps.get(stepz);
-            report += "<br>" + stepz + " " + count;
         }
 
         Mailer.sendReport(report);
-        deleteAll(Stat.class);
+        deleteAll(SessionStat.class);
 
+    }
+
+    public void createSessionStat(StatInfo statInfo)
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            SessionStat stat = SessionStat.getSessionStat(statInfo);
+            em.persist(stat);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            em.close();
+        }
     }
 }

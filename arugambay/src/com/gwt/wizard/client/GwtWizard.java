@@ -62,7 +62,7 @@ public class GwtWizard implements EntryPoint
     public static final int SUMMARY = 4;
     public static final int CREDITCARD = 5;
     public static final int CONFIRMATION = 6;
-
+    private static Long SESSION_IDENT = Double.doubleToLongBits(Math.random());
     private Wizard wizard;
 
     /**
@@ -130,7 +130,7 @@ public class GwtWizard implements EntryPoint
             completeSetup(transportStep, l);
             displayRoute(transportStep, routeId);
         }
-        collectStats();
+        collectStats(Window.Location.getParameter("src"));
 
     }
 
@@ -163,10 +163,10 @@ public class GwtWizard implements EntryPoint
 
     }
 
-    private void collectStats()
+    private void collectStats(String src)
     {
         String protocol = Window.Location.getProtocol();
-        String url = protocol + "//" + Window.Location.getHost() + "/stat";
+        String url = protocol + "//" + Window.Location.getHost() + "/stat?src=" + src + "&session=" + SESSION_IDENT;
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 
         try
@@ -283,10 +283,12 @@ public class GwtWizard implements EntryPoint
 		return navigator.userAgent.toLowerCase();
     }-*/;
 
-    public static void sendStat(String type)
+    public static void sendStat(String detail, StatInfo.Update update)
     {
         StatInfo statInfo = new StatInfo();
-        statInfo.setType(type);
+        statInfo.setIdent(SESSION_IDENT);
+        statInfo.setDetail(detail);
+        statInfo.setUpdate(update);
         SERVICE.sendStat(statInfo, new AsyncCallback<Void>()
         {
 

@@ -63,7 +63,7 @@ public class SummaryStepUi extends Composite
         labelEmail.setText(BOOKINGINFO.getEmail());
         labelName.setText(BOOKINGINFO.getName());
         labelRequirements.setText(BOOKINGINFO.getRequirements());
-        labelPrice.setText("US$ " + Helper.getDollars(BOOKINGINFO.getRouteInfo()));
+        labelPrice.setText(Helper.getDollars(BOOKINGINFO.getRouteInfo()));
         labelInterestedSharing.setText(BOOKINGINFO.getShareWanted() ? "yes please" : "no, thanks");
         prev.setEnabled(true);
 

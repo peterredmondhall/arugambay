@@ -13,6 +13,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -31,6 +32,7 @@ import com.gwt.wizard.client.steps.ui.widget.RatingList;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.StatInfo;
 
 public class TransportStepUi extends Composite
 {
@@ -71,6 +73,26 @@ public class TransportStepUi extends Composite
         ratingsPanel.add(sp);
         sp.add(fp);
         panelRoute.setHeight(getPanelHeight());
+
+        FlexTable table = new FlexTable();
+        table.setWidget(0, 0, getImage());
+        table.setWidget(0, 1, new Label("Guaranteed refund"));
+        table.setWidget(1, 0, getImage());
+        table.setWidget(1, 1, new Label("Trusted driver"));
+        table.setWidget(2, 0, getImage());
+        table.setWidget(2, 1, new Label("Sharing function"));
+        // containerGrid.setStyleName("progressbar-outer");
+
+        panelMotivation.add(table);
+    }
+
+    private Image getImage()
+    {
+        Image image = new Image("images/big-tick.jpg");
+        String size = "40px";
+        image.setSize(size, size);
+        return image;
+
     }
 
     protected void createUi()
@@ -193,6 +215,7 @@ public class TransportStepUi extends Composite
             {
             }
         });
+        GwtWizard.sendStat(routeInfo.getKey(""), StatInfo.Update.ROUTE);
     }
 
     private void setSuggestBoxWidth(SuggestBox suggestBox)

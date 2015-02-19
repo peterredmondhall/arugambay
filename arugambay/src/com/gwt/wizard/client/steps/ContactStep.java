@@ -17,6 +17,7 @@ import com.gwt.wizard.client.steps.ui.contact.ContactStepMobileUi;
 import com.gwt.wizard.client.steps.ui.contact.ContactStepUi;
 import com.gwt.wizard.client.steps.ui.contact.ContactStepUi.ErrorMsg;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.StatInfo;
 
 public class ContactStep implements WizardStep
 {
@@ -150,7 +151,7 @@ public class ContactStep implements WizardStep
             }
         });
 
-        GwtWizard.sendStat("step:Contact");
+        GwtWizard.sendStat("step:Contact", StatInfo.Update.TYPE);
         return true;
     }
 

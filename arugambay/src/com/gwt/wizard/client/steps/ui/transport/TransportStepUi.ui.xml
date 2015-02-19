@@ -48,6 +48,10 @@
 			margin-left:100px;
 			margin-right:100px;
 		}
+		.advantages-style {
+			font-family: Arial, Helvetica, sans-serif;
+		.advantages-style {
+			font-family: Arial, Helvetica, sans-serif;
 
 	</ui:style>
 	<g:HTMLPanel ui:field="mainPanel">
@@ -63,24 +67,28 @@
 			    
 			</g:HorizontalPanel>
 				<g:VerticalPanel ui:field="panelMotivation">
-				<g:Label  styleName="{style.callaction}">
-					Hi. Welcome to taxisurfr. 
-				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					If you want to book a reliable and safe taxi you are in right place. Just enter details and book the taxi.
-				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					Apart from being a taxi booking service, we also offer taxi sharing. When you book your taxi and you wish to share, your booking will seen by others who are booking the same route.
-				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					If you want to join an existing booking, then just search for your route above and, if there is a share available, you can join it.
-				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					Book now. The earlier you book, the better your chances of somebody sharing with you.
-				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					Go a question? Post it below. Thanks for using taxisurfr.
-				</g:Label>
+<!-- 				    <div style="width: 324px"> -->
+<!-- 						<img height="24" src="images/big-tick.jpg" width="27" class="advantages-style" /> -->
+<!-- 						<span class="advantages-style">Guaranteed refund up to 24 hours</span></div> -->
+				    
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					Hi. Welcome to taxisurfr.  -->
+<!-- 				</g:Label> -->
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					If you want to book a reliable and safe taxi you are in right place. Just enter details and book the taxi. -->
+<!-- 				</g:Label> -->
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					Apart from being a taxi booking service, we also offer taxi sharing. When you book your taxi and you wish to share, your booking will seen by others who are booking the same route. -->
+<!-- 				</g:Label> -->
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					If you want to join an existing booking, then just search for your route above and, if there is a share available, you can join it. -->
+<!-- 				</g:Label> -->
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					Book now. The earlier you book, the better your chances of somebody sharing with you. -->
+<!-- 				</g:Label> -->
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					Go a question? Post it below. Thanks for using taxisurfr. -->
+<!-- 				</g:Label> -->
 				</g:VerticalPanel>			
 				<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />

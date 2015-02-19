@@ -32,7 +32,7 @@
 			</g:row>
 			<g:row>
 				<g:customCell styleName="{style.labelDiv}">
-					<g:Label>Name</g:Label>
+					<g:Label>Name on credit card</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox ui:field="ccName" />

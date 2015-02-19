@@ -9,8 +9,18 @@ import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.model.StatInfo;
 
 @Entity
-public class Stat extends ArugamEntity<StatInfo>
+public class SessionStat extends ArugamEntity<StatInfo>
 {
+    public String getSrc()
+    {
+        return src;
+    }
+
+    public void setSrc(String src)
+    {
+        this.src = src;
+    }
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -18,6 +28,20 @@ public class Stat extends ArugamEntity<StatInfo>
     private Key key;
 
     String type;
+    String route;
+
+    public String getRoute()
+    {
+        return route;
+    }
+
+    public void setRoute(String route)
+    {
+        this.route = route;
+    }
+
+    String src;
+    Long ident;
 
     public String getType()
     {
@@ -31,11 +55,13 @@ public class Stat extends ArugamEntity<StatInfo>
 
     String country;
 
-    public static Stat getStat(StatInfo statInfo)
+    public static SessionStat getSessionStat(StatInfo statInfo)
     {
-        Stat stat = new Stat();
+        SessionStat stat = new SessionStat();
         stat.setCountry(statInfo.getCountry());
-        stat.setType(statInfo.getType());
+        stat.setType(statInfo.getDetail());
+        stat.src = statInfo.getSrc();
+        stat.ident = statInfo.getIdent();
 
         return stat;
     }

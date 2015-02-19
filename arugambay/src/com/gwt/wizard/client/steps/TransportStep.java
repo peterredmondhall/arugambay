@@ -9,6 +9,7 @@ import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.steps.ui.transport.TransportStepMobileUi;
 import com.gwt.wizard.client.steps.ui.transport.TransportStepUi;
+import com.gwt.wizard.shared.model.StatInfo;
 
 public class TransportStep implements WizardStep
 {
@@ -47,7 +48,7 @@ public class TransportStep implements WizardStep
     @Override
     public Boolean onNext()
     {
-        GwtWizard.sendStat("step:Transport");
+        GwtWizard.sendStat("step:Transport", StatInfo.Update.TYPE);
         return true;
     }
 

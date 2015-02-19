@@ -29,6 +29,8 @@ public class StatServlet extends HttpServlet
         String cityLatLong = req.getHeader("X-AppEngine-CityLatLong");
         String region = req.getHeader("X-AppEngine-Region");
         String city = req.getHeader("X-AppEngine-City");
+        String src = req.getParameter("src");
+        Long session = Long.parseLong(req.getParameter("session"));
         if (country == null || country.trim().length() == 0)
         {
             country = "XXX";
@@ -39,9 +41,11 @@ public class StatServlet extends HttpServlet
         log.info("city:" + city);
         final String ip = req.getRemoteAddr();
         StatInfo statInfo = new StatInfo();
-        statInfo.setType("country");
+        statInfo.setDetail("country");
+        statInfo.setSrc(src);
         statInfo.setCountry(country);
-        statManager.sendStat(statInfo);
+        statInfo.setIdent(session);
+        statManager.createSessionStat(statInfo);
 
     }
 }
