@@ -76,11 +76,11 @@ public class TransportStepUi extends Composite
 
         FlexTable table = new FlexTable();
         table.setWidget(0, 0, getImage());
-        table.setWidget(0, 1, new Label("Guaranteed refund"));
+        table.setWidget(0, 1, new Label("Full refund up to 24 hrs. beforehand"));
         table.setWidget(1, 0, getImage());
-        table.setWidget(1, 1, new Label("Trusted driver"));
+        table.setWidget(1, 1, new Label("Trusted driver and a safe vehicle"));
         table.setWidget(2, 0, getImage());
-        table.setWidget(2, 1, new Label("Sharing function"));
+        table.setWidget(2, 1, new Label("Sharing function if required"));
         // containerGrid.setStyleName("progressbar-outer");
 
         panelMotivation.add(table);
@@ -89,7 +89,7 @@ public class TransportStepUi extends Composite
     private Image getImage()
     {
         Image image = new Image("images/big-tick.jpg");
-        String size = "40px";
+        String size = "30px";
         image.setSize(size, size);
         return image;
 

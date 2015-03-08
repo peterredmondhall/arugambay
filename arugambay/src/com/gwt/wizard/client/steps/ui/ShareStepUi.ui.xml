@@ -7,6 +7,11 @@
 		.title { font-weight:bold; color: #62ba37; margin-bottom:
 		10px; font-size:
 		30px;}
+
+		.gap {
+			height:300px;
+		}
+
 		.desc { font-weight:bold; margin-bottom: 10px;
 		font-size: 15px;}
 		.image { margin-right: 10px;}
@@ -15,21 +20,16 @@
 	<g:HTMLPanel ui:field="mainPanel">
 	<g:VerticalPanel ui:field="sharePanel">
 		<g:Label>
-			Here are some paid-for trips who would accept a share. Have a look to see
-			if there is anything suitable and click on the entry.
+			Here are some existing taxi journeys on this route. They have been paid for and are ready to share. 
 		</g:Label>
-		<g:ScrollPanel ui:field="scrollPanel">
+		<g:ScrollPanel ui:field="scrollPanel" styleName="{style.gap}">
 
 		</g:ScrollPanel>
 		<g:Label>
-			Cant' find anything suitable?
+			Cant' find anything suitable? No problem. Create a new booking and (if you want) others can share it.
 		</g:Label>
-		<g:Label >
-			No problem. Click "Next" below and create and pay for your own
-			booking and, if you choose,
-			your booking will appear here so that others can join you.
-		</g:Label>
-
+		<g:Button ui:field="buttonNewBooking" text="Create new booking" styleName="btn btn-primary"/>
+		
 	</g:VerticalPanel>
 
 	<g:VerticalPanel ui:field="noSharePanel">

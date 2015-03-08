@@ -9,6 +9,8 @@ import java.util.Map;
 
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -44,6 +46,9 @@ public class ShareStepUi extends Composite
 
     @UiField
     ScrollPanel scrollPanel;
+
+    @UiField
+    Button buttonNewBooking;
 
     private CellTable<BookingInfo> cellTable;
 
@@ -81,7 +86,7 @@ public class ShareStepUi extends Composite
                 return object.getFlightNo();
             }
         };
-        cellTable.addColumn(flightNoColumn, "Flight no.");
+        cellTable.addColumn(flightNoColumn, flightNoHote);
 
         TextColumn<BookingInfo> landingTimeColumn = new TextColumn<BookingInfo>()
         {
@@ -91,7 +96,16 @@ public class ShareStepUi extends Composite
                 return object.getLandingTime();
             }
         };
-        cellTable.addColumn(landingTimeColumn, "Landing time");
+        cellTable.addColumn(landingTimeColumn, landingTimePickup);
+        TextColumn<BookingInfo> shareColumn = new TextColumn<BookingInfo>()
+        {
+            @Override
+            public String getValue(BookingInfo object)
+            {
+                return "Click here to share";
+            }
+        };
+        cellTable.addColumn(shareColumn, "");
 
         // Add a text column to show the address.
 
@@ -133,7 +147,7 @@ public class ShareStepUi extends Composite
     public void show(boolean visible, Button prev, Button next)
     {
 
-        next.setVisible(true);
+        next.setVisible(false);
         prev.setEnabled(true);
         prev.setVisible(true);
         BOOKINGINFO.setOrderType(OrderType.BOOKING);
@@ -158,6 +172,17 @@ public class ShareStepUi extends Composite
             }
             fillTable(Wizard.ROUTEINFO.getPickupType().getLocationType(), Wizard.ROUTEINFO.getPickupType().getTimeType());
             scrollPanel.add(cellTable);
+
+            buttonNewBooking.addClickHandler(new ClickHandler()
+            {
+
+                @Override
+                public void onClick(ClickEvent event)
+                {
+                    wizard.onNextClick(null);
+
+                }
+            });
         }
     }
 
