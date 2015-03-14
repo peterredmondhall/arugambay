@@ -62,12 +62,12 @@
 				<g:Label  styleName="{style.callaction}">
 					If you want to book a reliable and safe taxi you are in right place. Just enter details and book the taxi.
 				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					Apart from being a taxi booking service, we also offer taxi sharing.
-				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					Book now. The earlier you book, the better your chances of somebody sharing with you.
-				</g:Label>
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					Apart from being a taxi booking service, we also offer taxi sharing. -->
+<!-- 				</g:Label> -->
+<!-- 				<g:Label  styleName="{style.callaction}"> -->
+<!-- 					Book now. The earlier you book, the better your chances of somebody sharing with you. -->
+<!-- 				</g:Label> -->
 				</g:VerticalPanel>			
 						<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />

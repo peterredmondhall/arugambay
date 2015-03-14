@@ -25,9 +25,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.StatInfo;
 
 public class ShareStepUi extends Composite
 {
@@ -129,6 +131,7 @@ public class ShareStepUi extends Composite
                     BOOKINGINFO.setParentId(bookingToShare.getId());
 
                     scrollPanel.remove(cellTable);
+                    GwtWizard.sendStat("step:Share(share request)", StatInfo.Update.TYPE);
                     wizard.onNextClick(null);
 
                 }
@@ -179,6 +182,7 @@ public class ShareStepUi extends Composite
                 @Override
                 public void onClick(ClickEvent event)
                 {
+                    GwtWizard.sendStat("step:Share(new Booking)", StatInfo.Update.TYPE);
                     wizard.onNextClick(null);
 
                 }

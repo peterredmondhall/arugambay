@@ -44,9 +44,10 @@
 			margin-left:6px;
 		}
 		.callaction {
-			margin-top:20px;
-			margin-left:100px;
+			margin-top:0px;
+			margin-left:0px;
 			margin-right:100px;
+			margin-bottom:20px;
 		}
 		.motivation {
 			margin-top:20px;
@@ -75,12 +76,15 @@
 <!-- 						<img height="24" src="images/big-tick.jpg" width="27" class="advantages-style" /> -->
 <!-- 						<span class="advantages-style">Guaranteed refund up to 24 hours</span></div> -->
 				    
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					Hi. Welcome to taxisurfr.  -->
-<!-- 				</g:Label> -->
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					If you want to book a reliable and safe taxi you are in right place. Just enter details and book the taxi. -->
-<!-- 				</g:Label> -->
+				<g:Label  styleName="{style.callaction}">
+					Hi. Welcome to taxisurfr. 
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					Looking for a reliable taxi in Sri Lanka? Great! You are in right place.
+				</g:Label>
+				<g:Label  styleName="{style.callaction}">
+					Now find your route in the search box above.
+				</g:Label>
 <!-- 				<g:Label  styleName="{style.callaction}"> -->
 <!-- 					Apart from being a taxi booking service, we also offer taxi sharing. When you book your taxi and you wish to share, your booking will seen by others who are booking the same route. -->
 <!-- 				</g:Label> -->

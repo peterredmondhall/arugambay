@@ -28,8 +28,10 @@ public class SummaryStepUi extends Composite
     HTMLPanel mainPanel;
 
     @UiField
-    Label labelEmail, labelName, labelSurfboards, labelPax, labelFlightNo, labelLandingTime, labelDate, labelPrice, labelRequirements, labelInterestedSharing;
+    Label summaryTitle, labelEmail, labelName, labelSurfboards, labelPax, labelFlightNo, labelLandingTime, labelDate, labelPrice, labelRequirements, labelInterestedSharing;
 
+    @UiField
+    Label labelInterestedSharingField, labelRequirementsField;
 //    @UiField
 //    Paypal paypal;
 
@@ -68,6 +70,18 @@ public class SummaryStepUi extends Composite
         prev.setEnabled(true);
 
         boolean shared = BOOKINGINFO.getOrderType() == OrderType.SHARE;
+
+        if (shared)
+        {
+            summaryTitle.setText("These details will be sent to the person who booked the taxi. ");
+            labelInterestedSharing.setVisible(false);
+            labelInterestedSharingField.setVisible(false);
+            labelRequirementsField.setText("Message");
+        }
+        else
+        {
+            summaryTitle.setText("Here is a summary of your order.");
+        }
 
         pay1.setVisible(!shared);
         // pay2.setVisible(!shared);

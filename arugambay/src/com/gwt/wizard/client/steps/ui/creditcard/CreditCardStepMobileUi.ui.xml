@@ -14,10 +14,14 @@
 			margin-right: 15px;
 			width: 100px;
 	}
+		.title { font-weight:bold; color: #62ba37; margin-bottom:
+			10px; font-size:
+			30px;}
+
 	</ui:style>
 
 	<g:HTMLPanel ui:field="mainPanel">
-	    <g:Label ui:field="paymentExplination1"/>
+	    <g:Label styleName="{style.title}"  ui:field="paymentExplination1"/>
 	    <g:Label ui:field="paymentExplination2"/>
 	    		<g:Grid>
 			<g:row>

@@ -5,19 +5,27 @@
 	<ui:with field='messages' type='com.gwt.wizard.client.resources.ClientMessages' />
 
 	<ui:style>
-
+		.labelDiv {
+			display: inline;
+			float: left;
+			font-size: 14px;
+			margin-top: 2px;
+			text-align: right;
+			margin-right: 15px;
+			width: 300px;
+	}
 	</ui:style>
+
 
 	<g:HTMLPanel ui:field="mainPanel">
 	    <g:Label ui:field="label1"/>
-		<g:Label ui:field="labelConfirmationEmail" />
 		<g:Label ui:field="label2"/>
 		
 		
 				<g:Grid>
 			<!-- Name -->
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Name</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -26,7 +34,7 @@
 			</g:row>
 			
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Email</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -36,7 +44,7 @@
 			
 			<!-- Hinfahrt von -->
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Flight no.</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -44,7 +52,7 @@
 				</g:customCell>
 			</g:row>
 			<g:row >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label>Time of landing</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -54,7 +62,7 @@
 						<!-- Abholung am von -->
 			<!-- Rückfahr von -->
 			<g:row  >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label ui:field="labelRPP">No. of passengers</g:Label>
 				</g:customCell>
 				<g:customCell>
@@ -63,7 +71,7 @@
 			</g:row>
 			<!-- Abholung am von -->
 			<g:row  >
-				<g:customCell styleName="labelDiv">
+				<g:customCell styleName="{style.labelDiv}">
 					<g:Label ui:field="labelRPT">No. of surfboards</g:Label>
 				</g:customCell>
 				<g:customCell>

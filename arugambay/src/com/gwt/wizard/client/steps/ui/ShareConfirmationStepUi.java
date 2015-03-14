@@ -26,7 +26,7 @@ public class ShareConfirmationStepUi extends Composite
     @UiField
     HTMLPanel mainPanel;
     @UiField
-    Label labelConfirmationEmail, label1, label2;
+    Label label1, label2;
 
     @UiField
     Label labelName, labelEmail, labelFlightNo, labelLandingTime, labelPax, labelSurfboards;
@@ -77,14 +77,13 @@ public class ShareConfirmationStepUi extends Composite
             else
             {
                 label1.setText("The payment was not successful and no order has been created");
-                label2.setText("Please contact arugamsurf@gmail.com if you think this is a problem.");
+                label2.setText("Please contact dispatch@taxisurfr.com if you think this is a problem.");
             }
         }
         else
         {
-            label1.setText("An error has occured processing you order. Please contact arugamsurf@gmail.com");
+            label1.setText("An error has occured processing you order. Please contact dispatch@taxisurfr.com");
         }
 
-        labelConfirmationEmail.setText(bookingInfo.get(0).getEmail());
     }
 }

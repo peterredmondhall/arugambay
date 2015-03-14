@@ -60,6 +60,9 @@ public class ContactStepUi extends Composite
     Label labelSharing, labelBooking, labelFlightLandingTime, labelFlightNo, firstNameMsg, lastNameMsg, labelEmailMsg, labelEmail2Msg;
 
     @UiField
+    Label labelRequirementsField;
+
+    @UiField
     TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
 
     @UiField
@@ -202,6 +205,10 @@ public class ContactStepUi extends Composite
         prev.setVisible(true);
 
         boolean sharing = BOOKINGINFO.getOrderType() == OrderType.SHARE;
+        if (sharing)
+        {
+            labelRequirementsField.setText("Message to taxi booker eg. Facebook profile etc.");
+        }
 
         checkboxWanttoShare.setVisible(!sharing);
         labelWanttoShare.setVisible(!sharing);

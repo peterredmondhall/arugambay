@@ -15,13 +15,17 @@
 			width: 300px;
 	}
 
+	.title { font-weight:bold; color: #62ba37; margin-bottom:
+		10px; font-size:
+		30px;}
+
 	</ui:style>
 	
 	<g:HTMLPanel ui:field="mainPanel">
-	   <g:Label ui:field="labelBooking">
+	   <g:Label styleName="{style.title}"  ui:field="labelBooking">
 			
 		</g:Label>
-	   <g:Label ui:field="labelSharing">
+	   <g:Label styleName="{style.title}" ui:field="labelSharing">
 			You are creating a share request. We will forward your details to the person who has paid for the taxi.
 		</g:Label>
 	   	   	    
@@ -148,7 +152,7 @@
 			</g:row>
 			<g:row>
 				<g:customCell   styleName="{style.labelDiv}" >
-					<g:Label>Other requirements:</g:Label>
+					<g:Label ui:field="labelRequirementsField">Other requirements:</g:Label>
 				</g:customCell>
 				<g:customCell >
 					<g:TextArea ui:field="requirementsBox" styleName="widgetDiv"/>
