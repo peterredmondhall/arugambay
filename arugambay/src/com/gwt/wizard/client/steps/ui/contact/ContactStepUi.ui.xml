@@ -25,10 +25,13 @@
 	   <g:Label styleName="{style.title}"  ui:field="labelBooking">
 			
 		</g:Label>
-	   <g:Label styleName="{style.title}" ui:field="labelSharing">
-			You are creating a share request. We will forward your details to the person who has paid for the taxi.
+	   <g:Label styleName="{style.title}" ui:field="labelSharing1">
+			You are creating a share request.
 		</g:Label>
-	   	   	    
+	   <g:Label ui:field="labelSharing2">
+			We will forward your details to the person who has paid for the taxi and they will contact you directly.
+		</g:Label>
+	   	   	   	    
 		<g:Grid>
 			<!-- Date -->
 			<g:row>

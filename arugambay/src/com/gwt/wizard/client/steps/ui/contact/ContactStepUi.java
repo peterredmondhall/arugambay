@@ -57,7 +57,7 @@ public class ContactStepUi extends Composite
     Label dateMsg, dateErrorMsg, flightErrorMsg, firstNameErrorMsg, lastNameErrorMsg, emailErrorMsg, email2ErrorMsg, arrivalErrorMsg, labelWanttoShare;
 
     @UiField
-    Label labelSharing, labelBooking, labelFlightLandingTime, labelFlightNo, firstNameMsg, lastNameMsg, labelEmailMsg, labelEmail2Msg;
+    Label labelSharing1, labelSharing2, labelBooking, labelFlightLandingTime, labelFlightNo, firstNameMsg, lastNameMsg, labelEmailMsg, labelEmail2Msg;
 
     @UiField
     Label labelRequirementsField;
@@ -79,6 +79,9 @@ public class ContactStepUi extends Composite
         for (int i = 1; i < 20; i++)
         {
             pax.addItem("" + i);
+        }
+        for (int i = 0; i < 20; i++)
+        {
             surfboards.addItem("" + i);
         }
         dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy")));
@@ -214,7 +217,8 @@ public class ContactStepUi extends Composite
         labelWanttoShare.setVisible(!sharing);
 
         labelBooking.setVisible(!sharing);
-        labelSharing.setVisible(sharing);
+        labelSharing1.setVisible(sharing);
+        labelSharing2.setVisible(sharing);
         dateBox.setEnabled(!sharing);
         if (sharing)
         {

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -49,7 +51,7 @@ public class TransportStepUi extends Composite
     Panel mainPanel, ratingsPanel, dp, panelMotivation;
 
     @UiField
-    Image imageVehicle;
+    Image imageVehicle, imageSpinner, imageSearch;
 
     @UiField
     Panel routeSuggestionPanel, panelRoute;
@@ -64,7 +66,10 @@ public class TransportStepUi extends Composite
     private final ScrollPanel sp = new ScrollPanel();
     private final FlowPanel fp = new FlowPanel();
 
-    public TransportStepUi()
+    @UiField
+    Button buttonOrder;
+
+    public TransportStepUi(final Wizard wizard)
     {
         createUi();
         fetchRoutes();
@@ -84,6 +89,17 @@ public class TransportStepUi extends Composite
         // containerGrid.setStyleName("progressbar-outer");
 
         panelMotivation.add(table);
+        imageSearch.setVisible(false);
+        buttonOrder.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                wizard.onNextClick(null);
+
+            }
+        });
     }
 
     private Image getImage()
@@ -123,7 +139,7 @@ public class TransportStepUi extends Composite
     public void show(boolean visible, Button prev, Button next)
     {
         this.next = next;
-        next.setVisible(true);
+        next.setVisible(false);
         next.setEnabled(Wizard.ROUTEINFO != null);
         prev.setVisible(false);
     }
@@ -164,12 +180,14 @@ public class TransportStepUi extends Composite
                 };
 
                 suggestBox.addSelectionHandler(handler);
+                imageSpinner.setVisible(false);
+                imageSearch.setVisible(true);
             }
 
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to Server!");
+                Window.alert("Failed fetching routes");
             }
         });
     }

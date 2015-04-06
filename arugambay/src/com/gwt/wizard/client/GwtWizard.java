@@ -86,7 +86,7 @@ public class GwtWizard implements EntryPoint
             wizard = new Wizard();
 
         }
-        transportStep = new TransportStep();
+        transportStep = new TransportStep(wizard);
         shareStep = new ShareStep(wizard);
         contactStep = new ContactStep();
         creditCardStep = new CreditCardStep(wizard);
@@ -157,7 +157,7 @@ public class GwtWizard implements EntryPoint
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to get paypal url!");
+                Window.alert("problem creating default user");
             }
         });
 
@@ -207,7 +207,7 @@ public class GwtWizard implements EntryPoint
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to server");
+                Window.alert("Failed handling transaction");
             }
 
             @Override

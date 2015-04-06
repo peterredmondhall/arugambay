@@ -36,6 +36,9 @@
 		.imageSearch {
 			src: 'images/search-512.png'; 
 		}
+		.imageSpinner {
+			src: 'images/spinner.gif'; 
+		}
 		.imagePlace {
 			max-width: 300px; 
 			margin-right:6px;
@@ -48,6 +51,7 @@
 			margin-left:0px;
 			margin-right:100px;
 			margin-bottom:20px;
+			font-size: 20px;
 		}
 		.motivation {
 			margin-top:20px;
@@ -66,7 +70,8 @@
 			</g:HorizontalPanel>
 			<g:HorizontalPanel>
 				<g:Image ui:field="imageSearch" url="images/search-512.png" width="32px"  height="32px"/>
-			    <g:FlowPanel ui:field="routeSuggestionPanel"
+				<g:Image ui:field="imageSpinner" url="images/spinner.gif" width="32px"  height="32px"/>
+							    <g:FlowPanel ui:field="routeSuggestionPanel"
 					styleName="{style.selectContainerStyle}">
 				</g:FlowPanel>
 			    
@@ -77,26 +82,8 @@
 <!-- 						<span class="advantages-style">Guaranteed refund up to 24 hours</span></div> -->
 				    
 				<g:Label  styleName="{style.callaction}">
-					Hi. Welcome to taxisurfr. 
+					Enter your route in the search box. 
 				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					Looking for a reliable taxi in Sri Lanka? Great! You are in right place.
-				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					Now find your route in the search box above.
-				</g:Label>
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					Apart from being a taxi booking service, we also offer taxi sharing. When you book your taxi and you wish to share, your booking will seen by others who are booking the same route. -->
-<!-- 				</g:Label> -->
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					If you want to join an existing booking, then just search for your route above and, if there is a share available, you can join it. -->
-<!-- 				</g:Label> -->
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					Book now. The earlier you book, the better your chances of somebody sharing with you. -->
-<!-- 				</g:Label> -->
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					Go a question? Post it below. Thanks for using taxisurfr. -->
-<!-- 				</g:Label> -->
 				</g:VerticalPanel>			
 				<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />
@@ -107,6 +94,7 @@
 						<g:Label ui:field="labelDescription" />
 
 					</g:VerticalPanel>
+					<g:Button ui:field="buttonOrder" text="Book this taxi." styleName="btn btn-primary" />
 				</g:HorizontalPanel>
 			</g:VerticalPanel>
 			<g:HorizontalPanel ui:field="ratingsPanel"

@@ -11,7 +11,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -40,8 +39,6 @@ public class AdminManagementVeiw extends Composite
     interface AdminManagementVeiwUiBinder extends UiBinder<Widget, AdminManagementVeiw>
     {
     }
-
-    NumberFormat usdFormat = NumberFormat.getFormat(".00");
 
     final ListBox agentListBox = new ListBox();;
     private List<AgentInfo> listAgents;

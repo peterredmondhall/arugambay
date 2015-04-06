@@ -48,7 +48,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jdo-api-3.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsr107cache-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jta-1.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.4.jar" sourcepath="C:/Users/nbb/.m2/repository/joda-time/joda-time/2.4/joda-time-2.4-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-17.0 (1).jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-gwt-17.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stripe-java-latest.jar"/>

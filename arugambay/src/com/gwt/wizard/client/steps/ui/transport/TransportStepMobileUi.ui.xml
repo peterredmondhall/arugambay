@@ -41,6 +41,7 @@
 			margin-top:20px;
 			margin-left:10px;
 			margin-right:10px;
+			font-size: 20px;
 		}
 
 	</ui:style>
@@ -51,23 +52,15 @@
 			</g:HorizontalPanel>
 			<g:HorizontalPanel>
 				<g:Image ui:field="imageSearch" url="images/search-512.png" width="24px"  height="24px"/>
-			    <g:FlowPanel ui:field="routeSuggestionPanel"
+				<g:Image ui:field="imageSpinner" url="images/spinner.gif" width="32px"  height="32px"/>
+							    <g:FlowPanel ui:field="routeSuggestionPanel"
 					styleName="{style.selectContainerStyle}">
 				</g:FlowPanel>
 			</g:HorizontalPanel>
 				<g:VerticalPanel ui:field="panelMotivation">
 				<g:Label  styleName="{style.callaction}">
-					Hi. Welcome to taxisurfr. 
+					Enter your route in the search box.
 				</g:Label>
-				<g:Label  styleName="{style.callaction}">
-					If you want to book a reliable and safe taxi you are in right place. Just enter details and book the taxi.
-				</g:Label>
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					Apart from being a taxi booking service, we also offer taxi sharing. -->
-<!-- 				</g:Label> -->
-<!-- 				<g:Label  styleName="{style.callaction}"> -->
-<!-- 					Book now. The earlier you book, the better your chances of somebody sharing with you. -->
-<!-- 				</g:Label> -->
 				</g:VerticalPanel>			
 						<g:VerticalPanel ui:field="panelRoute">
 				<g:Label styleName="{style.title}" ui:field="labelRouteName" />
@@ -78,6 +71,7 @@
 						<g:Label ui:field="labelDescription" />
 
 					</g:VerticalPanel>
+					<g:Button ui:field="buttonOrder" text="Book this taxi." styleName="btn btn-primary" />					
 				</g:HorizontalPanel>
 			</g:VerticalPanel>
 			<g:HorizontalPanel ui:field="ratingsPanel"

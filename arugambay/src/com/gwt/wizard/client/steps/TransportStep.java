@@ -16,15 +16,15 @@ public class TransportStep implements WizardStep
 
     private final TransportStepUi ui;
 
-    public TransportStep()
+    public TransportStep(Wizard wizard)
     {
         if (Wizard.MOBILE)
         {
-            ui = new TransportStepMobileUi();
+            ui = new TransportStepMobileUi(wizard);
         }
         else
         {
-            ui = new TransportStepUi();
+            ui = new TransportStepUi(wizard);
         }
     }
 

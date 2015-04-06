@@ -16,29 +16,37 @@ public class StatManager extends Manager
 
     public void updateSessionStat(StatInfo statInfo)
     {
-        EntityManager em = getEntityManager();
         try
         {
-            SessionStat sessionStat = (SessionStat) em.createQuery("select t from SessionStat t where ident=" + statInfo.getIdent()).getSingleResult();
 
-            switch (statInfo.getUpdate())
+            EntityManager em = getEntityManager();
+            try
             {
-                case TYPE:
-                    sessionStat.setType(statInfo.getDetail());
-                    break;
-                case ROUTE:
-                    sessionStat.setRoute(statInfo.getDetail());
-                    break;
+                SessionStat sessionStat = (SessionStat) em.createQuery("select t from SessionStat t where ident=" + statInfo.getIdent()).getSingleResult();
+
+                switch (statInfo.getUpdate())
+                {
+                    case TYPE:
+                        sessionStat.setType(statInfo.getDetail());
+                        break;
+                    case ROUTE:
+                        sessionStat.setRoute(statInfo.getDetail());
+                        break;
+                }
+                em.persist(sessionStat);
             }
-            em.persist(sessionStat);
+            catch (Exception e)
+            {
+                logger.info("problem writing statInfo" + e.getMessage());
+            }
+            finally
+            {
+                em.close();
+            }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            e.printStackTrace();
-        }
-        finally
-        {
-            em.close();
+            logger.info("problem writing statInfo" + ex.getMessage());
         }
     }
 

@@ -3,18 +3,17 @@ package com.gwt.wizard.client.steps.ui;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 import static com.gwt.wizard.client.core.Wizard.EXISTING_BOOKINGS_ON_ROUTE;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Button;
@@ -35,6 +34,8 @@ public class ShareStepUi extends Composite
 {
 
     private static ShareStepUiUiBinder uiBinder = GWT.create(ShareStepUiUiBinder.class);
+    private static NumberFormat usdFormat = NumberFormat.getFormat(".00");
+    private static DateTimeFormat sdf = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     interface ShareStepUiUiBinder extends UiBinder<Widget, ShareStepUi>
     {
@@ -69,26 +70,15 @@ public class ShareStepUi extends Composite
     {
         cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
-        DateCell dateCell = new DateCell();
-        Column<BookingInfo, Date> dateColumn = new Column<BookingInfo, Date>(dateCell)
-        {
-            @Override
-            public Date getValue(BookingInfo object)
-            {
-                return object.getDate();
-            }
-        };
-        cellTable.addColumn(dateColumn, "Date");
-
-        TextColumn<BookingInfo> flightNoColumn = new TextColumn<BookingInfo>()
+        TextColumn<BookingInfo> dateColumn = new TextColumn<BookingInfo>()
         {
             @Override
             public String getValue(BookingInfo object)
             {
-                return object.getFlightNo();
+                return sdf.format(object.getDate());
             }
         };
-        cellTable.addColumn(flightNoColumn, flightNoHote);
+        cellTable.addColumn(dateColumn, "Date");
 
         TextColumn<BookingInfo> landingTimeColumn = new TextColumn<BookingInfo>()
         {
@@ -99,6 +89,18 @@ public class ShareStepUi extends Composite
             }
         };
         cellTable.addColumn(landingTimeColumn, landingTimePickup);
+
+        TextColumn<BookingInfo> estimatedPriceColumn = new TextColumn<BookingInfo>()
+        {
+            @Override
+            public String getValue(BookingInfo object)
+            {
+                Double d = (double) object.getRouteInfo().getCents() / 200;
+                return "US$" + usdFormat.format(d);
+            }
+        };
+        cellTable.addColumn(estimatedPriceColumn, "estimated price");
+
         TextColumn<BookingInfo> shareColumn = new TextColumn<BookingInfo>()
         {
             @Override

@@ -3,7 +3,9 @@ package com.gwt.wizard.server;
 import static org.joda.time.DateTime.now;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -15,6 +17,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Config;
 import com.gwt.wizard.server.entity.Contractor;
@@ -268,8 +271,15 @@ public class BookingServiceManager extends Manager
         };
         List<BookingInfo> current = Lists.newArrayList(Collections2.filter(getBookings(), acceptEven));
 
-        logger.info("share candidates size = " + current.size());
-        return current;
+        Map<Date, BookingInfo> sorted = Maps.newTreeMap();
+        for (BookingInfo bi : current)
+        {
+            sorted.put(bi.getDate(), bi);
+        }
+        List<BookingInfo> sortedList = Lists.newArrayList();
+        sortedList.addAll(sorted.values());
+        logger.info("share candidates size = " + sortedList.size());
+        return sortedList;
     }
 
     public BookingInfo setShareAccepted(BookingInfo bookingInfo)

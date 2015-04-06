@@ -25,10 +25,13 @@
 	   <g:Label styleName="{style.title}" ui:field="labelBooking">
 			You are creating a new booking.
 		</g:Label>
-	   <g:Label styleName="{style.title}" ui:field="labelSharing">
-			You are creating a share request. If you want to make a new booking, go back to to the previous step.
+	   <g:Label styleName="{style.title}" ui:field="labelSharing1">
+			You are creating a share request.
 		</g:Label>
-	   	    
+	   <g:Label ui:field="labelSharing2">
+			We will send the details you enter to the person who booked the taxi.
+		</g:Label>
+	   	   	    
 		<g:Grid>
 			<!-- Date -->
 			<g:row>
