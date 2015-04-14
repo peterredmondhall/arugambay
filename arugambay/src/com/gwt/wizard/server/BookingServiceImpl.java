@@ -286,6 +286,11 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             Mailer.setFeedbackRequest(bi, profil);
         }
 
+        for (BookingInfo bi : bookingServiceManager.getArchiveList())
+        {
+            bookingServiceManager.archive(bi);
+        }
+
     }
 
     @Override

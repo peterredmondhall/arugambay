@@ -9,7 +9,7 @@
 		30px;}
 
 		.gap {
-			height:300px;
+		height:300px;
 		}
 
 		.desc { font-weight:bold; margin-bottom: 10px;
@@ -18,31 +18,32 @@
 	</ui:style>
 
 	<g:HTMLPanel ui:field="mainPanel">
-	<g:VerticalPanel ui:field="sharePanel">
-		<g:Label>
-			Here are some existing taxi journeys on this route. They have been paid for and are ready to share. 
-		</g:Label>
-		<g:ScrollPanel ui:field="scrollPanel" styleName="{style.gap}">
+		<g:VerticalPanel ui:field="sharePanel">
+			<g:Label>
+				Here are some existing taxi journeys on this route. They are ready and willing to share.
+			</g:Label>
+			<g:ScrollPanel ui:field="scrollPanel" styleName="{style.gap}">
 
-		</g:ScrollPanel>
-		<g:Label>
-			Cant' find anything suitable? No problem. Create a new booking and (if you want) others can share it.
-		</g:Label>
-		<g:Button ui:field="buttonNewBooking" text="Create new booking" styleName="btn btn-primary"/>
-		
-	</g:VerticalPanel>
+			</g:ScrollPanel>
+			<g:Label>
+				Cant' find anything suitable? Create a new booking and (if you want) your booking will appear in the
+					list above for others to share.
+			</g:Label>
+			<g:Button ui:field="buttonNewBooking" text="Book taxi"
+					styleName="btn btn-primary" />
+		</g:VerticalPanel>
 
-	<g:VerticalPanel ui:field="noSharePanel">
-		<g:Label>
-			At the moment there
-			are no sharing opportunities.
-		</g:Label>
-		<g:Label >
-			No problem. Click "Next" below and create and pay for your own
-			booking and, if you choose,
-			your booking will appear here so that others can join you.
-		</g:Label>
+		<g:VerticalPanel ui:field="noSharePanel">
+			<g:Label>
+				At the moment there
+				are no sharing opportunities.
+			</g:Label>
+			<g:Label>
+				No problem. Click "Next" below and create and pay for your own
+				booking and, if you choose,
+				your booking will appear here so that others can join you.
+			</g:Label>
 
-	</g:VerticalPanel>
-</g:HTMLPanel>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -30,7 +30,9 @@ import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.dashboard.ui.Helper;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
+import com.gwt.wizard.client.steps.ui.ButtonFactory;
 import com.gwt.wizard.client.steps.ui.widget.RatingList;
+import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -66,11 +68,16 @@ public class TransportStepUi extends Composite
     private final ScrollPanel sp = new ScrollPanel();
     private final FlowPanel fp = new FlowPanel();
 
+//    @UiField
+    Button buttonOrder, buttonAnnounce, buttonShare;
     @UiField
-    Button buttonOrder;
+    FlexTable buttontable;
+
+    private final Wizard wizard;
 
     public TransportStepUi(final Wizard wizard)
     {
+        this.wizard = wizard;
         createUi();
         fetchRoutes();
         panelRoute.setVisible(false);
@@ -90,12 +97,42 @@ public class TransportStepUi extends Composite
 
         panelMotivation.add(table);
         imageSearch.setVisible(false);
-        buttonOrder.addClickHandler(new ClickHandler()
+
+    }
+
+    private void createButtonTable()
+    {
+        ClickHandler shareBook = new ClickHandler()
         {
 
             @Override
             public void onClick(ClickEvent event)
             {
+                wizard.onNextClick(null);
+
+            }
+        };
+
+        buttonOrder = ButtonFactory.getButton("Order  this taxi", "150px");
+        int row = 0;
+        buttontable.setWidget(row++, 0, buttonOrder);
+        buttonOrder.addClickHandler(shareBook);
+        if (Wizard.shareAvailable())
+        {
+            buttonShare = ButtonFactory.getButton("Share this taxi", "150px");
+            buttonShare.addClickHandler(shareBook);
+            buttontable.setWidget(row++, 0, buttonShare);
+        }
+        buttonAnnounce = ButtonFactory.getButton("Announce a share", "150px");
+        buttontable.setWidget(row++, 0, buttonAnnounce);
+
+        buttonAnnounce.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                Wizard.BOOKINGINFO.setOrderType(OrderType.SHARE_ANNOUNCEMENT);
                 wizard.onNextClick(null);
 
             }
@@ -208,6 +245,7 @@ public class TransportStepUi extends Composite
             public void onSuccess(List<BookingInfo> list)
             {
                 Wizard.EXISTING_BOOKINGS_ON_ROUTE = list;
+                createButtonTable();
                 // suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
             }
 

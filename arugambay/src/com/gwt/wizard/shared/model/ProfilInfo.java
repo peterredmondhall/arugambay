@@ -7,6 +7,17 @@ public class ProfilInfo implements IsSerializable
     private String paypalUrl;
     private String paypalAccount;
     private String stripePublishable;
+    private String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     public void setStripePublishable(String stripePublishable)
     {

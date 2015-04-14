@@ -22,6 +22,7 @@ import com.gwt.wizard.client.steps.RatingStep;
 import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.TransportStep;
+import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
@@ -145,8 +146,17 @@ public class Wizard extends Composite
     {
         if (stepList.get(currentstep) instanceof ShareStep)
         {
-            if (EXISTING_BOOKINGS_ON_ROUTE == null || EXISTING_BOOKINGS_ON_ROUTE.size() == 0)
+            if (!shareAvailable() ||
+                    (BOOKINGINFO != null && BOOKINGINFO.getOrderType() == OrderType.SHARE_ANNOUNCEMENT))
             {
+                currentstep++;
+            }
+        }
+        if (stepList.get(currentstep) instanceof CreditCardStep)
+        {
+            if ((BOOKINGINFO != null && BOOKINGINFO.getOrderType() == OrderType.SHARE_ANNOUNCEMENT))
+            {
+                BOOKINGINFO.setStatus(OrderStatus.PAID);
                 currentstep++;
             }
         }
@@ -221,13 +231,14 @@ public class Wizard extends Composite
 
     }
 
-//    public void shareBooking(BookingInfo ref)
-//    {
-//
-//    }
-
     public void activateShareConfirmationStep(ShareConfirmationStep step)
     {
         step.init(prev, next);
     }
+
+    public static boolean shareAvailable()
+    {
+        return EXISTING_BOOKINGS_ON_ROUTE != null && EXISTING_BOOKINGS_ON_ROUTE.size() != 0;
+    }
+
 }

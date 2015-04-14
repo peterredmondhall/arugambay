@@ -138,6 +138,7 @@ public class Profil implements Serializable
         info.setPaypalAccount(paypalAccount);
         info.setPaypalUrl(paypalURL);
         info.setStripePublishable(stripePublishable);
+        info.setName(name);
         return info;
     }
 

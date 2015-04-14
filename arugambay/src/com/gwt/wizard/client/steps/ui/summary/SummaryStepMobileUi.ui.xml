@@ -23,7 +23,8 @@
 
 	<g:HTMLPanel ui:field="mainPanel">
 		<g:Label styleName="{style.title}" ui:field="summaryTitle"/>
-		<g:Grid>
+		<g:Label ui:field="summaryDetails"/>
+				<g:Grid>
 			<!-- Datum -->
 			<g:row >
 				<g:customCell styleName="{style.labelDiv}">
@@ -36,7 +37,7 @@
 			<!-- Hinfahrt von -->
 			<g:row >
 				<g:customCell styleName="{style.labelDiv}">
-					<g:Label>Flight no.</g:Label>
+					<g:Label  ui:field="labelPickupDetail">Flight no.</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:Label ui:field="labelFlightNo" />
@@ -44,7 +45,7 @@
 			</g:row>
 			<g:row >
 				<g:customCell styleName="{style.labelDiv}">
-					<g:Label>Time of landing</g:Label>
+					<g:Label ui:field="labelPickupTimeDetail">Time of landing</g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:Label ui:field="labelLandingTime" />
@@ -61,14 +62,6 @@
 				</g:customCell>
 			</g:row>
 			<!-- Abholung am von -->
-			<g:row  >
-				<g:customCell styleName="{style.labelDiv}">
-					<g:Label ui:field="labelRPT">No. of surfboards</g:Label>
-				</g:customCell>
-				<g:customCell>
-					<g:Label ui:field="labelSurfboards" />
-				</g:customCell>
-			</g:row>
 			<!-- Total no. passengers -->
 			<g:row >
 				<g:customCell styleName="{style.labelDiv}">
@@ -94,7 +87,15 @@
 					<g:Label ui:field="labelEmail" />
 				</g:customCell>
 			</g:row>
-			<g:row >
+			<g:row  >
+				<g:customCell styleName="{style.labelDiv}">
+					<g:Label ui:field="labelRPT">No. of surfboards</g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label ui:field="labelSurfboards" />
+				</g:customCell>
+			</g:row>
+									<g:row >
 				<g:customCell styleName="{style.labelDiv}">
 					<g:Label ui:field="labelRequirementsField">Other requirements:</g:Label>
 				</g:customCell>

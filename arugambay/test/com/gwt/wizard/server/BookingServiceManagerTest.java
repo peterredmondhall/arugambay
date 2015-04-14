@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,9 @@ import org.junit.Test;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
+import com.gwt.wizard.server.entity.ArchivedBooking;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
@@ -404,6 +407,44 @@ public class BookingServiceManagerTest
         bookings = bs.getListFeedbackRequest();
         assertEquals(0, bookings.size());
 
+    }
+
+    @Test
+    public void should_compare_dates()
+    {
+        BookingInfo biMinus2 = getBookingInfo(new DateTime().minusMonths(2).toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo binow = getBookingInfo(new DateTime().now().toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo biPlus2 = getBookingInfo(new DateTime().plusMonths(2).toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+
+        List<BookingInfo> list = Lists.newArrayList(binow, biPlus2, biMinus2);
+        List<BookingInfo> expected = Lists.newArrayList(biMinus2, binow, biPlus2);
+        Collections.sort(list, new BookingServiceManager().new BookingInfoComparator());
+
+        assertEquals(list, expected);
+    }
+
+    @Test
+    public void should_archive()
+    {
+
+        BookingInfo biMinus2 = getBookingInfo(new DateTime().minusMonths(2).toDate(), "biMinus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo binow = getBookingInfo(new DateTime().now().toDate(), "binow", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo biPlus2 = getBookingInfo(new DateTime().plusMonths(2).toDate(), "biPlus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        bs.addBookingWithClient(biMinus2, "client");
+        bs.addBookingWithClient(binow, "client");
+        bs.addBookingWithClient(biPlus2, "client");
+
+        assertEquals(bs.getAll(Booking.class).size(), 3);
+        assertEquals(bs.getAll(ArchivedBooking.class).size(), 0);
+
+        List<BookingInfo> archiveList = bs.getArchiveList();
+        assertEquals(archiveList.size(), 1);
+        assertEquals(archiveList.get(0).getDate(), biMinus2.getDate());
+
+        bs.archive(archiveList.get(0));
+
+        assertEquals(bs.getAll(Booking.class).size(), 2);
+        assertEquals(bs.getAll(ArchivedBooking.class).size(), 1);
     }
 
 }

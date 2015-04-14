@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.dashboard.ui.Helper;
-import com.gwt.wizard.shared.OrderType;
 
 public class SummaryStepUi extends Composite
 {
@@ -28,7 +28,10 @@ public class SummaryStepUi extends Composite
     HTMLPanel mainPanel;
 
     @UiField
-    Label summaryTitle, labelEmail, labelName, labelSurfboards, labelPax, labelFlightNo, labelLandingTime, labelDate, labelPrice, labelRequirements, labelInterestedSharing;
+    Label summaryTitle, summaryDetails, labelEmail, labelName, labelSurfboards, labelPax, labelFlightNo, labelLandingTime, labelDate, labelPrice, labelRequirements, labelInterestedSharing, labelRPT;
+
+    @UiField
+    Label labelPickupDetail, labelPickupTimeDetail;
 
     @UiField
     Label labelInterestedSharingField, labelRequirementsField;
@@ -60,6 +63,9 @@ public class SummaryStepUi extends Composite
         labelFlightNo.setText(BOOKINGINFO.getFlightNo());
         labelLandingTime.setText(BOOKINGINFO.getLandingTime());
 
+        labelPickupDetail.setText(Wizard.ROUTEINFO.getPickupType().getLocationType());
+        labelPickupTimeDetail.setText(Wizard.ROUTEINFO.getPickupType().getTimeType());
+
         labelPax.setText(Integer.toString(BOOKINGINFO.getPax()));
         labelSurfboards.setText(Integer.toString(BOOKINGINFO.getSurfboards()));
         labelEmail.setText(BOOKINGINFO.getEmail());
@@ -69,23 +75,44 @@ public class SummaryStepUi extends Composite
         labelInterestedSharing.setText(BOOKINGINFO.getShareWanted() ? "yes please" : "no, thanks");
         prev.setEnabled(true);
 
-        boolean shared = BOOKINGINFO.getOrderType() == OrderType.SHARE;
+        labelInterestedSharing.setVisible(true);
+        labelInterestedSharingField.setVisible(true);
+        labelRequirementsField.setText("Message");
+        pay1.setVisible(false);
+        labelPrice.setVisible(false);
 
-        if (shared)
+        labelRPT.setVisible(true);
+        labelSurfboards.setVisible(true);
+        switch (BOOKINGINFO.getOrderType())
         {
-            summaryTitle.setText("These details will be sent to the person who booked the taxi. ");
-            labelInterestedSharing.setVisible(false);
-            labelInterestedSharingField.setVisible(false);
-            labelRequirementsField.setText("Message");
-        }
-        else
-        {
-            summaryTitle.setText("Here is a summary of your order.");
+            case BOOKING:
+                summaryTitle.setText("Summary of your order.");
+                summaryDetails.setText("");
+                pay1.setVisible(true);
+                labelPrice.setVisible(true);
+                break;
+            case SHARE:
+                summaryTitle.setText("Summary of your share request.");
+                summaryDetails.setText("These details will be sent to the person who booked the taxi and they will contact you directly. This is *NOT* a taxi booking.");
+                labelInterestedSharing.setVisible(false);
+                labelInterestedSharingField.setVisible(false);
+                labelRequirementsField.setText("Message");
+                break;
+            case SHARE_ANNOUNCEMENT:
+                summaryTitle.setText("Summary of your share announcement.");
+                summaryDetails.setText("Your share announcement will be listed. This is *NOT* a taxi booking.");
+                labelInterestedSharing.setVisible(false);
+                labelInterestedSharingField.setVisible(false);
+                labelRequirementsField.setText("Message");
+                labelRPT.setVisible(false);
+                labelSurfboards.setVisible(false);
+                break;
+            default:
+                break;
+
         }
 
-        pay1.setVisible(!shared);
         // pay2.setVisible(!shared);
-        labelPrice.setVisible(!shared);
         // paypal.setVisible(!shared);
         next.setVisible(true);
     }

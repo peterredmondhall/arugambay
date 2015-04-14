@@ -88,7 +88,7 @@ public class ShareStepUi extends Composite
                 return object.getLandingTime();
             }
         };
-        cellTable.addColumn(landingTimeColumn, landingTimePickup);
+        cellTable.addColumn(landingTimeColumn, "approx. pickup time");
 
         TextColumn<BookingInfo> estimatedPriceColumn = new TextColumn<BookingInfo>()
         {
@@ -99,14 +99,14 @@ public class ShareStepUi extends Composite
                 return "US$" + usdFormat.format(d);
             }
         };
-        cellTable.addColumn(estimatedPriceColumn, "estimated price");
+        cellTable.addColumn(estimatedPriceColumn, "estimated sharing price");
 
         TextColumn<BookingInfo> shareColumn = new TextColumn<BookingInfo>()
         {
             @Override
             public String getValue(BookingInfo object)
             {
-                return "Click here to share";
+                return "Click to share";
             }
         };
         cellTable.addColumn(shareColumn, "");
@@ -189,6 +189,7 @@ public class ShareStepUi extends Composite
 
                 }
             });
+
         }
     }
 

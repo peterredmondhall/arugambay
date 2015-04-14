@@ -36,7 +36,7 @@
 			<!-- Date -->
 			<g:row>
 				<g:customCell   styleName="{style.labelDiv}" >
-					<g:Label ui:field="dateMsg">Date of arrival *</g:Label>
+					<g:Label ui:field="dateMsg">Date of pickup *</g:Label>
 				</g:customCell>
 				<g:customCell >
 					<d:DateBox ui:field="dateBox" />
@@ -82,15 +82,6 @@
 				</g:customCell>
 			</g:row>
 						
-			<!-- No. surfboards -->
-			<g:row>
-				<g:customCell   styleName="{style.labelDiv}" >
-					<g:Label>Number of surfboards</g:Label>
-				</g:customCell>
-				<g:customCell >
-					<g:ListBox styleName="listbox" ui:field="surfboards"/>
-				</g:customCell>
-			</g:row>
 			
 			<!-- First name -->			
 			<g:row>
@@ -153,7 +144,17 @@
 					<g:Label styleName="errMsg" ui:field="email2ErrorMsg"></g:Label>
 				</g:customCell>
 			</g:row>
+			
+			<!-- No. surfboards -->
 			<g:row>
+				<g:customCell   styleName="{style.labelDiv}" >
+					<g:Label ui:field="surfboardsLabel">Number of surfboards</g:Label>
+				</g:customCell>
+				<g:customCell >
+					<g:ListBox styleName="listbox" ui:field="surfboards"/>
+				</g:customCell>
+			</g:row>
+						<g:row>
 				<g:customCell   styleName="{style.labelDiv}" >
 					<g:Label ui:field="labelRequirementsField">Other requirements:</g:Label>
 				</g:customCell>

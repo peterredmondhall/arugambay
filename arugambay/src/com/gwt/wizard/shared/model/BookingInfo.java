@@ -30,7 +30,7 @@ public class BookingInfo extends Info
     private Long parentId;
     private Boolean shareWanted;
     private OrderStatus status;
-    private OrderType orderType;
+    private OrderType orderType = OrderType.BOOKING;
     private String flightNo;
     private String landingTime;
     private int pax = 0;

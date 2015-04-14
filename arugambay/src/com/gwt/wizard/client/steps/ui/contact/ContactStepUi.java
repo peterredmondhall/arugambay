@@ -60,7 +60,7 @@ public class ContactStepUi extends Composite
     Label labelSharing1, labelSharing2, labelBooking, labelFlightLandingTime, labelFlightNo, firstNameMsg, lastNameMsg, labelEmailMsg, labelEmail2Msg;
 
     @UiField
-    Label labelRequirementsField;
+    Label labelRequirementsField, surfboardsLabel;
 
     @UiField
     TextBox flightLandingTime, flightNo, firstName, lastName, email, email2;
@@ -207,23 +207,62 @@ public class ContactStepUi extends Composite
         prev.setEnabled(true);
         prev.setVisible(true);
 
+        surfboardsLabel.setVisible(true);
+        surfboards.setVisible(true);
+        labelRequirementsField.setVisible(true);
+        requirementsBox.setVisible(true);
+        switch (BOOKINGINFO.getOrderType())
+        {
+            case BOOKING:
+                checkboxWanttoShare.setVisible(true);
+                labelWanttoShare.setVisible(true);
+
+                labelBooking.setVisible(true);
+                labelSharing1.setVisible(false);
+                labelSharing2.setVisible(false);
+                dateBox.setEnabled(true);
+                labelRequirementsField.setText("Other requirements");
+                break;
+            case SHARE:
+                checkboxWanttoShare.setVisible(false);
+                labelWanttoShare.setVisible(false);
+
+                labelBooking.setVisible(false);
+                labelSharing1.setVisible(true);
+                labelSharing2.setVisible(true);
+                dateBox.setEnabled(false);
+                labelRequirementsField.setText("Message to taxi booker eg. Facebook profile etc.");
+                labelSharing1.setText("You are creating a share request.");
+                labelSharing2.setText("We will forward your details to the person who has paid for the taxi and they will contact you directly.");
+                dateBox.setValue(BOOKINGINFO.getDate());
+                break;
+            case SHARE_ANNOUNCEMENT:
+                checkboxWanttoShare.setVisible(false);
+                labelWanttoShare.setVisible(false);
+
+                labelBooking.setVisible(false);
+                labelSharing1.setVisible(true);
+                labelSharing2.setVisible(true);
+                surfboardsLabel.setVisible(false);
+                surfboards.setVisible(false);
+                labelRequirementsField.setVisible(true);
+                requirementsBox.setVisible(true);
+                labelSharing1.setText("You are creating a sharing announcement.");
+                labelSharing2.setText("It will appear in the sharing list on this route.");
+
+                dateBox.setEnabled(true);
+                break;
+            default:
+                break;
+
+        }
         boolean sharing = BOOKINGINFO.getOrderType() == OrderType.SHARE;
         if (sharing)
         {
             labelRequirementsField.setText("Message to taxi booker eg. Facebook profile etc.");
-        }
-
-        checkboxWanttoShare.setVisible(!sharing);
-        labelWanttoShare.setVisible(!sharing);
-
-        labelBooking.setVisible(!sharing);
-        labelSharing1.setVisible(sharing);
-        labelSharing2.setVisible(sharing);
-        dateBox.setEnabled(!sharing);
-        if (sharing)
-        {
             dateBox.setValue(BOOKINGINFO.getDate());
         }
+
         labelFlightNo.setText(Wizard.ROUTEINFO.getPickupType().getLocationType());
         labelFlightLandingTime.setText(Wizard.ROUTEINFO.getPickupType().getTimeType());
 

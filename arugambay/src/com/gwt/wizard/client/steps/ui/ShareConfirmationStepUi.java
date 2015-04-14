@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
 
 public class ShareConfirmationStepUi extends Composite
@@ -62,23 +61,15 @@ public class ShareConfirmationStepUi extends Composite
     {
         if (bookingInfo != null)
         {
-            if (OrderStatus.PAID.equals(bookingInfo.get(0).getStatus()))
-            {
-                BookingInfo sharer = bookingInfo.get(1);
-                label1.setText("Thank you agreeing to share your ride. Now, please get in contact directly with the person requesting the share.");
-                label2.setText("Below are the details of your fellow passenger.");
-                labelName.setText(sharer.getName());
-                labelEmail.setText(sharer.getEmail());
-                labelFlightNo.setText(sharer.getFlightNo());
-                labelLandingTime.setText(sharer.getLandingTime());
-                labelPax.setText("" + sharer.getPax());
-                labelSurfboards.setText("" + sharer.getSurfboards());
-            }
-            else
-            {
-                label1.setText("The payment was not successful and no order has been created");
-                label2.setText("Please contact dispatch@taxisurfr.com if you think this is a problem.");
-            }
+            BookingInfo sharer = bookingInfo.get(1);
+            label1.setText("Thank you agreeing to share your ride. Now, please get in contact directly with the person requesting the share.");
+            label2.setText("Below are the details of your fellow passenger.");
+            labelName.setText(sharer.getName());
+            labelEmail.setText(sharer.getEmail());
+            labelFlightNo.setText(sharer.getFlightNo());
+            labelLandingTime.setText(sharer.getLandingTime());
+            labelPax.setText("" + sharer.getPax());
+            labelSurfboards.setText("" + sharer.getSurfboards());
         }
         else
         {

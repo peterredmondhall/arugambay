@@ -229,6 +229,24 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         return booking;
     }
 
+    public ArchivedBooking getArchivedBooking()
+    {
+        ArchivedBooking booking = new ArchivedBooking();
+        booking.setDate(date);
+        booking.setEmail(email);
+        booking.setName(name);
+        booking.setFlightNo(flightNo);
+        booking.setLandingTime(landingTime);
+        booking.setPax(pax);
+        booking.setSurfboards(surfboards);
+        booking.setRequirements(requirements);
+        booking.setShareWanted(shareWanted);
+        booking.setOrderType(orderType);
+        booking.setRoute(route);
+
+        return booking;
+    }
+
     @Override
     public BookingInfo getInfo()
     {

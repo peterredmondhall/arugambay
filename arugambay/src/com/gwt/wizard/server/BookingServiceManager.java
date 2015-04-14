@@ -3,9 +3,9 @@ package com.gwt.wizard.server;
 import static org.joda.time.DateTime.now;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -17,14 +17,13 @@ import org.joda.time.format.DateTimeFormatter;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.gwt.wizard.server.entity.ArchivedBooking;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Config;
 import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.shared.OrderStatus;
-import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -253,6 +252,16 @@ public class BookingServiceManager extends Manager
         return profil;
     }
 
+    public class BookingInfoComparator implements Comparator<BookingInfo>
+    {
+
+        @Override
+        public int compare(BookingInfo bi1, BookingInfo bi2)
+        {
+            return (new DateTime(bi1.getDate()).isAfter(new DateTime(bi2.getDate()))) ? 1 : -1;
+        }
+    }
+
     public List<BookingInfo> getBookingsForRoute(final RouteInfo routeInfo) throws IllegalArgumentException
     {
 
@@ -261,25 +270,36 @@ public class BookingServiceManager extends Manager
             @Override
             public boolean apply(BookingInfo bookingInfo)
             {
-                // TODO test this
-                return new DateTime(bookingInfo.getDate()).isAfter(now()) &&
-                        OrderType.BOOKING == bookingInfo.getOrderType() &&
-                        OrderStatus.PAID == bookingInfo.getStatus() &&
-                        routeInfo.getId().equals(bookingInfo.getRouteInfo().getId()) &&
-                        bookingInfo.getShareWanted();
+                boolean applies = false;
+                if (new DateTime(bookingInfo.getDate()).isAfter(now()) && routeInfo.getId().equals(bookingInfo.getRouteInfo().getId()) && bookingInfo.getOrderType() != null)
+                {
+
+                    switch (bookingInfo.getOrderType())
+                    {
+                        case BOOKING:
+                            applies = OrderStatus.PAID == bookingInfo.getStatus() && bookingInfo.getShareWanted();
+                            break;
+                        case SHARE:
+                            break;
+                        case SHARE_ANNOUNCEMENT:
+                            applies = true;
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
+                return applies;
             }
         };
         List<BookingInfo> current = Lists.newArrayList(Collections2.filter(getBookings(), acceptEven));
-
-        Map<Date, BookingInfo> sorted = Maps.newTreeMap();
+        Collections.sort(current, new BookingInfoComparator());
+        logger.info("share candidates size = " + current.size());
         for (BookingInfo bi : current)
         {
-            sorted.put(bi.getDate(), bi);
+            System.out.println(bi.getDate());
         }
-        List<BookingInfo> sortedList = Lists.newArrayList();
-        sortedList.addAll(sorted.values());
-        logger.info("share candidates size = " + sortedList.size());
-        return sortedList;
+        return current;
     }
 
     public BookingInfo setShareAccepted(BookingInfo bookingInfo)
@@ -350,5 +370,47 @@ public class BookingServiceManager extends Manager
         }
         return bookings;
 
+    }
+
+    public List<BookingInfo> getArchiveList()
+    {
+        EntityManager em = getEntityManager();
+        List<BookingInfo> bookings = new ArrayList<>();
+        try
+        {
+            @SuppressWarnings("unchecked")
+            List<Booking> resultList = em.createQuery("select t from Booking t").getResultList();
+            for (Booking booking : resultList)
+            {
+                if (new DateTime(booking.getDate()).plusDays(7).isBefore(DateTime.now()))
+                {
+                    em.detach(booking);
+                    bookings.add(booking.getInfo());
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.severe(ex.getMessage());
+        }
+        finally
+        {
+            em.close();
+        }
+        return bookings;
+
+    }
+
+    public void archive(BookingInfo bookingInfo)
+    {
+        EntityManager em = getEntityManager();
+        Booking booking = em.find(Booking.class, bookingInfo.getId());
+        ArchivedBooking achivedBooking = booking.getArchivedBooking();
+        em.getTransaction().begin();
+        em.persist(achivedBooking);
+        em.getTransaction().commit();
+        em.getTransaction().begin();
+        em.remove(booking);
+        em.getTransaction().commit();
     }
 }
