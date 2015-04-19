@@ -193,5 +193,4 @@ public class ContractorManager extends Manager
         em.detach(contractor);
 
     }
-
 }

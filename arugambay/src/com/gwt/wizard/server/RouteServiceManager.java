@@ -93,6 +93,7 @@ public class RouteServiceManager extends Manager
         route.setStart(routeInfo.getStart());
         route.setEnd(routeInfo.getEnd());
         route.setCents(routeInfo.getCents());
+        route.setAgentCents(routeInfo.getAgentCents());
 
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());

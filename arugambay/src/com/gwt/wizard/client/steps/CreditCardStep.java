@@ -93,7 +93,6 @@ public class CreditCardStep implements WizardStep
                 @Override
                 public void onFailure(Exception reason)
                 {
-                    System.out.println("Failed Injecting Stripe.JS");
                 }
 
                 @Override

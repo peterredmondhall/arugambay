@@ -137,7 +137,7 @@ public class PdfUtil
         // the cell object
         PdfPCell cell;
         table.addCell(ORDERNO);
-        table.addCell(bookingInfo.getOrderNo());
+        table.addCell(bookingInfo.getOrderRef());
         table.addCell(NAME);
         table.addCell(bookingInfo.getName());
         table.addCell(EMAIL);

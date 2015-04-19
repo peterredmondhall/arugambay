@@ -29,7 +29,7 @@
 			You are creating a share request.
 		</g:Label>
 	   <g:Label ui:field="labelSharing2">
-			We will forward your details to the person who has paid for the taxi and they will contact you directly.
+			We will forward your details to the person who wants to share their taxi and they will contact you directly.
 		</g:Label>
 	   	   	   	    
 		<g:Grid>

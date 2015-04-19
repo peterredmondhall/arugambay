@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Key;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.FinanceInfo;
 import com.gwt.wizard.shared.model.Info;
 import com.gwt.wizard.shared.model.RouteInfo;
 
@@ -242,7 +243,9 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         booking.setRequirements(requirements);
         booking.setShareWanted(shareWanted);
         booking.setOrderType(orderType);
+        booking.setStatus(orderStatus);
         booking.setRoute(route);
+        booking.setRef(ref);
 
         return booking;
     }
@@ -271,6 +274,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         bookingInfo.setShareWanted(getShareWanted());
         bookingInfo.setRouteInfo(routeInfo);
         bookingInfo.setRouteId(route);
+        bookingInfo.setOrderRef(ref);
         return bookingInfo;
     }
 
@@ -323,7 +327,27 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         // compareTo should return < 0 if this is supposed to be
         // less than other, > 0 if this is supposed to be greater than
         // other and 0 if they are supposed to be equal
-        return this.instanziated.after(instanziated) ? -1 : 1;
+        return this.instanziated.after(instanziated) ? -1 : -1;
+    }
+
+    public FinanceInfo getFinanceInfo()
+    {
+        FinanceInfo info = new FinanceInfo();
+        info.setName(name);
+        info.setDate(date);
+        return info;
+    }
+
+    public String generateRef()
+    {
+        String idString = Long.toString(key.getId());
+        int len = idString.length();
+        if (len > 5)
+        {
+            return idString.substring(len - 5, len - 1);
+        }
+        else
+            return idString;
     }
 
 }

@@ -42,9 +42,6 @@ public class AddressOracle extends SuggestOracle
                             for (int xx = 0; xx < addressComponent.length(); xx++)
                             {
                                 GeocoderAddressComponent comp = addressComponent.get(xx);
-                                System.out.println(comp.getTypes());
-                                System.out.println("longname:" + comp.getLongName());
-                                System.out.println("shortname:" + comp.getShortName());
                             }
                             String formattedAddress = result.getFormattedAddress();
 

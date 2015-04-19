@@ -45,7 +45,7 @@ public class BookingServiceManagerTest
     BookingServiceManager bs = new BookingServiceManager();
     RatingManager ratingManager = new RatingManager();
 
-    AgentInfo userInfo;
+    static AgentInfo testAgentInfo;
     ContractorInfo contractorInfo;
 
     @Before
@@ -53,7 +53,7 @@ public class BookingServiceManagerTest
     {
         helper.setUp();
         new BookingServiceManager().getProfil();
-        userInfo = new BookingServiceImpl().createDefaultUser();
+        testAgentInfo = new BookingServiceImpl().createDefaultUser();
     }
 
     @After
@@ -62,9 +62,9 @@ public class BookingServiceManagerTest
         helper.tearDown();
     }
 
-    private BookingInfo getBookingInfo(Date date, String flightNo, String landingTime, String name, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
+    public static BookingInfo getBookingInfo(Date date, String flightNo, String landingTime, String name, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
     {
-        RouteInfo routeInfo = new RouteServiceManager().getRoutes(userInfo).get(0);
+        RouteInfo routeInfo = new RouteServiceManager().getRoutes(testAgentInfo).get(0);
 
         BookingInfo bi = new BookingInfo();
         bi.setDate(date);
@@ -120,9 +120,8 @@ public class BookingServiceManagerTest
         return bs.addBookingWithClient(getStandardBookingInfo(), "client");
     }
 
-    private List<RatingInfo> create_a_rating()
+    private List<RatingInfo> create_a_rating(Profil profil)
     {
-        Profil profil = new Profil();
         List<BookingInfo> bookings = bs.getBookings();
         assertEquals(1, bookings.size());
         BookingInfo bi = bs.setPayed(profil, bookings.get(0), OrderStatus.PAID);
@@ -257,8 +256,8 @@ public class BookingServiceManagerTest
         BookingInfo bi1 = getStandardBookingInfo();
         BookingInfo bi2 = getStandardBookingInfo();
 
-        RouteInfo routeInfo1 = new RouteServiceManager().getRoutes(userInfo).get(0);
-        RouteInfo routeInfo2 = new RouteServiceManager().getRoutes(userInfo).get(1);
+        RouteInfo routeInfo1 = new RouteServiceManager().getRoutes(testAgentInfo).get(0);
+        RouteInfo routeInfo2 = new RouteServiceManager().getRoutes(testAgentInfo).get(1);
 
         List<Contractor> contractor = new ContractorManager().getAll(Contractor.class);
         assertEquals(contractor.get(0).getAgentId(), contractor.get(1).getAgentId());
@@ -328,7 +327,8 @@ public class BookingServiceManagerTest
     public void should_create_dataset()
     {
         create_a_booking();
-        create_a_rating();
+        create_a_rating(new Profil());
+
         String dataset = bs.dump(Booking.class);
         assertEquals(3, (dataset.split("com.gwt.wizard.shared.model.BookingInfo").length));
         dataset = ratingManager.dump(Rating.class);
@@ -340,7 +340,7 @@ public class BookingServiceManagerTest
     public void should_import_booking_from_a_string() throws IOException
     {
         create_a_booking();
-        create_a_rating();
+        create_a_rating(new Profil());
         String dataset = bs.dump(Booking.class);
 
         bs.importDataset(dataset, Booking.class);
@@ -380,7 +380,7 @@ public class BookingServiceManagerTest
     public void should_add_rating()
     {
         create_a_booking();
-        List<RatingInfo> ratings = create_a_rating();
+        List<RatingInfo> ratings = create_a_rating(new Profil());
 
         assertEquals(1, ratings.size());
         RatingInfo ratingInfo = ratings.get(0);
@@ -394,13 +394,15 @@ public class BookingServiceManagerTest
     }
 
     @Test
-    public void should_return_unrated()
+    public void should_return_paid_unrated()
     {
-        BookingInfo bookingInfo = getBookingInfo(getDateTwoDaysPrevious(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
-        bs.addBookingWithClient(bookingInfo, "client");
+        Profil profil = new Profil();
+        BookingInfo bookingInfoPaid = getBookingInfo(getDateTwoDaysPrevious(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        bookingInfoPaid = bs.addBookingWithClient(bookingInfoPaid, "client");
+        bs.setPayed(profil, bookingInfoPaid, OrderStatus.PAID);
 
-        bookingInfo = getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
-        bs.addBookingWithClient(bookingInfo, "client");
+        BookingInfo bookingInfoUnpaid = getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        bs.addBookingWithClient(bookingInfoUnpaid, "client");
 
         List<BookingInfo> bookings = bs.getListFeedbackRequest();
         assertEquals(1, bookings.size());

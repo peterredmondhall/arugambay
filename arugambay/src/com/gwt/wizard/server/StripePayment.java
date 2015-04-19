@@ -25,7 +25,7 @@ public class StripePayment
             chargeParams.put("amount", cents);
             chargeParams.put("currency", "usd");
             chargeParams.put("card", card); // obtained with Stripe.js
-            chargeParams.put("description", "Taxi Charges Sri Lanka - order " + bookingInfo.getOrderNo());
+            chargeParams.put("description", "Taxi Charges Sri Lanka - order " + bookingInfo.getOrderRef());
 
             logger.info("charging " + cents);
             Charge charge = Charge.create(chargeParams);

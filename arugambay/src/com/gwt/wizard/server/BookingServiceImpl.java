@@ -2,6 +2,7 @@ package com.gwt.wizard.server;
 
 import static com.gwt.wizard.shared.OrderStatus.SHARE_ACCEPTED;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
+import com.gwt.wizard.shared.model.FinanceInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -37,6 +39,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     private final ContractorManager contractorManager = new ContractorManager();
     private final StatManager statManager = new StatManager();
     private final RatingManager ratingManager = new RatingManager();
+    private final FinanceManager financeManager = new FinanceManager();
     private final StripePayment stripePayment = new StripePayment();
 
     @Override
@@ -151,6 +154,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             if (bookingInfo != null)
             {
                 Mailer.sendConfirmation(bookingInfo, profil);
+                financeManager.addPayment(bookingInfo, new Date());
             }
         }
         else
@@ -239,6 +243,8 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
                     routeInfo.setStart(testAgent + "start" + i);
                     routeInfo.setEnd(testAgent + ":end" + i);
                     routeInfo.setPickupType(PickupType.AIRPORT);
+                    routeInfo.setCents(101L);
+                    routeInfo.setAgentCents(100L);
                     routeInfo.setContractorId(contractorInfo.getId());
                     new RouteServiceManager().saveRoute(agentInfo, routeInfo, SaveMode.ADD);
                 }
@@ -297,6 +303,12 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public RouteInfo getRoute(Long routeId) throws IllegalArgumentException
     {
         return routeServiceManager.getRoute(routeId);
+    }
+
+    @Override
+    public List<FinanceInfo> getFinances(AgentInfo agentInfo)
+    {
+        return financeManager.getFinance(agentInfo);
     }
 
 }

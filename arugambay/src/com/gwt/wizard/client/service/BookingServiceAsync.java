@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
+import com.gwt.wizard.shared.model.FinanceInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -66,5 +67,7 @@ public interface BookingServiceAsync
     void sendStat(StatInfo statInfo, AsyncCallback<Void> asyncCallback);
 
     void createDefaultUser(AsyncCallback<AgentInfo> asyncCallback);
+
+    void getFinances(AgentInfo agentInfo, AsyncCallback<List<FinanceInfo>> asyncCallback);
 
 }

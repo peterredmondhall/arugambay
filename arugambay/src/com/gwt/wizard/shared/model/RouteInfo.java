@@ -32,6 +32,22 @@ public class RouteInfo extends Info
         }
     }
 
+    private PickupType pickupType;
+    private Long cents;
+    private Long agentCents;
+
+    public Long getAgentCents()
+    {
+        return agentCents;
+    }
+
+    public void setAgentCents(Long agentCents)
+    {
+        this.agentCents = agentCents;
+    }
+
+    private Long image;
+
     public enum SaveMode
     {
         UPDATE,
@@ -63,10 +79,6 @@ public class RouteInfo extends Info
     {
         this.description = description;
     }
-
-    private PickupType pickupType;
-    private Long cents;
-    private Long image;
 
     public Long getImage()
     {

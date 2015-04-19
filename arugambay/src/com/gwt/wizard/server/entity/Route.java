@@ -22,6 +22,10 @@ public class Route extends ArugamEntity<RouteInfo>
     private String end;
     private String description;
     private Long contractorId;
+    private PickupType pickupType;
+    private Long cents;
+    private Long agentCents;
+    private Long image;
 
     public Long getContractorId()
     {
@@ -42,11 +46,6 @@ public class Route extends ArugamEntity<RouteInfo>
     {
         this.description = description;
     }
-
-    private PickupType pickupType;
-    private Long cents = 10000L;
-
-    private Long image;
 
     public Key getKey()
     {
@@ -98,15 +97,10 @@ public class Route extends ArugamEntity<RouteInfo>
         this.cents = cents;
     }
 
-//    public Blob getImage()
-//    {
-//        return image;
-//    }
-//
-//    public void setImage(Blob image)
-//    {
-//        this.image = image;
-//    }
+    public Long getCents()
+    {
+        return cents;
+    }
 
     @Override
     public void setKey(Key key)
@@ -121,6 +115,7 @@ public class Route extends ArugamEntity<RouteInfo>
         route.setEnd(routeInfo.getEnd());
         route.setDescription(routeInfo.getDescription());
         route.setCents(routeInfo.getCents());
+        route.setAgentCents(routeInfo.getAgentCents());
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());
         route.setContractorId(routeInfo.getContractorId());
@@ -136,6 +131,7 @@ public class Route extends ArugamEntity<RouteInfo>
         routeInfo.setEnd(end);
         routeInfo.setDescription(description);
         routeInfo.setCents(cents);
+        routeInfo.setAgentCents(agentCents);
 
         routeInfo.setPickupType(pickupType);
         routeInfo.setImage(image);
@@ -148,5 +144,15 @@ public class Route extends ArugamEntity<RouteInfo>
             routeInfo.setContractorId(contractorId);
         }
         return routeInfo;
+    }
+
+    public Long getAgentCents()
+    {
+        return agentCents;
+    }
+
+    public void setAgentCents(Long agentCents)
+    {
+        this.agentCents = agentCents;
     }
 }

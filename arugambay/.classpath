@@ -61,9 +61,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/selenium/eyes-sdk-java-2.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/selenium/eyes-selenium-java-2.5.jar"/>
-	<classpathentry kind="lib" path="C:/dev/eclipse_luna/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.17/appengine-java-sdk-1.9.17/lib/impl/appengine-api.jar"/>
-	<classpathentry kind="lib" path="C:/dev/eclipse_luna/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.17/appengine-java-sdk-1.9.17/lib/impl/appengine-api-labs.jar"/>
-	<classpathentry kind="lib" path="C:/dev/eclipse_luna/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.17/appengine-java-sdk-1.9.17/lib/impl/appengine-api-stubs.jar"/>
-	<classpathentry kind="lib" path="C:/dev/eclipse_luna/eclipse/plugins/com.google.appengine.eclipse.sdkbundle_1.9.17/appengine-java-sdk-1.9.17/lib/testing/appengine-testing.jar"/>
+	<classpathentry kind="var" path="APPENGINE_SDK/lib/impl/appengine-api-labs.jar"/>
+	<classpathentry kind="var" path="APPENGINE_SDK/lib/impl/appengine-api-stubs.jar"/>
+	<classpathentry kind="var" path="APPENGINE_SDK/lib/impl/appengine-api.jar"/>
+	<classpathentry kind="var" path="APPENGINE_SDK/lib/testing/appengine-testing.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

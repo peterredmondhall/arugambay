@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
+import com.gwt.wizard.shared.model.FinanceInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
@@ -63,5 +64,7 @@ public interface BookingService extends RemoteService
     void sendStat(StatInfo statInfo);
 
     AgentInfo createDefaultUser();
+
+    List<FinanceInfo> getFinances(AgentInfo agentInfo);
 
 }

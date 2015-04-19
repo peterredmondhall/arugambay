@@ -41,19 +41,28 @@ public class BookingServiceManager extends Manager
 
     public BookingInfo addBookingWithClient(BookingInfo bookingInfo, String client) throws IllegalArgumentException
     {
-        BookingInfo result = null;
         logger.info(bookingInfo.toString());
         EntityManager em = getEntityManager();
         try
         {
+            Route route = em.find(Route.class, bookingInfo.getRouteInfo().getId());
+
             Booking booking = Booking.getBooking(bookingInfo, client);
             em.getTransaction().begin();
             em.persist(booking);
             em.getTransaction().commit();
             em.detach(booking);
 
-            Route route = em.find(Route.class, bookingInfo.getRouteInfo().getId());
-            result = booking.getBookingInfo(route.getInfo());
+            bookingInfo = booking.getBookingInfo(route.getInfo());
+
+            booking = em.find(Booking.class, bookingInfo.getId());
+            booking.setRef(booking.generateRef());
+            em.getTransaction().begin();
+            em.persist(booking);
+            em.getTransaction().commit();
+            em.detach(booking);
+
+            bookingInfo = booking.getBookingInfo(route.getInfo());
         }
         catch (Exception e)
         {
@@ -63,7 +72,7 @@ public class BookingServiceManager extends Manager
         {
             em.close();
         }
-        return result;
+        return bookingInfo;
     }
 
     private RouteInfo getRouteInfo(long id, EntityManager em)
@@ -295,10 +304,6 @@ public class BookingServiceManager extends Manager
         List<BookingInfo> current = Lists.newArrayList(Collections2.filter(getBookings(), acceptEven));
         Collections.sort(current, new BookingInfoComparator());
         logger.info("share candidates size = " + current.size());
-        for (BookingInfo bi : current)
-        {
-            System.out.println(bi.getDate());
-        }
         return current;
     }
 

@@ -13,20 +13,9 @@ public class BookingInfo extends Info
 
     private String name;
     private String email;
-    private Long id;
+    private String orderRef;
     private RouteInfo routeInfo;
     private Long routeId;
-
-    public Long getRouteId()
-    {
-        return routeId;
-    }
-
-    public void setRouteId(Long routeId)
-    {
-        this.routeId = routeId;
-    }
-
     private Long parentId;
     private Boolean shareWanted;
     private OrderStatus status;
@@ -37,16 +26,14 @@ public class BookingInfo extends Info
     private int surfboards = 0;
     private String stripeRefusalReason;
 
-    @Override
-    public Long getId()
+    public Long getRouteId()
     {
-        return id;
+        return routeId;
     }
 
-    @Override
-    public void setId(Long id)
+    public void setRouteId(Long routeId)
     {
-        this.id = id;
+        this.routeId = routeId;
     }
 
     public Boolean getShareWanted()
@@ -171,12 +158,6 @@ public class BookingInfo extends Info
         this.pax = pax;
     }
 
-    public String getOrderNo()
-    {
-        int len = id.toString().length();
-        return id.toString().substring(len - 5, len - 1);
-    }
-
     public String getPaidAmt()
     {
         Double d = (double) routeInfo.getCents() / 100;
@@ -201,6 +182,16 @@ public class BookingInfo extends Info
     public void setStripeRefusalReason(String stripeRefusalReason)
     {
         this.stripeRefusalReason = stripeRefusalReason;
+    }
+
+    public String getOrderRef()
+    {
+        return orderRef;
+    }
+
+    public void setOrderRef(String orderRef)
+    {
+        this.orderRef = orderRef;
     }
 
 }

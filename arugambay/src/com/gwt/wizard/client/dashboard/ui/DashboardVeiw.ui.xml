@@ -38,10 +38,11 @@
 			<g:VerticalPanel styleName="{style.menu}">
 				<g:HTML styleName="{style.heading}">Dashboard</g:HTML>
 				<g:Anchor ui:field="adminManagement">Admin</g:Anchor>
-				<g:Anchor ui:field="bookingManagement">Manage Booking</g:Anchor>
-				<g:Anchor ui:field="routeManagement">Manage Routes</g:Anchor>
-				<g:Anchor ui:field="contractorManagement">Manage Contractors</g:Anchor>
-			</g:VerticalPanel>
+				<g:Anchor ui:field="bookingManagement">Bookings</g:Anchor>
+				<g:Anchor ui:field="routeManagement">Routes</g:Anchor>
+				<g:Anchor ui:field="contractorManagement">Contractors</g:Anchor>
+				<g:Anchor ui:field="financeManagement">Finances</g:Anchor>
+							</g:VerticalPanel>
 		</g:HTMLPanel>
 		<g:HTMLPanel ui:field="dataContainer" styleName="dashboardDataContainer">
 		</g:HTMLPanel>

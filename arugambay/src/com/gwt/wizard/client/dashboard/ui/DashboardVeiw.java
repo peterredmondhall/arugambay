@@ -36,6 +36,9 @@ public class DashboardVeiw extends Composite
     Anchor contractorManagement;
 
     @UiField
+    Anchor financeManagement;
+
+    @UiField
     Anchor adminManagement;
 
     private final HTMLPanel displayContainer = new HTMLPanel("");
@@ -90,6 +93,16 @@ public class DashboardVeiw extends Composite
             {
                 displayContainer.clear();
                 displayContainer.add(new ContractorManagementVeiw());
+            }
+        });
+        financeManagement.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                displayContainer.clear();
+                displayContainer.add(new FinanceManagementVeiw());
             }
         });
         displayContainer.add(new BookingManagementVeiw());
