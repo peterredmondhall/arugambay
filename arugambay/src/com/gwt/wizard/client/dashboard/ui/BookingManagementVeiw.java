@@ -1,8 +1,10 @@
 package com.gwt.wizard.client.dashboard.ui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.collect.FluentIterable;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -45,6 +47,16 @@ public class BookingManagementVeiw extends Composite
 
     private final CellTable.Resources tableRes = GWT.create(TableRes.class);
     private final List<BookingInfo> BOOKINGS = new ArrayList<>();
+
+    public class BookingInfoComparator implements Comparator<BookingInfo>
+    {
+
+        @Override
+        public int compare(BookingInfo bi1, BookingInfo bi2)
+        {
+            return (bi1.getDate().after(bi2.getDate())) ? -1 : 1;
+        }
+    }
 
     CellTable<BookingInfo> bookingManagementTable = new CellTable<BookingInfo>(13, tableRes);
 
@@ -185,13 +197,10 @@ public class BookingManagementVeiw extends Composite
         // Connect the table to the data provider.
         dataProvider.addDataDisplay(bookingManagementTable);
 
-        // Add the data to the data provider, which automatically pushes it to the
-        // widget.
-        List<BookingInfo> list = dataProvider.getList();
-        for (BookingInfo booking : BOOKINGS)
-        {
-            list.add(booking);
-        }
+        dataProvider.setList(
+                FluentIterable
+                        .from(BOOKINGS)
+                        .toSortedList(new BookingInfoComparator()));
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);

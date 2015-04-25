@@ -1,10 +1,12 @@
 package com.gwt.wizard.client.dashboard.ui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Maps;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ImageResourceCell;
@@ -70,6 +72,16 @@ public class RouteManagementVeiw extends Composite
     NumberFormat usdFormat = NumberFormat.getFormat(".00");
 
     CellTable<RouteInfo> routeManagementTable;
+
+    public class RouteInfoComparator implements Comparator<RouteInfo>
+    {
+
+        @Override
+        public int compare(RouteInfo bi1, RouteInfo bi2)
+        {
+            return bi1.getStart().compareTo(bi2.getStart());
+        }
+    }
 
     @UiField
     HTMLPanel mainPanel;
@@ -382,13 +394,10 @@ public class RouteManagementVeiw extends Composite
         // Connect the table to the data provider.
         dataProvider.addDataDisplay(routeManagementTable);
 
-        // Add the data to the data provider, which automatically pushes it to the
-        // widget.
-        List<RouteInfo> list = dataProvider.getList();
-        for (RouteInfo booking : ROUTES)
-        {
-            list.add(booking);
-        }
+        dataProvider.setList(
+                FluentIterable
+                        .from(ROUTES)
+                        .toSortedList(new RouteInfoComparator()));
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -405,7 +414,7 @@ public class RouteManagementVeiw extends Composite
         panel.add((routeManagementTable));
         // panel.add(pager);
         ScrollPanel scrollPanel = new ScrollPanel(panel);
-        scrollPanel.setHeight("400px");
+        scrollPanel.setHeight("700px");
         mainPanel.add(scrollPanel);
     }
 
