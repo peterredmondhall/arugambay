@@ -147,6 +147,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public BookingInfo payWithStripe(String token, BookingInfo bookingInfo)
     {
         Profil profil = bookingServiceManager.getProfil();
+        bookingInfo = bookingServiceManager.setBookingRef(bookingInfo);
         String refusal = stripePayment.charge(token, bookingInfo, profil.getStripeSecret());
         if (refusal == null)
         {

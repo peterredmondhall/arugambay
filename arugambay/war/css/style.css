@@ -341,8 +341,8 @@ input:focus,select:focus {
     margin: 0 auto;
     margin-left: 283px;
     margin-top: 43px;
-    min-height: 500px;
-    width: 800px;
+    min-height: 800px;
+    width: 1200px;
 }
 
 .dashboardMenuContainer {

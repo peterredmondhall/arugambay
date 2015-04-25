@@ -35,8 +35,6 @@ import com.gwt.wizard.shared.model.RouteInfo;
 public class BookingServiceManager extends Manager
 {
     private static final Logger logger = Logger.getLogger(BookingServiceManager.class.getName());
-    public final String WIZARD_DATA_ENTITY = "wizard-data";
-    public final String PLACES_DATA_ENTITY = "places-data";
     static final DateTimeFormatter fmt = DateTimeFormat.forPattern("dd.MM.yyyy");
 
     public BookingInfo addBookingWithClient(BookingInfo bookingInfo, String client) throws IllegalArgumentException
@@ -145,6 +143,13 @@ public class BookingServiceManager extends Manager
         {
             em.close();
         }
+        return bookingInfo;
+    }
+
+    public BookingInfo setBookingRef(BookingInfo bookingInfo)
+    {
+        Booking booking = getEntityManager().find(Booking.class, bookingInfo.getId());
+        bookingInfo.setOrderRef(booking.getRef());
         return bookingInfo;
     }
 
@@ -418,4 +423,5 @@ public class BookingServiceManager extends Manager
         em.remove(booking);
         em.getTransaction().commit();
     }
+
 }
