@@ -6,6 +6,10 @@ import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.logical.shared.ShowRangeEvent;
+import com.google.gwt.event.logical.shared.ShowRangeHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -85,6 +89,7 @@ public class ContactStepUi extends Composite
             surfboards.addItem("" + i);
         }
         dateBox.setFormat(new DefaultFormat(DateTimeFormat.getFormat("dd.MM.yyyy")));
+        restrictDates();
         checkboxWanttoShare.setValue(true);
 
 //        if (test)
@@ -100,6 +105,54 @@ public class ContactStepUi extends Composite
 //        }
     }
 
+    private void restrictDates()
+    {
+        dateBox.addValueChangeHandler(new ValueChangeHandler<Date>()
+        {
+            @Override
+            public void onValueChange(final ValueChangeEvent<Date> dateValueChangeEvent)
+            {
+                if (dateValueChangeEvent.getValue().before(earliest()))
+                {
+                    dateBox.setValue(earliest(), false);
+                }
+            }
+        });
+        dateBox.getDatePicker().addShowRangeHandler(new ShowRangeHandler<Date>()
+        {
+            @Override
+            public void onShowRange(final ShowRangeEvent<Date> dateShowRangeEvent)
+            {
+                final Date today = earliest();
+                Date d = zeroTime(dateShowRangeEvent.getStart());
+                while (d.before(today))
+                {
+                    dateBox.getDatePicker().setTransientEnabledOnDates(false, d);
+                    nextDay(d);
+                }
+            }
+        });
+    }
+
+    private static Date earliest()
+    {
+        Date earliest = new Date();
+        nextDay(earliest);
+        nextDay(earliest);
+        return zeroTime(earliest);
+    }
+
+    /** this is important to get rid of the time portion, including ms */
+    private static Date zeroTime(final Date date)
+    {
+        return DateTimeFormat.getFormat("yyyyMMdd").parse(DateTimeFormat.getFormat("yyyyMMdd").format(date));
+    }
+
+    private static void nextDay(final Date date)
+    {
+        com.google.gwt.user.datepicker.client.CalendarUtil.addDaysToDate(date, 1);
+    }
+
     protected void createUi()
     {
         initWidget(uiBinder.createAndBindUi(this));
@@ -110,7 +163,7 @@ public class ContactStepUi extends Composite
         Date date = dateBox.getValue();
         if (date != null)
         {
-            date.setHours(12);
+            date = zeroTime(date);
         }
         return date;
     }
