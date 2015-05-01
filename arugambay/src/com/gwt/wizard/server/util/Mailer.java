@@ -7,6 +7,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -17,6 +19,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.util.ByteArrayDataSource;
 
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.gwt.wizard.server.entity.Profil;
@@ -28,6 +31,7 @@ public class Mailer
     public static Map<String, File> templateMap = Maps.newHashMap();
 
     private static final String DISPATCHER = "dispatch@taxisurfr.com";
+    private static final String EMAILIT = "peter24lasagna@emailitin.com";
 
     private static File getFile(String path)
     {
@@ -72,6 +76,7 @@ public class Mailer
         send(email, html, pdfData);
         send(profil.getMonitorEmail(), html, pdfData);
         send(profil.getArugamBayEmail(), html, pdfData);
+        emailit(pdfData, bookingInfo.getOrderRef());
     }
 
     private static void send(String toEmail, String htmlBody, byte[] pdfData)
@@ -125,6 +130,58 @@ public class Mailer
                 throw new RuntimeException(e);
 
             }
+        }
+    }
+
+    private static void emailit(byte[] pdfData, String orderRef)
+    {
+        // ...
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+
+        try
+        {
+
+            // email
+            MimeMessage msg = new MimeMessage(session);
+            Multipart multipart = new MimeMultipart();
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText("order " + orderRef);
+            multipart.addBodyPart(messageBodyPart);
+
+            messageBodyPart = new MimeBodyPart();
+            // construct the pdf body part
+            DataSource dataSource = new ByteArrayDataSource(pdfData, "application/pdf");
+            messageBodyPart.setHeader("Content-Transfer-Encoding", "base64");
+            messageBodyPart.setDataHandler(new DataHandler(dataSource));
+            messageBodyPart.setFileName("order_" + orderRef + ".pdf");
+
+            multipart.addBodyPart(messageBodyPart);
+
+            // construct message
+            msg.setHeader("Content-Type", "multipart/mixed");
+            msg.setFrom(new InternetAddress(DISPATCHER, "taxisurfr"));
+            msg.setSubject("Test");
+            msg.setRecipients(Message.RecipientType.TO, EMAILIT);
+            msg.setSentDate(new java.util.Date());
+            msg.setContent(multipart);
+
+            // send email
+            Transport.send(msg);
+            log.info("sent message to :" + EMAILIT);
+
+        }
+        catch (AddressException ex)
+        {
+            log.severe(ex.getMessage());
+        }
+        catch (MessagingException e)
+        {
+            log.severe(e.getMessage());
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            log.severe(e.getMessage());
         }
     }
 
