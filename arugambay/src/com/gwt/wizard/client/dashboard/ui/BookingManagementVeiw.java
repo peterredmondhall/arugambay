@@ -54,11 +54,11 @@ public class BookingManagementVeiw extends Composite
         @Override
         public int compare(BookingInfo bi1, BookingInfo bi2)
         {
-            return (bi1.getDate().after(bi2.getDate())) ? -1 : 1;
+            return (bi1.getDate().after(bi2.getDate())) ? 1 : -1;
         }
     }
 
-    CellTable<BookingInfo> bookingManagementTable = new CellTable<BookingInfo>(13, tableRes);
+    CellTable<BookingInfo> bookingManagementTable = new CellTable<BookingInfo>(8, tableRes);
 
     @UiField
     HTMLPanel mainPanel;
@@ -185,11 +185,13 @@ public class BookingManagementVeiw extends Composite
         bookingManagementTable.addColumn(emailColumn, "Email");
         bookingManagementTable.addColumn(paxColumn, "No. passengers");
         bookingManagementTable.addColumn(requirementsColumn, "Requirements");
-        bookingManagementTable.addColumn(routeColumn, "Requirements");
+        bookingManagementTable.addColumn(routeColumn, "Route");
 
         bookingManagementTable.setColumnWidth(checkColumn, 40, Unit.PX);
         bookingManagementTable.setColumnWidth(dateColumn, 65, Unit.PX);
-        bookingManagementTable.setColumnWidth(requirementsColumn, 95, Unit.PX);
+        bookingManagementTable.setColumnWidth(requirementsColumn, 200, Unit.PX);
+        bookingManagementTable.setColumnWidth(paxColumn, 90, Unit.PX);
+        bookingManagementTable.setColumnWidth(nameColumn, 160, Unit.PX);
 
         // Create a data provider.
         ListDataProvider<BookingInfo> dataProvider = new ListDataProvider<BookingInfo>();

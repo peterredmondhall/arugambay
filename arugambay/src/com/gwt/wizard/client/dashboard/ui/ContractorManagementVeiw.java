@@ -1,10 +1,11 @@
 package com.gwt.wizard.client.dashboard.ui;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
@@ -69,6 +70,8 @@ public class ContractorManagementVeiw extends Composite
     private final SelectionModel<ContractorInfo> selectionModel = new MultiSelectionModel<ContractorInfo>(null);
 
     final TextBox editContractorNameTxtBox = new TextBox();
+    final TextBox editContractorEmailTxtBox = new TextBox();
+
     final TextBox[] addrNameTxtBox = { new TextBox(), new TextBox(), new TextBox(), new TextBox() };
 
     final Label nameLabel = new Label("Name");
@@ -90,15 +93,15 @@ public class ContractorManagementVeiw extends Composite
         fetchContractors();
     }
 
-    private void initializeWidget(List<ContractorInfo> routeInfo)
-    {
-        CONTRACTORS = routeInfo;
-        btnContainer.clear();
-        mainPanel.clear();
-        contractorManagementTable = new CellTable<ContractorInfo>(13, tableRes);
-        setCellTable();
-        setContractorManagementPanel();
-    }
+//    private void initializeWidget(List<ContractorInfo> routeInfo)
+//    {
+//        CONTRACTORS = routeInfo;
+//        btnContainer.clear();
+//        mainPanel.clear();
+//        contractorManagementTable = new CellTable<ContractorInfo>(13, tableRes);
+//        setCellTable();
+//        setContractorManagementPanel();
+//    }
 
     private void fetchContractors()
     {
@@ -186,6 +189,15 @@ public class ContractorManagementVeiw extends Composite
             }
         };
 
+        TextColumn<ContractorInfo> emailColumn = new TextColumn<ContractorInfo>()
+        {
+            @Override
+            public String getValue(ContractorInfo contractor)
+            {
+                return contractor.getEmail();
+            }
+        };
+
         TextColumn<ContractorInfo> addressColumn = new TextColumn<ContractorInfo>()
         {
             @Override
@@ -200,6 +212,7 @@ public class ContractorManagementVeiw extends Composite
 
         contractorManagementTable.addColumn(checkColumn, "Select");
         contractorManagementTable.addColumn(nameColumn, "Contractor");
+        contractorManagementTable.addColumn(emailColumn, "Email");
         contractorManagementTable.addColumn(addressColumn, "Address");
 
         // Create a data provider.
@@ -299,6 +312,7 @@ public class ContractorManagementVeiw extends Composite
         errLbl.setStyleName("errLbl");
 
         editContractorNameTxtBox.setText(ri.getName());
+        editContractorEmailTxtBox.setText(ri.getEmail());
         for (int i = 0; i < addrNameTxtBox.length; i++)
         {
             addrNameTxtBox[i].setText(ri.getAddress() != null && ri.getAddress().size() > i ? ri.getAddress().get(i) : "");
@@ -313,7 +327,9 @@ public class ContractorManagementVeiw extends Composite
             {
                 ContractorInfo contractorInfo = new ContractorInfo();
                 if (
-                Strings.isNullOrEmpty(editContractorNameTxtBox.getText())
+                isNullOrEmpty(editContractorNameTxtBox.getText()) ||
+                        isNullOrEmpty(editContractorEmailTxtBox.getText())
+
                 )
                 {
                     errLbl.setText("Please fill up all fields");
@@ -324,6 +340,7 @@ public class ContractorManagementVeiw extends Composite
                     contractorInfo.setId(routeId);
                     contractorInfo.setAgentId(GwtDashboard.getAgentInfo().getId());
                     contractorInfo.setName(editContractorNameTxtBox.getText());
+                    contractorInfo.setEmail(editContractorEmailTxtBox.getText());
                     List<String> addr = Lists.newArrayList();
                     for (int i = 0; i < addrNameTxtBox.length; i++)
                     {
@@ -353,8 +370,10 @@ public class ContractorManagementVeiw extends Composite
         int row = 0;
 
         final Label nameLabel = new Label("Contractor");
+        final Label emailLabel = new Label("Email");
 
         addPopupPanel(nameLabel, editContractorNameTxtBox, grid, row++);
+        addPopupPanel(emailLabel, editContractorEmailTxtBox, grid, row++);
         addPopupPanel(new Label("Address 1"), addrNameTxtBox[0], grid, row++);
         addPopupPanel(new Label("Address 2"), addrNameTxtBox[1], grid, row++);
         addPopupPanel(new Label("Address 3"), addrNameTxtBox[2], grid, row++);
