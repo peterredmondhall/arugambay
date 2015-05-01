@@ -87,7 +87,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         BookingInfo bookingInfo = bookingServiceManager.getBookingForTransactionWithClient(profil, getClient(), hasPaid);
         if (bookingInfo != null)
         {
-            ContractorInfo contractorInfo = contractorManager.getContractor(bookingInfo);
+            ContractorInfo contractorInfo = bookingServiceManager.getContractor(bookingInfo);
             Mailer.sendConfirmation(bookingInfo, profil, contractorInfo);
         }
         return bookingInfo;
@@ -155,7 +155,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             bookingInfo = bookingServiceManager.setPayed(profil, bookingInfo, OrderStatus.PAID);
             if (bookingInfo != null)
             {
-                ContractorInfo contractorInfo = contractorManager.getContractor(bookingInfo);
+                ContractorInfo contractorInfo = bookingServiceManager.getContractor(bookingInfo);
                 Mailer.sendConfirmation(bookingInfo, profil, contractorInfo);
                 financeManager.addPayment(bookingInfo, new Date());
             }

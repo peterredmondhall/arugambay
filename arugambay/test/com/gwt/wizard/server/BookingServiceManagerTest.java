@@ -277,6 +277,15 @@ public class BookingServiceManagerTest
     }
 
     @Test
+    public void should_return_a_contractor()
+    {
+        BookingInfo bookingInfo = create_a_booking();
+
+        ContractorInfo ci = bs.getContractor(bookingInfo);
+        assertEquals("test:contractor0", ci.getName());
+    }
+
+    @Test
     public void should_create_a_shared_booking()
     {
         create_a_booking();

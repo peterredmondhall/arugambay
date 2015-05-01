@@ -8,9 +8,7 @@ import javax.persistence.EntityManager;
 
 import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Contractor;
-import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.shared.model.AgentInfo;
-import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 
 public class ContractorManager extends Manager
@@ -195,17 +193,5 @@ public class ContractorManager extends Manager
         em.getTransaction().commit();
         em.detach(contractor);
 
-    }
-
-    public ContractorInfo getContractor(BookingInfo bookingInfo)
-    {
-        EntityManager em = getEntityManager();
-        Route route = em.find(Route.class, bookingInfo.getRouteInfo());
-        if (route != null)
-        {
-            Contractor contractor = em.find(Contractor.class, route.getContractorId());
-            return contractor.getInfo();
-        }
-        return null;
     }
 }

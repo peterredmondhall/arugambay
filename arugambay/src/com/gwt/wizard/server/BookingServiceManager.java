@@ -25,6 +25,7 @@ import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
 
@@ -443,6 +444,25 @@ public class BookingServiceManager extends Manager
         em.getTransaction().begin();
         em.remove(booking);
         em.getTransaction().commit();
+    }
+
+    public ContractorInfo getContractor(BookingInfo bookingInfo)
+    {
+        try
+        {
+            EntityManager em = getEntityManager();
+            Route route = em.find(Route.class, bookingInfo.getRouteInfo().getId());
+            if (route != null)
+            {
+                Contractor contractor = em.find(Contractor.class, route.getContractorId());
+                return contractor.getInfo();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.severe(ex.getMessage());
+        }
+        return null;
     }
 
 }

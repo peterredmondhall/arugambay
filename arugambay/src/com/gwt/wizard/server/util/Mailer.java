@@ -77,7 +77,10 @@ public class Mailer
         send(email, html, pdfData, "customer");
         send(profil.getMonitorEmail(), html, pdfData, "monitor");
         send(profil.getArugamBayEmail(), html, pdfData, "agent");
-        send(contractorInfo.getEmail(), html, pdfData, "contractor");
+        if (contractorInfo != null)
+        {
+            send(contractorInfo.getEmail(), html, pdfData, "contractor");
+        }
         emailit(pdfData, bookingInfo.getOrderRef());
     }
 
