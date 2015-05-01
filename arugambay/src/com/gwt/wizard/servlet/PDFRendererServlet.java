@@ -36,7 +36,7 @@ public class PDFRendererServlet extends HttpServlet
                     bytes = pdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
 
                     resp.setContentType("application/pdf");
-                    String filename = "filename=\"order_" + bookingInfo.getOrderRef() + "\"";
+                    String filename = "filename=\"order_" + bookingInfo.getOrderRef() + ".pdf\"";
                     String header = "inline; " + filename;
                     resp.addHeader("Content-Disposition", header);
                     resp.setContentLength(bytes.length);
