@@ -3,6 +3,7 @@ package com.gwt.wizard.servlet;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.ImmutableList;
 import com.gwt.wizard.server.AgentManager;
 import com.gwt.wizard.server.BookingServiceManager;
 import com.gwt.wizard.server.ContractorManager;
@@ -51,28 +53,34 @@ public class DumpServlet extends HttpServlet
         String images = imageManager.dump(ArugamImage.class);
         String contractors = new ContractorManager().dump(Contractor.class);
         String agents = new AgentManager().dump(Agent.class);
-        String content = bookings + ratings + images + routes + contractors + agents;
-        byte[] bytes = null;
+        List<String> outputs = ImmutableList.of(bookings, ratings, images, routes, contractors, agents);
+        int contentLength = 0;
+        for (String output : outputs)
+        {
+            contentLength += output.length();
+
+        }
         try
         {
-            bytes = content.getBytes();
-
             resp.setContentType("application/txt");
             resp.addHeader("Content-Disposition", "inline; filename=\"dataset.txt\"");
-            resp.setContentLength(bytes.length);
+            resp.setContentLength(contentLength);
 
-            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
             OutputStream out = resp.getOutputStream();
 
-            // Copy the contents of the file to the output stream
-            byte[] buf = new byte[1024];
-
-            int count = 0;
-            while ((count = in.read(buf)) >= 0)
+            for (String output : outputs)
             {
-                out.write(buf, 0, count);
+                ByteArrayInputStream in = new ByteArrayInputStream(output.getBytes());
+                // Copy the contents of the file to the output stream
+                byte[] buf = new byte[1024];
+
+                int count = 0;
+                while ((count = in.read(buf)) >= 0)
+                {
+                    out.write(buf, 0, count);
+                }
+                in.close();
             }
-            in.close();
             out.close();
         }
         catch (Exception e1)
