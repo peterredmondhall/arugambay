@@ -76,6 +76,10 @@ public class BookingServiceManager extends Manager
     private RouteInfo getRouteInfo(long id, EntityManager em)
     {
         Route route = em.find(Route.class, id);
+        if (route == null)
+        {
+            return null;
+        }
         return route.getInfo();
     }
 
@@ -98,11 +102,28 @@ public class BookingServiceManager extends Manager
             {
                 em.detach(booking);
                 RouteInfo routeInfo = getRouteInfo(booking.getRoute(), em);
-                BookingInfo bookingInfo = booking.getBookingInfo(routeInfo);
-                Contractor contractor = em.find(Contractor.class, routeInfo.getContractorId());
-                if (agentId == ALL_BOOKINGS || contractor.getAgentId().equals(agentId))
+                if (routeInfo != null)
                 {
-                    bookings.add(bookingInfo);
+                    BookingInfo bookingInfo = booking.getBookingInfo(routeInfo);
+                    if (bookingInfo != null)
+                    {
+                        Contractor contractor = em.find(Contractor.class, routeInfo.getContractorId());
+                        if (contractor != null)
+                        {
+                            if (agentId == ALL_BOOKINGS || contractor.getAgentId().equals(agentId))
+                            {
+                                bookings.add(bookingInfo);
+                            }
+                        }
+                        else
+                        {
+                            logger.severe("no contractor for id:" + routeInfo.getContractorId() + " from route id:" + routeInfo.getContractorId());
+                        }
+                    }
+                }
+                else
+                {
+                    logger.severe("no route for id:" + booking.getRoute() + " from booking" + booking.getInfo().getId());
                 }
             }
         }
