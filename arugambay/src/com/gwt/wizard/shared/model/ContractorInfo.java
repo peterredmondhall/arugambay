@@ -11,6 +11,8 @@ public class ContractorInfo extends Info
     };
 
     private String name;
+    private String email;
+
     private List<String> address;
 
     public List<String> getAddress()
@@ -43,5 +45,15 @@ public class ContractorInfo extends Info
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
     }
 }

@@ -34,6 +34,18 @@ public class Contractor extends ArugamEntity<ContractorInfo>
     }
 
     private String name;
+    private String email;
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
+
     private List<String> address;
 
     public List<String> getAddress()
@@ -54,6 +66,7 @@ public class Contractor extends ArugamEntity<ContractorInfo>
         contractor.setName(contractorInfo.getName());
         contractor.setAgentId(contractorInfo.getAgentId());
         contractor.setAddress(contractorInfo.getAddress());
+        contractor.setEmail(contractorInfo.getEmail());
         return contractor;
     }
 
@@ -84,6 +97,7 @@ public class Contractor extends ArugamEntity<ContractorInfo>
         contractorInfo.setId(key.getId());
         contractorInfo.setName(name);
         contractorInfo.setAgentId(agentId);
+        contractorInfo.setEmail(email);
         List<String> addressList = newArrayList();
         contractorInfo.setAddress(addressList);
         if (address != null)

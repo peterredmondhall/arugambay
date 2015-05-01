@@ -24,6 +24,7 @@ import javax.mail.util.ByteArrayDataSource;
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 
 public class Mailer
 {
@@ -52,19 +53,19 @@ public class Mailer
     {
 
         String html = BookingUtil.toConfirmationRequestHtml(bookingInfo, getFile(SHARE_REQUEST), profil);
-        send(parentBooking.getEmail(), html, null);
-        send(profil.getMonitorEmail(), html, null);
-        send(profil.getContractorEmail(), html, null);
+        send(parentBooking.getEmail(), html, null, "booker");
+        send(profil.getMonitorEmail(), html, null, "monitor");
     }
 
     public static void sendShareAccepted(String email, BookingInfo parentBookingInfo, Profil profil)
     {
         String html = BookingUtil.toConfirmationEmailHtml(parentBookingInfo, getFile(SHARE_ACCEPTED), profil);
-        send(email, html, null);
+        send(email, html, null, "sharer");
+        send(profil.getMonitorEmail(), html, null, "monitor");
 
     }
 
-    public static void sendConfirmation(BookingInfo bookingInfo, Profil profil)
+    public static void sendConfirmation(BookingInfo bookingInfo, Profil profil, ContractorInfo contractorInfo)
     {
 
         String html = "error";
@@ -73,13 +74,14 @@ public class Mailer
 
         byte[] pdfData = new PdfUtil().generateTaxiOrder("template/order.pdf", bookingInfo);
         String email = bookingInfo.getEmail();
-        send(email, html, pdfData);
-        send(profil.getMonitorEmail(), html, pdfData);
-        send(profil.getArugamBayEmail(), html, pdfData);
+        send(email, html, pdfData, "customer");
+        send(profil.getMonitorEmail(), html, pdfData, "monitor");
+        send(profil.getArugamBayEmail(), html, pdfData, "agent");
+        send(contractorInfo.getEmail(), html, pdfData, "contractor");
         emailit(pdfData, bookingInfo.getOrderRef());
     }
 
-    private static void send(String toEmail, String htmlBody, byte[] pdfData)
+    private static void send(String toEmail, String htmlBody, byte[] pdfData, String role)
     {
         if (toEmail != null)
         {
@@ -110,7 +112,7 @@ public class Mailer
                 msg.setContent(mp);
 
                 Transport.send(msg);
-                log.info("sent message to :" + toEmail);
+                log.info(String.format("sent message to (%s):%s", role, toEmail));
 
             }
             catch (AddressException e)
@@ -187,7 +189,7 @@ public class Mailer
 
     public static void sendError(Exception exception)
     {
-        send("peterredmondhall@gmail.com", exception.getMessage(), null);
+        send("peterredmondhall@gmail.com", exception.getMessage(), null, "admin");
     }
 
     public static String setFeedbackRequest(BookingInfo bookingInfo, Profil profil)
@@ -197,7 +199,7 @@ public class Mailer
         html = html.replace("___NAME__", bookingInfo.getName());
         html = html.replace("___LINK__", profil.getTaxisurfUrl() + "?review=" + bookingInfo.getId());
 
-        send(bookingInfo.getEmail(), html, null);
+        send(bookingInfo.getEmail(), html, null, "booker");
 
         return html;
 
@@ -205,7 +207,7 @@ public class Mailer
 
     public static void sendReport(String report)
     {
-        send("hall@hall-services.de", report, null);
+        send("hall@hall-services.de", report, null, "admin");
     }
 
 }
