@@ -134,7 +134,7 @@ public class ContactStepUi extends Composite
         });
     }
 
-    private static Date earliest()
+    private Date earliest()
     {
         Date earliest = new Date();
         nextDay(earliest);
@@ -143,9 +143,11 @@ public class ContactStepUi extends Composite
     }
 
     /** this is important to get rid of the time portion, including ms */
-    private static Date zeroTime(final Date date)
+    private Date zeroTime(final Date date)
     {
-        return DateTimeFormat.getFormat("yyyyMMdd").parse(DateTimeFormat.getFormat("yyyyMMdd").format(date));
+        Date zeroTimeDate = DateTimeFormat.getFormat("yyyyMMdd").parse(DateTimeFormat.getFormat("yyyyMMdd").format(date));
+        zeroTimeDate.setHours(12);
+        return zeroTimeDate;
     }
 
     private static void nextDay(final Date date)
