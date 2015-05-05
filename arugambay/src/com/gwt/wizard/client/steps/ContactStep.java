@@ -7,6 +7,7 @@ import static com.gwt.wizard.client.core.Wizard.ROUTEINFO;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -22,6 +23,7 @@ import com.gwt.wizard.shared.model.StatInfo;
 public class ContactStep implements WizardStep
 {
     private static final Logger logger = Logger.getLogger(ContactStep.class.getName());
+    private static DateTimeFormat sdf = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     private final ContactStepUi ui;
 
@@ -124,6 +126,8 @@ public class ContactStep implements WizardStep
         }
 
         BOOKINGINFO.setDate(ui.getDate());
+        logger.info("user selected:" + sdf.format(BOOKINGINFO.getDate()));
+
         BOOKINGINFO.setLandingTime(ui.getArrivalTime());
         BOOKINGINFO.setName(ui.getFirstName() + "  " + ui.getLastName());
         BOOKINGINFO.setEmail(ui.getEmail());
