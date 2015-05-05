@@ -52,7 +52,7 @@ public class PdfUtil
     static final float TABLE_Y = 500;
     static final float INSET = 72;
 
-    static final String CUSTOMER_FEEDBACK = "Customer Feedback";
+    static final String CUSTOMER_FEEDBACK = "BTW. You will receive a link for feedback shortly after your trip. Taking a few minutes to answer this will help us greatly. Thank you in advance.";
 
     public byte[] generateTaxiOrder(String path, BookingInfo bookingInfo)
     {
@@ -69,15 +69,12 @@ public class PdfUtil
             PdfPTable table = createBookingTable(bookingInfo);
             table.writeSelectedRows(0, 2, 0, 11, INSET, TABLE_Y, canvas);
 
-            Font helvetica = new Font(FontFamily.HELVETICA, 20);
-            BaseFont bf_helv = helvetica.getCalculatedBaseFont(false);
-            Chunk c1 = new Chunk(bookingInfo.getRouteInfo().getKey(""), helvetica);
-            Chunk c2 = new Chunk(CUSTOMER_FEEDBACK, helvetica);
+            Font helvetica20 = new Font(FontFamily.HELVETICA, 20);
+            BaseFont bf_helv = helvetica20.getCalculatedBaseFont(false);
+            Chunk c1 = new Chunk(bookingInfo.getRouteInfo().getKey(""), helvetica20);
 
             ColumnText.showTextAligned(canvas,
                     Element.ALIGN_LEFT, new Phrase(c1), INSET, 540, 0);
-            ColumnText.showTextAligned(canvas,
-                    Element.ALIGN_LEFT, new Phrase(c2), INSET, 200, 0);
 
             stamper.close();
             reader.close();
@@ -153,11 +150,21 @@ public class PdfUtil
         table.addCell(bookingInfo.getRouteInfo().getPickupType().getTimeType());
         table.addCell(bookingInfo.getLandingTime());
         table.addCell(PAID);
-        table.addCell(bookingInfo.getPaidAmt());
+        table.addCell(getPaidAmt(bookingInfo));
 
         table.addCell("Other requirements");
         table.addCell(bookingInfo.getRequirements());
 
         return table;
+    }
+
+    private String getPaidAmt(BookingInfo bookingInfo)
+    {
+        if (bookingInfo.getRouteInfo() != null && bookingInfo.getRouteInfo().getCents() != null)
+        {
+            Double d = (double) bookingInfo.getRouteInfo().getCents() / 100;
+            return String.format("US$%.2f", d);
+        }
+        return "";
     }
 }

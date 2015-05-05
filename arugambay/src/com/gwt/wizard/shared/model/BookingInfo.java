@@ -158,12 +158,6 @@ public class BookingInfo extends Info
         this.pax = pax;
     }
 
-    public String getPaidAmt()
-    {
-        Double d = (double) routeInfo.getCents() / 100;
-        return "US$" + d;
-    }
-
     public RouteInfo getRouteInfo()
     {
         return routeInfo;
