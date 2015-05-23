@@ -23,6 +23,7 @@ import javax.mail.util.ByteArrayDataSource;
 
 import com.google.gwt.thirdparty.guava.common.collect.Maps;
 import com.gwt.wizard.server.entity.Profil;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 
@@ -65,14 +66,14 @@ public class Mailer
 
     }
 
-    public static void sendConfirmation(BookingInfo bookingInfo, Profil profil, ContractorInfo contractorInfo)
+    public static void sendConfirmation(BookingInfo bookingInfo, Profil profil, AgentInfo agentInfo, ContractorInfo contractorInfo)
     {
 
         String html = "error";
         html = BookingUtil.toConfirmationEmailHtml(bookingInfo, getFile(CONFIRMATION), profil);
         html = html.replace("INSERT_ORDERFORM", profil.getTaxisurfUrl() + "/orderform?order=" + bookingInfo.getId());
 
-        byte[] pdfData = new PdfUtil().generateTaxiOrder("template/order.pdf", bookingInfo);
+        byte[] pdfData = new PdfUtil().generateTaxiOrder("template/order.pdf", bookingInfo, agentInfo, contractorInfo);
         String email = bookingInfo.getEmail();
         send(email, html, pdfData, "customer");
         send(profil.getMonitorEmail(), html, pdfData, "monitor");

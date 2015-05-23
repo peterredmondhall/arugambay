@@ -88,7 +88,8 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         if (bookingInfo != null)
         {
             ContractorInfo contractorInfo = bookingServiceManager.getContractor(bookingInfo);
-            Mailer.sendConfirmation(bookingInfo, profil, contractorInfo);
+            AgentInfo agentInfo = bookingServiceManager.getAgent(contractorInfo);
+            Mailer.sendConfirmation(bookingInfo, profil, agentInfo, contractorInfo);
         }
         return bookingInfo;
 
@@ -156,7 +157,8 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
             if (bookingInfo != null)
             {
                 ContractorInfo contractorInfo = bookingServiceManager.getContractor(bookingInfo);
-                Mailer.sendConfirmation(bookingInfo, profil, contractorInfo);
+                AgentInfo agentInfo = bookingServiceManager.getAgent(contractorInfo);
+                Mailer.sendConfirmation(bookingInfo, profil, agentInfo, contractorInfo);
                 financeManager.addPayment(bookingInfo, new Date());
             }
         }

@@ -29,6 +29,18 @@ public class GwtDashboard implements EntryPoint
         return USERINFO;
     }
 
+    static boolean isAdmin = false;
+
+    public static boolean isAdmin()
+    {
+        return isAdmin;
+    }
+
+    public static void setAdmin(boolean a)
+    {
+        isAdmin = a;
+    }
+
     /**
      * This is the entry point method.
      */

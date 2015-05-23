@@ -27,7 +27,7 @@ public class RouteServiceManager extends Manager
         {
             Route route = em.find(Route.class, routeInfo.getId());
             em.getTransaction().begin();
-            em.remove(route);
+            route.setInactive();
             em.getTransaction().commit();
             route = em.find(Route.class, routeInfo.getId());
             routes = getRoutes(userInfo);
@@ -135,7 +135,10 @@ public class RouteServiceManager extends Manager
 
                 if (agentInfo == null || contractorIdList.contains(routeInfo.getContractorId()))
                 {
-                    routes.add(routeInfo);
+                    if (!routeInfo.isInactive())
+                    {
+                        routes.add(routeInfo);
+                    }
                 }
             }
             logger.info("returning routeinfo count " + routes.size());
@@ -163,7 +166,10 @@ public class RouteServiceManager extends Manager
             for (Route route : resultList)
             {
                 RouteInfo routeInfo = route.getInfo();
-                routes.add(routeInfo);
+                if (!routeInfo.isInactive())
+                {
+                    routes.add(routeInfo);
+                }
             }
         }
         catch (Exception ex)

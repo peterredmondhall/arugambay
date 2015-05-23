@@ -54,6 +54,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
 
     private String name;
     private String email;
+    private String dateText;
     private String flightNo;
     private String landingTime;
     private int pax;
@@ -214,6 +215,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
     {
         Booking booking = new Booking();
         booking.setDate(bookingInfo.getDate());
+        booking.setDateText(bookingInfo.getDateText());
         booking.setEmail(bookingInfo.getEmail());
         booking.setName(bookingInfo.getName());
         booking.setFlightNo(bookingInfo.getFlightNo());
@@ -261,6 +263,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         BookingInfo bookingInfo = new BookingInfo();
         bookingInfo.setId(key.getId());
         bookingInfo.setDate(getDate());
+        bookingInfo.setDateText(getDateText());
         bookingInfo.setEmail(getEmail());
         bookingInfo.setName(getName());
         bookingInfo.setFlightNo(getFlightNo());
@@ -276,6 +279,16 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         bookingInfo.setRouteId(route);
         bookingInfo.setOrderRef(ref);
         return bookingInfo;
+    }
+
+    public String getDateText()
+    {
+        return dateText;
+    }
+
+    public void setDateText(String dateText)
+    {
+        this.dateText = dateText;
     }
 
     public String getFlightNo()

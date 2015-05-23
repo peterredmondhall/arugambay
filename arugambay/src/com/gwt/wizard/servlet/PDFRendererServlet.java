@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gwt.wizard.server.BookingServiceManager;
 import com.gwt.wizard.server.util.PdfUtil;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 
 public class PDFRendererServlet extends HttpServlet
 {
@@ -31,9 +33,11 @@ public class PDFRendererServlet extends HttpServlet
             try
             {
                 BookingInfo bookingInfo = bookingService.getBooking(Long.parseLong(bookingId));
+                ContractorInfo contractorInfo = bookingService.getContractor(bookingInfo);
+                AgentInfo agentInfo = bookingService.getAgent(contractorInfo);
                 if (bookingInfo != null)
                 {
-                    bytes = pdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo);
+                    bytes = pdfUtil.generateTaxiOrder("template/order.pdf", bookingInfo, agentInfo, contractorInfo);
 
                     resp.setContentType("application/pdf");
                     String filename = "filename=\"order_" + bookingInfo.getOrderRef() + ".pdf\"";

@@ -13,6 +13,8 @@ public class BookingInfo extends Info
 
     private String name;
     private String email;
+    private String dateText;
+
     private String orderRef;
     private RouteInfo routeInfo;
     private Long routeId;
@@ -188,4 +190,13 @@ public class BookingInfo extends Info
         this.orderRef = orderRef;
     }
 
+    public String getDateText()
+    {
+        return dateText;
+    }
+
+    public void setDateText(String dateText)
+    {
+        this.dateText = dateText;
+    }
 }

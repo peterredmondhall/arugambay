@@ -36,6 +36,18 @@ public class RouteInfo extends Info
     private Long cents;
     private Long agentCents;
 
+    public boolean isInactive()
+    {
+        return inactive;
+    }
+
+    public void setInactive(boolean inactive)
+    {
+        this.inactive = inactive;
+    }
+
+    private boolean inactive;
+
     public Long getAgentCents()
     {
         return agentCents;

@@ -26,6 +26,7 @@ public class Route extends ArugamEntity<RouteInfo>
     private Long cents;
     private Long agentCents;
     private Long image;
+    private boolean inactive;
 
     public Long getContractorId()
     {
@@ -132,6 +133,7 @@ public class Route extends ArugamEntity<RouteInfo>
         routeInfo.setDescription(description);
         routeInfo.setCents(cents);
         routeInfo.setAgentCents(agentCents);
+        routeInfo.setInactive(inactive);
 
         routeInfo.setPickupType(pickupType);
         routeInfo.setImage(image);
@@ -154,5 +156,10 @@ public class Route extends ArugamEntity<RouteInfo>
     public void setAgentCents(Long agentCents)
     {
         this.agentCents = agentCents;
+    }
+
+    public void setInactive()
+    {
+        inactive = true;
     }
 }

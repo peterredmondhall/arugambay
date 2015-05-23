@@ -21,6 +21,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -178,7 +179,7 @@ public class FinanceManagementVeiw extends Composite
         // widget.
         setData(dataProvider, FinanceInfo.Type.PAYMENT);
 
-        addTable(table);
+        addTable(table, "400px");
         return table;
     }
 
@@ -260,7 +261,8 @@ public class FinanceManagementVeiw extends Composite
         // widget.
         dataProvider.setList(summary);
 
-        addTable(paymentsTable);
+        addTable(paymentsTable, "100px");
+
         return paymentsTable;
     }
 
@@ -346,10 +348,10 @@ public class FinanceManagementVeiw extends Composite
         // widget.
         setData(dataProvider, FinanceInfo.Type.TRANSFER);
 
-        addTable(table);
+        addTable(table, "200px");
     }
 
-    private void addTable(CellTable<FinanceInfo> table)
+    private void addTable(CellTable<FinanceInfo> table, String height)
     {
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
@@ -363,7 +365,8 @@ public class FinanceManagementVeiw extends Composite
         panel.getElement().getStyle().setWidth(100, Unit.PCT);
         panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         panel.add(table);
-        panel.add(pager);
-        mainPanel.add(panel);
+        ScrollPanel scrollPanel = new ScrollPanel(panel);
+        scrollPanel.setHeight(height);
+        mainPanel.add(scrollPanel);
     }
 }

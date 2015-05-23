@@ -126,7 +126,7 @@ public class ContactStep implements WizardStep
         }
 
         BOOKINGINFO.setDate(ui.getDate());
-        logger.info("user selected:" + sdf.format(BOOKINGINFO.getDate()));
+        BOOKINGINFO.setDateText(sdf.format(BOOKINGINFO.getDate()));
 
         BOOKINGINFO.setLandingTime(ui.getArrivalTime());
         BOOKINGINFO.setName(ui.getFirstName() + "  " + ui.getLastName());

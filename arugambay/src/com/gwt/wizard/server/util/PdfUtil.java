@@ -11,7 +11,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.io.Files;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
+import com.gwt.wizard.shared.model.ContractorInfo;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -49,12 +51,12 @@ public class PdfUtil
     static final DateTimeFormatter fmtFormDate = DateTimeFormat.forPattern("dd MMM yyyy");
 
     static final float TABLE_WIDTH = 452;
-    static final float TABLE_Y = 500;
+    static final float TABLE_Y = 400;
     static final float INSET = 72;
 
     static final String CUSTOMER_FEEDBACK = "BTW. You will receive a link for feedback shortly after your trip. Taking a few minutes to answer this will help us greatly. Thank you in advance.";
 
-    public byte[] generateTaxiOrder(String path, BookingInfo bookingInfo)
+    public byte[] generateTaxiOrder(String path, BookingInfo bookingInfo, AgentInfo agentInfo, ContractorInfo contractorInfo)
     {
         PdfReader reader;
         final FileInputStream fis;
@@ -70,11 +72,31 @@ public class PdfUtil
             table.writeSelectedRows(0, 2, 0, 11, INSET, TABLE_Y, canvas);
 
             Font helvetica20 = new Font(FontFamily.HELVETICA, 20);
+            Font helvetica14 = new Font(FontFamily.HELVETICA, 14);
             BaseFont bf_helv = helvetica20.getCalculatedBaseFont(false);
-            Chunk c1 = new Chunk(bookingInfo.getRouteInfo().getKey(""), helvetica20);
 
+            // route
+            int addressY = 430;
+            Chunk chunk = new Chunk(bookingInfo.getRouteInfo().getKey(""), helvetica20);
             ColumnText.showTextAligned(canvas,
-                    Element.ALIGN_LEFT, new Phrase(c1), INSET, 540, 0);
+                    Element.ALIGN_LEFT, new Phrase(chunk), INSET, addressY, 0);
+
+            addressY = 564;
+
+            // agent
+            chunk = new Chunk(agentInfo.getEmail(), helvetica14);
+            ColumnText.showTextAligned(canvas,
+                    Element.ALIGN_LEFT, new Phrase(chunk), INSET + 120, addressY, 0);
+
+            addressY -= 42;
+            for (String contractorAddress : contractorInfo.getAddress())
+            {
+                chunk = new Chunk(contractorAddress, helvetica14);
+
+                ColumnText.showTextAligned(canvas,
+                        Element.ALIGN_LEFT, new Phrase(chunk), INSET, addressY, 0);
+                addressY -= 20;
+            }
 
             stamper.close();
             reader.close();

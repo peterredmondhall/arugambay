@@ -34,7 +34,7 @@ public class PdfUtilTest
         bookingInfo.setEmail("email@taxisurf.com");
         bookingInfo.setRequirements("A Path instance contains the information used to specify the location of a file or directory. At the time it is defined, a Path is provided with a series of one or more names. A root element or a file name might be included, but neither are required. A Path might consist of just a single directory or file name.");
 
-        byte[] buf = new PdfUtil().generateTaxiOrder("war/template/order_blank.pdf", bookingInfo);
+        byte[] buf = new PdfUtil().generateTaxiOrder("war/template/order_blank.pdf", bookingInfo, null, null);
         Files.write(file, buf);
 
     }

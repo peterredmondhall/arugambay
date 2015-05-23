@@ -17,6 +17,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.gwt.wizard.server.entity.Agent;
 import com.gwt.wizard.server.entity.ArchivedBooking;
 import com.gwt.wizard.server.entity.Booking;
 import com.gwt.wizard.server.entity.Config;
@@ -24,6 +25,7 @@ import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.entity.Route;
 import com.gwt.wizard.shared.OrderStatus;
+import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
@@ -456,6 +458,24 @@ public class BookingServiceManager extends Manager
             {
                 Contractor contractor = em.find(Contractor.class, route.getContractorId());
                 return contractor.getInfo();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.severe(ex.getMessage());
+        }
+        return null;
+    }
+
+    public AgentInfo getAgent(ContractorInfo contractorInfo)
+    {
+        try
+        {
+            EntityManager em = getEntityManager();
+            Agent agent = em.find(Agent.class, contractorInfo.getAgentId());
+            if (agent != null)
+            {
+                return agent.getInfo();
             }
         }
         catch (Exception ex)

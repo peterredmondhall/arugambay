@@ -100,6 +100,8 @@ public class RouteManagementVeiw extends Composite
     final TextBox editEndTxtBox = new TextBox();
     final TextArea editDescriptionBox = new TextArea();
     final TextBox editPriceTxtBox = new TextBox();
+    final TextBox editAgentCentsBox = new TextBox();
+
     final ListBox editPickupTypeBox = new ListBox();
     final ListBox editContractorTypeBox = new ListBox();
     final CheckBox editReturnCheckBox = new CheckBox();
@@ -334,6 +336,19 @@ public class RouteManagementVeiw extends Composite
                 return null;
             }
         };
+        TextColumn<RouteInfo> agentCentsColumn = new TextColumn<RouteInfo>()
+        {
+            @Override
+            public String getValue(RouteInfo route)
+            {
+                if (route.getAgentCents() != null)
+                {
+                    Double d = (double) route.getAgentCents() / 100;
+                    return usdFormat.format(d);
+                }
+                return null;
+            }
+        };
 
         TextColumn<RouteInfo> descriptionColumn = new TextColumn<RouteInfo>()
         {
@@ -384,6 +399,7 @@ public class RouteManagementVeiw extends Composite
         routeManagementTable.addColumn(startColumn, "Start");
         routeManagementTable.addColumn(endColumn, "End");
         routeManagementTable.addColumn(priceColumn, "Price USD");
+        routeManagementTable.addColumn(agentCentsColumn, "Agent Price USD");
         routeManagementTable.addColumn(descriptionColumn, "Description");
         routeManagementTable.addColumn(pickuptypeColumn, "Pickuptype");
         routeManagementTable.addColumn(contractorColumn, "Contractor");
@@ -522,7 +538,7 @@ public class RouteManagementVeiw extends Composite
     {
         final PopupPanel editPlacePopUpPanel = new PopupPanel(true);
         final VerticalPanel vPanel = new VerticalPanel();
-        Grid grid = new Grid(8, 2);
+        Grid grid = new Grid(9, 2);
         vPanel.add(grid);
         final Label errLbl = new Label();
         errLbl.setStyleName("errLbl");
@@ -537,6 +553,14 @@ public class RouteManagementVeiw extends Composite
             String price = usdFormat.format(ri.getCents() / 100);
             editPriceTxtBox.setText(price);
         }
+
+        String agentCents = "";
+        if (ri.getAgentCents() != null)
+        {
+            agentCents += ri.getAgentCents();
+        }
+        editAgentCentsBox.setText(agentCents);
+
         int i = 0;
         editPickupTypeBox.clear();
         for (RouteInfo.PickupType t : RouteInfo.PickupType.values())
@@ -579,11 +603,22 @@ public class RouteManagementVeiw extends Composite
                     Double priceL = Double.parseDouble(price);
                     Double cents = priceL * 100;
                     routeInfo.setCents(Math.round(cents));
+
                 }
                 catch (Exception ex)
                 {
                     errLbl.setText("Enter a price");
                     return;
+                }
+                try
+                {
+                    String agentCents = editAgentCentsBox.getText();
+                    Long agentCentsL = Long.parseLong(agentCents);
+                    routeInfo.setAgentCents(agentCentsL);
+
+                }
+                catch (Exception ex)
+                {
                 }
                 if (
                 Strings.isNullOrEmpty(editStartTxtBox.getText()) ||
@@ -638,6 +673,7 @@ public class RouteManagementVeiw extends Composite
         final Label startLabel = new Label("Start");
         final Label destinationLabel = new Label("Destination");
         final Label priceLabel = new Label("Price USD");
+        final Label agentCentsLabel = new Label("Agent Cents");
         final Label pickupLabel = new Label("Pickuptype");
         final Label contractorLabel = new Label("Contractor");
         final Label generateReturnLabel = new Label("Generate Return");
@@ -649,6 +685,10 @@ public class RouteManagementVeiw extends Composite
         addPopupPanel(startLabel, editStartTxtBox, grid, row++);
         addPopupPanel(destinationLabel, editEndTxtBox, grid, row++);
         addPopupPanel(priceLabel, editPriceTxtBox, grid, row++);
+        if (Boolean.TRUE.equals(GwtDashboard.isAdmin()))
+        {
+            addPopupPanel(agentCentsLabel, editAgentCentsBox, grid, row++);
+        }
         addPopupPanel(pickupLabel, editPickupTypeBox, grid, row++);
         addPopupPanel(contractorLabel, editContractorTypeBox, grid, row++);
         if (mode.equals(SaveMode.ADD))
