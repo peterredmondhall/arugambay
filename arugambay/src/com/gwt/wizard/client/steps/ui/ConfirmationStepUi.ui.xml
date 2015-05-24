@@ -21,6 +21,9 @@
 		<g:VerticalPanel ui:field="panelShareLink">
 			<g:Anchor ui:field="shareLink" href="/myurl">Share this link so that
 				others can join you.</g:Anchor>
+				        
+        <g:Anchor href="http://www.facebook.com/sharer/sharer.php?u=https://www.facebook.com/taxisurfr" target="_blank">Share on facebook.</g:Anchor>
+			
 		</g:VerticalPanel>
 	</g:HTMLPanel>
 

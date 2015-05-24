@@ -86,22 +86,24 @@ public class BookingUtil
         String insertion = "";
         for (Pair<String, String> pair : toPairList(bookingInfo))
         {
-            insertion += "<tr>\n";
-            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.first);
-            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", pair.second);
-            insertion += "</tr>\n";
+            insertion += pair.first() + " " + pair.second() + "<br>";
         }
+        html = html.replace("____INSERT___DETAILS___", insertion);
+
+        String taxisurfrRouteLink = profil.getTaxisurfUrl() + "?route=" + bookingInfo.getRouteId();
+        html = html.replace("__TAXISURFR_ROUTE_LINK__", taxisurfrRouteLink);
         if (bookingInfo.getShareWanted())
         {
-            String insertShare = profil.getTaxisurfUrl() + "?route=" + bookingInfo.getRouteId();
+            html = html.replace("___SHARE_MESSAGE__", "Spread the word about your shared taxi using this share link.");
 
-            insertion += "<tr>\n";
-            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", "Here is a link to your route to help find sharers ");
-            insertion += "<td colspan=\"2\" class=\"content\">XXX</td>\n".replace("XXX", insertShare);
-            insertion += "</tr>\n";
+        }
+        else
+        {
+            html = html.replace("___SHARE_MESSAGE__", "");
         }
 
-        return html.replace("<!-- INSERTION -->", insertion);
+        return html;
+
     }
 
     public static String getTemplate(File file)

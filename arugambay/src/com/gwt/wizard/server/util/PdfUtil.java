@@ -88,15 +88,17 @@ public class PdfUtil
             ColumnText.showTextAligned(canvas,
                     Element.ALIGN_LEFT, new Phrase(chunk), INSET + 120, addressY, 0);
 
-            addressY -= 42;
+            String address = "";
             for (String contractorAddress : contractorInfo.getAddress())
             {
-                chunk = new Chunk(contractorAddress, helvetica14);
-
-                ColumnText.showTextAligned(canvas,
-                        Element.ALIGN_LEFT, new Phrase(chunk), INSET, addressY, 0);
-                addressY -= 20;
+                address += contractorAddress + "  ";
             }
+
+            addressY -= 42;
+            chunk = new Chunk(address, helvetica14);
+
+            ColumnText.showTextAligned(canvas,
+                    Element.ALIGN_LEFT, new Phrase(chunk), INSET, addressY, 0);
 
             stamper.close();
             reader.close();
