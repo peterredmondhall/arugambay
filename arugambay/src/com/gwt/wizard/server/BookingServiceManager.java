@@ -24,7 +24,9 @@ import com.gwt.wizard.server.entity.Config;
 import com.gwt.wizard.server.entity.Contractor;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.entity.Route;
+import com.gwt.wizard.server.util.Mailer;
 import com.gwt.wizard.shared.OrderStatus;
+import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
@@ -64,6 +66,7 @@ public class BookingServiceManager extends Manager
             em.detach(booking);
 
             bookingInfo = booking.getBookingInfo(route.getInfo());
+
         }
         catch (Exception e)
         {
@@ -72,6 +75,17 @@ public class BookingServiceManager extends Manager
         finally
         {
             em.close();
+        }
+        try
+        {
+            if (bookingInfo.getOrderType().equals(OrderType.SHARE_ANNOUNCEMENT))
+            {
+                Mailer.sendShareAnnouncement(bookingInfo, getProfil());
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
         }
         return bookingInfo;
     }

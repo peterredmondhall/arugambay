@@ -127,7 +127,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         if (sharerBookingInfo.getStatus() == SHARE_ACCEPTED)
         {
             list = Lists.newArrayList(parentBookingInfo, sharerBookingInfo);
-            Mailer.sendShareAccepted(sharerBookingInfo.getEmail(), parentBookingInfo, bookingServiceManager.getProfil());
+            Mailer.sendShareAccepted(sharerBookingInfo.getEmail(), parentBookingInfo, sharer, bookingServiceManager.getProfil());
         }
         else
         {

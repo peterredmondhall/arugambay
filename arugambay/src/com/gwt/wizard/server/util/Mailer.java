@@ -45,22 +45,29 @@ public class Mailer
         return templateMap.get(path);
     }
 
-    public static final String SHARE_REQUEST = "template/shareRequest.html";
+    public static final String SHARE_REQUEST = "template/abay_share_request.html";
     public static final String FEEDBACK_REQUEST = "template/feedbackRequest.html";
-    public static final String SHARE_ACCEPTED = "template/shareAccepted.html";
+    public static final String SHARE_ACCEPTED = "template/abay_share_request_accepted.html";
     public static final String CONFIRMATION = "template/confirmation.html";
+
+    public static void sendShareAnnouncement(BookingInfo bookingInfo, Profil profil)
+    {
+        send(profil.getMonitorEmail(), "shareannouncement", null, "monitor");
+    }
 
     public static void sendShareRequest(BookingInfo parentBooking, BookingInfo bookingInfo, Profil profil)
     {
 
         String html = BookingUtil.toConfirmationRequestHtml(bookingInfo, getFile(SHARE_REQUEST), profil);
+        html = html.replace(" __NAME__", "Hi " + parentBooking.getName());
         send(parentBooking.getEmail(), html, null, "booker");
         send(profil.getMonitorEmail(), html, null, "monitor");
     }
 
-    public static void sendShareAccepted(String email, BookingInfo parentBookingInfo, Profil profil)
+    public static void sendShareAccepted(String email, BookingInfo parentBookingInfo, BookingInfo shareBookingInfo, Profil profil)
     {
         String html = BookingUtil.toConfirmationEmailHtml(parentBookingInfo, getFile(SHARE_ACCEPTED), profil);
+        html = html.replace(" __NAME__", "Hi " + shareBookingInfo.getName());
         send(email, html, null, "sharer");
         send(profil.getMonitorEmail(), html, null, "monitor");
 
