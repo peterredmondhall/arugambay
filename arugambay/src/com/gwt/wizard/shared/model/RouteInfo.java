@@ -35,16 +35,7 @@ public class RouteInfo extends Info
     private PickupType pickupType;
     private Long cents;
     private Long agentCents;
-
-    public boolean isInactive()
-    {
-        return inactive;
-    }
-
-    public void setInactive(boolean inactive)
-    {
-        this.inactive = inactive;
-    }
+    private Long associatedRoute;
 
     private boolean inactive;
 
@@ -147,4 +138,23 @@ public class RouteInfo extends Info
         return getStart() + " to " + getEnd() + " " + price;
     }
 
+    public Long getAssociatedRoute()
+    {
+        return associatedRoute;
+    }
+
+    public void setAssociatedRoute(Long associatedRoute)
+    {
+        this.associatedRoute = associatedRoute;
+    }
+
+    public boolean isInactive()
+    {
+        return inactive;
+    }
+
+    public void setInactive(boolean inactive)
+    {
+        this.inactive = inactive;
+    }
 }

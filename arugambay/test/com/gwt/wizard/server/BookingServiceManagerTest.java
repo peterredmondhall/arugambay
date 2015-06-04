@@ -35,6 +35,8 @@ import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ContractorInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
 import com.gwt.wizard.shared.model.RouteInfo;
+import com.gwt.wizard.shared.model.RouteInfo.PickupType;
+import com.gwt.wizard.shared.model.RouteInfo.SaveMode;
 
 public class BookingServiceManagerTest
 {
@@ -45,8 +47,13 @@ public class BookingServiceManagerTest
     BookingServiceManager bs = new BookingServiceManager();
     RatingManager ratingManager = new RatingManager();
 
-    static AgentInfo testAgentInfo;
+    AgentInfo testAgentInfo;
     ContractorInfo contractorInfo;
+
+    RouteInfo standardRoute;
+    RouteInfo routeContractor2Route1;
+    RouteInfo routeWithAssociated;
+    RouteInfo routeAssociated;
 
     @Before
     public void setUp()
@@ -54,6 +61,28 @@ public class BookingServiceManagerTest
         helper.setUp();
         new BookingServiceManager().getProfil();
         testAgentInfo = new BookingServiceImpl().createDefaultUser();
+        List<RouteInfo> routeInfoList = new RouteServiceManager().getRoutes(testAgentInfo);
+        List<ContractorInfo> contractors = new ContractorManager().getContractors(testAgentInfo);
+
+        standardRoute = routeInfoList.get(0);
+        routeContractor2Route1 = routeInfoList.get(1);
+        routeAssociated = create_route(testAgentInfo, contractors.get(1), 0L);
+        routeWithAssociated = create_route(testAgentInfo, contractors.get(1), routeAssociated.getId());
+    }
+
+    public static RouteInfo create_route(AgentInfo agentInfo, ContractorInfo contractorInfo, Long associatedRouteId)
+    {
+        RouteInfo associatedRoute = new RouteInfo();
+        associatedRoute.setStart("start");
+        associatedRoute.setEnd(":end");
+        associatedRoute.setPickupType(PickupType.AIRPORT);
+        associatedRoute.setCents(101L);
+        associatedRoute.setAgentCents(100L);
+        associatedRoute.setContractorId(contractorInfo.getId());
+        associatedRoute.setAssociatedRoute(associatedRouteId);
+        associatedRoute = new RouteServiceManager().addRoute(agentInfo, associatedRoute, SaveMode.ADD);
+        return associatedRoute;
+
     }
 
     @After
@@ -62,9 +91,8 @@ public class BookingServiceManagerTest
         helper.tearDown();
     }
 
-    public static BookingInfo getBookingInfo(Date date, String flightNo, String landingTime, String name, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
+    public static BookingInfo getBookingInfo(RouteInfo routeInfo, Date date, String flightNo, String landingTime, String name, int pax, int surfboards, String email, String reqs, OrderType orderType, boolean shareWanted)
     {
-        RouteInfo routeInfo = new RouteServiceManager().getRoutes(testAgentInfo).get(0);
 
         BookingInfo bi = new BookingInfo();
         bi.setDate(date);
@@ -112,12 +140,22 @@ public class BookingServiceManagerTest
 
     private BookingInfo getStandardBookingInfo()
     {
-        return getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        return getStandardBookingInfo(standardRoute);
+    }
+
+    private BookingInfo getStandardBookingInfo(RouteInfo routeInfo)
+    {
+        return getBookingInfo(routeInfo, getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
     }
 
     private BookingInfo create_a_booking()
     {
-        return bs.addBookingWithClient(getStandardBookingInfo(), "client");
+        return create_a_booking(standardRoute);
+    }
+
+    private BookingInfo create_a_booking(RouteInfo routeInfo)
+    {
+        return bs.addBookingWithClient(getStandardBookingInfo(routeInfo), "client");
     }
 
     private List<RatingInfo> create_a_rating(Profil profil)
@@ -234,6 +272,23 @@ public class BookingServiceManagerTest
         list = bs.getBookingsForRoute(bi.getRouteInfo());
         // booking is in the past
         assertEquals(1, list.size());
+
+    }
+
+    @Test
+    public void should_return_bookings_on_associated_routes()
+    {
+
+        BookingInfo create_a_booking1 = create_a_booking(routeWithAssociated);
+        BookingInfo create_a_booking2 = create_a_booking(routeAssociated);
+        bs.setPayed(bs.getProfil(), create_a_booking1, OrderStatus.PAID);
+        bs.setPayed(bs.getProfil(), create_a_booking2, OrderStatus.PAID);
+        List<BookingInfo> bookings = bs.getBookingsForRoute(routeWithAssociated);
+        assertEquals(2, bookings.size());
+
+        bookings = bs.getBookingsForRoute(routeAssociated);
+        assertEquals(OrderStatus.PAID, bookings.get(0).getStatus());
+        assertEquals(1, bookings.size());
 
     }
 
@@ -406,11 +461,11 @@ public class BookingServiceManagerTest
     public void should_return_paid_unrated()
     {
         Profil profil = new Profil();
-        BookingInfo bookingInfoPaid = getBookingInfo(getDateTwoDaysPrevious(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo bookingInfoPaid = getBookingInfo(standardRoute, getDateTwoDaysPrevious(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
         bookingInfoPaid = bs.addBookingWithClient(bookingInfoPaid, "client");
         bs.setPayed(profil, bookingInfoPaid, OrderStatus.PAID);
 
-        BookingInfo bookingInfoUnpaid = getBookingInfo(getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo bookingInfoUnpaid = getBookingInfo(standardRoute, getDateInOneMonth(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
         bs.addBookingWithClient(bookingInfoUnpaid, "client");
 
         List<BookingInfo> bookings = bs.getListFeedbackRequest();
@@ -423,9 +478,9 @@ public class BookingServiceManagerTest
     @Test
     public void should_compare_dates()
     {
-        BookingInfo biMinus2 = getBookingInfo(new DateTime().minusMonths(2).toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
-        BookingInfo binow = getBookingInfo(new DateTime().now().toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
-        BookingInfo biPlus2 = getBookingInfo(new DateTime().plusMonths(2).toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo biMinus2 = getBookingInfo(standardRoute, new DateTime().minusMonths(2).toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo binow = getBookingInfo(standardRoute, new DateTime().now().toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo biPlus2 = getBookingInfo(standardRoute, new DateTime().plusMonths(2).toDate(), "flightNo", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
 
         List<BookingInfo> list = Lists.newArrayList(binow, biPlus2, biMinus2);
         List<BookingInfo> expected = Lists.newArrayList(biMinus2, binow, biPlus2);
@@ -438,9 +493,9 @@ public class BookingServiceManagerTest
     public void should_archive()
     {
 
-        BookingInfo biMinus2 = getBookingInfo(new DateTime().minusMonths(2).toDate(), "biMinus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
-        BookingInfo binow = getBookingInfo(new DateTime().now().toDate(), "binow", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
-        BookingInfo biPlus2 = getBookingInfo(new DateTime().plusMonths(2).toDate(), "biPlus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo biMinus2 = getBookingInfo(standardRoute, new DateTime().minusMonths(2).toDate(), "biMinus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo binow = getBookingInfo(standardRoute, new DateTime().now().toDate(), "binow", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        BookingInfo biPlus2 = getBookingInfo(standardRoute, new DateTime().plusMonths(2).toDate(), "biPlus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
         bs.addBookingWithClient(biMinus2, "client");
         bs.addBookingWithClient(binow, "client");
         bs.addBookingWithClient(biPlus2, "client");

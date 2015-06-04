@@ -1,5 +1,7 @@
 package com.gwt.wizard.server;
 
+import static com.google.common.collect.FluentIterable.from;
+import static com.google.common.collect.Lists.newArrayList;
 import static org.joda.time.DateTime.now;
 
 import java.util.ArrayList;
@@ -15,8 +17,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.gwt.wizard.server.entity.Agent;
 import com.gwt.wizard.server.entity.ArchivedBooking;
 import com.gwt.wizard.server.entity.Booking;
@@ -229,8 +229,8 @@ public class BookingServiceManager extends Manager
         boolean maintenanceAllowed = false;
         try
         {
-            Config config = (Config) em.createQuery("select t from Config t").getSingleResult();
-            if (config.getMaintenceAllowed() == null)
+            Config config = Config.getConfig(em);
+            if (Config.getConfig(em).getMaintenceAllowed() == null)
             {
                 logger.info("maintence allowed not avail - setting false");
                 em.getTransaction().begin();
@@ -314,22 +314,22 @@ public class BookingServiceManager extends Manager
         }
     }
 
-    public List<BookingInfo> getBookingsForRoute(final RouteInfo routeInfo) throws IllegalArgumentException
+    @SuppressWarnings("rawtypes")
+    public List<BookingInfo> getBookingsForRoute(RouteInfo routeInfo) throws IllegalArgumentException
     {
-
-        Predicate<BookingInfo> acceptEven = new Predicate<BookingInfo>()
+        Predicate<Booking> accept = new Predicate<Booking>()
         {
             @Override
-            public boolean apply(BookingInfo bookingInfo)
+            public boolean apply(Booking booking)
             {
                 boolean applies = false;
-                if (new DateTime(bookingInfo.getDate()).isAfter(now()) && routeInfo.getId().equals(bookingInfo.getRouteInfo().getId()) && bookingInfo.getOrderType() != null)
+                if (new DateTime(booking.getDate()).isAfter(now()) && booking.getOrderType() != null)
                 {
 
-                    switch (bookingInfo.getOrderType())
+                    switch (booking.getOrderType())
                     {
                         case BOOKING:
-                            applies = OrderStatus.PAID == bookingInfo.getStatus() && bookingInfo.getShareWanted();
+                            applies = OrderStatus.PAID == booking.getStatus() && booking.getShareWanted();
                             break;
                         case SHARE:
                             break;
@@ -344,10 +344,35 @@ public class BookingServiceManager extends Manager
                 return applies;
             }
         };
-        List<BookingInfo> current = Lists.newArrayList(Collections2.filter(getBookings(), acceptEven));
-        Collections.sort(current, new BookingInfoComparator());
-        logger.info("share candidates size = " + current.size());
-        return current;
+
+        EntityManager em = getEntityManager();
+        List<BookingInfo> bookings = new ArrayList<>();
+        try
+        {
+            int counter = 0;
+            String where = "where ";
+            where += "route=" + routeInfo.getId();
+            if (routeInfo.getAssociatedRoute() != null && routeInfo.getAssociatedRoute() != Route.NO_ASSOCIATED)
+            {
+                where += " or route=" + routeInfo.getAssociatedRoute();
+            }
+            @SuppressWarnings("unchecked")
+            List<Booking> result = em.createQuery("select t from Booking t " + where).getResultList();
+            List<Booking> current = newArrayList(from(result).filter(accept));
+            for (Booking booking : current)
+            {
+                em.detach(booking);
+                bookings.add(booking.getBookingInfo(getRouteInfo(booking.getRoute(), em)));
+            }
+            Collections.sort(bookings, new BookingInfoComparator());
+            logger.info("share candidates size = " + current.size());
+        }
+        finally
+        {
+            em.close();
+        }
+
+        return bookings;
     }
 
     public BookingInfo setShareAccepted(BookingInfo bookingInfo)

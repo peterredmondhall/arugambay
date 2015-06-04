@@ -13,6 +13,7 @@ import com.gwt.wizard.shared.model.RouteInfo.PickupType;
 public class Route extends ArugamEntity<RouteInfo>
 {
     private static final long serialVersionUID = 1L;
+    public static final long NO_ASSOCIATED = 0L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +28,7 @@ public class Route extends ArugamEntity<RouteInfo>
     private Long agentCents;
     private Long image;
     private boolean inactive;
+    private Long associatedRoute = NO_ASSOCIATED;
 
     public Long getContractorId()
     {
@@ -120,6 +122,7 @@ public class Route extends ArugamEntity<RouteInfo>
         route.setPickupType(routeInfo.getPickupType());
         route.setImage(routeInfo.getImage());
         route.setContractorId(routeInfo.getContractorId());
+        route.setAssociatedRoute(routeInfo.getAssociatedRoute());
         return route;
     }
 
@@ -134,6 +137,7 @@ public class Route extends ArugamEntity<RouteInfo>
         routeInfo.setCents(cents);
         routeInfo.setAgentCents(agentCents);
         routeInfo.setInactive(inactive);
+        routeInfo.setAssociatedRoute(associatedRoute);
 
         routeInfo.setPickupType(pickupType);
         routeInfo.setImage(image);
@@ -146,6 +150,11 @@ public class Route extends ArugamEntity<RouteInfo>
             routeInfo.setContractorId(contractorId);
         }
         return routeInfo;
+    }
+
+    public void setAssociatedRoute(Long associatedRoute)
+    {
+        this.associatedRoute = associatedRoute;
     }
 
     public Long getAgentCents()
@@ -162,4 +171,10 @@ public class Route extends ArugamEntity<RouteInfo>
     {
         inactive = true;
     }
+
+    public Long getAssociatedRoute()
+    {
+        return associatedRoute;
+    }
+
 }

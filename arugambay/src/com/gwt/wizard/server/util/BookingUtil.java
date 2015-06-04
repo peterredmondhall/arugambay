@@ -42,15 +42,16 @@ public class BookingUtil
     public static List<Pair<String, String>> toPairList(BookingInfo bookingInfo)
     {
         List<Pair<String, String>> list = new ArrayList<Pair<String, String>>();
-        list.add(new Pair(DATE, sdf.print(new DateTime(bookingInfo.getDate()))));
+
+        list.add(Pair.of(DATE, sdf.print(new DateTime(bookingInfo.getDate()))));
         PickupType pickupType = bookingInfo.getRouteInfo().getPickupType();
-        list.add(new Pair(pickupType.getLocationType(), bookingInfo.getFlightNo()));
-        list.add(new Pair(pickupType.getTimeType(), bookingInfo.getLandingTime()));
-        list.add(new Pair(NAME, bookingInfo.getName()));
-        list.add(new Pair(EMAIL, bookingInfo.getEmail()));
-        list.add(new Pair(NUM_SURFBOARDS, Integer.toString(bookingInfo.getSurfboards())));
-        list.add(new Pair(NUM_PAX, Integer.toString(bookingInfo.getPax())));
-        list.add(new Pair(REQS, bookingInfo.getRequirements()));
+        list.add(Pair.of(pickupType.getLocationType(), bookingInfo.getFlightNo()));
+        list.add(Pair.of(pickupType.getTimeType(), bookingInfo.getLandingTime()));
+        list.add(Pair.of(NAME, bookingInfo.getName()));
+        list.add(Pair.of(EMAIL, bookingInfo.getEmail()));
+        list.add(Pair.of(NUM_SURFBOARDS, Integer.toString(bookingInfo.getSurfboards())));
+        list.add(Pair.of(NUM_PAX, Integer.toString(bookingInfo.getPax())));
+        list.add(Pair.of(REQS, bookingInfo.getRequirements()));
 
         return list;
     }
@@ -86,7 +87,7 @@ public class BookingUtil
         String insertion = "";
         for (Pair<String, String> pair : toPairList(bookingInfo))
         {
-            insertion += pair.first() + " " + pair.second() + "<br>";
+            insertion += pair.first + " " + pair.second + "<br>";
         }
         html = html.replace("____INSERT___DETAILS___", insertion);
 

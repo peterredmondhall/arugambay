@@ -244,14 +244,16 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
                     contractorInfo.setAgentId(agentInfo.getId());
                     contractorInfo.setName(testAgent + ":contractor" + i);
                     contractorInfo = new ContractorManager().createContractor(contractorInfo);
-                    RouteInfo routeInfo = new RouteInfo();
-                    routeInfo.setStart(testAgent + "start" + i);
-                    routeInfo.setEnd(testAgent + ":end" + i);
-                    routeInfo.setPickupType(PickupType.AIRPORT);
-                    routeInfo.setCents(101L);
-                    routeInfo.setAgentCents(100L);
-                    routeInfo.setContractorId(contractorInfo.getId());
-                    new RouteServiceManager().saveRoute(agentInfo, routeInfo, SaveMode.ADD);
+
+                    RouteInfo simpleRouteInfo = new RouteInfo();
+                    simpleRouteInfo.setStart(testAgent + "simple_Contractor" + i);
+                    simpleRouteInfo.setEnd(testAgent + ":end" + i);
+                    simpleRouteInfo.setPickupType(PickupType.AIRPORT);
+                    simpleRouteInfo.setCents(101L);
+                    simpleRouteInfo.setAgentCents(100L);
+                    simpleRouteInfo.setContractorId(contractorInfo.getId());
+                    new RouteServiceManager().saveRoute(agentInfo, simpleRouteInfo, SaveMode.ADD).get(0);
+
                 }
             }
             return new AgentManager().getAgent(DEFAULTUSEREMAIL);

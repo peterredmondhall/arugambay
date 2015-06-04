@@ -288,7 +288,7 @@ public class ContactStepUi extends Composite
                 dateBox.setEnabled(false);
                 labelRequirementsField.setText("Message to taxi booker eg. Facebook profile etc.");
                 labelSharing1.setText("You are creating a share request.");
-                labelSharing2.setText("We will forward your details to the person who has paid for the taxi and they will contact you directly.");
+                labelSharing2.setText("Enter your details. You will be contacted when the fellow passenger has agreed to the share.");
                 dateBox.setValue(BOOKINGINFO.getDate());
                 break;
             case SHARE_ANNOUNCEMENT:

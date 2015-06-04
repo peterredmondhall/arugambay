@@ -49,18 +49,17 @@ public class RouteServiceManagerTest
     @Test
     public void should_deactivate_route()
     {
-        List<RouteInfo> routes = rs.getRoutes();
-        assertEquals(4, routes.size());
+        List<RouteInfo> routes = rs.getRoutes(agentInfo);
+        assertEquals(2, routes.size());
         RouteInfo routeInfo1 = routes.get(0);
-        RouteInfo routeInfo2 = routes.get(1);
         routes = rs.deleteRoute(agentInfo, routeInfo1);
-        routes = rs.deleteRoute(agentInfo, routeInfo2);
-        assertEquals(2, routes.size());
-        assertEquals(true, routes.get(0).isInactive());
-        assertEquals(true, routes.get(1).isInactive());
+        assertEquals(1, routes.size());
+        assertEquals(false, routes.get(0).isInactive());
+        routes = rs.deleteRoute(agentInfo, routes.get(0));
+        assertEquals(0, routes.size());
 
-        routes = rs.getRoutes();
-        assertEquals(2, routes.size());
+        routes = rs.getRoutes(agentInfo);
+        assertEquals(0, routes.size());
 
     }
 

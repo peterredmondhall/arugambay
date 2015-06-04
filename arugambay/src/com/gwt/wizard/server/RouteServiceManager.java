@@ -45,11 +45,16 @@ public class RouteServiceManager extends Manager
 
     public List<RouteInfo> saveRoute(AgentInfo userInfo, RouteInfo routeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
     {
-        List<RouteInfo> routes = null;
+        addRoute(userInfo, routeInfo, mode);
+        return getRoutes(userInfo);
+    }
+
+    public RouteInfo addRoute(AgentInfo userInfo, RouteInfo routeInfo, RouteInfo.SaveMode mode) throws IllegalArgumentException
+    {
+        Route route = null;
         EntityManager em = getEntityManager();
         try
         {
-            Route route = null;
             switch (mode)
             {
                 case ADD:
@@ -74,7 +79,6 @@ public class RouteServiceManager extends Manager
                     break;
             }
 
-            routes = getRoutes(userInfo);
         }
 
         catch (Exception e)
@@ -85,7 +89,7 @@ public class RouteServiceManager extends Manager
         {
             em.close();
         }
-        return routes;
+        return route.getInfo();
     }
 
     private void persist(EntityManager em, Route route, RouteInfo routeInfo)
@@ -99,6 +103,7 @@ public class RouteServiceManager extends Manager
         route.setImage(routeInfo.getImage());
         route.setDescription(routeInfo.getDescription());
         route.setContractorId(routeInfo.getContractorId());
+        route.setAssociatedRoute(routeInfo.getAssociatedRoute());
         em.getTransaction().begin();
         em.persist(route);
         em.getTransaction().commit();

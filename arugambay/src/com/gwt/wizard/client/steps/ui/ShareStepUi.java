@@ -95,8 +95,15 @@ public class ShareStepUi extends Composite
             @Override
             public String getValue(BookingInfo object)
             {
-                Double d = (double) object.getRouteInfo().getCents() / 200;
-                return "US$" + usdFormat.format(d);
+                if (object.getRouteInfo() != null && object.getRouteInfo().getCents() != null)
+                {
+                    Double d = (double) object.getRouteInfo().getCents() / 200;
+                    return "US$" + usdFormat.format(d);
+                }
+                else
+                {
+                    return "---";
+                }
             }
         };
         cellTable.addColumn(estimatedPriceColumn, "estimated sharing price");

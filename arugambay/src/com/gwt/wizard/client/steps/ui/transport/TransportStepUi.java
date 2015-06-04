@@ -112,7 +112,7 @@ public class TransportStepUi extends Composite
 
             }
         };
-
+        buttontable.clear();
         buttonOrder = ButtonFactory.getButton("Order  this taxi", "150px");
         int row = 0;
         buttontable.setWidget(row++, 0, buttonOrder);

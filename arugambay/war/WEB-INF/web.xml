@@ -105,6 +105,17 @@
 	    <url-pattern>/gwt_wizard/remote_logging</url-pattern>
 	</servlet-mapping>
 	
+	
+	<servlet>
+		<servlet-name>FacebookServlet</servlet-name>
+		<servlet-class>com.gwt.wizard.servlet.FacebookServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>FacebookServlet</servlet-name>
+		<url-pattern>/facebookapp</url-pattern>
+	</servlet-mapping>
+
 	<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

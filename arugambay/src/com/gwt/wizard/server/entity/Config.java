@@ -3,6 +3,7 @@ package com.gwt.wizard.server.entity;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,10 +19,22 @@ public class Config implements Serializable
     private Key key;
     private String profil;
     private Boolean maintenceAllowed;
+    private  String fbAppKey;
+    private  String fbAppSecret;
 
     public String getProfil()
     {
         return profil;
+    }
+
+    public String getFbAppKey()
+    {
+        return fbAppKey;
+    }
+
+    public String getFbAppSecret()
+    {
+        return fbAppSecret;
     }
 
     public void setProfil(String profil)
@@ -39,4 +52,8 @@ public class Config implements Serializable
         this.maintenceAllowed = maintenceAllowed;
     }
 
+    public static Config getConfig(EntityManager em)
+    {
+        return (Config) em.createQuery("select t from Config t").getSingleResult();
+    }
 }
