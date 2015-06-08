@@ -19,6 +19,8 @@ import com.gwt.wizard.shared.model.StatInfo;
 @RemoteServiceRelativePath("service")
 public interface BookingService extends RemoteService
 {
+    BookingInfo getCurrencyRate(BookingInfo model) throws IllegalArgumentException;
+
     BookingInfo addBooking(BookingInfo model) throws IllegalArgumentException;
 
     BookingInfo sendShareRequest(BookingInfo bookingInfo);

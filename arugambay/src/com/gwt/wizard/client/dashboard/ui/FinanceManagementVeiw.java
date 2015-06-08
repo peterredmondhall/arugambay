@@ -16,7 +16,6 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -29,6 +28,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.gwt.wizard.client.GwtDashboard;
+import com.gwt.wizard.client.Refresh;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.FinanceInfo;
@@ -96,7 +96,7 @@ public class FinanceManagementVeiw extends Composite
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to Server!");
+                Refresh.refresh();
             }
         });
     }

@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -26,6 +25,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.GwtDashboard;
+import com.gwt.wizard.client.Refresh;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.AgentInfo;
@@ -106,7 +106,7 @@ public class AdminManagementVeiw extends Composite
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to Server!");
+                Refresh.refresh();
             }
         });
     }

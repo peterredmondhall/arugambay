@@ -1,7 +1,10 @@
 package com.gwt.wizard.client.steps.ui.transport;
 
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.GWT;
@@ -27,11 +30,11 @@ import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.GwtWizard;
 import com.gwt.wizard.client.core.Wizard;
-import com.gwt.wizard.client.dashboard.ui.Helper;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.client.steps.ui.ButtonFactory;
 import com.gwt.wizard.client.steps.ui.widget.RatingList;
+import com.gwt.wizard.shared.CurrencyHelper;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.RatingInfo;
@@ -41,6 +44,7 @@ import com.gwt.wizard.shared.model.StatInfo;
 public class TransportStepUi extends Composite
 {
     // public static final String WIDTH = "120px";
+    public static final Logger logger = Logger.getLogger(TransportStepUi.class.getName());
 
     private static RouteStepUiUiBinder uiBinder = GWT.create(RouteStepUiUiBinder.class);
     private final BookingServiceAsync service = GWT.create(BookingService.class);
@@ -187,13 +191,34 @@ public class TransportStepUi extends Composite
         {
 
             @Override
-            public void onSuccess(List<RouteInfo> routes)
+            public void onSuccess(final List<RouteInfo> routes)
+            {
+                service.getCurrencyRate(Wizard.BOOKINGINFO, new AsyncCallback<BookingInfo>()
+                {
+
+                    @Override
+                    public void onFailure(Throwable caught)
+                    {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                    @Override
+                    public void onSuccess(BookingInfo result)
+                    {
+                        BOOKINGINFO = result;
+                        loadRoutes(routes);
+                    }
+                });
+            }
+
+            private void loadRoutes(List<RouteInfo> routes)
             {
                 MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
 
                 for (RouteInfo routeInfo : routes)
                 {
-                    String key = routeInfo.getKey(Helper.getDollars(routeInfo));
+                    String key = routeInfo.getKey(CurrencyHelper.getPrice(routeInfo, Wizard.BOOKINGINFO.getCurrency(), Wizard.BOOKINGINFO.getRate()));
                     mapRouteInfo.put(key, routeInfo);
 
                     oracle.add(key);
@@ -201,7 +226,7 @@ public class TransportStepUi extends Composite
                 final SuggestBox suggestBox = new SuggestBox(oracle);
                 setSuggestBoxWidth(suggestBox);
                 routeSuggestionPanel.add(suggestBox);
-                suggestBox.getElement().setAttribute("placeHolder", "Enter a start or destination eg. Colombo or Arugam Bay");
+                suggestBox.getElement().setAttribute("placeHolder", "eg. Colombo Airport Arugam Bay");
 
                 SelectionHandler<SuggestOracle.Suggestion> handler = new SelectionHandler<SuggestOracle.Suggestion>()
                 {
@@ -211,6 +236,7 @@ public class TransportStepUi extends Composite
                         String displayString = event.getSelectedItem().getReplacementString();
                         RouteInfo routeInfo = mapRouteInfo.get(displayString);
                         Wizard.ROUTEINFO = routeInfo;
+                        BOOKINGINFO.setPaidPrice(CurrencyHelper.getPriceInDollars(routeInfo, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
                         displayRoute(/* suggestBox, */);
                     }
 
@@ -233,7 +259,7 @@ public class TransportStepUi extends Composite
     {
         panelMotivation.setVisible(false);
         RouteInfo routeInfo = Wizard.ROUTEINFO;
-        labelRouteName.setText(routeInfo.getKey(Helper.getDollars(routeInfo)));
+        labelRouteName.setText(routeInfo.getKey(CurrencyHelper.getPrice(routeInfo, Wizard.BOOKINGINFO.getCurrency(), Wizard.BOOKINGINFO.getRate())));
         imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
         labelDescription.setText(routeInfo.getDescription());
 

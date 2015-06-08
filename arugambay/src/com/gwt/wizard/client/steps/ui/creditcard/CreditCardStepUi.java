@@ -1,5 +1,7 @@
 package com.gwt.wizard.client.steps.ui.creditcard;
 
+import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,8 +17,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.core.Wizard;
-import com.gwt.wizard.client.dashboard.ui.Helper;
 import com.gwt.wizard.client.steps.CreditCardStep;
+import com.gwt.wizard.shared.CurrencyHelper;
 
 public class CreditCardStepUi extends Composite
 {
@@ -182,7 +184,7 @@ public class CreditCardStepUi extends Composite
         next.setVisible(false);
         prev.setEnabled(true);
 
-        payWithCC.setText("Pay " + Helper.getDollars(Wizard.ROUTEINFO));
+        payWithCC.setText("Pay " + CurrencyHelper.getPrice(Wizard.ROUTEINFO, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
     }
 
     @Override

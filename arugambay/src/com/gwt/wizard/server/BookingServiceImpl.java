@@ -12,6 +12,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.server.entity.Profil;
 import com.gwt.wizard.server.util.Mailer;
+import com.gwt.wizard.shared.Currency;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
@@ -40,6 +41,7 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     private final StatManager statManager = new StatManager();
     private final RatingManager ratingManager = new RatingManager();
     private final FinanceManager financeManager = new FinanceManager();
+    private final CurrencyManager currencyManager = new CurrencyManager();
     private final StripePayment stripePayment = new StripePayment();
 
     @Override
@@ -316,6 +318,21 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     public List<FinanceInfo> getFinances(AgentInfo agentInfo)
     {
         return financeManager.getFinance(agentInfo);
+    }
+
+    @Override
+    public BookingInfo getCurrencyRate(BookingInfo bookingInfo) throws IllegalArgumentException
+    {
+        logger.info("getCurrencyRate " + bookingInfo.getCurrency());
+        Float rate = currencyManager.getRate(bookingInfo.getCurrency());
+        if (rate == null)
+        {
+            logger.info("getCurrencyRate is null, defaulting to USD ");
+            bookingInfo.setCurrency(Currency.USD);
+        }
+        bookingInfo.setRate(rate);
+        logger.info("getCurrencyRate " + bookingInfo.getRate());
+        return bookingInfo;
     }
 
 }

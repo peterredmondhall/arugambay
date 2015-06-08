@@ -2,6 +2,7 @@ package com.gwt.wizard.shared.model;
 
 import java.util.Date;
 
+import com.gwt.wizard.shared.Currency;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 
@@ -26,7 +27,12 @@ public class BookingInfo extends Info
     private String landingTime;
     private int pax = 0;
     private int surfboards = 0;
+
     private String stripeRefusalReason;
+    private Currency currency;
+    private int paidPrice;
+
+    private Float rate;
 
     public Long getRouteId()
     {
@@ -198,5 +204,35 @@ public class BookingInfo extends Info
     public void setDateText(String dateText)
     {
         this.dateText = dateText;
+    }
+
+    public Currency getCurrency()
+    {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency)
+    {
+        this.currency = currency;
+    }
+
+    public Float getRate()
+    {
+        return rate;
+    }
+
+    public void setRate(Float rate)
+    {
+        this.rate = rate;
+    }
+
+    public int getPaidPrice()
+    {
+        return paidPrice;
+    }
+
+    public void setPaidPrice(int paidPrice)
+    {
+        this.paidPrice = paidPrice;
     }
 }

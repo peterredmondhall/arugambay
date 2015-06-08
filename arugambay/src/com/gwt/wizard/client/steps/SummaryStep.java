@@ -4,10 +4,10 @@ import static com.gwt.wizard.client.GwtWizard.MESSAGES;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.gwt.wizard.client.Refresh;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.core.WizardStep;
 import com.gwt.wizard.client.service.BookingService;
@@ -58,7 +58,7 @@ public class SummaryStep implements WizardStep
                 @Override
                 public void onFailure(Throwable caught)
                 {
-                    Window.alert("Failed to connect to server");
+                    Refresh.refresh();
                 }
 
                 @Override

@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.core.Wizard;
-import com.gwt.wizard.client.dashboard.ui.Helper;
+import com.gwt.wizard.shared.CurrencyHelper;
 
 public class SummaryStepUi extends Composite
 {
@@ -71,7 +71,7 @@ public class SummaryStepUi extends Composite
         labelEmail.setText(BOOKINGINFO.getEmail());
         labelName.setText(BOOKINGINFO.getName());
         labelRequirements.setText(BOOKINGINFO.getRequirements());
-        labelPrice.setText(Helper.getDollars(BOOKINGINFO.getRouteInfo()));
+        labelPrice.setText(CurrencyHelper.getPrice(BOOKINGINFO.getRouteInfo(), BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
         labelInterestedSharing.setText(BOOKINGINFO.getShareWanted() ? "yes please" : "no, thanks");
         prev.setEnabled(true);
 

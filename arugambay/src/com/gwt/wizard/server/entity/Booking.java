@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Key;
+import com.gwt.wizard.shared.Currency;
 import com.gwt.wizard.shared.OrderStatus;
 import com.gwt.wizard.shared.OrderType;
 import com.gwt.wizard.shared.model.BookingInfo;
@@ -70,6 +71,18 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
     private Long parentId;
     private Long route;
     private Boolean rated;
+    private Currency currency;
+    private int paidPrice;
+
+    public int getPaidPrice()
+    {
+        return paidPrice;
+    }
+
+    public void setPaidPrice(int paidPrice)
+    {
+        this.paidPrice = paidPrice;
+    }
 
     public Long getRoute()
     {
@@ -228,6 +241,8 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         booking.setParentId(bookingInfo.getParentId());
         booking.setOrderType(bookingInfo.getOrderType() != null ? bookingInfo.getOrderType() : OrderType.BOOKING);
         booking.setRoute(bookingInfo.getRouteId());
+        booking.setCurrency(bookingInfo.getCurrency());
+        booking.setPaidPrice(bookingInfo.getPaidPrice());
 
         return booking;
     }
@@ -278,6 +293,8 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         bookingInfo.setRouteInfo(routeInfo);
         bookingInfo.setRouteId(route);
         bookingInfo.setOrderRef(ref);
+        bookingInfo.setCurrency(currency);
+        bookingInfo.setPaidPrice(paidPrice);
         return bookingInfo;
     }
 
@@ -363,4 +380,8 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
             return idString;
     }
 
+    private void setCurrency(Currency currency)
+    {
+        this.currency = currency;
+    }
 }

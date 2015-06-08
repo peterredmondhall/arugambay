@@ -174,7 +174,7 @@ public class PdfUtil
         table.addCell(bookingInfo.getRouteInfo().getPickupType().getTimeType());
         table.addCell(bookingInfo.getLandingTime());
         table.addCell(PAID);
-        table.addCell(getPaidAmt(bookingInfo));
+        table.addCell(bookingInfo.getCurrency().symbol + " " + bookingInfo.getPaidPrice());
 
         table.addCell("Other requirements");
         table.addCell(bookingInfo.getRequirements());
@@ -182,13 +182,4 @@ public class PdfUtil
         return table;
     }
 
-    private String getPaidAmt(BookingInfo bookingInfo)
-    {
-        if (bookingInfo.getRouteInfo() != null && bookingInfo.getRouteInfo().getCents() != null)
-        {
-            Double d = (double) bookingInfo.getRouteInfo().getCents() / 100;
-            return String.format("US$%.2f", d);
-        }
-        return "";
-    }
 }

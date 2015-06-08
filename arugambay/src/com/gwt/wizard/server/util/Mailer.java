@@ -52,7 +52,7 @@ public class Mailer
 
     public static void sendShareAnnouncement(BookingInfo bookingInfo, Profil profil)
     {
-        send(profil.getMonitorEmail(), "shareannouncement", null, "monitor");
+        send(profil.getMonitorEmail(), "shareannouncement " + bookingInfo.getRouteInfo().getKey(""), null, "monitor");
     }
 
     public static void sendShareRequest(BookingInfo parentBooking, BookingInfo bookingInfo, Profil profil)

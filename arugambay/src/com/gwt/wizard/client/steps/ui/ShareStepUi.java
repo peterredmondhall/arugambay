@@ -90,24 +90,6 @@ public class ShareStepUi extends Composite
         };
         cellTable.addColumn(landingTimeColumn, "approx. pickup time");
 
-        TextColumn<BookingInfo> estimatedPriceColumn = new TextColumn<BookingInfo>()
-        {
-            @Override
-            public String getValue(BookingInfo object)
-            {
-                if (object.getRouteInfo() != null && object.getRouteInfo().getCents() != null)
-                {
-                    Double d = (double) object.getRouteInfo().getCents() / 200;
-                    return "US$" + usdFormat.format(d);
-                }
-                else
-                {
-                    return "---";
-                }
-            }
-        };
-        cellTable.addColumn(estimatedPriceColumn, "estimated sharing price");
-
         TextColumn<BookingInfo> shareColumn = new TextColumn<BookingInfo>()
         {
             @Override

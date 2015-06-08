@@ -50,6 +50,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.gwt.wizard.client.GwtDashboard;
+import com.gwt.wizard.client.Refresh;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.ContractorInfo;
@@ -175,7 +176,7 @@ public class RouteManagementVeiw extends Composite
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to Server!");
+                Refresh.refresh();
             }
         });
     }
@@ -199,7 +200,7 @@ public class RouteManagementVeiw extends Composite
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to Server!");
+                Refresh.refresh();
             }
         });
     }
@@ -243,7 +244,7 @@ public class RouteManagementVeiw extends Composite
                             @Override
                             public void onFailure(Throwable caught)
                             {
-                                Window.alert("Failed to connect to server");
+                                Refresh.refresh();
                             }
 
                             @Override

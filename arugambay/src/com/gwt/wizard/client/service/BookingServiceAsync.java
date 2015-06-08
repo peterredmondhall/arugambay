@@ -17,6 +17,9 @@ import com.gwt.wizard.shared.model.StatInfo;
  */
 public interface BookingServiceAsync
 {
+    void getCurrencyRate(BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback)
+            throws IllegalArgumentException;
+
     void addBooking(BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback)
             throws IllegalArgumentException;
 

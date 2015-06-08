@@ -3,6 +3,7 @@ package com.gwt.wizard.client;
 import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.common.collect.ImmutableList;
@@ -31,6 +32,7 @@ import com.gwt.wizard.client.steps.ShareConfirmationStep;
 import com.gwt.wizard.client.steps.ShareStep;
 import com.gwt.wizard.client.steps.SummaryStep;
 import com.gwt.wizard.client.steps.TransportStep;
+import com.gwt.wizard.shared.Currency;
 import com.gwt.wizard.shared.model.AgentInfo;
 import com.gwt.wizard.shared.model.BookingInfo;
 import com.gwt.wizard.shared.model.ProfilInfo;
@@ -86,6 +88,12 @@ public class GwtWizard implements EntryPoint
             wizard = new Wizard();
 
         }
+        collectStats(Window.Location.getParameter("src"));
+
+    }
+
+    private void continueLoad()
+    {
         transportStep = new TransportStep(wizard);
         shareStep = new ShareStep(wizard);
         contactStep = new ContactStep();
@@ -101,6 +109,7 @@ public class GwtWizard implements EntryPoint
         String nick = Window.Location.getParameter("nick");
         String defaultuser = Window.Location.getParameter("defaultagent");
         String routeId = Window.Location.getParameter("route");
+        String currency = Window.Location.getParameter("curr");
         if (defaultuser != null)
         {
             createDefaultUser();
@@ -130,8 +139,11 @@ public class GwtWizard implements EntryPoint
             completeSetup(transportStep, l);
             displayRoute(transportStep, routeId);
         }
-        collectStats(Window.Location.getParameter("src"));
-
+        if (currency != null)
+        {
+            logger.info("setting currency:" + currency);
+            BOOKINGINFO.setCurrency(Currency.valueOf(currency));
+        }
     }
 
     private void createDefaultUser()
@@ -181,6 +193,23 @@ public class GwtWizard implements EntryPoint
                 @Override
                 public void onResponseReceived(Request request, Response response)
                 {
+                    String currencyStr = response.getText();
+                    logger.log(Level.INFO, "currencyStr:" + currencyStr);
+                    try
+                    {
+                        Currency currency = Currency.valueOf(currencyStr);
+                        if (BOOKINGINFO.getCurrency() == null)
+                        {
+                            logger.log(Level.SEVERE, "setting currency:" + currency);
+                            BOOKINGINFO.setCurrency(currency);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.log(Level.SEVERE, "unrecognised currency defaulting to USD:" + currencyStr);
+                        BOOKINGINFO.setCurrency(Currency.USD);
+                    }
+                    continueLoad();
                 }
             });
         }
@@ -230,7 +259,7 @@ public class GwtWizard implements EntryPoint
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to server");
+                Refresh.refresh();
             }
 
             @Override

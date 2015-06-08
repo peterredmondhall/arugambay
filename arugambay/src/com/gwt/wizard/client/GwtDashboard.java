@@ -68,7 +68,7 @@ public class GwtDashboard implements EntryPoint
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to connect to server");
+                Refresh.refresh();
             }
         });
     }
