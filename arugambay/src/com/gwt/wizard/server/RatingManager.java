@@ -34,6 +34,7 @@ public class RatingManager extends Manager
         catch (Exception ex)
         {
             logger.severe("persisiting ratingInfo:" + ratingInfo);
+            ex.printStackTrace();
         }
 
     }

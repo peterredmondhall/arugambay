@@ -106,7 +106,7 @@
 					<g:Image ui:field="imageVehicle" styleName="{style.imagePlace}" />
 					<g:VerticalPanel styleName="{style.description}">
 						<g:Label styleName="{style.desc}">Description</g:Label>
-						<g:Label ui:field="labelDescription" />
+						<g:VerticalPanel ui:field="panelDescription" />
 
 					</g:VerticalPanel>
 					<gwt:FlexTable ui:field="buttontable" styleName="{style.buttontable}"/>

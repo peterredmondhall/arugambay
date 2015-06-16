@@ -200,7 +200,7 @@ public class GwtWizard implements EntryPoint
                         Currency currency = Currency.valueOf(currencyStr);
                         if (BOOKINGINFO.getCurrency() == null)
                         {
-                            logger.log(Level.SEVERE, "setting currency:" + currency);
+                            logger.log(Level.INFO, "setting currency:" + currency);
                             BOOKINGINFO.setCurrency(currency);
                         }
                     }

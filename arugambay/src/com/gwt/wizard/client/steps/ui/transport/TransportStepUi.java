@@ -18,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -66,7 +67,7 @@ public class TransportStepUi extends Composite
     Label labelRouteName;
 
     @UiField
-    Label labelDescription;
+    Panel panelDescription;
 
     private final Map<String, RouteInfo> mapRouteInfo = Maps.newHashMap();
     private final ScrollPanel sp = new ScrollPanel();
@@ -106,6 +107,17 @@ public class TransportStepUi extends Composite
 
     private void createButtonTable()
     {
+        ClickHandler book = new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                wizard.onNextClick(null);
+                wizard.onNextClick(null);
+
+            }
+        };
         ClickHandler shareBook = new ClickHandler()
         {
 
@@ -117,17 +129,17 @@ public class TransportStepUi extends Composite
             }
         };
         buttontable.clear();
-        buttonOrder = ButtonFactory.getButton("Order  this taxi", "150px");
+        buttonOrder = ButtonFactory.getButton("Book taxi now.", "150px", "80px");
         int row = 0;
         buttontable.setWidget(row++, 0, buttonOrder);
-        buttonOrder.addClickHandler(shareBook);
+        buttonOrder.addClickHandler(book);
         if (Wizard.shareAvailable())
         {
-            buttonShare = ButtonFactory.getButton("Share this taxi", "150px");
+            buttonShare = ButtonFactory.getButton("Request share.", "150px");
             buttonShare.addClickHandler(shareBook);
             buttontable.setWidget(row++, 0, buttonShare);
         }
-        buttonAnnounce = ButtonFactory.getButton("Announce a share", "150px");
+        buttonAnnounce = ButtonFactory.getButton("Announce share.", "150px");
         buttontable.setWidget(row++, 0, buttonAnnounce);
 
         buttonAnnounce.addClickHandler(new ClickHandler()
@@ -255,13 +267,29 @@ public class TransportStepUi extends Composite
         });
     }
 
+    private Widget getDisclosure(String description)
+    {
+        int defautlt = description.length() > 70 ? 70 : description.length();
+        int breakCount = description.indexOf('.') + 1;
+        breakCount = breakCount > 0 ? breakCount : defautlt;
+
+        DisclosurePanel advancedDisclosure = new DisclosurePanel(description.substring(0, breakCount));
+        advancedDisclosure.setAnimationEnabled(true);
+        Label descriptionLabel = new Label(description.substring(breakCount));
+        advancedDisclosure.setContent(descriptionLabel);
+
+        return advancedDisclosure;
+
+    }
+
     public void displayRoute()
     {
         panelMotivation.setVisible(false);
         RouteInfo routeInfo = Wizard.ROUTEINFO;
         labelRouteName.setText(routeInfo.getKey(CurrencyHelper.getPrice(routeInfo, Wizard.BOOKINGINFO.getCurrency(), Wizard.BOOKINGINFO.getRate())));
         imageVehicle.setUrl("/imageservice?image=" + routeInfo.getImage());
-        labelDescription.setText(routeInfo.getDescription());
+        panelDescription.clear();
+        panelDescription.add(getDisclosure(routeInfo.getDescription()));
 
         panelRoute.setVisible(true);
         next.setEnabled(true);

@@ -85,7 +85,7 @@
 				</g:HorizontalPanel>
 				<g:VerticalPanel>
 					<g:Label styleName="{style.desc}">Description</g:Label>
-					<g:Label ui:field="labelDescription" />
+					<g:VerticalPanel ui:field="panelDescription" />
 
 				</g:VerticalPanel>
 			</g:VerticalPanel>

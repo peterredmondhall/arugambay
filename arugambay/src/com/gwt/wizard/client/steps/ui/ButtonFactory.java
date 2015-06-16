@@ -12,6 +12,13 @@ public class ButtonFactory
         return b;
     }
 
+    public static Button getButton(String text, String width, String height)
+    {
+        Button b = getButton(text, width);
+        b.setHeight(height);
+        return b;
+    }
+
     public static Button getButton(String text, String width)
     {
         Button b = getButton(text);

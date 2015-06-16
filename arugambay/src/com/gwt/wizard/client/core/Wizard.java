@@ -142,12 +142,16 @@ public class Wizard extends Composite
 
     }
 
+    public void stepOver()
+    {
+        currentstep++;
+    }
+
     private void handleNextStep()
     {
         if (stepList.get(currentstep) instanceof ShareStep)
         {
-            if (!shareAvailable() ||
-                    (BOOKINGINFO != null && BOOKINGINFO.getOrderType() == OrderType.SHARE_ANNOUNCEMENT))
+            if ((BOOKINGINFO != null && BOOKINGINFO.getOrderType() == OrderType.SHARE_ANNOUNCEMENT))
             {
                 currentstep++;
             }

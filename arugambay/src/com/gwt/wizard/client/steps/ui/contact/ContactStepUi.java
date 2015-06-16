@@ -255,6 +255,7 @@ public class ContactStepUi extends Composite
 
     public void show(boolean visible, Button prev, Button next)
     {
+        resetErrMsg();
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
 
@@ -322,6 +323,19 @@ public class ContactStepUi extends Composite
         labelFlightLandingTime.setText(Wizard.ROUTEINFO.getPickupType().getTimeType());
 
         labelBooking.setText(Wizard.ROUTEINFO.getKey(CurrencyHelper.getPrice(Wizard.ROUTEINFO, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate())));
+
+    }
+
+    private void resetErrMsg()
+    {
+        String msg = "";
+        dateErrorMsg.setText(msg);
+        firstNameErrorMsg.setText(msg);
+        lastNameErrorMsg.setText(msg);
+        emailErrorMsg.setText(msg);
+        email2ErrorMsg.setText(msg);
+        flightErrorMsg.setText(msg);
+        arrivalErrorMsg.setText(msg);
 
     }
 

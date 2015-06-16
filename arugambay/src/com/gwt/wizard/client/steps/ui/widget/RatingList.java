@@ -28,7 +28,13 @@ public class RatingList
      */
     public Widget createRatingForm()
     {
-        // Create a table to layout the form options
+        DecoratorPanel decPanel = new DecoratorPanel();
+        decPanel.add(getDisclosure(getLayout()));
+        return decPanel;
+    }
+
+    private FlexTable getLayout()
+    {
         FlexTable layout = new FlexTable();
         layout.setCellSpacing(6);
         layout.setWidth("100%");
@@ -47,10 +53,17 @@ public class RatingList
             layout.setWidget(index++, 1, getDisclosure(ratingInfo));
 
         }
-        // Wrap the contents in a DecoratorPanel
-        DecoratorPanel decPanel = new DecoratorPanel();
-        decPanel.add(layout);
-        return decPanel;
+        return layout;
+    }
+
+    private Widget getDisclosure(FlexTable layout)
+    {
+        DisclosurePanel advancedDisclosure = new DisclosurePanel("Ratings from our customers.");
+        advancedDisclosure.setAnimationEnabled(true);
+        advancedDisclosure.setContent(layout);
+
+        return advancedDisclosure;
+
     }
 
     private Widget getDisclosure(RatingInfo ratingInfo)
