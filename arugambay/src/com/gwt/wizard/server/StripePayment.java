@@ -27,7 +27,7 @@ public class StripePayment
             chargeParams.put("card", card); // obtained with Stripe.js
             chargeParams.put("description", "Taxi Charges Sri Lanka - order " + bookingInfo.getOrderRef());
 
-            logger.info("charging " + cents);
+            logger.info("charging cents " + bookingInfo.getCurrency().name().toLowerCase() + cents);
             Charge charge = Charge.create(chargeParams);
             logger.info("charging successful");
             return error;

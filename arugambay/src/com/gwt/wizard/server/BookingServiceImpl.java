@@ -150,8 +150,10 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
     @Override
     public BookingInfo payWithStripe(String token, BookingInfo bookingInfo)
     {
+        logger.info("payWithStripe" + bookingInfo.getPaidPrice());
         Profil profil = bookingServiceManager.getProfil();
         bookingInfo = bookingServiceManager.setBookingRef(bookingInfo);
+        logger.info("payWithStripe" + bookingInfo.getPaidPrice());
         String refusal = stripePayment.charge(token, bookingInfo, profil.getStripeSecret());
         if (refusal == null)
         {
