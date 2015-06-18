@@ -10,7 +10,11 @@
   <inherits name='com.google.gwt.user.User'/>
   <inherits name="com.google.gwt.user.Debug"/> 
   <inherits name="com.google.gwt.logging.Logging"/>
-  <!-- Inherit the default GWT style sheet.  You can change       -->
+    <set-property name="gwt.logging.simpleRemoteHandler" value="ENABLED" />
+    <set-property name="gwt.logging.logLevel" value="INFO"/>
+    <set-property name="gwt.logging.enabled" value="TRUE"/>
+    
+    <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
   <!-- <inherits name='com.google.gwt.user.theme.clean.Clean'/> -->
@@ -19,16 +23,12 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <inherits name="com.arcbees.stripe.GwtStripe"/>                        
-<!--   <inherits name="com.google.maps.gwt.GoogleMaps" /> -->
   <inherits name="com.google.common.collect.Collect"/>
     <inherits name="com.google.gwt.http.HTTP"/>
   
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.gwt.wizard.client.GwtWizard'/>
 
-  <set-property name="gwt.logging.simpleRemoteHandler" value="ENABLED" />
-  <set-property name="gwt.logging.logLevel" value="INFO"/>
-  
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>

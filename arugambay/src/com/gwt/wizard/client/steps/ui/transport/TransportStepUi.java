@@ -249,14 +249,14 @@ public class TransportStepUi extends Composite
                         String displayString = event.getSelectedItem().getReplacementString();
                         RouteInfo routeInfo = mapRouteInfo.get(displayString);
                         Wizard.ROUTEINFO = routeInfo;
-                        logger.log(Level.SEVERE, "routeInfo" + Wizard.ROUTEINFO.getKey(""));
-                        logger.log(Level.SEVERE, "currency" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
-                        logger.log(Level.SEVERE, "rate" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
-                        logger.log(Level.SEVERE, "routeCents" + routeInfo.getCents());
+                        logger.log(Level.INFO, "routeInfo" + Wizard.ROUTEINFO.getKey(""));
+                        logger.log(Level.INFO, "currency" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
+                        logger.log(Level.INFO, "rate" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
+                        logger.log(Level.INFO, "routeCents" + routeInfo.getCents());
 
-                        logger.log(Level.SEVERE, "paidPrice" + CurrencyHelper.getPriceInDollars(routeInfo, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
+                        logger.log(Level.INFO, "paidPrice" + CurrencyHelper.getPriceInDollars(routeInfo, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
                         BOOKINGINFO.setPaidPrice(CurrencyHelper.getPriceInDollars(routeInfo, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
-                        logger.log(Level.SEVERE, "paidprice=" + BOOKINGINFO.getPaidPrice() + "rate=" + BOOKINGINFO.getRate());
+                        logger.log(Level.INFO, "paidprice=" + BOOKINGINFO.getPaidPrice() + "rate=" + BOOKINGINFO.getRate());
                         displayRoute(/* suggestBox, */);
                     }
 
