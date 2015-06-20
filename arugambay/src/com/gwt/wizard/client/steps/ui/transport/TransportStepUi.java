@@ -249,14 +249,6 @@ public class TransportStepUi extends Composite
                         String displayString = event.getSelectedItem().getReplacementString();
                         RouteInfo routeInfo = mapRouteInfo.get(displayString);
                         Wizard.ROUTEINFO = routeInfo;
-                        logger.log(Level.INFO, "routeInfo" + Wizard.ROUTEINFO.getKey(""));
-                        logger.log(Level.INFO, "currency" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
-                        logger.log(Level.INFO, "rate" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
-                        logger.log(Level.INFO, "routeCents" + routeInfo.getCents());
-
-                        logger.log(Level.INFO, "paidPrice" + CurrencyHelper.getPriceInDollars(routeInfo, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
-                        BOOKINGINFO.setPaidPrice(CurrencyHelper.getPriceInDollars(routeInfo, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
-                        logger.log(Level.INFO, "paidprice=" + BOOKINGINFO.getPaidPrice() + "rate=" + BOOKINGINFO.getRate());
                         displayRoute(/* suggestBox, */);
                     }
 
@@ -292,6 +284,15 @@ public class TransportStepUi extends Composite
 
     public void displayRoute()
     {
+        logger.log(Level.INFO, "routeInfo" + Wizard.ROUTEINFO.getKey(""));
+        logger.log(Level.INFO, "currency" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
+        logger.log(Level.INFO, "rate" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
+        logger.log(Level.INFO, "routeCents" + Wizard.ROUTEINFO.getCents());
+
+        logger.log(Level.INFO, "paidPrice" + CurrencyHelper.getPriceInDollars(Wizard.ROUTEINFO, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
+        BOOKINGINFO.setPaidPrice(CurrencyHelper.getPriceInDollars(Wizard.ROUTEINFO, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));
+        logger.log(Level.INFO, "paidprice=" + BOOKINGINFO.getPaidPrice() + "rate=" + BOOKINGINFO.getRate());
+
         panelMotivation.setVisible(false);
         RouteInfo routeInfo = Wizard.ROUTEINFO;
         labelRouteName.setText(routeInfo.getKey(CurrencyHelper.getPrice(routeInfo, Wizard.BOOKINGINFO.getCurrency(), Wizard.BOOKINGINFO.getRate())));
