@@ -141,7 +141,7 @@ public class CreditCardStep implements WizardStep
                         @Override
                         public void onFailure(Throwable caught)
                         {
-                            Window.alert("Failed to pay with stripe");
+                            Window.alert("Failed payment");
                         }
 
                         @Override

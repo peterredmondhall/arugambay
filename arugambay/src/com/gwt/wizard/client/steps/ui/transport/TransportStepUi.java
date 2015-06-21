@@ -136,7 +136,7 @@ public class TransportStepUi extends Composite
         buttonOrder.addClickHandler(book);
         if (Wizard.shareAvailable())
         {
-            buttonShare = ButtonFactory.getButton("Request share.", "150px");
+            buttonShare = ButtonFactory.getButton("Share.", "150px");
             buttonShare.addClickHandler(shareBook);
             buttontable.setWidget(row++, 0, buttonShare);
         }
@@ -206,27 +206,6 @@ public class TransportStepUi extends Composite
             @Override
             public void onSuccess(final List<RouteInfo> routes)
             {
-                service.getCurrencyRate(Wizard.BOOKINGINFO, new AsyncCallback<BookingInfo>()
-                {
-
-                    @Override
-                    public void onFailure(Throwable caught)
-                    {
-                        // TODO Auto-generated method stub
-
-                    }
-
-                    @Override
-                    public void onSuccess(BookingInfo result)
-                    {
-                        BOOKINGINFO = result;
-                        loadRoutes(routes);
-                    }
-                });
-            }
-
-            private void loadRoutes(List<RouteInfo> routes)
-            {
                 MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
 
                 for (RouteInfo routeInfo : routes)
@@ -286,7 +265,6 @@ public class TransportStepUi extends Composite
     {
         logger.log(Level.INFO, "routeInfo" + Wizard.ROUTEINFO.getKey(""));
         logger.log(Level.INFO, "currency" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
-        logger.log(Level.INFO, "rate" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
         logger.log(Level.INFO, "routeCents" + Wizard.ROUTEINFO.getCents());
 
         logger.log(Level.INFO, "paidPrice" + CurrencyHelper.getPriceInDollars(Wizard.ROUTEINFO, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));

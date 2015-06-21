@@ -11,6 +11,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.Refresh;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
 import com.gwt.wizard.shared.model.ProfilInfo;
@@ -69,7 +70,7 @@ public class Paypal extends Composite
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed to get paypal url!");
+                Refresh.refresh();
             }
         });
 

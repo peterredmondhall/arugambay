@@ -41,7 +41,6 @@ public class RatingList
         FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
 
         // Add a title to the form
-        layout.setHTML(0, 0, "Ratings from our customers.");
         cellFormatter.setColSpan(0, 0, 3);
         cellFormatter.setHorizontalAlignment(
                 0, 0, HasHorizontalAlignment.ALIGN_CENTER);

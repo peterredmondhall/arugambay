@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.labs.repackaged.com.google.common.collect.ImmutableMap;
+import com.gwt.wizard.server.CurrencyManager;
 import com.gwt.wizard.server.StatManager;
 import com.gwt.wizard.shared.Currency;
 import com.gwt.wizard.shared.model.StatInfo;
@@ -27,6 +28,7 @@ public class StatServlet extends HttpServlet
             );
 
     StatManager statManager = new StatManager();
+    CurrencyManager currencyManager = new CurrencyManager();
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -55,10 +57,17 @@ public class StatServlet extends HttpServlet
         statManager.createSessionStat(statInfo);
 
         PrintWriter writer = resp.getWriter();
-        String currency = currencyMap.get(country) != null ? currencyMap.get(country).name() : "USD";
-        log.info("currency:" + currency);
-        writer.print(currency);
+        String currency = req.getParameter("curr");
+        if (currency == null || currency.equals("null"))
+        {
+            currency = currencyMap.get(country) != null ? currencyMap.get(country).name() : "USD";
+        }
+        Currency curr = Currency.valueOf(currency);
+        Float rate = currencyManager.getRate(curr);
+        log.info("currency:" + curr);
+        writer.print(curr + "/" + rate);
         writer.close();
 
     }
+
 }
