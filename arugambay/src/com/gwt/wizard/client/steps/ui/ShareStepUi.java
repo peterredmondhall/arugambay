@@ -5,6 +5,7 @@ import static com.gwt.wizard.client.core.Wizard.EXISTING_BOOKINGS_ON_ROUTE;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,6 +33,7 @@ import com.gwt.wizard.shared.model.StatInfo;
 
 public class ShareStepUi extends Composite
 {
+    public static final Logger logger = Logger.getLogger(ShareStepUi.class.getName());
 
     private static ShareStepUiUiBinder uiBinder = GWT.create(ShareStepUiUiBinder.class);
     private static NumberFormat usdFormat = NumberFormat.getFormat(".00");
@@ -164,6 +166,7 @@ public class ShareStepUi extends Composite
             {
                 shareMap.put(bookingInfo.getId(), bookingInfo);
             }
+            logger.info("+++++++++++++++++++++++++++showShareNoShare" + shareMap.values().size());
             fillTable(Wizard.ROUTEINFO.getPickupType().getLocationType(), Wizard.ROUTEINFO.getPickupType().getTimeType());
             scrollPanel.add(cellTable);
 

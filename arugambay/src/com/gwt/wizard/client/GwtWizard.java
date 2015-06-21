@@ -89,13 +89,13 @@ public class GwtWizard implements EntryPoint
             wizard = new Wizard();
 
         }
+        continueLoad();
         collectStats(Window.Location.getParameter("src"), Window.Location.getParameter("curr"));
 
     }
 
     private void continueLoad()
     {
-        logger.log(Level.INFO, "continueLoad currency=" + BOOKINGINFO.getCurrency() + " rate=" + BOOKINGINFO.getRate());
 
         transportStep = new TransportStep(wizard);
         shareStep = new ShareStep(wizard);
@@ -198,10 +198,11 @@ public class GwtWizard implements EntryPoint
                         List<String> on = Splitter.on("/").splitToList(currencyRate);
                         Currency currency = Currency.valueOf(on.get(0));
                         Float rate = Float.parseFloat(on.get(1));
+                        BOOKINGINFO = new BookingInfo();
                         BOOKINGINFO.setCurrency(currency);
                         BOOKINGINFO.setRate(rate);
                         logger.log(Level.INFO, "after getCurrencyRate currency=" + BOOKINGINFO.getCurrency() + " rate=" + BOOKINGINFO.getRate());
-                        continueLoad();
+                        wizard.setCurrencyResolved(true);
                     }
                     catch (Exception ex)
                     {

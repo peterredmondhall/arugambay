@@ -38,7 +38,7 @@ public class Wizard extends Composite
     {
     }
 
-    public static BookingInfo BOOKINGINFO = new BookingInfo();
+    public static BookingInfo BOOKINGINFO;
     public static List<BookingInfo> EXISTING_BOOKINGS_ON_ROUTE;
     public static RouteInfo ROUTEINFO;
     public static ProfilInfo PROFILINFO;
@@ -51,6 +51,7 @@ public class Wizard extends Composite
     private final Map<WizardStep, HTML> headers = Maps.newHashMap();
     private int currentstep;
     private WizardStep initstep;
+    private boolean currencyResolved;
 
     @UiField
     HTMLPanel mainPanel;
@@ -243,6 +244,16 @@ public class Wizard extends Composite
     public static boolean shareAvailable()
     {
         return EXISTING_BOOKINGS_ON_ROUTE != null && EXISTING_BOOKINGS_ON_ROUTE.size() != 0;
+    }
+
+    public boolean getCurrencyResolved()
+    {
+        return currencyResolved;
+    }
+
+    public void setCurrencyResolved(boolean currencyResolved)
+    {
+        this.currencyResolved = currencyResolved;
     }
 
 }

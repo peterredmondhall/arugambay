@@ -15,7 +15,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwt.wizard.client.GwtWizard;
+import com.gwt.wizard.client.Refresh;
 import com.gwt.wizard.client.core.Wizard;
 import com.gwt.wizard.client.service.BookingService;
 import com.gwt.wizard.client.service.BookingServiceAsync;
@@ -206,11 +207,12 @@ public class TransportStepUi extends Composite
             @Override
             public void onSuccess(final List<RouteInfo> routes)
             {
+                logger.log(Level.INFO, "fetchRoutes count = " + routes.size());
                 MultiWordSuggestOracle oracle = new MultiWordSuggestOracle();
 
                 for (RouteInfo routeInfo : routes)
                 {
-                    String key = routeInfo.getKey(CurrencyHelper.getPrice(routeInfo, Wizard.BOOKINGINFO.getCurrency(), Wizard.BOOKINGINFO.getRate()));
+                    String key = routeInfo.getKey("");
                     mapRouteInfo.put(key, routeInfo);
 
                     oracle.add(key);
@@ -241,7 +243,8 @@ public class TransportStepUi extends Composite
             @Override
             public void onFailure(Throwable caught)
             {
-                Window.alert("Failed fetching routes");
+                logger.log(Level.SEVERE, "fetching routes");
+                Refresh.refresh();
             }
         });
     }
@@ -262,6 +265,32 @@ public class TransportStepUi extends Composite
     }
 
     public void displayRoute()
+    {
+        waitForCurrencyResolved();
+
+    }
+
+    private void waitForCurrencyResolved()
+    {
+        if (wizard.getCurrencyResolved())
+        {
+            continueLoading();
+        }
+        else
+        {
+            Timer t = new Timer()
+            {
+                @Override
+                public void run()
+                {
+                    waitForCurrencyResolved();
+                }
+            };
+            t.schedule(500);
+        }
+    }
+
+    private void continueLoading()
     {
         logger.log(Level.INFO, "routeInfo" + Wizard.ROUTEINFO.getKey(""));
         logger.log(Level.INFO, "currency" + BOOKINGINFO.getCurrency() + "   rate:" + BOOKINGINFO.getRate());
