@@ -487,6 +487,17 @@ public class BookingServiceManager extends Manager
         em.getTransaction().commit();
     }
 
+    public void cancel(BookingInfo bookingInfo)
+    {
+        EntityManager em = getEntityManager();
+        Booking booking = em.find(Booking.class, bookingInfo.getId());
+        booking.setStatus(OrderStatus.CANCELED);
+        em.getTransaction().begin();
+        em.persist(booking);
+        em.getTransaction().commit();
+        em.detach(booking);
+    }
+
     public ContractorInfo getContractor(BookingInfo bookingInfo)
     {
         try

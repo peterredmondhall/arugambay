@@ -226,6 +226,7 @@ public class ArchivedBooking<T extends Info, K extends ArugamEntity> extends Aru
         info.setOrder(ref);
         info.setName(name);
         info.setDate(date);
+        info.setBookingId(key.getId());
         return info;
     }
 

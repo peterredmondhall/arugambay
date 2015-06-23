@@ -23,6 +23,9 @@ public interface BookingServiceAsync
     void addBooking(BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback)
             throws IllegalArgumentException;
 
+    void cancelBooking(BookingInfo bookingInfo, AgentInfo agentInfo, AsyncCallback<List<BookingInfo>> callback)
+            throws IllegalArgumentException;
+
     void sendShareRequest(BookingInfo bookingInfo, AsyncCallback<BookingInfo> callback);
 
     // void sendShareAccepted(List<BookingInfo> bookingInfo, AsyncCallback<BookingInfo> callback);

@@ -7,6 +7,8 @@
 	<g:HTMLPanel width="100%">
 		
 		<g:HTML styleName="title">Manage Bookings</g:HTML>
+		<g:HTMLPanel ui:field="btnContainer">
+		</g:HTMLPanel>
 		<g:ScrollPanel>
 		<g:HTMLPanel ui:field="mainPanel" />
 		</g:ScrollPanel>

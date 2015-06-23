@@ -23,6 +23,8 @@ public interface BookingService extends RemoteService
 
     BookingInfo addBooking(BookingInfo model) throws IllegalArgumentException;
 
+    List<BookingInfo> cancelBooking(BookingInfo model, AgentInfo agentInfo) throws IllegalArgumentException;
+
     BookingInfo sendShareRequest(BookingInfo bookingInfo);
 
     // BookingInfo sendShareAccepted(List<BookingInfo> l);

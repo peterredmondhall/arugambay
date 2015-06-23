@@ -197,7 +197,16 @@ public class GwtWizard implements EntryPoint
                         logger.log(Level.INFO, "currencyRate:" + currencyRate);
                         List<String> on = Splitter.on("/").splitToList(currencyRate);
                         Currency currency = Currency.valueOf(on.get(0));
-                        Float rate = Float.parseFloat(on.get(1));
+                        Float rate = 1f;
+                        try
+                        {
+                            rate = Float.parseFloat(on.get(1));
+                        }
+                        catch (Exception ex)
+                        {
+                            rate = 1f;
+                            currency = Currency.USD;
+                        }
                         BOOKINGINFO = new BookingInfo();
                         BOOKINGINFO.setCurrency(currency);
                         BOOKINGINFO.setRate(rate);

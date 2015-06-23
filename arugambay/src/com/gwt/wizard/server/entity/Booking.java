@@ -365,6 +365,7 @@ public class Booking<T extends Info, K extends ArugamEntity> extends ArugamEntit
         FinanceInfo info = new FinanceInfo();
         info.setName(name);
         info.setDate(date);
+        info.setId(key.getId());
         return info;
     }
 

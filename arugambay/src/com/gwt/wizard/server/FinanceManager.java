@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -73,7 +74,9 @@ public class FinanceManager extends Manager
 
     public void addTransfer(AgentInfo agentInfo, Date date, Long amount)
     {
-        add(FinanceInfo.Type.TRANSFER, date, "taxisurfr", agentInfo, amount, "");
+        BookingInfo bookingInfo = new BookingInfo();
+        bookingInfo.setName("taxisurfr");
+        add(FinanceInfo.Type.TRANSFER, date, bookingInfo, agentInfo, amount);
     }
 
     public void addPayment(BookingInfo bookingInfo, Date date)
@@ -84,11 +87,11 @@ public class FinanceManager extends Manager
         AgentInfo agentInfo = agent.getInfo();
         Long amount = route.getAgentCents() != null ? route.getAgentCents() : (long) (route.getCents() * 0.90);
         logger.info("addpayment:" + amount);
-        add(FinanceInfo.Type.PAYMENT, date, bookingInfo.getName(), agentInfo, amount, bookingInfo.getOrderRef());
+        add(FinanceInfo.Type.PAYMENT, date, bookingInfo, agentInfo, amount);
 
     }
 
-    private void add(FinanceInfo.Type type, Date date, String name, AgentInfo agentInfo, Long amount, String orderRef)
+    private void add(FinanceInfo.Type type, Date date, BookingInfo bookingInfo, AgentInfo agentInfo, Long amount)
     {
         EntityManager em = getEntityManager();
 
@@ -98,9 +101,10 @@ public class FinanceManager extends Manager
             finance.setAgentId(agentInfo.getId());
             finance.setType(type);
             finance.setDate(date);
-            finance.setName(name);
+            finance.setName(bookingInfo.getName());
             finance.setAmount(amount);
-            finance.setOrderRef(orderRef);
+            finance.setBookingId(bookingInfo.getId());
+            finance.setOrderRef(bookingInfo.getOrderRef());
 
             em.getTransaction().begin();
             em.persist(finance);
@@ -113,4 +117,29 @@ public class FinanceManager extends Manager
         }
 
     }
+
+    public void cancel(Long bookingId)
+    {
+        EntityManager em = getEntityManager();
+        try
+        {
+            String query = "select t from Finance t where bookingId=" + bookingId;
+            @SuppressWarnings("unchecked")
+            Finance finance = (Finance) em.createQuery(query).getSingleResult();
+            em.getTransaction().begin();
+            finance.setAmount(0L);
+            em.persist(finance);
+            em.getTransaction().commit();
+
+        }
+        catch (Exception thrown)
+        {
+            logger.log(Level.SEVERE, "finance not found for bookingId" + bookingId, thrown);
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
 }

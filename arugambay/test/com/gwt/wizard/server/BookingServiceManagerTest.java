@@ -306,6 +306,20 @@ public class BookingServiceManagerTest
     }
 
     @Test
+    public void should_cancel_at_booking()
+    {
+        create_a_booking();
+
+        List<BookingInfo> bookings = bs.getBookings();
+        assertEquals(1, bookings.size());
+        BookingInfo bookingInfo = bookings.get(0);
+        bs.cancel(bookingInfo);
+        bookings = bs.getBookings();
+        assertEquals(1, bookings.size());
+        assertEquals(OrderStatus.CANCELED, bookings.get(0).getStatus());
+    }
+
+    @Test
     public void should_return_only_bookings_for_agent()
     {
         BookingInfo bi1 = getStandardBookingInfo();

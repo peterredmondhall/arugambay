@@ -20,6 +20,8 @@ public class Finance extends ArugamEntity<FinanceInfo>
     private Date date;
 
     public static final Double AGENT_MARGIN = 0.90;
+    private Long bookingId;
+
     private Long amount;
     private Long agentId;
     private String name;
@@ -96,6 +98,7 @@ public class Finance extends ArugamEntity<FinanceInfo>
         info.setDate(date);
         info.setAmount(amount);
         info.setOrder(orderRef);
+        info.setBookingId(bookingId);
         return info;
     }
 
@@ -103,5 +106,15 @@ public class Finance extends ArugamEntity<FinanceInfo>
     {
         this.orderRef = orderRef;
 
+    }
+
+    public Long getBookingId()
+    {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId)
+    {
+        this.bookingId = bookingId;
     }
 }

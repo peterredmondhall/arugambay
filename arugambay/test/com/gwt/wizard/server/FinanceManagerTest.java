@@ -88,6 +88,24 @@ public class FinanceManagerTest
     }
 
     @Test
+    public void should_cancel_finance()
+    {
+        BookingInfo bookingInfo = getBookingInfo(standardRoute, new DateTime().minusMonths(2).toDate(), "biMinus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);
+        manager.addPayment(bookingInfo, new Date());
+        List<FinanceInfo> finances = manager.getFinance(testAgentInfo);
+        assertEquals(1, finances.size());
+        FinanceInfo financeInfo = finances.get(0);
+        assertEquals(financeInfo.getAmount(), (Long) 100L);
+
+        manager.cancel(financeInfo.getBookingId());
+        assertEquals(1, finances.size());
+        finances = manager.getFinance(testAgentInfo);
+        financeInfo = finances.get(0);
+        assertEquals(financeInfo.getAmount(), (Long) 0L);
+
+    }
+
+    @Test
     public void should_sort_with_newest_first()
     {
         BookingInfo bookingInfo1 = getBookingInfo(standardRoute, new DateTime().minusMonths(2).toDate(), "biMinus2", "landingTime", "passenger name", 10, 11, "email", "reqs", OrderType.BOOKING, true);

@@ -5,5 +5,6 @@ public enum OrderStatus
     BOOKED,
     PAID,
     FAILED,
-    SHARE_ACCEPTED
+    SHARE_ACCEPTED,
+    CANCELED
 }

@@ -17,6 +17,7 @@ public class FinanceInfo extends Info
     private String name;
     private String order;
     private Long amount;
+    private Long bookingId;
 
     public Date getDate()
     {
@@ -66,6 +67,17 @@ public class FinanceInfo extends Info
     public void setAmount(Long amount)
     {
         this.amount = amount;
+    }
+
+    public void setBookingId(Long bookingId)
+    {
+        this.bookingId = bookingId;
+    }
+
+    public Long getBookingId()
+    {
+        return bookingId;
+
     }
 
 }

@@ -1,13 +1,16 @@
 package com.gwt.wizard.client.dashboard.ui;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -18,6 +21,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -38,6 +42,7 @@ public class BookingManagementVeiw extends Composite
 {
     private final BookingServiceAsync service = GWT.create(BookingService.class);
     private static DateTimeFormat sdf = DateTimeFormat.getFormat("dd.MM.yyyy");
+    private Button cancelBtn;
 
     private static BookingManagementVeiwUiBinder uiBinder = GWT.create(BookingManagementVeiwUiBinder.class);
 
@@ -46,7 +51,7 @@ public class BookingManagementVeiw extends Composite
     }
 
     private final CellTable.Resources tableRes = GWT.create(TableRes.class);
-    private final List<BookingInfo> BOOKINGS = new ArrayList<>();
+    private List<BookingInfo> BOOKINGS;
 
     public class BookingInfoComparator implements Comparator<BookingInfo>
     {
@@ -58,10 +63,13 @@ public class BookingManagementVeiw extends Composite
         }
     }
 
-    CellTable<BookingInfo> bookingManagementTable = new CellTable<BookingInfo>(8, tableRes);
+    CellTable<BookingInfo> bookingManagementTable;
 
     @UiField
     HTMLPanel mainPanel;
+    @UiField
+    HTMLPanel btnContainer;
+
     private final SelectionModel<BookingInfo> selectionModel = new MultiSelectionModel<BookingInfo>(null);
 
     // The list of data to display.
@@ -70,28 +78,19 @@ public class BookingManagementVeiw extends Composite
     {
         initWidget(uiBinder.createAndBindUi(this));
         fetchBookings();
-
+        setCancelBtn();
     }
 
     private void fetchBookings()
     {
+
         service.getBookings(GwtDashboard.getAgentInfo(), new AsyncCallback<List<BookingInfo>>()
         {
 
             @Override
             public void onSuccess(List<BookingInfo> result)
             {
-                if (result != null && result.size() > 0)
-                {
-                    for (BookingInfo booking : result)
-                    {
-                        if (booking.getStatus().equals(OrderStatus.PAID))
-                        {
-                            BOOKINGS.add(booking);
-                        }
-                    }
-                }
-                setCellTable();
+                fillTable(result);
             }
 
             @Override
@@ -100,6 +99,25 @@ public class BookingManagementVeiw extends Composite
                 Refresh.refresh();
             }
         });
+    }
+
+    private void fillTable(List<BookingInfo> result)
+    {
+        BOOKINGS = FluentIterable.from(result).filter(new Predicate<BookingInfo>()
+        {
+
+            @Override
+            public boolean apply(BookingInfo input)
+            {
+                return OrderStatus.PAID.equals(input.getStatus());
+            }
+        }).toSortedList(new BookingInfoComparator());
+
+        // if (BOOKINGS.size() > 0)
+        {
+            addTable();
+            setCellTable();
+        }
     }
 
     private void setCellTable()
@@ -199,25 +217,69 @@ public class BookingManagementVeiw extends Composite
         // Connect the table to the data provider.
         dataProvider.addDataDisplay(bookingManagementTable);
 
-        dataProvider.setList(
-                FluentIterable
-                        .from(BOOKINGS)
-                        .toSortedList(new BookingInfoComparator()));
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(bookingManagementTable);
+        dataProvider.setList(BOOKINGS);
 
         // We know that the data is sorted alphabetically by default.
         // bookingManagementTable.getColumnSortList().push(forwardPickupPlaceColumn);
         bookingManagementTable.getElement().getStyle().setMarginTop(2, Unit.PX);
         bookingManagementTable.setWidth("100%");
+    }
+
+    private void addTable()
+    {
+        mainPanel.clear();
+        bookingManagementTable = new CellTable<BookingInfo>(BOOKINGS.size(), tableRes);
+
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        pager.setDisplay(bookingManagementTable);
         VerticalPanel panel = new VerticalPanel();
         panel.getElement().getStyle().setWidth(100, Unit.PCT);
         panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
         panel.add(bookingManagementTable);
         panel.add(pager);
         mainPanel.add(panel);
+
+    }
+
+    private void setCancelBtn()
+    {
+        cancelBtn = new Button();
+        cancelBtn.setStyleName("btn btn-primary");
+        cancelBtn.setText("Delete");
+        cancelBtn.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                for (BookingInfo bookingInfo : BOOKINGS)
+                {
+                    if (selectionModel.isSelected(bookingInfo))
+                    {
+                        service.cancelBooking(bookingInfo, GwtDashboard.getAgentInfo(), new AsyncCallback<List<BookingInfo>>()
+                        {
+
+                            @Override
+                            public void onFailure(Throwable caught)
+                            {
+                                Refresh.refresh();
+                            }
+
+                            @Override
+                            public void onSuccess(List<BookingInfo> result)
+                            {
+                                fillTable(result);
+                                ;
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        cancelBtn.getElement().getStyle().setFloat(Float.RIGHT);
+        cancelBtn.getElement().getStyle().setMargin(3, Unit.PX);
+        btnContainer.add(cancelBtn);
     }
 }
