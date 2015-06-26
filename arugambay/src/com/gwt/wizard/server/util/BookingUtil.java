@@ -82,6 +82,9 @@ public class BookingUtil
         return toConfirmationEmailHtml(bookingInfo, html, profil);
     }
 
+    private static String FACEBOOK_APP = "https://apps.facebook.com/1651399821757463";
+    private static String FACEBOOK_PAGE = "https://www.facebook.com/taxisurfr";
+
     public static String toConfirmationEmailHtml(BookingInfo bookingInfo, String html, Profil profil)
     {
         String insertion = "";
@@ -92,6 +95,8 @@ public class BookingUtil
         html = html.replace("____INSERT___DETAILS___", insertion);
 
         String taxisurfrRouteLink = profil.getTaxisurfUrl() + "?route=" + bookingInfo.getRouteId();
+        taxisurfrRouteLink = FACEBOOK_PAGE;
+
         html = html.replace("__TAXISURFR_ROUTE_LINK__", taxisurfrRouteLink);
         if (bookingInfo.getShareWanted())
         {

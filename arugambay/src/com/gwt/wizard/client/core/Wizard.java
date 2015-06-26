@@ -64,8 +64,6 @@ public class Wizard extends Composite
 
     @UiField
     Button prev;
-    @UiField
-    Button next;
 
     public Wizard()
     {
@@ -74,8 +72,8 @@ public class Wizard extends Composite
         steps.clear();
         header.clear();
         mainPanel.setVisible(false);
-        next.ensureDebugId("button_next");
         currentstep = 0;
+
     }
 
     protected void initWidget()
@@ -118,11 +116,10 @@ public class Wizard extends Composite
         handlePreviousStep();
 
         stepList.get(currentstep).getContent().setVisible(true);
-        stepList.get(currentstep).show(true, prev, next);
+        stepList.get(currentstep).show(true, prev);
         updateHeader(currentstep);
     }
 
-    @UiHandler("next")
     public void onNextClick(ClickEvent event)
     {
         // validation, don't move forward if there are any error on current step
@@ -138,7 +135,7 @@ public class Wizard extends Composite
         handleNextStep();
 
         stepList.get(currentstep).getContent().setVisible(true);
-        stepList.get(currentstep).show(true, prev, next);
+        stepList.get(currentstep).show(true, prev);
         updateHeader(currentstep);
 
     }
@@ -217,15 +214,15 @@ public class Wizard extends Composite
         mainPanel.setVisible(true);
         if (initstep instanceof TransportStep)
         {
-            ((TransportStep) initstep).init(prev, next);
+            ((TransportStep) initstep).init(prev);
         }
         if (initstep instanceof ConfirmationStep)
         {
-            ((ConfirmationStep) initstep).init(prev, next);
+            ((ConfirmationStep) initstep).init(prev);
         }
         if (initstep instanceof RatingStep)
         {
-            ((RatingStep) initstep).init(prev, next);
+            ((RatingStep) initstep).init(prev);
         }
 
     }
@@ -238,7 +235,7 @@ public class Wizard extends Composite
 
     public void activateShareConfirmationStep(ShareConfirmationStep step)
     {
-        step.init(prev, next);
+        step.init(prev);
     }
 
     public static boolean shareAvailable()

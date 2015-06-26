@@ -3,9 +3,15 @@ package com.gwt.wizard.client.steps.ui.summary;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.core.Wizard;
 
 public class SummaryStepMobileUi extends SummaryStepUi
 {
+
+    public SummaryStepMobileUi(Wizard wizard)
+    {
+        super(wizard);
+    }
 
     private static SummaryStepUiUiBinder uiBinder = GWT.create(SummaryStepUiUiBinder.class);
 

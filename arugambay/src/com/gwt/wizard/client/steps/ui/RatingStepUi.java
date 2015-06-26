@@ -65,9 +65,8 @@ public class RatingStepUi extends Composite
         super.setWidth(width);
     }
 
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
-        next.setVisible(false);
         prev.setVisible(false);
     }
 

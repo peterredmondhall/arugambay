@@ -3,9 +3,15 @@ package com.gwt.wizard.client.steps.ui.contact;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Widget;
+import com.gwt.wizard.client.core.Wizard;
 
 public class ContactStepMobileUi extends ContactStepUi
 {
+    public ContactStepMobileUi(Wizard wizard)
+    {
+        super(wizard);
+    }
+
     private static ContactStepUiUiBinder uiBinder = GWT.create(ContactStepUiUiBinder.class);
 
     interface ContactStepUiUiBinder extends UiBinder<Widget, ContactStepMobileUi>

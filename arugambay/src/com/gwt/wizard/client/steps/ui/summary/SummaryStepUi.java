@@ -4,6 +4,8 @@ import static com.gwt.wizard.client.core.Wizard.BOOKINGINFO;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -41,12 +43,26 @@ public class SummaryStepUi extends Composite
     @UiField
     Label pay1;
 
-    public SummaryStepUi()
+    @UiField
+    Button nextButtonSummary;
+
+    public SummaryStepUi(final Wizard wizard)
     {
         createUi();
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
         // paypal.setUrl();
         // stripe1.setVisible(true);
+
+        nextButtonSummary.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                wizard.onNextClick(null);
+            }
+        });
+
     }
 
     protected void createUi()
@@ -54,7 +70,7 @@ public class SummaryStepUi extends Composite
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
@@ -112,9 +128,6 @@ public class SummaryStepUi extends Composite
 
         }
 
-        // pay2.setVisible(!shared);
-        // paypal.setVisible(!shared);
-        next.setVisible(true);
     }
 
     @Override

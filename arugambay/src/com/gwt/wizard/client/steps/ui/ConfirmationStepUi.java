@@ -42,11 +42,10 @@ public class ConfirmationStepUi extends Composite
         mainPanel.getElement().getStyle().setDisplay(Display.NONE);
     }
 
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
-        next.setVisible(false);
         prev.setVisible(false);
         setBookingInfo(BOOKINGINFO);
     }

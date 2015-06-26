@@ -189,13 +189,8 @@ public class TransportStepUi extends Composite
         super.setWidth(width);
     }
 
-    Button next;
-
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
-        this.next = next;
-        next.setVisible(false);
-        next.setEnabled(Wizard.ROUTEINFO != null);
         prev.setVisible(false);
     }
 
@@ -308,7 +303,6 @@ public class TransportStepUi extends Composite
         panelDescription.add(getDisclosure(routeInfo.getDescription()));
 
         panelRoute.setVisible(true);
-        next.setEnabled(true);
         GwtWizard.SERVICE.getBookingsForRoute(Wizard.ROUTEINFO, new AsyncCallback<List<BookingInfo>>()
         {
             @Override

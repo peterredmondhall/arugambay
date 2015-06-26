@@ -141,7 +141,15 @@
 					<g:TextArea ui:field="requirementsBox" styleName="widgetDiv"/>
 				</g:customCell>
 			</g:row>
-						
+			<g:row>
+				<g:customCell   styleName="{style.labelDiv}" >
+					<g:Label />				
+				</g:customCell>
+				<g:customCell >
+				<g:Button ui:field="nextButtonContact" text="Next" styleName="btn btn-primary" />
+				</g:customCell>
+			</g:row>
+			
 		</g:Grid>
 		<g:FlowPanel visible="false">
 		<g:Label ui:field="dateErrorMsg"></g:Label>

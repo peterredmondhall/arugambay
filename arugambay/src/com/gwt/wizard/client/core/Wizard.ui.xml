@@ -36,7 +36,6 @@
 			<g:HTMLPanel ui:field="steps" styleName="{style.main-content}" />
 		<div class="footer">
 			<g:Button ui:field="prev" text="Previous" styleName="btn btn-primary" />
-			<g:Button ui:field="next" text="Next" styleName="btn btn-primary" />
 		</div>
 					</g:HTMLPanel>
 		

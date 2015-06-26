@@ -140,10 +140,9 @@ public class ShareStepUi extends Composite
 
     }
 
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
 
-        next.setVisible(false);
         prev.setEnabled(true);
         prev.setVisible(true);
         BOOKINGINFO.setOrderType(OrderType.BOOKING);

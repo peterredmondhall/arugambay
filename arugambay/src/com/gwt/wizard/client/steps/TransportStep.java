@@ -40,9 +40,9 @@ public class TransportStep implements WizardStep
         return ui;
     }
 
-    public void init(Button prev, Button next)
+    public void init(Button prev)
     {
-        ui.show(true, prev, next);
+        ui.show(true, prev);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class TransportStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
-        ui.show(visible, prev, next);
+        ui.show(visible, prev);
     }
 
     public void displayRoute()

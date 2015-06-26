@@ -99,9 +99,9 @@ public class GwtWizard implements EntryPoint
 
         transportStep = new TransportStep(wizard);
         shareStep = new ShareStep(wizard);
-        contactStep = new ContactStep();
+        contactStep = new ContactStep(wizard);
         creditCardStep = new CreditCardStep(wizard);
-        summaryStep = new SummaryStep();
+        summaryStep = new SummaryStep(wizard);
         confirmationStep = new ConfirmationStep();
         shareConfirmationStep = new ShareConfirmationStep();
         ratingStep = new RatingStep();

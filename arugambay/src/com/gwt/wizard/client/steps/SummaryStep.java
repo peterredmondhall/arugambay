@@ -23,15 +23,15 @@ public class SummaryStep implements WizardStep
 
     private final SummaryStepUi ui;
 
-    public SummaryStep()
+    public SummaryStep(Wizard wizard)
     {
         if (Wizard.MOBILE)
         {
-            ui = new SummaryStepMobileUi();
+            ui = new SummaryStepMobileUi(wizard);
         }
         else
         {
-            ui = new SummaryStepUi();
+            ui = new SummaryStepUi(wizard);
         }
     }
 
@@ -85,9 +85,9 @@ public class SummaryStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
-        ui.show(visible, prev, next);
+        ui.show(visible, prev);
     }
 
 }

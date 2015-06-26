@@ -27,15 +27,15 @@ public class ContactStep implements WizardStep
 
     private final ContactStepUi ui;
 
-    public ContactStep()
+    public ContactStep(Wizard wizard)
     {
         if (Wizard.MOBILE)
         {
-            ui = new ContactStepMobileUi();
+            ui = new ContactStepMobileUi(wizard);
         }
         else
         {
-            ui = new ContactStepUi();
+            ui = new ContactStepUi(wizard);
         }
 
     }
@@ -172,9 +172,9 @@ public class ContactStep implements WizardStep
     }
 
     @Override
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
-        ui.show(visible, prev, next);
+        ui.show(visible, prev);
     }
 
 }

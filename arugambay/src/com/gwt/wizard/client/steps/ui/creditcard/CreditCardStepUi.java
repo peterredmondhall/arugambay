@@ -176,12 +176,11 @@ public class CreditCardStepUi extends Composite
         }
     }
 
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
 
-        next.setVisible(false);
         prev.setEnabled(true);
 
         payWithCC.setText("Pay " + CurrencyHelper.getPrice(Wizard.ROUTEINFO, BOOKINGINFO.getCurrency(), BOOKINGINFO.getRate()));

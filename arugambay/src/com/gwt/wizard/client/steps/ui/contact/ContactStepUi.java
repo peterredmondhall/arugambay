@@ -6,6 +6,8 @@ import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
 import com.google.gwt.event.logical.shared.ShowRangeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -75,7 +77,10 @@ public class ContactStepUi extends Composite
     @UiField
     TextArea requirementsBox;
 
-    public ContactStepUi()
+    @UiField
+    Button nextButtonContact;
+
+    public ContactStepUi(final Wizard wizard)
     {
         createUi();
 
@@ -103,6 +108,15 @@ public class ContactStepUi extends Composite
 //            email2.setText("info@taxigang.com");
 //
 //        }
+        nextButtonContact.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                wizard.onNextClick(null);
+            }
+        });
     }
 
     private void restrictDates()
@@ -253,13 +267,12 @@ public class ContactStepUi extends Composite
         }
     }
 
-    public void show(boolean visible, Button prev, Button next)
+    public void show(boolean visible, Button prev)
     {
         resetErrMsg();
         mainPanel.setVisible(visible);
         mainPanel.getElement().getStyle().setDisplay(visible ? Display.BLOCK : Display.NONE);
 
-        next.setVisible(true);
         prev.setEnabled(true);
         prev.setVisible(true);
 

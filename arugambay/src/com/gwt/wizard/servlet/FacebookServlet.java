@@ -2,6 +2,7 @@ package com.gwt.wizard.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.api.client.util.Charsets;
+import com.google.common.io.Resources;
 import com.gwt.wizard.server.ConfigManager;
 import com.gwt.wizard.server.entity.Config;
 import com.restfb.Connection;
@@ -29,7 +32,23 @@ public class FacebookServlet extends HttpServlet
             HttpServletResponse response)
             throws ServletException, IOException
     {
-        log.log(Level.SEVERE, "XXXXXXXXX doGet");
+        if (true)
+        {
+            load(response);
+            return;
+
+        }
+    }
+
+    private void load(HttpServletResponse response) throws IOException
+    {
+        URL url = Resources.getResource("fbcontent.htm");
+        String text = Resources.toString(url, Charsets.UTF_8);
+        text = text.substring(text.indexOf("<html"), text.length() - 1);
+        PrintWriter writer = response.getWriter();
+        writer.print(text);
+        writer.close();
+        return;
     }
 
     @Override
@@ -38,11 +57,7 @@ public class FacebookServlet extends HttpServlet
     {
         if (true)
         {
-            PrintWriter writer = response.getWriter();
-            writer.print("<iframe src=\"https://taxigangsurf.appspot.com\" width=\"830\" height=\"610\"></iframe>");
-            writer.close();
-            return;
-
+            load(response);
         }
         log.log(Level.INFO, "XXXXXXXXX doPost");
 

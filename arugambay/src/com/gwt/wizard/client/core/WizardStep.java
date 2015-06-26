@@ -16,6 +16,6 @@ public interface WizardStep
 
     void clear();
 
-    void show(boolean visible, Button prev, Button next);
+    void show(boolean visible, Button prev);
 
 }
