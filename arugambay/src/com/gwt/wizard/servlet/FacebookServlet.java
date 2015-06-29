@@ -58,8 +58,8 @@ public class FacebookServlet extends HttpServlet
         if (true)
         {
             load(response);
+            return;
         }
-        log.log(Level.INFO, "XXXXXXXXX doPost");
 
         String signedRequest = request.getParameter("signed_request");
         log.log(Level.SEVERE, "XXXXXXXXX doPost signedRequest" + signedRequest);

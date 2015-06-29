@@ -116,7 +116,18 @@
 		<url-pattern>/facebookapp</url-pattern>
 	</servlet-mapping>
 
-	<!-- Default page to serve -->
+
+	<servlet>
+		<servlet-name>RecommendationServlet</servlet-name>
+		<servlet-class>com.gwt.wizard.servlet.RecommendedServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>RecommendationServlet</servlet-name>
+		<url-pattern>/recommended</url-pattern>
+	</servlet-mapping>
+
+		<!-- Default page to serve -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>

@@ -89,7 +89,7 @@ a:VISITED {
 }
 
 .footer {
-	float: left;
+	float: right;
 	margin-top: 10px;
 	margin-right: 10px;
 }

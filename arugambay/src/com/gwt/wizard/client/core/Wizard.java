@@ -73,6 +73,8 @@ public class Wizard extends Composite
         header.clear();
         mainPanel.setVisible(false);
         currentstep = 0;
+        HTML html = new HTML("<div class=\"fb-like\" data-href=\"https://www.facebook.com/taxisurfr\" data-layout=\"standard\" data-action=\"like\" data-show-faces=\"true\" data-share=\"true\"></div>");
+        mainPanel.add(html);
 
     }
 
@@ -92,6 +94,17 @@ public class Wizard extends Composite
 
         stepList.add(step);
     }
+
+    @Override
+    protected void onLoad()
+    {
+        showSocialButtons();
+        super.onLoad();
+    }
+
+    private static native String showSocialButtons() /*-{
+		$wnd.FB.XFBML.parse(); //Render facebook button
+    }-*/;
 
     @Override
     public void setHeight(String height)
