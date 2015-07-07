@@ -41,16 +41,21 @@ public class DashboardVeiw extends Composite
     @UiField
     Anchor adminManagement;
 
+    FinanceManagementVeiw financeManagementView;
+
     private final HTMLPanel displayContainer = new HTMLPanel("");
+
+    boolean isAdmin;
 
     public DashboardVeiw()
     {
         initWidget(uiBinder.createAndBindUi(this));
         setMenu();
         dataContainer.add(displayContainer);
-        boolean isAdmin = Boolean.TRUE.equals(GwtDashboard.getAgentInfo().isAdmin());
+        isAdmin = Boolean.TRUE.equals(GwtDashboard.getAgentInfo().isAdmin());
         GwtDashboard.setAdmin(isAdmin);
         adminManagement.setVisible(isAdmin);
+
     }
 
     private void setMenu()
@@ -104,7 +109,8 @@ public class DashboardVeiw extends Composite
             public void onClick(ClickEvent event)
             {
                 displayContainer.clear();
-                displayContainer.add(new FinanceManagementVeiw());
+                financeManagementView = new FinanceManagementVeiw();
+                displayContainer.add(financeManagementView);
             }
         });
         displayContainer.add(new BookingManagementVeiw());

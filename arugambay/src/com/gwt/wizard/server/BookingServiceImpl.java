@@ -346,4 +346,10 @@ public class BookingServiceImpl extends RemoteServiceServlet implements
         return getBookings(agentInfo);
 
     }
+
+    @Override
+    public List<FinanceInfo> savePayment(FinanceInfo financeInfo)
+    {
+        return financeManager.addTransfer(financeInfo);
+    }
 }

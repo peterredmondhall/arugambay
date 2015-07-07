@@ -105,11 +105,9 @@ public class TransportStepUi extends Composite
         panelMotivation.add(table);
         imageSearch.setVisible(false);
 
-    }
-
-    private void createButtonTable()
-    {
-        ClickHandler book = new ClickHandler()
+        buttonOrder = ButtonFactory.getButton("Book taxi now.", "150px", "80px");
+        buttontable.setWidget(0, 0, buttonOrder);
+        buttonOrder.addClickHandler(new ClickHandler()
         {
 
             @Override
@@ -119,7 +117,11 @@ public class TransportStepUi extends Composite
                 wizard.onNextClick(null);
 
             }
-        };
+        });
+    }
+
+    private void createButtonTable()
+    {
         ClickHandler shareBook = new ClickHandler()
         {
 
@@ -130,11 +132,11 @@ public class TransportStepUi extends Composite
 
             }
         };
-        buttontable.clear();
-        buttonOrder = ButtonFactory.getButton("Book taxi now.", "150px", "80px");
-        int row = 0;
-        buttontable.setWidget(row++, 0, buttonOrder);
-        buttonOrder.addClickHandler(book);
+        int row = 1;
+        for (int i = row; i < buttontable.getRowCount(); i++)
+        {
+            buttontable.removeRow(i);
+        }
         if (Wizard.shareAvailable())
         {
             buttonShare = ButtonFactory.getButton("Share.", "150px");

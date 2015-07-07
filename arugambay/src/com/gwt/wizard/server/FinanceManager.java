@@ -72,11 +72,33 @@ public class FinanceManager extends Manager
         return list;
     }
 
-    public void addTransfer(AgentInfo agentInfo, Date date, Long amount)
+    public List<FinanceInfo> addTransfer(FinanceInfo financeInfo)
     {
-        BookingInfo bookingInfo = new BookingInfo();
-        bookingInfo.setName("taxisurfr");
-        add(FinanceInfo.Type.TRANSFER, date, bookingInfo, agentInfo, amount);
+        EntityManager em = getEntityManager();
+
+        try
+        {
+            Finance finance = new Finance();
+            finance.setAgentId(financeInfo.getAgentId());
+            finance.setType(FinanceInfo.Type.TRANSFER);
+            finance.setDate(financeInfo.getDate());
+            finance.setName(financeInfo.getName());
+            finance.setAmount(financeInfo.getAmount());
+            finance.setBookingId(null);
+            finance.setOrderRef(null);
+
+            em.getTransaction().begin();
+            em.persist(finance);
+            em.getTransaction().commit();
+            em.detach(finance);
+        }
+        finally
+        {
+            em.close();
+        }
+        AgentInfo agentInfo = new AgentInfo();
+        agentInfo.setId(financeInfo.getAgentId());
+        return getFinance(agentInfo);
     }
 
     public void addPayment(BookingInfo bookingInfo, Date date)
@@ -87,24 +109,21 @@ public class FinanceManager extends Manager
         AgentInfo agentInfo = agent.getInfo();
         Long amount = route.getAgentCents() != null ? route.getAgentCents() : (long) (route.getCents() * 0.90);
         logger.info("addpayment:" + amount);
-        add(FinanceInfo.Type.PAYMENT, date, bookingInfo, agentInfo, amount);
 
-    }
-
-    private void add(FinanceInfo.Type type, Date date, BookingInfo bookingInfo, AgentInfo agentInfo, Long amount)
-    {
         EntityManager em = getEntityManager();
 
         try
         {
             Finance finance = new Finance();
             finance.setAgentId(agentInfo.getId());
-            finance.setType(type);
+            finance.setType(FinanceInfo.Type.PAYMENT);
             finance.setDate(date);
             finance.setName(bookingInfo.getName());
             finance.setAmount(amount);
             finance.setBookingId(bookingInfo.getId());
             finance.setOrderRef(bookingInfo.getOrderRef());
+            finance.setAgentId(agentInfo.getId());
+            finance.setDeliveryDate(bookingInfo.getDate());
 
             em.getTransaction().begin();
             em.persist(finance);

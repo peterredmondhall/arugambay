@@ -26,7 +26,7 @@
 
 			</g:ScrollPanel>
 			<g:Label>
-				Cant' find anything suitable? Create a new booking and (if you want) your booking will appear in the
+				Cant' find anything suitable? Create a new booking and your booking will appear in the
 					list above for others to share.
 			</g:Label>
 			<g:Button ui:field="buttonNewBooking" text="Book taxi"

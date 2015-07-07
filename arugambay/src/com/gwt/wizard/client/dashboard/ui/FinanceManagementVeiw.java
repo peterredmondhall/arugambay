@@ -1,13 +1,17 @@
 package com.gwt.wizard.client.dashboard.ui;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,11 +20,17 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -45,7 +55,6 @@ public class FinanceManagementVeiw extends Composite
     }
 
     private final CellTable.Resources tableRes = GWT.create(TableRes.class);
-    private final List<FinanceInfo> FINANCES = Lists.newArrayList();
 
     public class FinanceInfoComparator implements Comparator<FinanceInfo>
     {
@@ -62,6 +71,11 @@ public class FinanceManagementVeiw extends Composite
 
     @UiField
     HTMLPanel mainPanel;
+    @UiField
+    HTMLPanel btnContainer;
+
+    private Button addTransferBtn;
+
     private final SelectionModel<FinanceInfo> selectionModel = new MultiSelectionModel<FinanceInfo>(null);
 
     // The list of data to display.
@@ -70,7 +84,7 @@ public class FinanceManagementVeiw extends Composite
     {
         initWidget(uiBinder.createAndBindUi(this));
         fetchFinancess();
-
+        setAddRouteBtn();
     }
 
     private void fetchFinancess()
@@ -81,16 +95,7 @@ public class FinanceManagementVeiw extends Composite
             @Override
             public void onSuccess(List<FinanceInfo> result)
             {
-                if (result != null && result.size() > 0)
-                {
-                    for (FinanceInfo financeInfo : result)
-                    {
-                        FINANCES.add(financeInfo);
-                    }
-                }
-                setSummaryCellTable();
-                setTransferCellTable();
-                setPaymentsCellTable();
+                initWidget(result);
             }
 
             @Override
@@ -101,7 +106,19 @@ public class FinanceManagementVeiw extends Composite
         });
     }
 
-    private CellTable<FinanceInfo> setPaymentsCellTable()
+    private void initWidget(List<FinanceInfo> financeList)
+    {
+        if (financeList != null && financeList.size() > 0)
+        {
+            mainPanel.clear();
+            setSummaryCellTable(financeList);
+            setTransferCellTable(financeList);
+            setPaymentsCellTable(financeList);
+        }
+        addTransferBtn.setVisible(GwtDashboard.isAdmin());
+    }
+
+    private CellTable<FinanceInfo> setPaymentsCellTable(List<FinanceInfo> financeList)
     {
         CellTable<FinanceInfo> table = new CellTable<FinanceInfo>(20, tableRes);
 
@@ -177,13 +194,13 @@ public class FinanceManagementVeiw extends Composite
 
         // Add the data to the data provider, which automatically pushes it to the
         // widget.
-        setData(dataProvider, FinanceInfo.Type.PAYMENT);
+        setData(financeList, dataProvider, FinanceInfo.Type.PAYMENT);
 
         addTable(table, "400px");
         return table;
     }
 
-    private CellTable<FinanceInfo> setSummaryCellTable()
+    private CellTable<FinanceInfo> setSummaryCellTable(List<FinanceInfo> financeList)
     {
         CellTable<FinanceInfo> paymentsTable = new CellTable<FinanceInfo>(20, tableRes);
 
@@ -229,22 +246,30 @@ public class FinanceManagementVeiw extends Composite
         FinanceInfo payments = new FinanceInfo();
         payments.setName("Total payments");
         Long paymentsAmt = 0L;
+        Long currentPaymentsAmt = 0L;
         FinanceInfo transfers = new FinanceInfo();
         transfers.setName("Total transfers");
         Long transfersAmt = 0L;
         List<FinanceInfo> summary = Lists.newArrayList();
         FinanceInfo balance = new FinanceInfo();
         balance.setName("Balance");
+        FinanceInfo currentBalance = new FinanceInfo();
+        currentBalance.setName("Current Balance");
         summary.add(payments);
         summary.add(transfers);
         summary.add(balance);
+        // summary.add(currentBalance);
 
-        for (FinanceInfo financeInfo : FINANCES)
+        for (FinanceInfo financeInfo : financeList)
         {
             switch (financeInfo.getType())
             {
                 case PAYMENT:
                     paymentsAmt += financeInfo.getAmount();
+                    if (financeInfo.getDeliveryDate() != null && financeInfo.getDeliveryDate().before(new Date()))
+                    {
+                        currentPaymentsAmt += financeInfo.getAmount();
+                    }
                     break;
                 case TRANSFER:
                     transfersAmt += financeInfo.getAmount();
@@ -257,16 +282,15 @@ public class FinanceManagementVeiw extends Composite
         payments.setAmount(paymentsAmt);
         transfers.setAmount(transfersAmt);
         balance.setAmount(paymentsAmt - transfersAmt);
-        // Add the data to the data provider, which automatically pushes it to the
-        // widget.
+        currentBalance.setAmount(currentPaymentsAmt - transfersAmt);
         dataProvider.setList(summary);
 
-        addTable(paymentsTable, "100px");
+        addTable(paymentsTable, "120px");
 
         return paymentsTable;
     }
 
-    private void setData(ListDataProvider<FinanceInfo> dataProvider, final FinanceInfo.Type type)
+    private void setData(List<FinanceInfo> financeList, ListDataProvider<FinanceInfo> dataProvider, final FinanceInfo.Type type)
     {
         Predicate<FinanceInfo> predicate = new Predicate<FinanceInfo>()
         {
@@ -278,12 +302,12 @@ public class FinanceManagementVeiw extends Composite
         };
         dataProvider.setList(
                 FluentIterable
-                        .from(FINANCES)
+                        .from(financeList)
                         .filter(predicate)
                         .toSortedList(new FinanceInfoComparator()));
     }
 
-    private void setTransferCellTable()
+    private void setTransferCellTable(List<FinanceInfo> financeList)
     {
         CellTable<FinanceInfo> table = new CellTable<FinanceInfo>(10, tableRes);
 
@@ -319,7 +343,7 @@ public class FinanceManagementVeiw extends Composite
             @Override
             public String getValue(FinanceInfo info)
             {
-                return "";
+                return info.getName();
             }
         };
         // Create requirements column.
@@ -335,6 +359,7 @@ public class FinanceManagementVeiw extends Composite
         table.setTableLayoutFixed(true);
         // Add the columns.
         table.addColumn(typeColumn, "Type");
+        table.addColumn(nameColumn, "Reference");
         table.addColumn(dateColumn, "Date");
         table.addColumn(priceColumn, "Amount USD");
 
@@ -346,7 +371,7 @@ public class FinanceManagementVeiw extends Composite
 
         // Add the data to the data provider, which automatically pushes it to the
         // widget.
-        setData(dataProvider, FinanceInfo.Type.TRANSFER);
+        setData(financeList, dataProvider, FinanceInfo.Type.TRANSFER);
 
         addTable(table, "200px");
     }
@@ -369,4 +394,93 @@ public class FinanceManagementVeiw extends Composite
         scrollPanel.setHeight(height);
         mainPanel.add(scrollPanel);
     }
+
+    private void setAddRouteBtn()
+    {
+        addTransferBtn = new Button();
+        addTransferBtn.setStyleName("btn btn-primary");
+        addTransferBtn.setText("+Transfer");
+        addTransferBtn.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                showEditPopup(event);
+
+            }
+        });
+        addTransferBtn.getElement().getStyle().setFloat(Float.RIGHT);
+        addTransferBtn.getElement().getStyle().setMargin(3, Unit.PX);
+        btnContainer.add(addTransferBtn);
+    }
+
+    private void showEditPopup(ClickEvent event)
+    {
+        final TextBox editReferenceTxtBox = new TextBox();
+        final TextBox editAmountUSDBox = new TextBox();
+
+        final PopupPanel editPlacePopUpPanel = new PopupPanel(true);
+        final VerticalPanel vPanel = new VerticalPanel();
+        Grid grid = new Grid(9, 2);
+        vPanel.add(grid);
+        final Label errLbl = new Label();
+        errLbl.setStyleName("errLbl");
+
+        Button saveBtn = new Button("Save");
+        saveBtn.setStyleName("btn btn-primary");
+        saveBtn.addClickHandler(new ClickHandler()
+        {
+
+            @Override
+            public void onClick(ClickEvent event)
+            {
+                FinanceInfo financeInfo = new FinanceInfo();
+                financeInfo.setAmount(100L * Long.parseLong(editAmountUSDBox.getText()));
+                financeInfo.setName(editReferenceTxtBox.getText());
+                financeInfo.setDate(new Date());
+                financeInfo.setDate(new Date());
+                financeInfo.setAgentId(GwtDashboard.getAgentInfo().getId());
+
+                service.savePayment(financeInfo, new AsyncCallback<List<FinanceInfo>>()
+                {
+
+                    @Override
+                    public void onFailure(Throwable caught)
+                    {
+                        Window.alert("Failed to save transfer!");
+                    }
+
+                    @Override
+                    public void onSuccess(List<FinanceInfo> finances)
+                    {
+                        editPlacePopUpPanel.setVisible(false);
+                        initWidget(finances);
+                    }
+                });
+            }
+        });
+        // Setting up Popup Panel
+        int row = 0;
+
+        final Label referenceLabel = new Label("Reference");
+        final Label amountLabel = new Label("Amount USD");
+
+        addPopupPanel(referenceLabel, editReferenceTxtBox, grid, row++);
+        addPopupPanel(amountLabel, editAmountUSDBox, grid, row++);
+        vPanel.add(saveBtn);
+        vPanel.add(errLbl);
+        editPlacePopUpPanel.add(vPanel);
+        editPlacePopUpPanel.addStyleName("addNewPlacePopup");
+        editPlacePopUpPanel.setPopupPosition(event.getClientX(), event.getClientY());
+        editPlacePopUpPanel.show();
+
+    }
+
+    private void addPopupPanel(Label label, Widget widget, Grid grid, int row)
+    {
+        grid.setWidget(row, 0, label);
+        grid.setWidget(row, 1, widget);
+    }
+
 }

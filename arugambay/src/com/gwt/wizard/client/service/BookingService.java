@@ -71,4 +71,6 @@ public interface BookingService extends RemoteService
 
     List<FinanceInfo> getFinances(AgentInfo agentInfo);
 
+    List<FinanceInfo> savePayment(FinanceInfo financeInfo);
+
 }

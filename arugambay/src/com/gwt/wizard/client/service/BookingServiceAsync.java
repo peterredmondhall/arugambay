@@ -76,4 +76,6 @@ public interface BookingServiceAsync
 
     void getFinances(AgentInfo agentInfo, AsyncCallback<List<FinanceInfo>> asyncCallback);
 
+    void savePayment(FinanceInfo financeInfo, AsyncCallback<List<FinanceInfo>> asyncCallback);
+
 }

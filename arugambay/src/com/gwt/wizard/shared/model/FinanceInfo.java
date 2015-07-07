@@ -13,11 +13,24 @@ public class FinanceInfo extends Info
     private static final long serialVersionUID = 1L;
 
     private Date date;
+    private Date deliveryDate;
     private Type type;
+
+    public Date getDeliveryDate()
+    {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate)
+    {
+        this.deliveryDate = deliveryDate;
+    }
+
     private String name;
     private String order;
     private Long amount;
     private Long bookingId;
+    private Long agentId;
 
     public Date getDate()
     {
@@ -80,4 +93,13 @@ public class FinanceInfo extends Info
 
     }
 
+    public Long getAgentId()
+    {
+        return agentId;
+    }
+
+    public void setAgentId(Long agentId)
+    {
+        this.agentId = agentId;
+    }
 }

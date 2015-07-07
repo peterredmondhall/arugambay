@@ -62,7 +62,10 @@ public class FinanceManagerTest
         AgentInfo agentInfo = new AgentInfo();
         agentInfo.setId(99l);
 
-        manager.addTransfer(agentInfo, new Date(), 101L);
+        FinanceInfo info = new FinanceInfo();
+        info.setAgentId(99L);
+        info.setAmount(101L);
+        manager.addTransfer(info);
         List<FinanceInfo> finances = manager.getFinance(agentInfo);
         assertEquals(1, finances.size());
         FinanceInfo expectedTransfer = new FinanceInfo();
