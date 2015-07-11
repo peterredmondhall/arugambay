@@ -17,15 +17,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
@@ -231,14 +228,10 @@ public class BookingManagementVeiw extends Composite
         bookingManagementTable = new CellTable<BookingInfo>(BOOKINGS.size(), tableRes);
 
         // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(bookingManagementTable);
-        VerticalPanel panel = new VerticalPanel();
+        ScrollPanel panel = new ScrollPanel();
         panel.getElement().getStyle().setWidth(100, Unit.PCT);
-        panel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+        panel.setHeight("700px");
         panel.add(bookingManagementTable);
-        panel.add(pager);
         mainPanel.add(panel);
 
     }

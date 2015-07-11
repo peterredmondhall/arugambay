@@ -17,8 +17,6 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -66,7 +64,7 @@ public class FinanceManagementVeiw extends Composite
         }
     }
 
-    CellTable<FinanceInfo> summaryTable = new CellTable<FinanceInfo>(20, tableRes);
+    CellTable<FinanceInfo> summaryTable;
     NumberFormat usdFormat = NumberFormat.getFormat(".00");
 
     @UiField
@@ -120,7 +118,9 @@ public class FinanceManagementVeiw extends Composite
 
     private CellTable<FinanceInfo> setPaymentsCellTable(List<FinanceInfo> financeList)
     {
-        CellTable<FinanceInfo> table = new CellTable<FinanceInfo>(20, tableRes);
+        int tableSize = getTableSize(financeList, FinanceInfo.Type.PAYMENT);
+
+        CellTable<FinanceInfo> table = new CellTable<FinanceInfo>(tableSize, tableRes);
 
         table.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<FinanceInfo>createCheckboxManager());
@@ -200,11 +200,27 @@ public class FinanceManagementVeiw extends Composite
         return table;
     }
 
+    private int getTableSize(List<FinanceInfo> financeList, final FinanceInfo.Type type)
+    {
+        Predicate<FinanceInfo> predicate = new Predicate<FinanceInfo>()
+        {
+            @Override
+            public boolean apply(FinanceInfo input)
+            {
+                return type.equals(input.getType());
+            }
+        };
+
+        return FluentIterable
+                .from(financeList)
+                .filter(predicate).size();
+    }
+
     private CellTable<FinanceInfo> setSummaryCellTable(List<FinanceInfo> financeList)
     {
-        CellTable<FinanceInfo> paymentsTable = new CellTable<FinanceInfo>(20, tableRes);
+        CellTable<FinanceInfo> summaryTable = new CellTable<FinanceInfo>(4, tableRes);
 
-        paymentsTable.setSelectionModel(selectionModel,
+        summaryTable.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<FinanceInfo>createCheckboxManager());
 
         // Create requirements column.
@@ -231,17 +247,17 @@ public class FinanceManagementVeiw extends Composite
             }
         };
 
-        paymentsTable.setTableLayoutFixed(true);
+        summaryTable.setTableLayoutFixed(true);
         // Add the columns.
-        paymentsTable.addColumn(descColumn, "");
-        paymentsTable.addColumn(priceColumn, "Balance USD");
+        summaryTable.addColumn(descColumn, "");
+        summaryTable.addColumn(priceColumn, "Balance USD");
 
         // Create a data provider.
         ListDataProvider<FinanceInfo> dataProvider = new ListDataProvider<FinanceInfo>();
 
         // Connect the table to the data provider.
 
-        dataProvider.addDataDisplay(paymentsTable);
+        dataProvider.addDataDisplay(summaryTable);
 
         FinanceInfo payments = new FinanceInfo();
         payments.setName("Total payments");
@@ -258,7 +274,7 @@ public class FinanceManagementVeiw extends Composite
         summary.add(payments);
         summary.add(transfers);
         summary.add(balance);
-        // summary.add(currentBalance);
+        summary.add(currentBalance);
 
         for (FinanceInfo financeInfo : financeList)
         {
@@ -266,7 +282,7 @@ public class FinanceManagementVeiw extends Composite
             {
                 case PAYMENT:
                     paymentsAmt += financeInfo.getAmount();
-                    if (financeInfo.getDeliveryDate() != null && financeInfo.getDeliveryDate().before(new Date()))
+                    if (financeInfo.getDeliveryDate() == null || financeInfo.getDeliveryDate().before(new Date()))
                     {
                         currentPaymentsAmt += financeInfo.getAmount();
                     }
@@ -285,9 +301,9 @@ public class FinanceManagementVeiw extends Composite
         currentBalance.setAmount(currentPaymentsAmt - transfersAmt);
         dataProvider.setList(summary);
 
-        addTable(paymentsTable, "120px");
+        addTable(summaryTable, "120px");
 
-        return paymentsTable;
+        return summaryTable;
     }
 
     private void setData(List<FinanceInfo> financeList, ListDataProvider<FinanceInfo> dataProvider, final FinanceInfo.Type type)
@@ -309,7 +325,8 @@ public class FinanceManagementVeiw extends Composite
 
     private void setTransferCellTable(List<FinanceInfo> financeList)
     {
-        CellTable<FinanceInfo> table = new CellTable<FinanceInfo>(10, tableRes);
+        int tableSize = getTableSize(financeList, FinanceInfo.Type.TRANSFER);
+        CellTable<FinanceInfo> table = new CellTable<FinanceInfo>(tableSize, tableRes);
 
         table.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<FinanceInfo>createCheckboxManager());
@@ -378,12 +395,6 @@ public class FinanceManagementVeiw extends Composite
 
     private void addTable(CellTable<FinanceInfo> table, String height)
     {
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(table);
-
-        // We know that the data is sorted alphabetically by default.
-        // bookingManagementTable.getColumnSortList().push(forwardPickupPlaceColumn);
         table.getElement().getStyle().setMarginTop(2, Unit.PX);
         table.setWidth("100%");
         VerticalPanel panel = new VerticalPanel();
